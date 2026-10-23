@@ -1,0 +1,22 @@
+node_modules
+dist
+.output
+.tanstack
+.nitro
+.wrangler
+.vite
+*.local
+
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+
+# editor / OS
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
