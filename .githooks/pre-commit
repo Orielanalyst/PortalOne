@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+if [ -z "$staged" ]; then
+  exit 0
+fi
+
+if printf '%s\n' "$staged" | grep -E '(^|/)\.env($|\.)' | grep -v '\.env\.example' >/dev/null 2>&1; then
+  echo "pre-commit: refusing to commit a .env file. Keep secrets out of git."
+  exit 1
+fi
+
+if git diff --cached -U0 -- $staged | grep -E 'nvapi-[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9]{32,}' >/dev/null 2>&1; then
+  echo "pre-commit: possible API key in the staged diff. Remove it and rotate the key."
+  exit 1
+fi

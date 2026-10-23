@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+echo "pre-push: typecheck"
+bun run typecheck
+
+echo "pre-push: tests"
+bun run test
