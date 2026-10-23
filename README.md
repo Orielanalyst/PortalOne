@@ -15,6 +15,20 @@ Active build. The repository history is the build log: scaffold first, then the
 mission model, the agent loop, the evidence trail, and the sponsor integrations,
 one commit at a time.
 
+## Tracking
+
+The history is the submission, so the rails are explicit:
+
+- `docs/BUILD_PLAN.md` — slices, acceptance criteria and status
+- `docs/COMMIT_POLICY.md` — how commits stay small, green and append-only
+- `docs/BUILD_LOG.md` — the dated session narrative
+- `docs/PROVENANCE.md` — what came from the earlier reference prototype
+- `docs/AI_USAGE.md` — AI tool disclosure
+- `docs/adr/` — architecture decisions
+
+Run `powershell -File scripts/setup-hooks.ps1` once per clone to enable the
+secret scan and the pre-push verification.
+
 ## Run
 
 ```sh
