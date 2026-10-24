@@ -1,6 +1,6 @@
 # Judge guide
 
-**As of 2026-10-24: environment and planning checkpoint.** This repository does
+**As of 2026-10-24: environment and state-engine checkpoint.** This repository does
 not yet implement the revised humanitarian agent workflow described in the plan.
 
 ## What exists and what is next
@@ -11,7 +11,10 @@ not yet implement the revised humanitarian agent workflow described in the plan.
 | Local Zetaris platform and authenticated data access | [Environment audit](ENVIRONMENT.md), [receipts](evidence/zetaris-2026-10-24.json) | verified diagnostic capability |
 | Accountable starting point | [Baseline manifest](evidence/baseline-2026-10-24.json), [provenance](PROVENANCE.md) | captured on 24 Oct |
 | New relief data, planner/validator loop and state updates | [Execution gates](EXECUTION_PLAN.md) | planned |
-| Meterless Engine, Nightshift and Nemotron | [Environment gates](ENVIRONMENT.md) | unverified |
+| Meterless World Model | [Feature receipt](evidence/world-model-2026-10-24.json); `bun run check:world-model` | 8/8 conformance; persistent assumption-tracking feature verified on synthetic inputs |
+| Nightshift authentication and discovery | [Runtime receipt](evidence/meterless-2026-10-24.json) | running; valid token accepted and wrong token rejected |
+| Pinned engine and installed runtime provenance | [Setup receipt](evidence/power-setup-2026-10-24.json) | source hashes, license, installer hash and test results recorded |
+| Nemotron inference | [Environment gates](ENVIRONMENT.md) | NVIDIA account/key action pending; completion currently returns no_provider_configured |
 | New UI, final demo and slides | [Execution plan](EXECUTION_PLAN.md) | deferred |
 | Hosted CI | [Actions run](https://github.com/Orielanalyst/PortalOne/actions/runs/39986817817) | startup blocked by account billing/spending limit |
 

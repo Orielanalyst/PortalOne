@@ -1,5 +1,15 @@
 # Environment audit — 2026-10-24
 
+Later on 24 October: Nightshift 1.2.3 was installed and started. Authenticated
+`/v1/models` discovery passes; an invalid token returns 401. The completion probe
+returns HTTP 400 `no_provider_configured`. NVIDIA sign-in/key entry is pending;
+no successful Nemotron call is claimed. World Model's compiled reference passes
+8/8 conformance checks, and the persistent plan-assumption feature works on
+labelled synthetic observations. See the new receipts in `evidence/`.
+
+The table below preserves the initial audit checkpoint. The later results above
+supersede its Meterless-unavailable row and not-yet-tested engine status.
+
 **Verdict: Zetaris is installed and supports authenticated sample-data queries.**
 Relief datasets and the application's Zetaris adapter are not yet implemented.
 Meterless, Nemotron and the new agent loop are not verified.
@@ -97,3 +107,18 @@ Vendor references:
 
 Machine-readable records are in `evidence/`. They represent this audit and do
 not assert a production-ready humanitarian system.
+
+## Power and engine commands
+
+```sh
+bun run check:world-model
+bun run demo:world-model
+bun run check:meterless
+bun run check:meterless --infer
+```
+
+The World Model source and generated module are pinned in `vendor/` with their
+Apache-2.0 license. The official Nightshift Windows installer and installed
+proprietary runtime remain in ignored `.local-tools/`; do not redistribute them
+in the public submission repository. Runtime credentials remain in Nightshift's
+local store; the probe reads the runtime token without printing it.

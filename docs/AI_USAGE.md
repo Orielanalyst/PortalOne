@@ -8,6 +8,7 @@ entrants accountable for it; this file is our chosen detailed disclosure format.
 | 2026-10-16 | Lovable | Reference prototype | Generated the earlier `relief-mission-control` app. Not part of this repository. |
 | 2026-10-23 | OpenCode + DeepSeek V4.1 Flash | Build assistant | Scaffold, domain model, deterministic evaluator, tests and tracking docs, written under human direction and reviewed before commit. |
 | 2026-10-24 | Codex | Research, planning and environment audit | Read brainstorming and event materials; proposed scope and architecture; verified Docker/WSL/Zetaris, local checks and CI status; added planning/provenance records and a wrapper around pinned official diagnostic helpers. Product implementation and UI redesign were not performed in this audit. |
+| 2026-10-24 | Codex | Meterless implementation | Acquired and verified World Model; implemented persistent observation/plan-assumption tracking and synthetic replay; wrote Meterless contract adapter and tests; installed official Nightshift and verified local authentication. NVIDIA account/key action and real model inference remain pending. |
 | planned | LangGraph + Nightshift | Agent runtime and model | Planner and replanner reasoning. The verifier remains deterministic. |
 | planned | Zetaris | Data layer | SQL over local Docker; evidence rows keep source and timestamps. |
 

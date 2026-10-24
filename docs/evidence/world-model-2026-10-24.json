@@ -1,0 +1,108 @@
+{
+  "captured_at_utc": "2026-10-24T19:47:31.598Z",
+  "mode": "synthetic input replay; no model calls; no Zetaris query in this feature proof",
+  "engine": "Meterless World Model reference",
+  "upstream_commit": "1742dec56a66e58eef9dda2d2b865823758ca8cd",
+  "runtime": "1.4.4",
+  "checks": {
+    "upstream_reference_tests": "10/10 passed",
+    "compiled_engine_conformance": "8/8 passed",
+    "forward_did_not_invalidate": true,
+    "replay_after_restart_was_unchanged": true,
+    "contradictory_evidence_invalidated_plan": true
+  },
+  "initial_plan": {
+    "id": "demo-plan-1",
+    "segmentIds": [
+      "demo-mile4-bambili"
+    ],
+    "createdAt": "2026-10-24T09:00:00Z",
+    "status": "proposed",
+    "assumptions": [
+      {
+        "segmentId": "demo-mile4-bambili",
+        "status": "reported_passable",
+        "independentOrigins": 1,
+        "evidenceIds": [
+          "demo-report-1"
+        ],
+        "fingerprint": "3aab1a8c47f55b379f178fcdec1daee6047d89949f2aeb3a6f8634d41990dd54"
+      }
+    ],
+    "evidenceVersion": "582f75c3dda38c9174040b21d2d3d0557502c372f34ea272e8f8dab221b2f11f"
+  },
+  "updated_assessment": {
+    "segmentId": "demo-mile4-bambili",
+    "status": "disputed",
+    "independentOrigins": 2,
+    "evidenceIds": [
+      "demo-report-1",
+      "demo-report-2"
+    ],
+    "fingerprint": "31cadf6b4d5f01a1694580164b676dda3021f2c3d4cedba0aee7e6fc4858ad62"
+  },
+  "reviewed_plan": {
+    "id": "demo-plan-1",
+    "segmentIds": [
+      "demo-mile4-bambili"
+    ],
+    "createdAt": "2026-10-24T09:00:00Z",
+    "status": "invalidated",
+    "assumptions": [
+      {
+        "segmentId": "demo-mile4-bambili",
+        "status": "reported_passable",
+        "independentOrigins": 1,
+        "evidenceIds": [
+          "demo-report-1"
+        ],
+        "fingerprint": "3aab1a8c47f55b379f178fcdec1daee6047d89949f2aeb3a6f8634d41990dd54"
+      }
+    ],
+    "evidenceVersion": "582f75c3dda38c9174040b21d2d3d0557502c372f34ea272e8f8dab221b2f11f",
+    "invalidatedAt": "2026-10-24T09:03:00Z",
+    "reason": "demo-mile4-bambili: reported_passable -> disputed; evidence changed"
+  },
+  "audit": [
+    {
+      "seq": 1,
+      "at": "2026-10-24T08:00:00Z",
+      "kind": "upsertEntity",
+      "actor": "synthetic-field-liaison",
+      "summary": "observation:portal-one:demo-report-1 (observation)",
+      "eventId": "evt_1"
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-24T09:00:00Z",
+      "kind": "upsertEntity",
+      "actor": "relief-assumption-tracker",
+      "summary": "plan:portal-one:demo-plan-1 (plan)",
+      "eventId": "evt_2"
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-24T08:00:00Z",
+      "kind": "upsertEntity",
+      "actor": "synthetic-social-relay",
+      "summary": "observation:portal-one:demo-forward (observation)",
+      "eventId": "evt_3"
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-24T09:02:00Z",
+      "kind": "upsertEntity",
+      "actor": "synthetic-second-driver",
+      "summary": "observation:portal-one:demo-report-2 (observation)",
+      "eventId": "evt_4"
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-24T09:03:00Z",
+      "kind": "upsertEntity",
+      "actor": "relief-assumption-tracker",
+      "summary": "plan:portal-one:demo-plan-1 (plan)",
+      "eventId": "evt_5"
+    }
+  ]
+}

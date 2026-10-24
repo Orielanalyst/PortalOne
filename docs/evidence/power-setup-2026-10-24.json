@@ -1,0 +1,70 @@
+{
+  "captured_at_utc": "2026-10-24T19:59:55.0914959+00:00",
+  "runtime": "Meterless Nightshift Windows",
+  "version": "1.2.3",
+  "engine_vendor_commit": "bf9fd96",
+  "feature_commit": "19b916f",
+  "local_validation": {
+    "typecheck": "passed",
+    "application_tests": "21/21 passed",
+    "compiled_engine_conformance": "8/8 passed",
+    "production_build": "passed",
+    "remote_ci": "blocked by GitHub account billing/spending limit"
+  },
+  "installer_url": "https://meterless.ai/Nightshift/WIN/Nightshift_1.2.3_x64-setup.exe",
+  "installer_bytes": 653990786,
+  "installer_sha256": "0679114b9096c6a2c787cad893802ed8be75cee867fabb07ea42ceab6b78b008",
+  "install_exit_code": 0,
+  "install_directory": ".local-tools/Nightshift",
+  "redistributed_in_repository": false,
+  "gpu": {
+    "driver": "582.41",
+    "vram_mib": 4096,
+    "model": "NVIDIA Quadro P1000"
+  },
+  "public_api": "http://127.0.0.1:8088/v1",
+  "authentication": "real token from vendor state file; never printed",
+  "model_discovery": "passed",
+  "wrong_token_status": 401,
+  "inference_status": "not ready: no_provider_configured",
+  "nvidia_model_candidate": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "account_action": "NVIDIA Developer Program sign-in and API key pending user action",
+  "world_model": {
+    "license": "Apache-2.0",
+    "source_proof": [
+      {
+        "file": "src/index.ts",
+        "upstream_git_blob": "ce5d69410f5bbbbff43a512f82be69a4fdc9fe77",
+        "sha256": "6e543a0be45fca9ff323fdb1a8bcd73e64ebf2b443c4b7a623cd70da33ec205d"
+      },
+      {
+        "file": "src/ingest.ts",
+        "upstream_git_blob": "7e8c5283625da1dcb010385b3ef4c8d9b85bb9a9",
+        "sha256": "b99ee2957c2c2b42288a86ce2acaae20c8052a97e2985569802140d95969dc03"
+      },
+      {
+        "file": "src/resolve.ts",
+        "upstream_git_blob": "449cb73118c1f39ba0b8bb782c7f89d58e84e2be",
+        "sha256": "3fd81d2a53a39684adafb0b3e538b1fb3952be75b229b65cc755c70a0dd4fae4"
+      },
+      {
+        "file": "src/stableIds.ts",
+        "upstream_git_blob": "ad7efafd69f841ec6e5851c6d754b0f424f5c4a8",
+        "sha256": "6dd81234f337ebdb7c00314aaf63482a47f19382b40c624bc57df8ba6bb88513"
+      },
+      {
+        "file": "src/store.ts",
+        "upstream_git_blob": "eb9c772a278737d6b5b453d658ae7b77091569d6",
+        "sha256": "2cfa6897003c22f1e2ac88e5ecf8347f653a25af7ca5842aa7042a1cc731d032"
+      },
+      {
+        "file": "src/types.ts",
+        "upstream_git_blob": "dddd2861570309b1e2c6c1e0baea5c7ff81f876e",
+        "sha256": "4e31a8cf4de6d4b46b09659ada879be46ca8a97f25ee05f583eaa0010ddd1528"
+      }
+    ],
+    "upstream_commit": "1742dec56a66e58eef9dda2d2b865823758ca8cd",
+    "reference_tests_passed": 10,
+    "compiled_conformance_passed": 8
+  }
+}

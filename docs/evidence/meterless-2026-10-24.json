@@ -1,0 +1,36 @@
+{
+  "captured_at_utc": "2026-10-24T19:57:51.447Z",
+  "tokenAvailable": true,
+  "checks": [
+    {
+      "baseUrl": "http://127.0.0.1:8088/v1",
+      "state": "online",
+      "models": [
+        "meterless/auto",
+        "meterless/fast",
+        "meterless/deep",
+        "meterless/cheap",
+        "meterless/local",
+        "meterless/fusion",
+        "meterless/cluster",
+        "meterless/text",
+        "meterless/code",
+        "meterless/vision",
+        "meterless/perception",
+        "meterless/image",
+        "meterless/video",
+        "meterless/speech",
+        "meterless/transcribe",
+        "meterless/music",
+        "meterless/embed",
+        "meterless/judge"
+      ]
+    }
+  ],
+  "inferenceAttempted": true,
+  "wrongTokenProbe": {
+    "state": "unauthorized",
+    "httpStatus": 401
+  },
+  "inferenceError": "Meterless completion failed (HTTP 400, no_provider_configured)."
+}

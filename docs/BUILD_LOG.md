@@ -56,3 +56,34 @@ setup blockers and the old flood/UI plan; it does not rewrite earlier history.
 
 Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md` and
 `evidence/`. User application code and UI have not been changed by this audit.
+
+### 24 October — power and state engine implementation
+
+- Acquired World Model at `1742dec56a66e58eef9dda2d2b865823758ca8cd` under
+  Apache-2.0. The isolated upstream reference suite passed 10/10; conformance
+  passed 8/8 against both source and the compiled vendored module.
+- Added a server/CLI adapter using the real engine store, canonical queries and
+  audit log. Synthetic feature proof covers durable replay, independent-origin
+  counting, contradiction/expiry and invalidation of affected plan assumptions.
+  This is not yet the full planner/validator or Zetaris-fed workflow.
+- Added a Meterless provider adapter and diagnostic command. It normalizes API
+  URLs, sends the required headers, preserves routing mode IDs, distinguishes
+  authentication failure from an unavailable runtime and keeps secrets out of
+  receipts. Its contract tests use mocked HTTP, separately from live probes.
+- Installed official Nightshift Windows 1.2.3 from the vendor download. Its SHA-256
+  matches `0679114b9096c6a2c787cad893802ed8be75cee867fabb07ea42ceab6b78b008`.
+  The runtime and installer are ignored local tools, not redistributed source.
+- Started the official application/daemon. Authenticated model discovery works;
+  a wrong token returns 401. A public smoke prompt returns `no_provider_configured`.
+- Selected the active hosted Nemotron 3.5 Lightning model page after the older
+  Nemotron 3 Super free endpoint was marked deprecated in its live page.
+- NVIDIA sign-in accepts Technology Access Terms. Left that action with the
+  user and opened Nightshift's source-connection step. No API key is requested
+  in chat and no NVIDIA key or completed inference is claimed.
+- Final local gate passed: typecheck, 21/21 application tests, 8/8 compiled
+  World Model conformance cases and the production build. CI and the pre-push
+  hook now include the engine conformance check. Hosted CI remains blocked by
+  the previously recorded GitHub account issue.
+- Commits: `bf9fd96` pins the acquired engine; `19b916f` adds the product
+  adapter, provider contract and automated checks. See the dated setup receipt
+  for the test and live-runtime evidence boundary.

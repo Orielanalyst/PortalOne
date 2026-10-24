@@ -32,8 +32,8 @@ Rules and declaration boundaries are in `PROVENANCE.md`.
 |---|---|---|
 | Data engine | Existing Zetaris Docker bundle | Vendor verify: 9/9; WSL preflight passes; real sample rows queried |
 | Connection diagnostics | Pinned official Zetaris Python helpers | Apache-2.0, vendored locally, catalogue and SQL smoke-tested |
-| Model provider | Meterless Nightshift / Runtime | No response at four documented candidate ports; authenticate and complete a real request first |
-| Shared state | Meterless World Model | Official spec/reference/conformance identified; acquire, pin, license-check and run before adopting |
+| Model provider | Meterless Nightshift / Runtime | Installed 1.2.3; authenticated discovery passes; inference awaits NVIDIA account/key |
+| Shared state | Meterless World Model | Apache-2.0 reference vendored at `1742dec`; 10/10 upstream tests, 8/8 compiled conformance and durable feature proof pass |
 | Reasoning | Nemotron through Nightshift | Not configured or tested; retain only after a real request identifies the actual provider/model |
 | Orchestration | Existing proposed LangGraph JS architecture | Not installed; verify bounded loop, retry/hold and state handling before accepting ADR 0001 |
 | Constraints | Existing solver/graph libraries, OR-Tools if necessary | Select the smallest suitable licensed candidate after formalizing the one mission |
@@ -92,7 +92,7 @@ completion times. Each gate requires its acceptance evidence before marking done
 | Gate | Target | Exit evidence | Status |
 |---|---|---|---|
 | G0 Accountability + environment | 24 Oct | Baseline manifest, truthful judge index, local checks, Zetaris read smoke | verified locally; remote CI blocked |
-| G1 Power + engine | 24 Oct next; cap 2 hours | Nightshift auth + real completion; actual Nemotron identity; World Model reference/conformance result | not started |
+| G1 Power + engine | 24 Oct next; cap 2 hours | Nightshift auth + real completion; actual Nemotron identity; World Model reference/conformance result | partial: Nightshift auth/discovery and World Model feature verified; NVIDIA account/key action pending |
 | G2 Scenario + data | 25 Oct morning | Small licensed/synthetic pack, source manifest, repeatable registration and joined relief evidence through Zetaris | not started |
 | G3 Agent core | 25 Oct | Validator rejects a candidate, planner revises, impossible case holds; bounded run and event trace | not started |
 | G4 Changed evidence | 26 Oct morning | Duplicate, contradiction, expiry and new-event cases; affected plan invalidation; safe operator review | not started |
@@ -121,8 +121,9 @@ submission track, repo visibility or account billing as part of this plan audit.
 | Deadline and weak proof of work | Gate timeboxes, fixed demo boundary, coherent commits, dated evidence and early packaging |
 
 Dependency status: Zetaris images and JDBC driver are already local; vendor
-platform checks and pinned Python HTTP helpers pass. Relief data, World Model,
-Nightshift, Nemotron and orchestration are **not yet smoke-tested**.
+platform checks and pinned Python HTTP helpers pass. World Model is pinned,
+vendored and smoke-tested. Nightshift authentication/discovery passes; inference
+still needs a provider key. Relief data, Nemotron and orchestration remain unverified.
 
 ## Accountability and definition of done
 
@@ -133,6 +134,8 @@ IDs, UTC timestamps, actor, tool/query, evidence IDs, state/plan version, constr
 result, revision reason, provider/model, duration and final disposition. Record
 concise decision explanations, never private chain-of-thought or credentials.
 
-Local typecheck, nine existing tests and production build passed on 24 Oct. They
-validate the baseline application only. GitHub Actions is currently blocked by an
-account billing/spending-limit error; local evidence is not a green remote run.
+Local typecheck, 21 application tests, 8 compiled engine conformance cases and
+production build passed on 24 Oct. These cover the evaluator, provider contract
+and state feature; they do not validate the future complete agent loop. GitHub
+Actions is blocked by an account billing/spending-limit error; local evidence is
+not a green remote run.
