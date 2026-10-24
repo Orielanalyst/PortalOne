@@ -7,5 +7,8 @@ bun run typecheck
 echo "pre-push: tests"
 bun run test
 
+echo "pre-push: Meterless World Model conformance"
+bun run check:world-model
+
 echo "pre-push: build"
 bun run build

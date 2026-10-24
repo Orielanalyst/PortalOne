@@ -8,7 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:world-model": "bun build ./vendor/meterless-world-model/src/index.ts --target=node --format=esm --outdir ./vendor/meterless-world-model/dist && tsc --target ES2022 --module ESNext --moduleResolution Bundler --strict --skipLibCheck --declaration --emitDeclarationOnly --allowImportingTsExtensions --types node --outDir vendor/meterless-world-model/dist vendor/meterless-world-model/src/index.ts",
+    "check:world-model": "bun scripts/check-world-model.ts",
+    "demo:world-model": "bun scripts/demo-world-model.ts",
+    "check:meterless": "bun scripts/check-meterless.ts"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.170.41",
