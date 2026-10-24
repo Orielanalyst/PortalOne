@@ -4,6 +4,10 @@
 - **Date:** 2026-10-23
 - **Deciders:** project owner
 
+24 October review: this remains an unaccepted proposal. The current scope and
+verification gates are in `../EXECUTION_PLAN.md`; none of the proposed agent
+runtime dependencies has been installed or smoke-tested in this audit.
+
 ## Context
 
 PortalOne needs an agent that plans, gathers evidence, verifies, replans and

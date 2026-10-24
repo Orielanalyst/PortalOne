@@ -6,20 +6,28 @@ Give it a disaster and a need. PortalOne plans a route, checks the plan against
 federated evidence, rejects what the evidence does not support, replans, and
 only then issues a dispatch directive. Every step names the record it rests on.
 
-Built for the **Open Agent Hackathon 2026** — Track 02, *The Agent That Can
-Explain Why*.
+Built for the **Open Agent Hackathon 2026**. Primary track is pending confirmation;
+the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
-Active build. The repository history is the build log: scaffold first, then the
-mission model, the agent loop, the evidence trail, and the sponsor integrations,
-one commit at a time.
+Environment and planning checkpoint, 24 October. The existing scaffold and
+deterministic evaluator pass local checks. Zetaris is running and authenticated
+sample queries work. The revised relief-agent loop, Meterless/Nemotron integrations
+and redesigned UI are planned, not implemented. GitHub Actions is currently
+blocked at startup by an account billing/spending limit.
+
+Start with [the judge guide](docs/JUDGE_GUIDE.md), [current execution plan](docs/EXECUTION_PLAN.md)
+and [verified environment status](docs/ENVIRONMENT.md).
 
 ## Tracking
 
 The history is the submission, so the rails are explicit:
 
-- `docs/BUILD_PLAN.md` — slices, acceptance criteria and status
+- `docs/EXECUTION_PLAN.md` — current gates, acceptance evidence and scope
+- `docs/BUILD_PLAN.md` — preserved historical plan
+- `docs/JUDGE_GUIDE.md` — review entrypoint and verified/planned distinction
+- `docs/evidence/` — dated baseline and diagnostic receipts
 - `docs/COMMIT_POLICY.md` — how commits stay small, green and append-only
 - `docs/BUILD_LOG.md` — the dated session narrative
 - `docs/PROVENANCE.md` — what came from the earlier reference prototype
@@ -46,8 +54,10 @@ bun run typecheck
 
 ## Environment
 
-Copy `.env.example` to `.env` and fill in what you have. Nothing in `.env` is
-committed, and no secret is ever exposed to the browser.
+Copy `.env.example` to `.env` and fill in the server-side configuration. `.env`
+is ignored and credentials must never use a `VITE_` prefix. See `docs/ENVIRONMENT.md`
+for the tested local Zetaris UI origin and the repeatable connection check.
+The application data adapter is a future gate; diagnostic access is available now.
 
 ## Layout
 

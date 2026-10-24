@@ -1,0 +1,105 @@
+{
+  "captured_at_utc": "2026-10-24T19:30:10.9800550+00:00",
+  "scope": "Local platform and diagnostic connectivity only; no relief-agent implementation",
+  "audit_start_commit": "42fb95c1569b5dbeb01abb16dca5cff2a771debb",
+  "vendor_helper_commit": "6a2fbaa47c32c9ac33f6584c64b43b146c621bed",
+  "running_image_ids": {
+    "postgres": "sha256:f4610795587492cd4fb887c2dc3de301b813278bb6f616992061141b5f15ac36",
+    "driver": "sha256:0ceae76b529f947a89d7eebbe27a3a76c5fced4d15fd36f34a1553f015176882",
+    "api": "sha256:b54d8469b1fef1e2a2126fa8aeb10827af5a2ee0f493f3de2f1efc9749c76b91",
+    "ui": "sha256:dcf22519b271e4f44d3524ed24139d25546ce99a23f143ebcd5786bdb31e4f48"
+  },
+  "vendor_verify": {
+    "passed": 9,
+    "failed": 0
+  },
+  "wsl_preflight": {
+    "warning": "Existing zetaris_pgdata volume retained",
+    "required_checks": "passed"
+  },
+  "host": {
+    "ram_gib_approx": 31.7,
+    "os": "Windows 11 Pro"
+  },
+  "docker": {
+    "compose": "5.6.1",
+    "engine": "29.9.2",
+    "cpus": 12,
+    "memory_bytes": 16629133312
+  },
+  "services": {
+    "api": "healthy",
+    "postgres": "healthy",
+    "ui": "healthy",
+    "init_exit_code": 0,
+    "bootstrap_exit_code": 0,
+    "driver": "healthy"
+  },
+  "local_ui_origin": "http://127.0.0.1:3000",
+  "org_id": 1,
+  "catalogue_database_count": 2,
+  "queries": [
+    {
+      "route": "/api/proxy/sql-editor/sqls/run-query",
+      "reported_time_used_ms": 8829,
+      "rows": [
+        [
+          "1",
+          "Newark Airport",
+          "EWR"
+        ],
+        [
+          "2",
+          "Jamaica Bay",
+          "Queens"
+        ]
+      ],
+      "headers": [
+        "LocationID",
+        "zone",
+        "borough"
+      ],
+      "sql": "SELECT LocationID, zone, borough FROM NY_TAXI.taxi_zones LIMIT 2"
+    },
+    {
+      "route": "/api/proxy/sql-editor/sqls/run-query",
+      "reported_time_used_ms": 12053,
+      "rows": [
+        [
+          "1",
+          "Package was damaged"
+        ],
+        [
+          "2",
+          "Stopped working"
+        ]
+      ],
+      "headers": [
+        "r_reason_sk",
+        "r_reason_desc"
+      ],
+      "sql": "SELECT r_reason_sk, r_reason_desc FROM TPCDS_DB.reason LIMIT 2"
+    }
+  ],
+  "local_application_checks": {
+    "production_build": "passed",
+    "tests_failed": 0,
+    "tests_passed": 9,
+    "typecheck": "passed",
+    "sandbox_retry_note": "Initial Vitest temporary-file rename denied; tests/build passed outside sandbox"
+  },
+  "remote_ci": {
+    "state": "startup_failure",
+    "url": "https://github.com/Orielanalyst/PortalOne/actions/runs/39986817817",
+    "reason": "Account billing/payment or spending-limit restriction displayed on GitHub run page"
+  },
+  "remaining": [
+    "Relief source registration and domain-relevant federation",
+    "Application data adapter",
+    "Meterless Nightshift authentication and inference",
+    "Meterless Engine conformance and feature test",
+    "Nemotron actual model identity",
+    "New bounded agent loop",
+    "Repository public access at release"
+  ]
+}

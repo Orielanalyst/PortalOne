@@ -1,0 +1,211 @@
+{
+  "captured_at_utc": "2026-10-24T19:30:35.7340696+00:00",
+  "purpose": "Prospective 24 October audit checkpoint; not a pre-build-window snapshot or proof of originality",
+  "repository": "https://github.com/Orielanalyst/PortalOne",
+  "visibility_at_audit": "private",
+  "branch_at_audit_start": "diag/workflow",
+  "commit": "42fb95c1569b5dbeb01abb16dca5cff2a771debb",
+  "git_tree": "4998511a1a2c3bae0a73e7fe6b618780918dfde6",
+  "first_application_commit": {
+    "committer_date": "2026-10-23T17:11:59+01:00",
+    "author_date": "2026-10-23T17:11:59+01:00",
+    "sha": "6c13246acbba6a0a22783f25a7d8d83f5ef9e746"
+  },
+  "preserved_tag": {
+    "target_commit": "084ee8963f76bde6cb974bf17647277e0723ba58",
+    "name": "v0.1-tracking",
+    "tag_object": "4626cc3405594db2b991d1887c85b70f552362c9"
+  },
+  "preserved_stash": {
+    "description": "UI work in progress; not applied or rewritten by audit",
+    "sha": "040fa3404c0da910b5cc7625afe3dfc006bb0254"
+  },
+  "tracked_baseline_files": [
+    {
+      "path": ".env.example",
+      "mode": "100644",
+      "git_blob": "9487e59602b998a6a84eaf9b55d99ec1d80748fe"
+    },
+    {
+      "path": ".gitattributes",
+      "mode": "100644",
+      "git_blob": "4ed9a4634d1984461ee5a04821ec20b4d18e7cdf"
+    },
+    {
+      "path": ".githooks/pre-commit",
+      "mode": "100755",
+      "git_blob": "b12c969e403b800c94854adc0b9cb26c52085d10"
+    },
+    {
+      "path": ".githooks/pre-push",
+      "mode": "100755",
+      "git_blob": "bf887c879fbc19f1a0e3a1e26dd8208525a7fcf1"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "git_blob": "2c5a7387d987c6266796a422967215a95f9e555c"
+    },
+    {
+      "path": ".github/workflows/smoke.yml",
+      "mode": "100644",
+      "git_blob": "981a1656554d508965e211ce882f495642d29e41"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "git_blob": "81f8f1e6ec26017b05ee2cb7f72ed9f752348460"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "git_blob": "953f81f1fe5706fb1729f8fd17f70281e0933b0d"
+    },
+    {
+      "path": "bun.lock",
+      "mode": "100644",
+      "git_blob": "13e6e5d0a7c2beffa36d9eb6b9f48d880b9ced0b"
+    },
+    {
+      "path": "docs/AI_USAGE.md",
+      "mode": "100644",
+      "git_blob": "0888093be2fed037c01226a75a25753217a4b115"
+    },
+    {
+      "path": "docs/BUILD_LOG.md",
+      "mode": "100644",
+      "git_blob": "943f80f2a0fcad694e48ff249389c36bddcac080"
+    },
+    {
+      "path": "docs/BUILD_PLAN.md",
+      "mode": "100644",
+      "git_blob": "2551b9de81e0d6dc3da7a74f05fb8588bb610421"
+    },
+    {
+      "path": "docs/COMMIT_POLICY.md",
+      "mode": "100644",
+      "git_blob": "aeb4c8f21cb3e5138869a7df3912d2fa1b9f9829"
+    },
+    {
+      "path": "docs/PROVENANCE.md",
+      "mode": "100644",
+      "git_blob": "0a238790403c4b041e6fefb9348f2192efe3de9b"
+    },
+    {
+      "path": "docs/adr/0001-agent-runtime.md",
+      "mode": "100644",
+      "git_blob": "5266e1ed4b62feb29e998d972401b3134bf1cec6"
+    },
+    {
+      "path": "package.json",
+      "mode": "100644",
+      "git_blob": "b6184d36584d5f13eae319a86b2b40be0ef1ec9d"
+    },
+    {
+      "path": "scripts/setup-hooks.ps1",
+      "mode": "100644",
+      "git_blob": "009d64a98c3e0df5b0e90a05c9dcd60980419c44"
+    },
+    {
+      "path": "src/lib/mission.test.ts",
+      "mode": "100644",
+      "git_blob": "e3cc6b0fd1bc45cb1a0d6ae5977dd2491fe76e25"
+    },
+    {
+      "path": "src/lib/mission.ts",
+      "mode": "100644",
+      "git_blob": "794ab0c1f7b5f41c9891409a1fa45392fcc0fda2"
+    },
+    {
+      "path": "src/routeTree.gen.ts",
+      "mode": "100644",
+      "git_blob": "dceedffdc12c32138e81bb63787cac7ae5d97fcd"
+    },
+    {
+      "path": "src/router.tsx",
+      "mode": "100644",
+      "git_blob": "70f8b61ac3967e9a262e930baa79b71bfb85e3f0"
+    },
+    {
+      "path": "src/routes/__root.tsx",
+      "mode": "100644",
+      "git_blob": "63adff8d5c22d82c1302987a253c531217f109f7"
+    },
+    {
+      "path": "src/routes/index.tsx",
+      "mode": "100644",
+      "git_blob": "943153edec5e81c7244259fb88fcae4eae7722b4"
+    },
+    {
+      "path": "src/styles.css",
+      "mode": "100644",
+      "git_blob": "f7bc4b981cf7ea489f85f62d5b4627593b67d042"
+    },
+    {
+      "path": "src/test/setup.ts",
+      "mode": "100644",
+      "git_blob": "f149f27ae4bbd7cc4f6253570176a4fce144ef95"
+    },
+    {
+      "path": "tsconfig.json",
+      "mode": "100644",
+      "git_blob": "d1f9a97ae3ca65cf355d9900add4982913997e70"
+    },
+    {
+      "path": "vite.config.ts",
+      "mode": "100644",
+      "git_blob": "ffcc8dce0bbe1671560df2489a0f8f38f1020b29"
+    },
+    {
+      "path": "vitest.config.ts",
+      "mode": "100644",
+      "git_blob": "3d441ea1a886ed3722ddbc55b73b2ce1487b9076"
+    }
+  ],
+  "reference_documents": [
+    {
+      "path": "docs/BRAINSTORMING.md",
+      "sha256": "6b3ccd82229b2957d1f70d209466c00161465009c79924b4c7d16165a1a29fb2",
+      "state_at_audit_start": "untracked; reference document; not added by this audit"
+    },
+    {
+      "path": "docs/HACKATHON_DUMB.md",
+      "sha256": "5c98190938ec610f366a42b56e783a55441d0afccec93135ff6e6c7bd8e02b50",
+      "state_at_audit_start": "untracked; reference document; not added by this audit"
+    }
+  ],
+  "acquired_zetaris_helpers": {
+    "repository": "https://github.com/zetaris/getting-started",
+    "commit": "6a2fbaa47c32c9ac33f6584c64b43b146c621bed",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "path": "scripts/check_zetaris.py",
+        "sha256": "44edd590454071809eb3bfd36633c2298e13e75d0ed2e7b792e126a38e4dfd66"
+      },
+      {
+        "path": "scripts/query_zetaris.py",
+        "sha256": "09b822e2251dbff2ea12f67806e501256d43a555b1a6cc19eeb3b0a3d4bbc4fb"
+      },
+      {
+        "path": "scripts/zetaris_api.py",
+        "sha256": "92673761a1f7dbae1d93d7fba7b767bb64a42f3e9a1145f748d3b4efa50c742c"
+      },
+      {
+        "path": "scripts/zetaris_sql.py",
+        "sha256": "186aab57de74bacbea6dd38b13ea0577c0486bcc5b74d270d16aa92f37b1a432"
+      }
+    ]
+  },
+  "external_bundle": {
+    "stored_in_submission_repository": false,
+    "file": "zetaris-platform.zip",
+    "sha256": "14c6a811a140378bec1749ceffd7fa123bafb2f178545b26354e8f9433b413d3"
+  },
+  "not_established": [
+    "Exact contents of the previous private prototype",
+    "Originality from commit timestamps alone",
+    "Final primary-track eligibility or selection",
+    "A pre-window snapshot not previously recorded"
+  ]
+}

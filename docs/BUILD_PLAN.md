@@ -1,4 +1,8 @@
-# Build plan
+# Historical build plan — superseded 2026-10-24
+
+The current plan is [EXECUTION_PLAN.md](EXECUTION_PLAN.md). This document is
+preserved as the earlier plan, including its then-current assumptions. Its UI,
+track, completion and blocker claims are not the current verified status.
 
 **Goal:** PortalOne — an emergency-response agent that explains and verifies every
 dispatch. Open Agent Hackathon 2026, Track 02, *The Agent That Can Explain Why*.

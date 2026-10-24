@@ -1,11 +1,13 @@
 # AI usage
 
-The hackathon asks entrants to document AI tool use. This is the running log.
+This is our transparency log. The reviewed rules allow generated code and make
+entrants accountable for it; this file is our chosen detailed disclosure format.
 
 | Date | Tool | Role | Scope |
 |------|------|------|-------|
 | 2026-10-16 | Lovable | Reference prototype | Generated the earlier `relief-mission-control` app. Not part of this repository. |
 | 2026-10-23 | OpenCode + DeepSeek V4.1 Flash | Build assistant | Scaffold, domain model, deterministic evaluator, tests and tracking docs, written under human direction and reviewed before commit. |
+| 2026-10-24 | Codex | Research, planning and environment audit | Read brainstorming and event materials; proposed scope and architecture; verified Docker/WSL/Zetaris, local checks and CI status; added planning/provenance records and a wrapper around pinned official diagnostic helpers. Product implementation and UI redesign were not performed in this audit. |
 | planned | LangGraph + Nightshift | Agent runtime and model | Planner and replanner reasoning. The verifier remains deterministic. |
 | planned | Zetaris | Data layer | SQL over local Docker; evidence rows keep source and timestamps. |
 
@@ -18,8 +20,11 @@ The hackathon asks entrants to document AI tool use. This is the running log.
 - Secrets are never pasted into prompts or committed. API keys live in `.env`
   (ignored) or, for NVIDIA, in Nightshift's Providers tab.
 
-## What is not AI-generated
+## Responsibility and attribution
 
-The architecture decision, the product constraints, the demo narrative and the
-final acceptance of each slice are human decisions. The AI is the pair, not the
-author of record.
+The human owns project direction and final acceptance. AI has contributed
+architecture, scope and demo suggestions as well as code and documents; those
+contributions are not represented as exclusively human-authored. A commit made
+with the user's configured Git identity does not by itself establish authorship
+of every line. Planned model integrations in the table remain unimplemented
+until their verification evidence exists.
