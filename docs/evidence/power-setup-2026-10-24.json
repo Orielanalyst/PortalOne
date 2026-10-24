@@ -29,6 +29,16 @@
   "inference_status": "not ready: no_provider_configured",
   "nvidia_model_candidate": "nvidia/nemotron-3.5-lightning-30b-a3b",
   "account_action": "NVIDIA Developer Program sign-in and API key pending user action",
+  "followup": {
+    "captured_at_utc": "2026-10-24T20:41:27.969Z",
+    "account_action": "user confirmed key saved directly in Nightshift",
+    "inference_status": "passed; expected final marker matched",
+    "requested_mode": "meterless/auto",
+    "response_model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "model_identity_source": "Nightshift response body model field",
+    "runtime_receipt": "meterless-2026-10-24.json",
+    "regression_tests": "26/26 application tests and typecheck passed"
+  },
   "world_model": {
     "license": "Apache-2.0",
     "source_proof": [

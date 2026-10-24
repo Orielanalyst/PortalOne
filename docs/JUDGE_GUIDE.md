@@ -14,7 +14,7 @@ not yet implement the revised humanitarian agent workflow described in the plan.
 | Meterless World Model | [Feature receipt](evidence/world-model-2026-10-24.json); `bun run check:world-model` | 8/8 conformance; persistent assumption-tracking feature verified on synthetic inputs |
 | Nightshift authentication and discovery | [Runtime receipt](evidence/meterless-2026-10-24.json) | running; valid token accepted and wrong token rejected |
 | Pinned engine and installed runtime provenance | [Setup receipt](evidence/power-setup-2026-10-24.json) | source hashes, license, installer hash and test results recorded |
-| Nemotron inference | [Environment gates](ENVIRONMENT.md) | NVIDIA account/key action pending; completion currently returns no_provider_configured |
+| Nemotron inference | [Live runtime receipt](evidence/meterless-2026-10-24.json) | expected marker returned; Nightshift reported `nvidia/nemotron-3-ultra-550b-a55b`; routing mode remains `meterless/auto` |
 | New UI, final demo and slides | [Execution plan](EXECUTION_PLAN.md) | deferred |
 | Hosted CI | [Actions run](https://github.com/Orielanalyst/PortalOne/actions/runs/39986817817) | startup blocked by account billing/spending limit |
 

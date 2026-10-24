@@ -11,14 +11,13 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
-Environment and planning checkpoint, 24 October. The existing scaffold and
-deterministic evaluator pass local checks. Zetaris is running and authenticated
-sample queries work. The revised relief-agent loop, Meterless/Nemotron integrations
-and redesigned UI are planned, not implemented. Since that checkpoint, a real
-Meterless World Model-backed assumption tracker and replay demo have been added.
-Nightshift runs and authenticates; NVIDIA provider setup and inference are pending.
-GitHub Actions is currently
-blocked at startup by an account billing/spending limit.
+Environment and state-engine checkpoint, 24 October. Zetaris authenticated sample
+queries work. A Meterless World Model-backed assumption tracker and persistent
+replay demo work on labelled synthetic observations. A live Nightshift request
+returned the expected marker and reported `nvidia/nemotron-3-ultra-550b-a55b`.
+The revised relief-data integration, planner/validator loop and redesigned UI
+remain build gates. GitHub Actions is blocked at startup by an account
+billing/spending limit.
 
 Start with [the judge guide](docs/JUDGE_GUIDE.md), [current execution plan](docs/EXECUTION_PLAN.md)
 and [verified environment status](docs/ENVIRONMENT.md).

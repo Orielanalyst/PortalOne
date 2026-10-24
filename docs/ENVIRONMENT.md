@@ -1,9 +1,12 @@
 # Environment audit — 2026-10-24
 
-Later on 24 October: Nightshift 1.2.3 was installed and started. Authenticated
-`/v1/models` discovery passes; an invalid token returns 401. The completion probe
-returns HTTP 400 `no_provider_configured`. NVIDIA sign-in/key entry is pending;
-no successful Nemotron call is claimed. World Model's compiled reference passes
+Latest on 24 October: after the user saved their NVIDIA key directly in Nightshift,
+the live completion probe returned exactly `PORTALONE_OK`. The response model
+field reported `nvidia/nemotron-3-ultra-550b-a55b` through `meterless/auto`.
+The saved request took 6,025 ms and used 151 tokens; these are observations,
+not a latency guarantee. Authenticated `/v1/models` discovery passes and an invalid
+token returns 401. The earlier `no_provider_configured` blocker is resolved.
+World Model's compiled reference passes
 8/8 conformance checks, and the persistent plan-assumption feature works on
 labelled synthetic observations. See the new receipts in `evidence/`.
 
@@ -12,7 +15,7 @@ supersede its Meterless-unavailable row and not-yet-tested engine status.
 
 **Verdict: Zetaris is installed and supports authenticated sample-data queries.**
 Relief datasets and the application's Zetaris adapter are not yet implemented.
-Meterless, Nemotron and the new agent loop are not verified.
+Nightshift/Nemotron has a live smoke receipt; the new agent loop is not verified.
 
 ## Verified facts
 
@@ -86,10 +89,10 @@ use the separate throwaway-install verification tool against this installation.
 
 ## Remaining readiness gates
 
-1. Configure Nightshift, authenticate, list routing modes, and complete a real
-   request. Route a working feature to Nemotron and retain actual model identity.
-2. Acquire and verify the selected Meterless Engine; pass its conformance suite
-   and a product-specific state-change case. A copied prompt is insufficient.
+1. Nightshift auth/discovery and Nemotron smoke completion are verified. Connect
+   the upcoming planner feature and retain model identity per run.
+2. World Model is vendored and verified: 8/8 conformance and the persistent
+   product-specific state-change case pass.
 3. Define and register small relief sources with provenance and a reproducible
    load path. Verify a domain-relevant join, not just a sample query.
 4. Implement a server-only data adapter with timeouts, query budgets, provenance
@@ -122,3 +125,10 @@ Apache-2.0 license. The official Nightshift Windows installer and installed
 proprietary runtime remain in ignored `.local-tools/`; do not redistribute them
 in the public submission repository. Runtime credentials remain in Nightshift's
 local store; the probe reads the runtime token without printing it.
+
+`check:meterless --infer` sends one small public smoke prompt and checks the exact
+answer marker. Its final-text request uses `chat_template_kwargs.enable_thinking`
+set to false, supported by [NVIDIA's model card](https://build.nvidia.com/nvidia/nemotron-3-ultra-550b-a55b/modelcard)
+and passed through by the installed Nightshift proxy. Thinking prefixes and
+separate reasoning fields are excluded from the saved answer. An unfinished trace
+or a token-truncated response fails the check. Auto routing is not a model pin.

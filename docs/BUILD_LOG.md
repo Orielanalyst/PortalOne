@@ -87,3 +87,22 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
 - Commits: `bf9fd96` pins the acquired engine; `19b916f` adds the product
   adapter, provider contract and automated checks. See the dated setup receipt
   for the test and live-runtime evidence boundary.
+
+### 24 October — live Nemotron gate
+
+- The user created an NVIDIA key and saved it directly in Nightshift. No key was
+  handled in chat or written into this repository.
+- A real `meterless/auto` request succeeded. Nightshift's response model field
+  reported `nvidia/nemotron-3-ultra-550b-a55b`, rather than the earlier Lightning
+  candidate. This is routing evidence, not a promise that Auto always selects it.
+- The first response mixed a thinking prefix into content. The final-text adapter
+  now requests thinking off, removes delimited thinking prefixes, rejects an
+  unfinished trace or token-truncated answer, and checks the smoke marker exactly.
+  Separate reasoning fields are never returned or saved.
+- The saved live receipt returned `PORTALONE_OK`: 6,025 ms, 146 prompt tokens,
+  5 completion tokens, 151 total. Wrong-token authentication still returns 401.
+- Typecheck and all 26 application tests passed, including five regression cases
+  for thinking prefixes, empty final answers and truncation. G1 is verified
+  locally; relief-data federation and the complete agent loop remain later gates.
+- Response handling is committed in `def0f26`. The live receipt identifies that
+  implementation and is linked from the judge guide.
