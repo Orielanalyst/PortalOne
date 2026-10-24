@@ -5,3 +5,7 @@
 /vendor/zetaris-getting-started/** text eol=lf
 /vendor/meterless-world-model/** text eol=lf
 /docs/evidence/*.json text eol=lf
+/data/relief-scenario-v1/** text eol=lf
+/vendor/npm-registry/*.json text eol=lf
+/vendor/npm-registry/*.md text eol=lf
+/vendor/npm-registry/*.LICENSE text eol=lf

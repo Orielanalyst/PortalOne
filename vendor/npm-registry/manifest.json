@@ -1,0 +1,226 @@
+{
+  "acquiredAt": "2026-10-24T22:33:48.491Z",
+  "baselineCommit": "341de32",
+  "lockedPackages": [
+    {
+      "name": "@cfworker/json-schema",
+      "version": "4.1.1",
+      "license": "MIT",
+      "filename": "cfworker-json-schema-4.1.1.tgz",
+      "integrity": "sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==",
+      "tarball": "https://registry.npmjs.org/@cfworker/json-schema/-/json-schema-4.1.1.tgz",
+      "sha256": "f3a8076b450505f0671fa78a6efb5e7726883e2c6dfb13b29261872803610203",
+      "bytes": 26705,
+      "licenseTextSource": "https://raw.githubusercontent.com/cfworker/cfworker/5409fdc2bd144f68e8b28c61c71fcb16600000a6/LICENSE.md"
+    },
+    {
+      "name": "@langchain/core",
+      "version": "1.3.0",
+      "license": "MIT",
+      "filename": "langchain-core-1.3.0.tgz",
+      "integrity": "sha512-ZiS8USsHdO8ZVFh0m8Rs6v2BvqBEvfFicG66zxdF4rGgXSJjk0d0sLnnFZCx3RXPUvP8ybTJgPlNfkJGs1J7BA==",
+      "tarball": "https://registry.npmjs.org/@langchain/core/-/core-1.3.0.tgz",
+      "sha256": "80be5766fd57b185320c8df95f5146184340c1b38a6049403cd37e9a38df7ec1",
+      "bytes": 1554095,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@langchain/langgraph",
+      "version": "1.5.2",
+      "license": "MIT",
+      "filename": "langchain-langgraph-1.5.2.tgz",
+      "integrity": "sha512-jfVB9x+FH3CqlOYsYSVyuBoElV/J9pRL2nb7gie9Fb53J6rwNxSjTwxtyH3N8eVbZ94QckuFRxom6KTMlFfMOQ==",
+      "tarball": "https://registry.npmjs.org/@langchain/langgraph/-/langgraph-1.5.2.tgz",
+      "sha256": "ddd13a2b09d8f5ef1409872aa75afcfcda64c675ed16bd539a19950b37e9e8f7",
+      "bytes": 1048995,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@langchain/langgraph-checkpoint",
+      "version": "1.2.1",
+      "license": "MIT",
+      "filename": "langchain-langgraph-checkpoint-1.2.1.tgz",
+      "integrity": "sha512-RD01mi9fYfpIq5fWrW/j2iY7MRUoqKvh1Nj6TMRDBoTGE18E2du75zKDugNxb57N8FWCojaiWGB9Enssnx9Hyg==",
+      "tarball": "https://registry.npmjs.org/@langchain/langgraph-checkpoint/-/langgraph-checkpoint-1.2.1.tgz",
+      "sha256": "9247df9c762c39a1419b6551cf0c085df63cd04b7445395179c8a7bea1d7cc8e",
+      "bytes": 132210,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@langchain/langgraph-sdk",
+      "version": "1.12.7",
+      "license": "MIT",
+      "filename": "langchain-langgraph-sdk-1.12.7.tgz",
+      "integrity": "sha512-+tIY6oVDDt9e3LnDKs4Qqe3nFJSY7amDUofro7me0kZ8QbaJhFViQL0LaX30SQhIaHuCLZYMRIluhuFSOPjF8g==",
+      "tarball": "https://registry.npmjs.org/@langchain/langgraph-sdk/-/langgraph-sdk-1.12.7.tgz",
+      "sha256": "306956f514b7b0fc96678ba5c55b3cde8ce4f6905c9c0ad89475e86584c7e668",
+      "bytes": 1234227,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@langchain/protocol",
+      "version": "0.0.20",
+      "license": "MIT",
+      "filename": "langchain-protocol-0.0.20.tgz",
+      "integrity": "sha512-sxlkDG2/HGyjDFLTJ8B/o3oglRjOv8iLCFgrV0550/Vym3V6RZ0SUjAQFe8jrLQw8ZXjERy3swJp5OODBSrUYA==",
+      "tarball": "https://registry.npmjs.org/@langchain/protocol/-/protocol-0.0.20.tgz",
+      "sha256": "77304d15e8bfc89dbedede55702a16a9f48649ab4bde1f1a0684f5dcbd7431fa",
+      "bytes": 12237,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@types/json-schema",
+      "version": "7.0.15",
+      "license": "MIT",
+      "filename": "types-json-schema-7.0.15.tgz",
+      "integrity": "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==",
+      "tarball": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz",
+      "sha256": "12dcb1dcff7099bff0663fc220551ba53fcf23c136a22375e323bb6626d95724",
+      "bytes": 6145,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
+      "license": "MIT",
+      "filename": "base64-js-1.5.1.tgz",
+      "integrity": "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==",
+      "tarball": "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz",
+      "sha256": "b1b7a945b52685269083425216d6597e33d97bf21699d656e92fdb3eb5210a85",
+      "bytes": 4109,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "eventemitter3",
+      "version": "4.0.7",
+      "license": "MIT",
+      "filename": "eventemitter3-4.0.7.tgz",
+      "integrity": "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==",
+      "tarball": "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.7.tgz",
+      "sha256": "703cdecfa6951d9ad258f615ab96895750add3cb2d95e3727837b78709975de8",
+      "bytes": 9657,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "is-network-error",
+      "version": "1.3.2",
+      "license": "MIT",
+      "filename": "is-network-error-1.3.2.tgz",
+      "integrity": "sha512-PhBY86zaxNZUuWP6h13Vu5oFe0XY6/UlKzQnYFELzGVHygP3MxmvTfYSG7GN3aIab/iWudSMgjSnG9Dq+nHrgA==",
+      "tarball": "https://registry.npmjs.org/is-network-error/-/is-network-error-1.3.2.tgz",
+      "sha256": "2ff61ad2b1a78b09c66284f71fc4a9ad2010c34276e7e18fdf0320da56815f9c",
+      "bytes": 2480,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "js-tiktoken",
+      "version": "1.0.21",
+      "license": "MIT",
+      "filename": "js-tiktoken-1.0.21.tgz",
+      "integrity": "sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==",
+      "tarball": "https://registry.npmjs.org/js-tiktoken/-/js-tiktoken-1.0.21.tgz",
+      "sha256": "3b1f24b185565ca9a8d8f51466dfc4f99d67f1f05bc009258710ddb7a8d810fa",
+      "bytes": 10239044,
+      "licenseTextSource": "https://raw.githubusercontent.com/dqbd/tiktoken/4c8b748e07992c00386f3180af5c574b27b65139/LICENSE"
+    },
+    {
+      "name": "langsmith",
+      "version": "0.11.1",
+      "license": "MIT",
+      "filename": "langsmith-0.11.1.tgz",
+      "integrity": "sha512-wcJKmXnJK6sKRTDm/eJ4ZAtsdSyjaQBu2VM9Hw6UZXBFzbICldlpNOcdDFbSIGzWr/kE7deV9kAVuxcE6V5vtg==",
+      "tarball": "https://registry.npmjs.org/langsmith/-/langsmith-0.11.1.tgz",
+      "sha256": "20c8a0fdfc92b350428d18c8c2eafad3e2f481d0d178488d1e7b94ad47bd6a79",
+      "bytes": 1750529,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mustache",
+      "version": "4.2.0",
+      "license": "MIT",
+      "filename": "mustache-4.2.0.tgz",
+      "integrity": "sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==",
+      "tarball": "https://registry.npmjs.org/mustache/-/mustache-4.2.0.tgz",
+      "sha256": "05ea84bf212d37d84fb201aa77a82b347a6f744a3fcaef750c88e58f889c357c",
+      "bytes": 34584,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "p-finally",
+      "version": "1.0.0",
+      "license": "MIT",
+      "filename": "p-finally-1.0.0.tgz",
+      "integrity": "sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==",
+      "tarball": "https://registry.npmjs.org/p-finally/-/p-finally-1.0.0.tgz",
+      "sha256": "effd84e09e1330542a84a243f1f4da21a700d459b83761eaca16070eb1fb8841",
+      "bytes": 1754,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "p-queue",
+      "version": "6.6.2",
+      "license": "MIT",
+      "filename": "p-queue-6.6.2.tgz",
+      "integrity": "sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==",
+      "tarball": "https://registry.npmjs.org/p-queue/-/p-queue-6.6.2.tgz",
+      "sha256": "4d94fe81f32ce77f88f6d7b676fdff3a844a1ac445da522b2a1d9467b86a405d",
+      "bytes": 8361,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "p-retry",
+      "version": "7.1.1",
+      "license": "MIT",
+      "filename": "p-retry-7.1.1.tgz",
+      "integrity": "sha512-J5ApzjyRkkf601HpEeykoiCvzHQjWxPAHhyjFcEUP2SWq0+35NKh8TLhpLw+Dkq5TZBFvUM6UigdE9hIVYTl5w==",
+      "tarball": "https://registry.npmjs.org/p-retry/-/p-retry-7.1.1.tgz",
+      "sha256": "a639892b23828ffda8056e5c5e122db3e3e35b56fd338403f7ce707350a3f3f2",
+      "bytes": 6395,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "p-timeout",
+      "version": "3.2.0",
+      "license": "MIT",
+      "filename": "p-timeout-3.2.0.tgz",
+      "integrity": "sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==",
+      "tarball": "https://registry.npmjs.org/p-timeout/-/p-timeout-3.2.0.tgz",
+      "sha256": "226b0886e0a837928501e3f5f96c5ec2f4c97aa2e287719b50d5341678da1c67",
+      "bytes": 2768,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "p-queue",
+      "version": "9.3.5",
+      "license": "MIT",
+      "filename": "p-queue-9.3.5.tgz",
+      "integrity": "sha512-Lki/zhXFVmDhesBUn/yHRLW9Bte7mE7xoFHzTR8sIomV7a2z+LxYAPkGvdfidNiu4fKSfjtawixxSHcZci5QcQ==",
+      "tarball": "https://registry.npmjs.org/p-queue/-/p-queue-9.3.5.tgz",
+      "sha256": "3c1131f74b4101bdf65e87119d3d440cf02d880b1339c46148cc4edb3bb3e026",
+      "bytes": 21087,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "eventemitter3",
+      "version": "5.0.4",
+      "license": "MIT",
+      "filename": "eventemitter3-5.0.4.tgz",
+      "integrity": "sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==",
+      "tarball": "https://registry.npmjs.org/eventemitter3/-/eventemitter3-5.0.4.tgz",
+      "sha256": "21d4a36175672b9e6640c39a68613af73f9a4c47a4a4da39993e8cd085564eb6",
+      "bytes": 12133,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "p-timeout",
+      "version": "7.0.2",
+      "license": "MIT",
+      "filename": "p-timeout-7.0.2.tgz",
+      "integrity": "sha512-prbX4Z3YszrFNgH+MW5Zoeq3baXrMtP/MQnFeET90UB/GtGcGDQ5Usg9OCy6ETjTTntOw1SL2z9fMPUppN3Guw==",
+      "tarball": "https://registry.npmjs.org/p-timeout/-/p-timeout-7.0.2.tgz",
+      "sha256": "b862674f5e19b6e787918a2cdab67fbec39b33ee35fce3e96ffa8ed781c131e3",
+      "bytes": 4504,
+      "licenseTextSource": "included in archive"
+    }
+  ]
+}

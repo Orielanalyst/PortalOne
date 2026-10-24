@@ -15,13 +15,16 @@
     "check:meterless": "bun scripts/check-meterless.ts"
   },
   "dependencies": {
+    "@langchain/core": "1.3.0",
+    "@langchain/langgraph": "1.5.2",
     "@tanstack/react-router": "^1.170.41",
     "@tanstack/react-start": "^1.168.60",
     "clsx": "^2.1.1",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",
