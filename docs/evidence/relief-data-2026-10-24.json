@@ -1,0 +1,516 @@
+{
+  "capturedAt": "2026-10-24T22:40:49.966Z",
+  "inputManifest": "data/relief-scenario-v1/manifest.json",
+  "sourceMode": "Real local Zetaris queries over synthetic Postgres and file sources",
+  "checks": {
+    "independentlyMatched": true,
+    "initialCandidates": 4,
+    "initialOrigins": 8,
+    "updatedOrigins": 9,
+    "rawObservations": 10,
+    "futureReportExcludedInitially": true,
+    "forwardCollapsedByOrigin": true
+  },
+  "cases": [
+    {
+      "mode": "live-zetaris-synthetic",
+      "asOf": "2026-10-24T09:00:00Z",
+      "candidates": [
+        {
+          "routeId": "sim-detour",
+          "vehicleId": "sim-heavy-truck",
+          "segmentIds": [
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "distanceKm": 30,
+          "travelMinutes": 60,
+          "maxGrossKg": 6500,
+          "requiresFourWheelDrive": true,
+          "payloadKg": 3000,
+          "tareKg": 4800,
+          "fuelLitres": 30,
+          "litresPerKm": 0.4,
+          "fourWheelDrive": false,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-heavy-truck",
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "simulated": true
+        },
+        {
+          "routeId": "sim-detour",
+          "vehicleId": "sim-light-truck",
+          "segmentIds": [
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "distanceKm": 30,
+          "travelMinutes": 60,
+          "maxGrossKg": 6500,
+          "requiresFourWheelDrive": true,
+          "payloadKg": 1600,
+          "tareKg": 2100,
+          "fuelLitres": 30,
+          "litresPerKm": 0.25,
+          "fourWheelDrive": true,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-light-truck",
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "simulated": true
+        },
+        {
+          "routeId": "sim-direct",
+          "vehicleId": "sim-heavy-truck",
+          "segmentIds": [
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "distanceKm": 20,
+          "travelMinutes": 40,
+          "maxGrossKg": 3500,
+          "requiresFourWheelDrive": false,
+          "payloadKg": 3000,
+          "tareKg": 4800,
+          "fuelLitres": 30,
+          "litresPerKm": 0.4,
+          "fourWheelDrive": false,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-heavy-truck",
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "simulated": true
+        },
+        {
+          "routeId": "sim-direct",
+          "vehicleId": "sim-light-truck",
+          "segmentIds": [
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "distanceKm": 20,
+          "travelMinutes": 40,
+          "maxGrossKg": 3500,
+          "requiresFourWheelDrive": false,
+          "payloadKg": 1600,
+          "tareKg": 2100,
+          "fuelLitres": 30,
+          "litresPerKm": 0.25,
+          "fourWheelDrive": true,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-light-truck",
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "simulated": true
+        }
+      ],
+      "observations": [
+        {
+          "id": "sim-detour-bambili-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-detour-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-detour-bambili-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-detour-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-detour-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-detour",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-detour-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-detour",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-mile4-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-mile4",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-mile4-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-mile4",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-mile4-bambili-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-mile4-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-mile4-bambili-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-mile4-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        }
+      ],
+      "queries": [
+        {
+          "id": "query-a1f248b9-beaf-4c14-ab6d-4b65d8b9dec2",
+          "name": "candidate-logistics-join",
+          "sql": "SELECT r.route_id, v.id AS vehicle_id,\n    concat_ws(',', sort_array(collect_set(r.segment_id))) AS segment_ids,\n    SUM(r.distance_km) AS distance_km, SUM(r.travel_minutes) AS travel_minutes,\n    MIN(r.max_gross_kg) AS max_gross_kg,\n    MAX(CASE WHEN r.requires_four_wheel_drive THEN 1 ELSE 0 END) AS requires_four_wheel_drive,\n    v.payload_kg, v.tare_kg, v.fuel_litres, v.litres_per_km, v.four_wheel_drive, v.available,\n    i.available_units AS stock_units, i.unit_mass_kg, i.id AS stock_id,\n    GREATEST(i.observed_at, v.observed_at) AS valid_from,\n    LEAST(MIN(r.expires_at), i.expires_at, v.expires_at) AS valid_until\n    FROM PORTALONE_SCENARIO_V1.route_segments r\n    CROSS JOIN PORTALONE_LOGISTICS_V1.vehicles v\n    JOIN PORTALONE_LOGISTICS_V1.inventory i ON i.depot_id = v.depot_id\n    WHERE i.depot_id = 'sim-bamenda-hub' AND i.sku = 'sim-relief-kit'\n      AND r.route_id IN ('sim-direct','sim-detour') AND r.simulated = true AND i.simulated = true AND v.simulated = true\n    GROUP BY r.route_id, v.id, v.payload_kg, v.tare_kg, v.fuel_litres, v.litres_per_km,\n      v.four_wheel_drive, v.available, i.available_units, i.unit_mass_kg, i.id,\n      i.observed_at, v.observed_at, i.expires_at, v.expires_at\n    ORDER BY r.route_id, vehicle_id LIMIT 50",
+          "asOf": "2026-10-24T09:00:00Z",
+          "fetchedAt": "2026-10-24T22:40:48.542Z",
+          "durationMs": 705,
+          "rowCount": 4,
+          "resultHash": "6e611ca04708dabbbdea6a6b8de13901053db46869c62f2112e4323260e9aa1d"
+        },
+        {
+          "id": "query-e512c3f5-d3a3-4675-a6fd-65bda28ef51c",
+          "name": "latest-origin-observations",
+          "sql": "SELECT id, origin_id, source_id, segment_id, claim, observed_at, expires_at, forwarded, simulated\n    FROM (SELECT id, origin_id, source_id, segment_id, claim, observed_at, expires_at, forwarded, simulated,\n      ROW_NUMBER() OVER (PARTITION BY origin_id, segment_id ORDER BY observed_at DESC, forwarded ASC, id ASC) AS rn\n      FROM PORTALONE_SCENARIO_V1.observations\n      WHERE segment_id IN ('sim-hub-mile4','sim-mile4-bambili','sim-hub-detour','sim-detour-bambili')\n        AND CAST(observed_at AS TIMESTAMP) <= CAST('2026-10-24T09:00:00.000Z' AS TIMESTAMP) AND simulated = true) ranked\n    WHERE rn = 1 ORDER BY segment_id, origin_id LIMIT 50",
+          "asOf": "2026-10-24T09:00:00Z",
+          "fetchedAt": "2026-10-24T22:40:48.817Z",
+          "durationMs": 273,
+          "rowCount": 8,
+          "resultHash": "a64b4d397d470d6ff70a8138d493138c10f05618cf35e64ea6ae0002065075de"
+        }
+      ],
+      "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a"
+    },
+    {
+      "mode": "live-zetaris-synthetic",
+      "asOf": "2026-10-24T09:05:00Z",
+      "candidates": [
+        {
+          "routeId": "sim-detour",
+          "vehicleId": "sim-heavy-truck",
+          "segmentIds": [
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "distanceKm": 30,
+          "travelMinutes": 60,
+          "maxGrossKg": 6500,
+          "requiresFourWheelDrive": true,
+          "payloadKg": 3000,
+          "tareKg": 4800,
+          "fuelLitres": 30,
+          "litresPerKm": 0.4,
+          "fourWheelDrive": false,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-heavy-truck",
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "simulated": true
+        },
+        {
+          "routeId": "sim-detour",
+          "vehicleId": "sim-light-truck",
+          "segmentIds": [
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "distanceKm": 30,
+          "travelMinutes": 60,
+          "maxGrossKg": 6500,
+          "requiresFourWheelDrive": true,
+          "payloadKg": 1600,
+          "tareKg": 2100,
+          "fuelLitres": 30,
+          "litresPerKm": 0.25,
+          "fourWheelDrive": true,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-light-truck",
+            "sim-detour-bambili",
+            "sim-hub-detour"
+          ],
+          "simulated": true
+        },
+        {
+          "routeId": "sim-direct",
+          "vehicleId": "sim-heavy-truck",
+          "segmentIds": [
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "distanceKm": 20,
+          "travelMinutes": 40,
+          "maxGrossKg": 3500,
+          "requiresFourWheelDrive": false,
+          "payloadKg": 3000,
+          "tareKg": 4800,
+          "fuelLitres": 30,
+          "litresPerKm": 0.4,
+          "fourWheelDrive": false,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-heavy-truck",
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "simulated": true
+        },
+        {
+          "routeId": "sim-direct",
+          "vehicleId": "sim-light-truck",
+          "segmentIds": [
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "distanceKm": 20,
+          "travelMinutes": 40,
+          "maxGrossKg": 3500,
+          "requiresFourWheelDrive": false,
+          "payloadKg": 1600,
+          "tareKg": 2100,
+          "fuelLitres": 30,
+          "litresPerKm": 0.25,
+          "fourWheelDrive": true,
+          "available": true,
+          "stockUnits": 120,
+          "unitMassKg": 10,
+          "validFrom": "2026-10-24T08:45:00Z",
+          "validUntil": "2026-10-24T11:00:00Z",
+          "evidenceIds": [
+            "sim-stock-1",
+            "sim-light-truck",
+            "sim-hub-mile4",
+            "sim-mile4-bambili"
+          ],
+          "simulated": true
+        }
+      ],
+      "observations": [
+        {
+          "id": "sim-detour-bambili-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-detour-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-detour-bambili-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-detour-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-detour-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-detour",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-detour-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-detour",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-mile4-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-mile4",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-hub-mile4-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-hub-mile4",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-mile4-bambili-report-1",
+          "originId": "sim-origin-1",
+          "sourceId": "sim-source-1",
+          "sourceKind": "file",
+          "segmentId": "sim-mile4-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-mile4-bambili-report-2",
+          "originId": "sim-origin-2",
+          "sourceId": "sim-source-2",
+          "sourceKind": "file",
+          "segmentId": "sim-mile4-bambili",
+          "claim": "passable",
+          "observedAt": "2026-10-24T08:50:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        },
+        {
+          "id": "sim-new-blockade",
+          "originId": "sim-origin-3",
+          "sourceId": "sim-source-3",
+          "sourceKind": "file",
+          "segmentId": "sim-mile4-bambili",
+          "claim": "blocked",
+          "observedAt": "2026-10-24T09:05:00Z",
+          "expiresAt": "2026-10-24T11:00:00Z",
+          "forwarded": false,
+          "simulated": true
+        }
+      ],
+      "queries": [
+        {
+          "id": "query-c9b0e78f-c882-4485-b23c-4d97c871f2d1",
+          "name": "candidate-logistics-join",
+          "sql": "SELECT r.route_id, v.id AS vehicle_id,\n    concat_ws(',', sort_array(collect_set(r.segment_id))) AS segment_ids,\n    SUM(r.distance_km) AS distance_km, SUM(r.travel_minutes) AS travel_minutes,\n    MIN(r.max_gross_kg) AS max_gross_kg,\n    MAX(CASE WHEN r.requires_four_wheel_drive THEN 1 ELSE 0 END) AS requires_four_wheel_drive,\n    v.payload_kg, v.tare_kg, v.fuel_litres, v.litres_per_km, v.four_wheel_drive, v.available,\n    i.available_units AS stock_units, i.unit_mass_kg, i.id AS stock_id,\n    GREATEST(i.observed_at, v.observed_at) AS valid_from,\n    LEAST(MIN(r.expires_at), i.expires_at, v.expires_at) AS valid_until\n    FROM PORTALONE_SCENARIO_V1.route_segments r\n    CROSS JOIN PORTALONE_LOGISTICS_V1.vehicles v\n    JOIN PORTALONE_LOGISTICS_V1.inventory i ON i.depot_id = v.depot_id\n    WHERE i.depot_id = 'sim-bamenda-hub' AND i.sku = 'sim-relief-kit'\n      AND r.route_id IN ('sim-direct','sim-detour') AND r.simulated = true AND i.simulated = true AND v.simulated = true\n    GROUP BY r.route_id, v.id, v.payload_kg, v.tare_kg, v.fuel_litres, v.litres_per_km,\n      v.four_wheel_drive, v.available, i.available_units, i.unit_mass_kg, i.id,\n      i.observed_at, v.observed_at, i.expires_at, v.expires_at\n    ORDER BY r.route_id, vehicle_id LIMIT 50",
+          "asOf": "2026-10-24T09:05:00Z",
+          "fetchedAt": "2026-10-24T22:40:49.611Z",
+          "durationMs": 787,
+          "rowCount": 4,
+          "resultHash": "6e611ca04708dabbbdea6a6b8de13901053db46869c62f2112e4323260e9aa1d"
+        },
+        {
+          "id": "query-cca559a5-38f3-4757-98f6-282cc0aad308",
+          "name": "latest-origin-observations",
+          "sql": "SELECT id, origin_id, source_id, segment_id, claim, observed_at, expires_at, forwarded, simulated\n    FROM (SELECT id, origin_id, source_id, segment_id, claim, observed_at, expires_at, forwarded, simulated,\n      ROW_NUMBER() OVER (PARTITION BY origin_id, segment_id ORDER BY observed_at DESC, forwarded ASC, id ASC) AS rn\n      FROM PORTALONE_SCENARIO_V1.observations\n      WHERE segment_id IN ('sim-hub-mile4','sim-mile4-bambili','sim-hub-detour','sim-detour-bambili')\n        AND CAST(observed_at AS TIMESTAMP) <= CAST('2026-10-24T09:05:00.000Z' AS TIMESTAMP) AND simulated = true) ranked\n    WHERE rn = 1 ORDER BY segment_id, origin_id LIMIT 50",
+          "asOf": "2026-10-24T09:05:00Z",
+          "fetchedAt": "2026-10-24T22:40:49.962Z",
+          "durationMs": 351,
+          "rowCount": 9,
+          "resultHash": "10506873504ded506cbd74618fcebc469ac678294f4c3ec64ed5ed984e2c1d7b"
+        }
+      ],
+      "dataRevision": "65d938b8e96d4d8abc23dba3595c55b0bbc81332f4c1e9d314a321f4b84d6a24"
+    }
+  ],
+  "implementationCommit": "ba87148006eab60d11f326e2a45fb2fca8329beb",
+  "inputManifestSha256": "3196e17b924fb3071aaddbe0e9ba8d34040df9ade7c1c3535b82b5048305fc80"
+}

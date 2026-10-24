@@ -1,7 +1,7 @@
 # Judge guide
 
-**As of 2026-10-24: environment and state-engine checkpoint.** This repository does
-not yet implement the revised humanitarian agent workflow described in the plan.
+**As of 2026-10-24: core CLI verified on synthetic missions.** The browser
+interface is the earlier scaffold and does not consume this core yet.
 
 ## What exists and what is next
 
@@ -10,7 +10,9 @@ not yet implement the revised humanitarian agent workflow described in the plan.
 | Existing evaluator and application scaffold | Existing commits; local 9-test run, typecheck and build | baseline only |
 | Local Zetaris platform and authenticated data access | [Environment audit](ENVIRONMENT.md), [receipts](evidence/zetaris-2026-10-24.json) | verified diagnostic capability |
 | Accountable starting point | [Baseline manifest](evidence/baseline-2026-10-24.json), [provenance](PROVENANCE.md) | captured on 24 Oct |
-| New relief data, planner/validator loop and state updates | [Execution gates](EXECUTION_PLAN.md) | planned |
+| Relief data federation | [Data receipt](evidence/relief-data-2026-10-24.json), [source setup](evidence/relief-provision-2026-10-24.json), [fixture manifest](../data/relief-scenario-v1/manifest.json) | real cross-source Zetaris queries over synthetic Postgres and file sources; independent comparison passes |
+| Bounded planner–validator and changed evidence | [Live core trace](evidence/relief-agent-live-2026-10-24.json) | overweight rejection, model revisions, plan invalidation, detour and impossible-case hold; source commit and hashes recorded |
+| Offline fallback | [Offline trace](evidence/relief-agent-offline-2026-10-24.json), `bun run check:offline-replay` | explicit enumeration, same validator, HTTP fetch disabled in the check |
 | Meterless World Model | [Feature receipt](evidence/world-model-2026-10-24.json); `bun run check:world-model` | 8/8 conformance; persistent assumption-tracking feature verified on synthetic inputs |
 | Nightshift authentication and discovery | [Runtime receipt](evidence/meterless-2026-10-24.json) | running; valid token accepted and wrong token rejected |
 | Pinned engine and installed runtime provenance | [Setup receipt](evidence/power-setup-2026-10-24.json) | source hashes, license, installer hash and test results recorded |
@@ -29,8 +31,16 @@ not yet implement the revised humanitarian agent workflow described in the plan.
    [AI_USAGE.md](AI_USAGE.md) for assistance disclosure, and
    [COMMIT_POLICY.md](COMMIT_POLICY.md) for our internal review practices.
 4. Reproduce the bounded connection checks in [ENVIRONMENT.md](ENVIRONMENT.md).
-   They use pinned, licensed official helpers; a functioning sample query does
-   not demonstrate the future relief-data integration.
+   Then run `bun run demo:relief-agent` or the configured `--live` path. The
+   initial overweight draft is a labelled stress-test input. The preserved
+   [earlier live trace](evidence/relief-agent-live-early-2026-10-24.json) also shows
+   a slower eligible option rejected by the objective check, and repeated invalid
+   deadline proposals overridden by the hold limit. These are recorded outcomes,
+   not a transcript with a prewritten successful model answer.
+5. Inspect the live trace's source hashes and `sourceCommit`. It records separate
+   planner/validator queries, constraint calculations, model IDs, timing and usage.
+   The earlier receipt preserves `73cfba5`; the latest trace records its checkout
+   and executed entry artifact after hardening. No dispatch was authorized.
 
 ## Evidence required as features land
 

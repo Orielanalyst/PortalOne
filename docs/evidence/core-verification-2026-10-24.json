@@ -1,0 +1,24 @@
+{
+  "capturedAt": "2026-10-24T22:55:28.500Z",
+  "sourceCommit": "ba87148006eab60d11f326e2a45fb2fca8329beb",
+  "local": {
+    "typecheck": "passed",
+    "applicationTests": 40,
+    "worldModelConformance": 8,
+    "vendoredArchives": 21,
+    "offlineReplayWithFetchDisabled": "passed",
+    "productionBuild": "passed",
+    "liveScenarioChecks": {
+      "grossWeightRejected": true,
+      "revisedForOperatorReview": true,
+      "changedEvidenceInvalidated": true,
+      "replannedToDetour": true,
+      "impossibleMissionHeld": true,
+      "dispatchAuthorized": false
+    },
+    "compiledReplayWithFetchDisabled": "passed",
+    "compiledReplaySha256": "780e51f3906b88cba3461eccc768bb8468aaf8639bfee9859047342c7d537440"
+  },
+  "liveReceipt": "relief-agent-live-2026-10-24.json",
+  "hostedCI": "Last observed hosted run blocked by account billing/spending issue; local results are separate"
+}

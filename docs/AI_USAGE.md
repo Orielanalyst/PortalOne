@@ -10,8 +10,9 @@ entrants accountable for it; this file is our chosen detailed disclosure format.
 | 2026-10-24 | Codex | Research, planning and environment audit | Read brainstorming and event materials; proposed scope and architecture; verified Docker/WSL/Zetaris, local checks and CI status; added planning/provenance records and a wrapper around pinned official diagnostic helpers. Product implementation and UI redesign were not performed in this audit. |
 | 2026-10-24 | Codex | Meterless implementation | Acquired and verified World Model; implemented persistent observation/plan-assumption tracking and synthetic replay; wrote Meterless contract adapter and tests; installed official Nightshift and verified local authentication. NVIDIA account/key action and real model inference remain pending. |
 | 2026-10-24 | Codex + Nightshift/Nemotron | Live provider verification | After the user saved their key in Nightshift, verified real marker completion; response reported Nemotron 3 Ultra. Fixed final-answer handling and added regression tests; saved identity, timing and usage without credentials or thinking text. Supersedes the earlier pending inference status. |
-| planned | LangGraph + Nightshift | Agent runtime and model | Planner and replanner reasoning. The verifier remains deterministic. |
-| planned | Zetaris | Data layer | SQL over local Docker; evidence rows keep source and timestamps. |
+| 2026-10-24 | Codex | Relief data and agent implementation | Authored synthetic fixtures/provisioning, server adapter, finite constraint checks, LangGraph loop, tests, source hashes and live/offline replay. Existing browser UI was not redesigned. |
+| 2026-10-24 | Nightshift + NVIDIA Nemotron | Live planner/replanner | Generated JSON proposals and brief public rationales. Recorded Ultra and 3.5 Lightning IDs; independent code rejected weight, slower eligible choice and deadline violations. No model approval or dispatch authority. |
+| 2026-10-24 | Zetaris | Live data layer | Real joins over isolated Postgres and synthetic JSON files; counts and decoded snapshots matched independent fixture calculations. |
 
 ## How output is controlled
 

@@ -1,6 +1,13 @@
-# Environment audit — 2026-10-24
+# Environment and core readiness — 2026-10-24
 
-Latest on 24 October: after the user saved their NVIDIA key directly in Nightshift,
+Current checkpoint: real local Zetaris queries join synthetic Postgres logistics
+with file-based routes/reports. The LangGraph CLI passes live Nightshift missions
+and a separate offline replay. See `evidence/relief-data-2026-10-24.json`,
+`evidence/relief-provision-2026-10-24.json` and `evidence/relief-agent-live-2026-10-24.json`.
+The browser scaffold is not connected to this core; approval and run recovery
+remain open. The earlier platform audit table below is preserved as history.
+
+Earlier power gate on 24 October: after the user saved their NVIDIA key directly in Nightshift,
 the live completion probe returned exactly `PORTALONE_OK`. The response model
 field reported `nvidia/nemotron-3-ultra-550b-a55b` through `meterless/auto`.
 The saved request took 6,025 ms and used 151 tokens; these are observations,
@@ -13,9 +20,8 @@ labelled synthetic observations. See the new receipts in `evidence/`.
 The table below preserves the initial audit checkpoint. The later results above
 supersede its Meterless-unavailable row and not-yet-tested engine status.
 
-**Verdict: Zetaris is installed and supports authenticated sample-data queries.**
-Relief datasets and the application's Zetaris adapter are not yet implemented.
-Nightshift/Nemotron has a live smoke receipt; the new agent loop is not verified.
+**Current verdict: local relief-data federation and the bounded core CLI work on
+labelled synthetic inputs.** This demonstration authorizes no operational dispatch.
 
 ## Verified facts
 
@@ -89,14 +95,14 @@ use the separate throwaway-install verification tool against this installation.
 
 ## Remaining readiness gates
 
-1. Nightshift auth/discovery and Nemotron smoke completion are verified. Connect
-   the upcoming planner feature and retain model identity per run.
+1. Nightshift auth/discovery, Nemotron smoke completion and live planner/replanner
+   calls are verified. Model identities are recorded per call, not assumed from mode.
 2. World Model is vendored and verified: 8/8 conformance and the persistent
    product-specific state-change case pass.
-3. Define and register small relief sources with provenance and a reproducible
-   load path. Verify a domain-relevant join, not just a sample query.
-4. Implement a server-only data adapter with timeouts, query budgets, provenance
-   mapping and explicit live/offline status. Its read path is not present yet.
+3. Synthetic sources, manifest hashes, repeated provisioning and cross-source
+   results are verified. Independent calculation matches both simulation times.
+4. Server data adapter, bounded run and validator are implemented. Operator
+   approval binding, resume after process failure and the new interface remain open.
 5. Account owner resolves GitHub Actions billing/spending limits; then rerun and
    require actual green verification. No account payment or limit was changed.
 6. At release, review declarations, repository access and reproducibility before
@@ -132,3 +138,61 @@ set to false, supported by [NVIDIA's model card](https://build.nvidia.com/nvidia
 and passed through by the installed Nightshift proxy. Thinking prefixes and
 separate reasoning fields are excluded from the saved answer. An unfinished trace
 or a token-truncated response fails the check. Auto routing is not a model pin.
+
+## Relief core — reproduce
+
+From the project root, with pinned Bun and installed packages:
+
+```sh
+bun install --frozen-lockfile
+bun run check:vendor
+bun run check:offline-replay
+bun run demo:relief-agent
+```
+
+The offline path uses fixtures and deterministic enumeration, with zero model
+receipts. The offline check disables HTTP fetch. Build a local rehearsal bundle
+with `bun run build:relief-replay`, then run `bun .runtime/relief-replay.mjs` from
+the project root. It includes JS dependencies and reads the versioned data files.
+
+For the real sponsor path on this audited Windows/Docker host:
+
+```sh
+bun run prepare:relief-data
+bun run provision:relief-data
+bun run provision:relief-data --apply
+bun run check:relief-data
+bun run demo:relief-agent --live
+```
+
+The first provisioning command prints its plan. `--apply` creates or reuses only
+the owned `portal-one-relief-db` container and `PORTALONE_*_V1` registrations.
+It uses the cached pinned Postgres image, joins `zetaris_default`, publishes no
+source database port, and verifies counts and source reader privileges. Generated
+credentials stay in ignored `.runtime/relief-scenario-v1/`. Platform metastore and
+sample sources are retained. Use a new pack version for changed source data.
+
+The adapter executes two fixed SELECT templates per snapshot. The model gets
+aggregate candidate metrics and independent-origin assessments; the validator
+fetches again and calculates constraints itself. A full 50-row result fails as
+possibly truncated. Runs reserve at most 12 query slots, use at most two revisions
+and stop within five minutes. Delivery includes handling/buffer; fuel includes
+round trip, 50 percent contingency and the stated reserve.
+
+Persisted plan invalidation currently tracks road-report assumptions. Full
+mission/stock/fleet version binding is part of the next operator-review gate;
+the current CLI never turns a proposal into an approval or dispatch.
+
+The initial overweight draft is an explicit fixture, not a claimed model mistake
+or human approval. The live case also records a slower option rejected by the
+earliest-eligible objective, and bad deadline proposals overridden by the hold limit.
+
+JSON finding: JSON-lines exposed only the first object in this installation,
+including after a multiLine option test. Standard JSON arrays returned all rows.
+Only incomplete/probe registrations created during this work were replaced;
+existing sources were retained. Event-time filtering uses timestamp casts so
+an update at the exact simulation boundary is included.
+
+Capture receipts deliberately with `--evidence` on the data check, provisioning
+apply and agent demos. Normal replay writes ignored runtime output. Live inference
+uses the provider allowance; the app/receipts never read its NVIDIA key.

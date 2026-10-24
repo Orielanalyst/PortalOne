@@ -106,3 +106,49 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
   locally; relief-data federation and the complete agent loop remain later gates.
 - Response handling is committed in `def0f26`. The live receipt identifies that
   implementation and is linked from the judge guide.
+
+### 24 October — relief data and bounded agent core
+
+- Acquired LangGraph 1.5.2/Core 1.3.0 and adopted Zod 4.6.7. Twenty-one registry
+  archives are retained with matching lockfile/registry integrities and MIT text.
+  Two packages omitted license text from their archives; pinned upstream copies
+  are retained. A real conditional LangGraph loop reached END under its limit.
+- Added an original CC0 synthetic mission: two predefined routes, two vehicles,
+  one kit stock row and ten raw reports, including a forward and later contradiction.
+  All road, time, stock and threat attributes are invented demonstration inputs.
+- Provisioned a separate pinned Postgres container without a published port,
+  using a source query role with no tested table write privileges. Added four
+  namespaced Zetaris registrations and verified idempotent repeat setup.
+- JSON-lines ingestion initially returned one row. A standard JSON array returned
+  the expected four route rows and ten reports. Only this work's incomplete/probe
+  registrations were replaced; platform/sample sources and source files remained.
+- The real candidate join returns four bounded rows across Postgres and files.
+  Origin filtering returns eight initial reports and nine after the event, matching
+  independently calculated fixtures. Timestamp casts fixed the exact event-time
+  boundary. A full 50-row page now fails closed against possible omitted origins.
+- Added a bounded gather/propose/independently-validate/revise/hold graph. Checks
+  cover loaded mass, payload, stock, drive type, round-trip fuel/contingency,
+  expiry through delivery, corroboration, deadline and earliest eligible alternative.
+  Earliest delivery became an explicit objective after live planning surfaced
+  multiple feasible options. No global route optimum or surveyed bypass is claimed.
+- Live Nightshift proposals were checked against fresh Zetaris snapshots. The
+  synthetic overweight draft was rejected, a light-truck plan reached operator
+  review, changed evidence invalidated it, and a detour proposal passed. The
+  impossible deadline held even when models proposed invalid options repeatedly.
+- The overweight input is an explicitly labelled stress-test draft, not a claimed
+  model failure or human approval. Ultra and 3.5 Lightning identities are recorded
+  per response; routing-mode names do not imply a particular model or price.
+- Explicit offline enumeration passed the same scenarios with HTTP fetch disabled.
+  A local bundled rehearsal entry also passed; runtime files and credentials are
+  ignored. No dispatch or operator approval is issued by these demonstrations.
+- Final local gate: typecheck, 40 application tests, 8 World Model conformance
+  cases, 21 vendor archive checks, offline replay and production build passed.
+  CI/pre-push now include the vendor and offline checks. Hosted CI remains blocked
+  by the previously recorded account issue; local results are not a hosted pass.
+- Commits: `510a27d` acquisition, `019c9e0` sources, `b6a5de9` data adapter,
+  `73cfba5` first verified core, `2615cf1` boundary/contract hardening and
+  `ba87148` verification. The early live receipt is preserved with source hashes;
+  the final live capture records its exact checkout and entry artifact.
+- G2/G3 are verified locally. G4 still needs version-bound operator decisions and
+  recovery for interrupted runs; G5 interface redesign remains deferred. Completed
+  CLI receipts and World Model state persist, but LangGraph run state is in memory.

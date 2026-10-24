@@ -1,0 +1,569 @@
+{
+  "capturedAt": "2026-10-24T22:32:33.770Z",
+  "mode": "Offline fixture and enumeration; no sponsor calls",
+  "sourceHashes": [
+    {
+      "file": "src/lib/server/relief-agent.ts",
+      "sha256": "30d4ae0470ae4bd7843da9cc406dc25892c8f22358875899be12bc278ac765f8",
+      "sha256_lf": "30d4ae0470ae4bd7843da9cc406dc25892c8f22358875899be12bc278ac765f8"
+    },
+    {
+      "file": "src/lib/server/relief-planner.ts",
+      "sha256": "d23d39ad94d92537f2cab0a1bc6f3d6a9050af7a65db3c78c0be3c59d2171a19",
+      "sha256_lf": "d23d39ad94d92537f2cab0a1bc6f3d6a9050af7a65db3c78c0be3c59d2171a19"
+    },
+    {
+      "file": "src/lib/server/relief-validator.ts",
+      "sha256": "7b8a6ccc64e3c48696c52491fb1d2af78c147b48aeb457582ab478d64948d59a",
+      "sha256_lf": "7b8a6ccc64e3c48696c52491fb1d2af78c147b48aeb457582ab478d64948d59a"
+    },
+    {
+      "file": "src/lib/server/relief-source.ts",
+      "sha256": "2cb59c982ac25b14e0433afea9dc74e090410f0a7e17b3daedc562b6aa4e1328",
+      "sha256_lf": "2cb59c982ac25b14e0433afea9dc74e090410f0a7e17b3daedc562b6aa4e1328"
+    },
+    {
+      "file": "src/lib/server/relief-data.ts",
+      "sha256": "7913160618fbee522c48f4a969aa68978a6f2c48799bd8a6c41303038d00ac91",
+      "sha256_lf": "7913160618fbee522c48f4a969aa68978a6f2c48799bd8a6c41303038d00ac91"
+    },
+    {
+      "file": "src/lib/server/relief-world.ts",
+      "sha256": "faa2405f1247ed614255893c99875235c3fcfea368da8c635590873c2f3bd889",
+      "sha256_lf": "faa2405f1247ed614255893c99875235c3fcfea368da8c635590873c2f3bd889"
+    },
+    {
+      "file": "src/lib/server/meterless.ts",
+      "sha256": "d02673da39feee4927784893dc0216d0f1090280f168b208e85714173e2d9218",
+      "sha256_lf": "d02673da39feee4927784893dc0216d0f1090280f168b208e85714173e2d9218"
+    },
+    {
+      "file": "src/lib/server/zetaris.ts",
+      "sha256": "da1c921e1f23b36f584376441871572ce26935276021d6087e7b90609595a99f",
+      "sha256_lf": "da1c921e1f23b36f584376441871572ce26935276021d6087e7b90609595a99f"
+    }
+  ],
+  "inputManifest": "data/relief-scenario-v1/manifest.json",
+  "initialDraftOrigin": "Explicit synthetic stress-test fixture, not an AI-generated draft or a human approval",
+  "checks": {
+    "grossWeightRejected": true,
+    "revisedForOperatorReview": true,
+    "changedEvidenceInvalidated": true,
+    "replannedToDetour": true,
+    "impossibleMissionHeld": true,
+    "dispatchAuthorized": false
+  },
+  "initial": {
+    "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+    "mission": {
+      "id": "sim-bambili-delivery",
+      "depotId": "sim-bamenda-hub",
+      "destinationId": "sim-bambili-site",
+      "sku": "sim-relief-kit",
+      "quantity": 100,
+      "deadline": "2026-10-24T10:30:00Z",
+      "objective": "earliest_delivery",
+      "handlingMinutes": 10,
+      "bufferMinutes": 10,
+      "fuelReserveLitres": 5,
+      "minimumIndependentOrigins": 2
+    },
+    "asOf": "2026-10-24T09:00:00Z",
+    "dataMode": "offline-fixture",
+    "plannerMode": "offline-enumeration",
+    "disposition": "operator_review",
+    "proposal": {
+      "routeId": "sim-direct",
+      "vehicleId": "sim-light-truck",
+      "rationale": "Offline enumeration: earliest eligible predefined candidate; requires operator review."
+    },
+    "validation": {
+      "eligible": true,
+      "violations": [],
+      "assessments": [
+        {
+          "segmentId": "sim-hub-mile4",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-hub-mile4-report-1",
+            "sim-hub-mile4-report-2"
+          ],
+          "fingerprint": "bfba49302e1b0092fcc6f24f8b524654bc748012c7cda13ac52455066daf42ad"
+        },
+        {
+          "segmentId": "sim-mile4-bambili",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-mile4-bambili-report-1",
+            "sim-mile4-bambili-report-2"
+          ],
+          "fingerprint": "52416a97919f3a6fe003a452e07e19f56a43d70f66bf0bb1665fe3acb69a241c"
+        }
+      ],
+      "calculations": {
+        "cargoKg": 1000,
+        "grossKg": 3100,
+        "requiredFuelLitres": 20,
+        "arrivalAt": "2026-10-24T10:00:00.000Z"
+      }
+    },
+    "trackedPlan": {
+      "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:v2",
+      "segmentIds": [
+        "sim-hub-mile4",
+        "sim-mile4-bambili"
+      ],
+      "createdAt": "2026-10-24T09:00:00Z",
+      "status": "proposed",
+      "assumptions": [
+        {
+          "segmentId": "sim-hub-mile4",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-hub-mile4-report-1",
+            "sim-hub-mile4-report-2"
+          ],
+          "fingerprint": "bfba49302e1b0092fcc6f24f8b524654bc748012c7cda13ac52455066daf42ad"
+        },
+        {
+          "segmentId": "sim-mile4-bambili",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-mile4-bambili-report-1",
+            "sim-mile4-bambili-report-2"
+          ],
+          "fingerprint": "52416a97919f3a6fe003a452e07e19f56a43d70f66bf0bb1665fe3acb69a241c"
+        }
+      ],
+      "evidenceVersion": "d3423605826a4632a1bf80b6de1436559b2c32d7ff7063b8f73c0b467d9e4994"
+    },
+    "events": [
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:1",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.680Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "data",
+        "kind": "snapshot",
+        "detail": "offline-fixture; 4 candidates; latest reports by independent origin",
+        "evidenceIds": [
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2"
+        ],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a"
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:2",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.688Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "draft_input",
+        "kind": "draft",
+        "detail": "Supplied draft entered for independent validation; not an AI-generated or approved plan.",
+        "evidenceIds": [],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a",
+        "planVersion": 1
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:3",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.697Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "validator",
+        "kind": "snapshot",
+        "detail": "offline-fixture; 4 candidates; latest reports by independent origin",
+        "evidenceIds": [
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2"
+        ],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a"
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:4",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.703Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "validator",
+        "kind": "rejected",
+        "detail": "GROSS_WEIGHT_EXCEEDED: 5800 kg loaded vehicle exceeds 3500 kg segment limit.",
+        "evidenceIds": [
+          "sim-stock-1",
+          "sim-heavy-truck",
+          "sim-hub-mile4",
+          "sim-mile4-bambili"
+        ],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a",
+        "planVersion": 1
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:5",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.706Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "planner",
+        "kind": "revision",
+        "detail": "Revise using the exact independent constraint violations.",
+        "evidenceIds": [],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a",
+        "planVersion": 2
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:6",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.711Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "planner",
+        "kind": "proposal",
+        "detail": "Offline enumeration: earliest eligible predefined candidate; requires operator review.",
+        "evidenceIds": [],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a",
+        "planVersion": 2
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:7",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.716Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "validator",
+        "kind": "snapshot",
+        "detail": "offline-fixture; 4 candidates; latest reports by independent origin",
+        "evidenceIds": [
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2"
+        ],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a"
+      },
+      {
+        "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:8",
+        "runId": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1",
+        "at": "2026-10-24T22:32:33.721Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "validator",
+        "kind": "operator_review",
+        "detail": "Constraints passed for this synthetic snapshot. Human review required; no dispatch authorized.",
+        "evidenceIds": [
+          "sim-stock-1",
+          "sim-light-truck",
+          "sim-hub-mile4",
+          "sim-mile4-bambili",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2"
+        ],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a",
+        "planVersion": 2
+      }
+    ],
+    "queries": [],
+    "models": [],
+    "reservedQuerySlots": 6,
+    "durationMs": 97
+  },
+  "changedEvidenceQueries": [],
+  "invalidated": {
+    "id": "run-701350cd-ec5e-468d-9dd8-5695ce6a3fc1:v2",
+    "segmentIds": [
+      "sim-hub-mile4",
+      "sim-mile4-bambili"
+    ],
+    "createdAt": "2026-10-24T09:00:00Z",
+    "status": "invalidated",
+    "assumptions": [
+      {
+        "segmentId": "sim-hub-mile4",
+        "status": "reported_passable",
+        "independentOrigins": 2,
+        "evidenceIds": [
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2"
+        ],
+        "fingerprint": "bfba49302e1b0092fcc6f24f8b524654bc748012c7cda13ac52455066daf42ad"
+      },
+      {
+        "segmentId": "sim-mile4-bambili",
+        "status": "reported_passable",
+        "independentOrigins": 2,
+        "evidenceIds": [
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2"
+        ],
+        "fingerprint": "52416a97919f3a6fe003a452e07e19f56a43d70f66bf0bb1665fe3acb69a241c"
+      }
+    ],
+    "evidenceVersion": "d3423605826a4632a1bf80b6de1436559b2c32d7ff7063b8f73c0b467d9e4994",
+    "invalidatedAt": "2026-10-24T09:05:00Z",
+    "reason": "sim-mile4-bambili: reported_passable -> disputed; evidence changed"
+  },
+  "replanned": {
+    "runId": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33",
+    "mission": {
+      "id": "sim-bambili-delivery",
+      "depotId": "sim-bamenda-hub",
+      "destinationId": "sim-bambili-site",
+      "sku": "sim-relief-kit",
+      "quantity": 100,
+      "deadline": "2026-10-24T10:30:00Z",
+      "objective": "earliest_delivery",
+      "handlingMinutes": 10,
+      "bufferMinutes": 10,
+      "fuelReserveLitres": 5,
+      "minimumIndependentOrigins": 2
+    },
+    "asOf": "2026-10-24T09:05:00Z",
+    "dataMode": "offline-fixture",
+    "plannerMode": "offline-enumeration",
+    "disposition": "operator_review",
+    "proposal": {
+      "routeId": "sim-detour",
+      "vehicleId": "sim-light-truck",
+      "rationale": "Offline enumeration: earliest eligible predefined candidate; requires operator review."
+    },
+    "validation": {
+      "eligible": true,
+      "violations": [],
+      "assessments": [
+        {
+          "segmentId": "sim-detour-bambili",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-detour-bambili-report-1",
+            "sim-detour-bambili-report-2"
+          ],
+          "fingerprint": "8efae4d84e54fbbed53b582e17de5ec1b553ec6b7d1db8e26c0f2c9bff52a7c2"
+        },
+        {
+          "segmentId": "sim-hub-detour",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-hub-detour-report-1",
+            "sim-hub-detour-report-2"
+          ],
+          "fingerprint": "9f6fd1569d1aad79461bdac92a26d2e6694ae8346f5d7a20c4bd314e20351be0"
+        }
+      ],
+      "calculations": {
+        "cargoKg": 1000,
+        "grossKg": 3100,
+        "requiredFuelLitres": 27.5,
+        "arrivalAt": "2026-10-24T10:25:00.000Z"
+      }
+    },
+    "trackedPlan": {
+      "id": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33:v1",
+      "segmentIds": [
+        "sim-detour-bambili",
+        "sim-hub-detour"
+      ],
+      "createdAt": "2026-10-24T09:05:00Z",
+      "status": "proposed",
+      "assumptions": [
+        {
+          "segmentId": "sim-detour-bambili",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-detour-bambili-report-1",
+            "sim-detour-bambili-report-2"
+          ],
+          "fingerprint": "8efae4d84e54fbbed53b582e17de5ec1b553ec6b7d1db8e26c0f2c9bff52a7c2"
+        },
+        {
+          "segmentId": "sim-hub-detour",
+          "status": "reported_passable",
+          "independentOrigins": 2,
+          "evidenceIds": [
+            "sim-hub-detour-report-1",
+            "sim-hub-detour-report-2"
+          ],
+          "fingerprint": "9f6fd1569d1aad79461bdac92a26d2e6694ae8346f5d7a20c4bd314e20351be0"
+        }
+      ],
+      "evidenceVersion": "e2624d9eb9098d317fd253ce797d03cece81a2ac78ba2f439e51aff9cde1a76d"
+    },
+    "events": [
+      {
+        "id": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33:1",
+        "runId": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33",
+        "at": "2026-10-24T22:32:33.735Z",
+        "simulationAt": "2026-10-24T09:05:00Z",
+        "actor": "data",
+        "kind": "snapshot",
+        "detail": "offline-fixture; 4 candidates; latest reports by independent origin",
+        "evidenceIds": [
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2",
+          "sim-new-blockade"
+        ],
+        "dataRevision": "65d938b8e96d4d8abc23dba3595c55b0bbc81332f4c1e9d314a321f4b84d6a24"
+      },
+      {
+        "id": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33:2",
+        "runId": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33",
+        "at": "2026-10-24T22:32:33.743Z",
+        "simulationAt": "2026-10-24T09:05:00Z",
+        "actor": "planner",
+        "kind": "proposal",
+        "detail": "Offline enumeration: earliest eligible predefined candidate; requires operator review.",
+        "evidenceIds": [],
+        "dataRevision": "65d938b8e96d4d8abc23dba3595c55b0bbc81332f4c1e9d314a321f4b84d6a24",
+        "planVersion": 1
+      },
+      {
+        "id": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33:3",
+        "runId": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33",
+        "at": "2026-10-24T22:32:33.747Z",
+        "simulationAt": "2026-10-24T09:05:00Z",
+        "actor": "validator",
+        "kind": "snapshot",
+        "detail": "offline-fixture; 4 candidates; latest reports by independent origin",
+        "evidenceIds": [
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2",
+          "sim-new-blockade"
+        ],
+        "dataRevision": "65d938b8e96d4d8abc23dba3595c55b0bbc81332f4c1e9d314a321f4b84d6a24"
+      },
+      {
+        "id": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33:4",
+        "runId": "run-095b51fc-e030-4814-8cf2-40b4e6fefd33",
+        "at": "2026-10-24T22:32:33.752Z",
+        "simulationAt": "2026-10-24T09:05:00Z",
+        "actor": "validator",
+        "kind": "operator_review",
+        "detail": "Constraints passed for this synthetic snapshot. Human review required; no dispatch authorized.",
+        "evidenceIds": [
+          "sim-stock-1",
+          "sim-light-truck",
+          "sim-detour-bambili",
+          "sim-hub-detour",
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2"
+        ],
+        "dataRevision": "65d938b8e96d4d8abc23dba3595c55b0bbc81332f4c1e9d314a321f4b84d6a24",
+        "planVersion": 1
+      }
+    ],
+    "queries": [],
+    "models": [],
+    "reservedQuerySlots": 4,
+    "durationMs": 26
+  },
+  "impossible": {
+    "runId": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e",
+    "mission": {
+      "id": "sim-bambili-delivery",
+      "depotId": "sim-bamenda-hub",
+      "destinationId": "sim-bambili-site",
+      "sku": "sim-relief-kit",
+      "quantity": 100,
+      "deadline": "2026-10-24T09:45:00Z",
+      "objective": "earliest_delivery",
+      "handlingMinutes": 10,
+      "bufferMinutes": 10,
+      "fuelReserveLitres": 5,
+      "minimumIndependentOrigins": 2
+    },
+    "asOf": "2026-10-24T09:00:00Z",
+    "dataMode": "offline-fixture",
+    "plannerMode": "offline-enumeration",
+    "disposition": "hold",
+    "proposal": {
+      "routeId": null,
+      "vehicleId": null,
+      "rationale": "Offline enumeration found no eligible candidate; hold for operator review."
+    },
+    "validation": null,
+    "trackedPlan": null,
+    "events": [
+      {
+        "id": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e:1",
+        "runId": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e",
+        "at": "2026-10-24T22:32:33.760Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "data",
+        "kind": "snapshot",
+        "detail": "offline-fixture; 4 candidates; latest reports by independent origin",
+        "evidenceIds": [
+          "sim-detour-bambili-report-1",
+          "sim-detour-bambili-report-2",
+          "sim-hub-detour-report-1",
+          "sim-hub-detour-report-2",
+          "sim-hub-mile4-report-1",
+          "sim-hub-mile4-report-2",
+          "sim-mile4-bambili-report-1",
+          "sim-mile4-bambili-report-2"
+        ],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a"
+      },
+      {
+        "id": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e:2",
+        "runId": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e",
+        "at": "2026-10-24T22:32:33.767Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "planner",
+        "kind": "proposal",
+        "detail": "Offline enumeration found no eligible candidate; hold for operator review.",
+        "evidenceIds": [],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a",
+        "planVersion": 1
+      },
+      {
+        "id": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e:3",
+        "runId": "run-02deb5c6-55f1-43f0-85e4-a2d1b228411e",
+        "at": "2026-10-24T22:32:33.769Z",
+        "simulationAt": "2026-10-24T09:00:00Z",
+        "actor": "validator",
+        "kind": "hold",
+        "detail": "Planner requested hold; no dispatch or approval issued.",
+        "evidenceIds": [],
+        "dataRevision": "73531301419365796ce0e573859a39c1e3a0911d1e4c936b012fbd2e27b2cb8a"
+      }
+    ],
+    "queries": [],
+    "models": [],
+    "reservedQuerySlots": 2,
+    "durationMs": 15
+  },
+  "sourceCommit": "73cfba5c29c4f9a9941a9335267a16a1aa413dd8",
+  "inputManifestSha256": "3196e17b924fb3071aaddbe0e9ba8d34040df9ade7c1c3535b82b5048305fc80",
+  "hashNotes": "sha256 records capture-machine bytes; sha256_lf records Git-normalized LF source for cross-platform verification"
+}

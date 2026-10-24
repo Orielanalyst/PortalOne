@@ -1,17 +1,18 @@
 # ADR 0001 — Agent runtime
 
-- **Status:** Proposed
+- **Status:** Implemented and locally verified for the core CLI, 2026-10-24
 - **Date:** 2026-10-23
 - **Deciders:** project owner
 
-24 October review: this remains an unaccepted proposal. The current scope and
-verification gates are in `../EXECUTION_PLAN.md`; none of the proposed agent
-runtime dependencies has been installed or smoke-tested in this audit.
+24 October implementation: the bounded LangGraph CLI passes live Zetaris/Nightshift
+and explicit offline scenarios. Exact dependencies and license/integrity records
+are in `vendor/npm-registry/` from the repository root. Current gates
+are in `../EXECUTION_PLAN.md`. Operator approval binding and run recovery remain open.
 
 ## Context
 
 PortalOne needs an agent that plans, gathers evidence, verifies, replans and
-stops for approval. Track 02 scores explainability. The app is TypeScript
+stops for operator review. The track remains provisional. The app is TypeScript
 (TanStack Start on Bun). Nightshift exposes an OpenAI-compatible endpoint at
 `http://127.0.0.1:8088/v1`; Zetaris exposes SQL over REST.
 
@@ -28,14 +29,10 @@ Cost: more wiring than a harness.
 
 ### B. Deep Agents JS
 
-Built on LangGraph. Ships planning, subagents, a virtual filesystem and
-human-in-the-loop. The official description is a harness that "trusts the LLM":
-the agent can do anything its tools allow.
-
-For this product the thesis is the opposite — the model may propose, but the
-verifier must be able to overrule it. The built-in planner is generic and less
-auditable for a safety decision. It also adds dependencies we do not need for a
-bounded pipeline.
+Built on LangGraph, with planning, isolated subagents and a virtual filesystem.
+These capabilities remain relevant to future open-ended source discovery. The
+first slice has four predefined route/vehicle combinations and needs explicit
+bounded transitions, without delegation or an additional service.
 
 ### C. Python LangGraph / Deep Agents service
 
@@ -44,14 +41,17 @@ With four days left, the deploy risk is not worth it.
 
 ## Decision
 
-**Pending.** Recommendation: **A**.
+**Implemented: A**, using the already verified narrow Meterless client.
 
-- Runtime: `@langchain/langgraph` + `@langchain/core`.
-- Model: `@langchain/openai` `ChatOpenAI` pointed at Nightshift
-  (`meterless/auto`, bearer token, `meterless-app: portal-one`,
-  `meterless-scope: user`, 180 s timeout).
-- Data: a `DataAdapter` with a live Zetaris implementation and a fixture
-  implementation for offline demos and tests.
+- Runtime: LangGraph 1.5.2, Core 1.3.0 and Zod 4.6.7, locked and archived under MIT.
+- Model: native final-text JSON requests to Nightshift with the required bearer,
+  app and user-scope headers. Initial proposals request `meterless/fast`; revisions
+  request `meterless/deep`. The returned model identity is recorded each time.
+- Data: fixed-query live Zetaris and explicit offline implementations.
+- Flow: gather → propose → independently validate → revise, hold or operator review.
+  Recursion limit 12, two revisions, 12 reserved query slots, five-minute deadline.
+- Constraints: exhaustive checks over four supplied alternatives. No general
+  optimizer or global route-optimality claim is needed for this finite slice.
 
 Revisit **B** only as an optional research subagent if open-ended source
 discovery becomes necessary. It would sit inside a LangGraph node, not replace
@@ -61,5 +61,7 @@ the graph.
 
 - The graph's nodes, edges and citations become the explainability story.
 - The verifier stays deterministic, unit-tested and independent of the model.
-- One runtime, one deploy, one event schema for the UI.
-- More code than `createDeepAgent`, but every transition is inspectable.
+- One application language and a typed core event schema for the future UI.
+- World Model persists observations and proposed/invalidated plans; completed CLI
+  receipts persist public decisions and evidence. LangGraph run state is still
+  in memory; process-crash resume and operator approval actions are not implemented.

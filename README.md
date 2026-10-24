@@ -1,23 +1,24 @@
 # PortalOne
 
-**Verified emergency response mission control.**
+**Evidence-grounded relief delivery proposals.**
 
-Give it a disaster and a need. PortalOne plans a route, checks the plan against
-federated evidence, rejects what the evidence does not support, replans, and
-only then issues a dispatch directive. Every step names the record it rests on.
+PortalOne combines logistics and road reports, proposes a delivery plan, rejects
+constraint violations and revises or holds. Eligible proposals stop for operator
+review. The current demonstration uses labelled synthetic data and authorizes no dispatch.
 
 Built for the **Open Agent Hackathon 2026**. Primary track is pending confirmation;
 the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
-Environment and state-engine checkpoint, 24 October. Zetaris authenticated sample
-queries work. A Meterless World Model-backed assumption tracker and persistent
-replay demo work on labelled synthetic observations. A live Nightshift request
-returned the expected marker and reported `nvidia/nemotron-3-ultra-550b-a55b`.
-The revised relief-data integration, planner/validator loop and redesigned UI
-remain build gates. GitHub Actions is blocked at startup by an account
-billing/spending limit.
+Core CLI verified, 24 October. Real Zetaris queries join isolated Postgres logistics
+and JSON route/report fixtures. LangGraph runs a bounded planner–validator loop
+through Nightshift/Nemotron. World Model tracks evidence and invalidates affected
+plans. The live demonstration rejects an overweight draft, revises, replans after
+a contradictory report and holds an impossible deadline. An explicit offline
+enumeration replay uses the same validator. The browser UI is still the earlier
+scaffold; approval actions and the redesigned interface remain build gates.
+GitHub Actions is blocked at startup by an account billing/spending limit.
 
 Start with [the judge guide](docs/JUDGE_GUIDE.md), [current execution plan](docs/EXECUTION_PLAN.md)
 and [verified environment status](docs/ENVIRONMENT.md).
@@ -52,14 +53,23 @@ bun run dev        # http://localhost:8080
 bun run test
 bun run build
 bun run typecheck
+bun run check:vendor
+bun run check:offline-replay
 ```
+
+Run `bun run demo:relief-agent` for the offline core demonstration, or
+`bun run demo:relief-agent --live` with the configured local sponsor services.
+The live path uses model credits. Reproduction and setup are in
+[ENVIRONMENT.md](docs/ENVIRONMENT.md); the initial overweight draft is an explicit
+stress-test fixture, not a claimed AI output or human approval.
 
 ## Environment
 
 Copy `.env.example` to `.env` and fill in the server-side configuration. `.env`
 is ignored and credentials must never use a `VITE_` prefix. See `docs/ENVIRONMENT.md`
 for the tested local Zetaris UI origin and the repeatable connection check.
-The application data adapter is a future gate; diagnostic access is available now.
+The server data adapter and CLI are implemented. The current browser scaffold
+does not consume the new core yet.
 
 ## Layout
 

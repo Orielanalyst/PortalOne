@@ -1,0 +1,42 @@
+{
+  "namespace": "relief-scenario-v1",
+  "postgres": {
+    "database": "portal-one-relief-db",
+    "image": "postgres@sha256:f4610795587492cd4fb887c2dc3de301b813278bb6f616992061141b5f15ac36",
+    "network": "zetaris_default",
+    "publishedPorts": []
+  },
+  "fileRoot": "/home/zetaris/customer-data/shared/portal-one-synthetic-v1",
+  "registrations": [
+    "PORTALONE_LOGISTICS_V1.inventory",
+    "PORTALONE_LOGISTICS_V1.vehicles",
+    "PORTALONE_SCENARIO_V1.route_segments",
+    "PORTALONE_SCENARIO_V1.observations"
+  ],
+  "operation": "Create or reuse only these owned demo resources; no platform reset or data deletion.",
+  "counts": {
+    "PORTALONE_LOGISTICS_V1.inventory": {
+      "actual": 1,
+      "expected": 1
+    },
+    "PORTALONE_LOGISTICS_V1.vehicles": {
+      "actual": 2,
+      "expected": 2
+    },
+    "PORTALONE_SCENARIO_V1.route_segments": {
+      "actual": 4,
+      "expected": 4
+    },
+    "PORTALONE_SCENARIO_V1.observations": {
+      "actual": 10,
+      "expected": 10
+    }
+  },
+  "verifiedAt": "2026-10-24T22:46:33.093Z",
+  "sourceRole": "relief_reader, SELECT-only",
+  "testedSourceWritePrivileges": false,
+  "credentialValuesLogged": false,
+  "implementationCommit": "ba87148006eab60d11f326e2a45fb2fca8329beb",
+  "inputManifest": "data/relief-scenario-v1/manifest.json",
+  "inputManifestSha256": "3196e17b924fb3071aaddbe0e9ba8d34040df9ade7c1c3535b82b5048305fc80"
+}

@@ -35,9 +35,9 @@ Rules and declaration boundaries are in `PROVENANCE.md`.
 | Model provider | Meterless Nightshift / Runtime | Installed 1.2.3; authenticated discovery and real final-text completion pass |
 | Shared state | Meterless World Model | Apache-2.0 reference vendored at `1742dec`; 10/10 upstream tests, 8/8 compiled conformance and durable feature proof pass |
 | Reasoning | Nemotron through Nightshift | Live `meterless/auto` completion reported `nvidia/nemotron-3-ultra-550b-a55b`; receipt records identity, timing and tokens |
-| Orchestration | Existing proposed LangGraph JS architecture | Not installed; verify bounded loop, retry/hold and state handling before accepting ADR 0001 |
-| Constraints | Existing solver/graph libraries, OR-Tools if necessary | Select the smallest suitable licensed candidate after formalizing the one mission |
-| Data | Small permitted or synthetic signal, route, fleet and stock samples | Source manifest and expected outcomes required before loading |
+| Orchestration | LangGraph JS 1.5.2 + Core 1.3.0 | MIT; pinned and archived; conditional-loop smoke and live bounded scenarios pass |
+| Constraints | Exhaustive comparison of four predefined route/vehicle candidates | Deterministic mass, payload, fuel, drive type, freshness, corroboration, deadline and earliest-eligible objective; no general route optimizer needed |
+| Data | Synthetic v1 pack, isolated Postgres and JSON files | Manifest hashes; counts and joined results independently matched; read-only source query role verified |
 | UI | Existing React application and established map components | Deferred until the core run works; new design comes later |
 
 Use available skills and connectors where they fit. There is no installed Zetaris
@@ -93,9 +93,9 @@ completion times. Each gate requires its acceptance evidence before marking done
 |---|---|---|---|
 | G0 Accountability + environment | 24 Oct | Baseline manifest, truthful judge index, local checks, Zetaris read smoke | verified locally; remote CI blocked |
 | G1 Power + engine | 24 Oct next; cap 2 hours | Nightshift auth + real completion; actual Nemotron identity; World Model reference/conformance result | verified locally: World Model feature, auth rejection and final-text Nemotron completion; see runtime receipt |
-| G2 Scenario + data | 25 Oct morning | Small licensed/synthetic pack, source manifest, repeatable registration and joined relief evidence through Zetaris | not started |
-| G3 Agent core | 25 Oct | Validator rejects a candidate, planner revises, impossible case holds; bounded run and event trace | not started |
-| G4 Changed evidence | 26 Oct morning | Duplicate, contradiction, expiry and new-event cases; affected plan invalidation; safe operator review | not started |
+| G2 Scenario + data | 25 Oct morning | Small licensed/synthetic pack, source manifest, repeatable registration and joined relief evidence through Zetaris | verified locally on 24 Oct; provisioning and cross-source receipts linked in judge guide |
+| G3 Agent core | 25 Oct | Validator rejects a candidate, planner revises, impossible case holds; bounded run and event trace | verified locally on 24 Oct; live Nightshift/Zetaris trace plus explicit offline replay |
+| G4 Changed evidence | 26 Oct morning | Duplicate, contradiction, expiry and new-event cases; affected plan invalidation; safe operator review | partial: road-assumption tests and live invalidation/replan pass; full mission/logistics version binding, operator approval and recovery still to implement |
 | G5 Interface + rehearsal | 26 Oct | New interface consumes real events; three scenarios run; offline state explicit; video rehearsal | deferred |
 | G6 Submission package | 27 Oct by 21:00 | Video, slides, public runnable repo, declarations and sponsor evidence checked | not started |
 
@@ -123,8 +123,12 @@ submission track, repo visibility or account billing as part of this plan audit.
 Dependency status: Zetaris images and JDBC driver are already local; vendor
 platform checks and pinned Python HTTP helpers pass. World Model is pinned,
 vendored and smoke-tested. Nightshift authentication/discovery and a real Nemotron
-completion pass. Relief data and orchestration remain unverified. The `auto` mode
-can choose a different model later; record the actual identity on every run.
+completion pass. Relief federation and the bounded LangGraph core pass live
+synthetic scenarios. Twenty-one adopted package archives are retained with
+integrity and license evidence. Routing modes can choose different models later;
+each call records its returned identity. A full 50-row page fails closed because
+it might omit another origin. LangGraph runs are not yet resumable after process
+failure; completed receipts and World Model state are persisted.
 
 ## Accountability and definition of done
 
@@ -135,8 +139,8 @@ IDs, UTC timestamps, actor, tool/query, evidence IDs, state/plan version, constr
 result, revision reason, provider/model, duration and final disposition. Record
 concise decision explanations, never private chain-of-thought or credentials.
 
-Local typecheck, 26 application tests, 8 compiled engine conformance cases and
+Local typecheck, 40 application tests, 8 compiled engine conformance cases and
 production build passed on 24 Oct. These cover the evaluator, provider contract
-and state feature; they do not validate the future complete agent loop. GitHub
+and state/data/agent core. They do not validate the deferred interface or approval workflow. GitHub
 Actions is blocked by an account billing/spending-limit error; local evidence is
 not a green remote run.
