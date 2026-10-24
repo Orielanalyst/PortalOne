@@ -1,5 +1,5 @@
 {
-  "acquiredAt": "2026-10-24T22:33:48.491Z",
+  "acquiredAt": "2026-10-24T22:40:48.637Z",
   "baselineCommit": "341de32",
   "lockedPackages": [
     {
@@ -11,7 +11,8 @@
       "tarball": "https://registry.npmjs.org/@cfworker/json-schema/-/json-schema-4.1.1.tgz",
       "sha256": "f3a8076b450505f0671fa78a6efb5e7726883e2c6dfb13b29261872803610203",
       "bytes": 26705,
-      "licenseTextSource": "https://raw.githubusercontent.com/cfworker/cfworker/5409fdc2bd144f68e8b28c61c71fcb16600000a6/LICENSE.md"
+      "licenseTextSource": "https://raw.githubusercontent.com/cfworker/cfworker/5409fdc2bd144f68e8b28c61c71fcb16600000a6/LICENSE.md",
+      "licenseTextSha256": "376944252ab78ca6b41aee44ddea8894927ee67891e77e61eb9d59af63e35094"
     },
     {
       "name": "@langchain/core",
@@ -121,7 +122,8 @@
       "tarball": "https://registry.npmjs.org/js-tiktoken/-/js-tiktoken-1.0.21.tgz",
       "sha256": "3b1f24b185565ca9a8d8f51466dfc4f99d67f1f05bc009258710ddb7a8d810fa",
       "bytes": 10239044,
-      "licenseTextSource": "https://raw.githubusercontent.com/dqbd/tiktoken/4c8b748e07992c00386f3180af5c574b27b65139/LICENSE"
+      "licenseTextSource": "https://raw.githubusercontent.com/dqbd/tiktoken/4c8b748e07992c00386f3180af5c574b27b65139/LICENSE",
+      "licenseTextSha256": "418cb499b436128d653d79941333a5437b7be2ea9213dcc2f04d15d5d2c51d86"
     },
     {
       "name": "langsmith",
@@ -187,6 +189,17 @@
       "tarball": "https://registry.npmjs.org/p-timeout/-/p-timeout-3.2.0.tgz",
       "sha256": "226b0886e0a837928501e3f5f96c5ec2f4c97aa2e287719b50d5341678da1c67",
       "bytes": 2768,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "license": "MIT",
+      "filename": "zod-4.6.7.tgz",
+      "integrity": "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==",
+      "tarball": "https://registry.npmjs.org/zod/-/zod-4.6.7.tgz",
+      "sha256": "84efd155bed93270286e793fc951be270b536cbd5b0eeb111f0fa3967201d698",
+      "bytes": 1141941,
       "licenseTextSource": "included in archive"
     },
     {

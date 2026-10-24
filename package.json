@@ -12,7 +12,14 @@
     "build:world-model": "bun build ./vendor/meterless-world-model/src/index.ts --target=node --format=esm --outdir ./vendor/meterless-world-model/dist && tsc --target ES2022 --module ESNext --moduleResolution Bundler --strict --skipLibCheck --declaration --emitDeclarationOnly --allowImportingTsExtensions --types node --outDir vendor/meterless-world-model/dist vendor/meterless-world-model/src/index.ts",
     "check:world-model": "bun scripts/check-world-model.ts",
     "demo:world-model": "bun scripts/demo-world-model.ts",
-    "check:meterless": "bun scripts/check-meterless.ts"
+    "check:meterless": "bun scripts/check-meterless.ts",
+    "prepare:relief-data": "bun scripts/prepare-relief-data.ts",
+    "provision:relief-data": "bun scripts/provision-relief-data.ts",
+    "check:relief-data": "bun scripts/check-relief-data.ts",
+    "demo:relief-agent": "bun scripts/demo-relief-agent.ts",
+    "check:offline-replay": "bun scripts/check-offline-replay.ts",
+    "check:vendor": "bun scripts/check-vendor-packages.ts",
+    "build:relief-replay": "bun build scripts/demo-relief-agent.ts --target=bun --outfile=.runtime/relief-replay.mjs"
   },
   "dependencies": {
     "@langchain/core": "1.3.0",

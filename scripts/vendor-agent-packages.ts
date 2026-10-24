@@ -11,13 +11,26 @@ const before = parse(baseline.stdout.toString());
 const after = parse(readFileSync('bun.lock', 'utf8'));
 const folder = resolve('vendor/npm-registry');
 mkdirSync(folder, { recursive: true });
+let previous: any[] = [];
+try { previous = JSON.parse(readFileSync(resolve(folder, 'manifest.json'), 'utf8')).lockedPackages; } catch { /* first acquisition */ }
 const acquired = [];
 for (const [key, entry] of Object.entries(after.packages) as [string, any[]][]) {
-  if (JSON.stringify(before.packages[key]) === JSON.stringify(entry)) continue;
+  if (JSON.stringify(before.packages[key]) === JSON.stringify(entry) && key !== 'zod') continue;
   const [name, version] = String(entry[0]).split(/@(?=[^@]+$)/);
   if (!name || !version) throw new Error('Unexpected locked package identity.');
   const integrity = entry.find(value => typeof value === 'string' && value.startsWith('sha512-'));
   if (!integrity) throw new Error(`No locked integrity for ${name}.`);
+  const cached = previous.find(p => p.name === name && p.version === version && p.integrity === integrity);
+  if (cached) {
+    const bytes = readFileSync(resolve(folder, cached.filename));
+    if (`sha512-${createHash('sha512').update(bytes).digest('base64')}` !== integrity) throw new Error(`Cached archive integrity mismatch: ${name}`);
+    if (cached.licenseTextSource !== 'included in archive') {
+      const license = readFileSync(resolve(folder, `${cached.filename}.LICENSE`));
+      cached.licenseTextSha256 = createHash('sha256').update(license).digest('hex');
+    }
+    acquired.push(cached);
+    continue;
+  }
   const metadataResponse = await fetch(`https://registry.npmjs.org/${encodeURIComponent(name)}/${encodeURIComponent(version)}`);
   if (!metadataResponse.ok) throw new Error(`Registry metadata unavailable for ${name}.`);
   const metadata = await metadataResponse.json() as any;

@@ -10,5 +10,11 @@ bun run test
 echo "pre-push: Meterless World Model conformance"
 bun run check:world-model
 
+echo "pre-push: vendored archives"
+bun run check:vendor
+
+echo "pre-push: offline relief replay with HTTP disabled"
+bun run check:offline-replay
+
 echo "pre-push: build"
 bun run build

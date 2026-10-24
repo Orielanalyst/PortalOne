@@ -36,5 +36,11 @@ jobs:
       - name: Meterless World Model conformance
         run: bun run check:world-model
 
+      - name: Vendored archive integrity
+        run: bun run check:vendor
+
+      - name: Offline relief replay with HTTP disabled
+        run: bun run check:offline-replay
+
       - name: Build
         run: bun run build

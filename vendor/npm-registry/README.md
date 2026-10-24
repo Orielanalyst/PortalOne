@@ -1,7 +1,8 @@
 # Pinned orchestration packages
 
 These are the 20 new or changed npm package archives acquired relative to
-`341de32:bun.lock` for the relief data contract and agent runtime. All declare MIT.
+`341de32:bun.lock`, plus the explicitly adopted existing Zod version, for the
+relief data contract and agent runtime. All 21 declare MIT.
 Every archive's SHA-512 matches both the committed lockfile and npm's versioned
 metadata. `manifest.json` records version, URL, SHA-256, size and license location.
 Package scripts were disabled during installation.
