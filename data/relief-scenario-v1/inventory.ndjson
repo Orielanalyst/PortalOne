@@ -1,0 +1,1 @@
+{"id":"sim-stock-1","depot_id":"sim-bamenda-hub","sku":"sim-relief-kit","available_units":120,"unit_mass_kg":10,"observed_at":"2026-10-24T08:45:00Z","expires_at":"2026-10-24T11:00:00Z","source_id":"sim-warehouse-ledger","simulated":true}

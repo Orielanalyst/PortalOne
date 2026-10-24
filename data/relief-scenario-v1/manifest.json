@@ -1,0 +1,46 @@
+{
+  "id": "relief-scenario-v1",
+  "revision": 1,
+  "simulated": true,
+  "license": "CC0-1.0",
+  "author": "PortalOne team with Codex assistance",
+  "createdOn": "2026-10-24",
+  "files": [
+    {
+      "file": "scenario.json",
+      "sha256": "963a3b19dfd05136e3b591220ff1e438d7f6267d265c4fa5fe3f9fc23e6acfde",
+      "rows": null
+    },
+    {
+      "file": "route_segments.json",
+      "sha256": "bc0161bdfc5a76b0e2ef83d5062b6582da6fa6d47119fc0359a9756e41a2cefb",
+      "rows": 4
+    },
+    {
+      "file": "observations.json",
+      "sha256": "edc208bbc868d22ddcb93e3481ab0c4fb88d18c684d47ab468a8309abcec26cf",
+      "rows": 10
+    },
+    {
+      "file": "inventory.ndjson",
+      "sha256": "12283dbb94cf66ed42fb481a9a4a0cdf978691e1db594a1d160aceaa81dcc808",
+      "rows": 1
+    },
+    {
+      "file": "vehicles.ndjson",
+      "sha256": "dffe998a1f12f9fdf55976132ab18fd6ba2c4cfc1fc0491465e90979dab23553",
+      "rows": 2
+    }
+  ],
+  "sources": {
+    "postgres": [
+      "inventory",
+      "vehicles"
+    ],
+    "files": [
+      "route_segments",
+      "observations"
+    ]
+  },
+  "limits": "Entirely synthetic. Fixed simulation clock. No real field reports, surveyed detour or operational safety claim."
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "sim-hub-mile4-report-1",
+    "origin_id": "sim-origin-1",
+    "source_id": "sim-source-1",
+    "segment_id": "sim-hub-mile4",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-hub-mile4-report-2",
+    "origin_id": "sim-origin-2",
+    "source_id": "sim-source-2",
+    "segment_id": "sim-hub-mile4",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-mile4-bambili-report-1",
+    "origin_id": "sim-origin-1",
+    "source_id": "sim-source-1",
+    "segment_id": "sim-mile4-bambili",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-mile4-bambili-report-2",
+    "origin_id": "sim-origin-2",
+    "source_id": "sim-source-2",
+    "segment_id": "sim-mile4-bambili",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-hub-detour-report-1",
+    "origin_id": "sim-origin-1",
+    "source_id": "sim-source-1",
+    "segment_id": "sim-hub-detour",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-hub-detour-report-2",
+    "origin_id": "sim-origin-2",
+    "source_id": "sim-source-2",
+    "segment_id": "sim-hub-detour",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-detour-bambili-report-1",
+    "origin_id": "sim-origin-1",
+    "source_id": "sim-source-1",
+    "segment_id": "sim-detour-bambili",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-detour-bambili-report-2",
+    "origin_id": "sim-origin-2",
+    "source_id": "sim-source-2",
+    "segment_id": "sim-detour-bambili",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  },
+  {
+    "id": "sim-forward-1",
+    "origin_id": "sim-origin-1",
+    "source_id": "sim-social-relay",
+    "segment_id": "sim-hub-mile4",
+    "claim": "passable",
+    "observed_at": "2026-10-24T08:50:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": true,
+    "simulated": true
+  },
+  {
+    "id": "sim-new-blockade",
+    "origin_id": "sim-origin-3",
+    "source_id": "sim-source-3",
+    "segment_id": "sim-mile4-bambili",
+    "claim": "blocked",
+    "observed_at": "2026-10-24T09:05:00Z",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "forwarded": false,
+    "simulated": true
+  }
+]

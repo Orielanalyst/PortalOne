@@ -1,0 +1,58 @@
+[
+  {
+    "route_id": "sim-direct",
+    "sequence": 1,
+    "segment_id": "sim-hub-mile4",
+    "from_node": "sim-bamenda-hub",
+    "to_node": "sim-mile4",
+    "distance_km": 8,
+    "travel_minutes": 15,
+    "max_gross_kg": 6500,
+    "requires_four_wheel_drive": false,
+    "source_id": "sim-route-survey",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "simulated": true
+  },
+  {
+    "route_id": "sim-direct",
+    "sequence": 2,
+    "segment_id": "sim-mile4-bambili",
+    "from_node": "sim-mile4",
+    "to_node": "sim-bambili-site",
+    "distance_km": 12,
+    "travel_minutes": 25,
+    "max_gross_kg": 3500,
+    "requires_four_wheel_drive": false,
+    "source_id": "sim-route-survey",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "simulated": true
+  },
+  {
+    "route_id": "sim-detour",
+    "sequence": 1,
+    "segment_id": "sim-hub-detour",
+    "from_node": "sim-bamenda-hub",
+    "to_node": "sim-detour-junction",
+    "distance_km": 12,
+    "travel_minutes": 25,
+    "max_gross_kg": 7000,
+    "requires_four_wheel_drive": true,
+    "source_id": "sim-route-survey",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "simulated": true
+  },
+  {
+    "route_id": "sim-detour",
+    "sequence": 2,
+    "segment_id": "sim-detour-bambili",
+    "from_node": "sim-detour-junction",
+    "to_node": "sim-bambili-site",
+    "distance_km": 18,
+    "travel_minutes": 35,
+    "max_gross_kg": 6500,
+    "requires_four_wheel_drive": true,
+    "source_id": "sim-route-survey",
+    "expires_at": "2026-10-24T11:00:00Z",
+    "simulated": true
+  }
+]

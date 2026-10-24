@@ -1,0 +1,33 @@
+{
+  "id": "relief-scenario-v1",
+  "revision": 1,
+  "simulated": true,
+  "clock": "2026-10-24T09:00:00Z",
+  "changedAt": "2026-10-24T09:05:00Z",
+  "mission": {
+    "id": "sim-bambili-delivery",
+    "depotId": "sim-bamenda-hub",
+    "destinationId": "sim-bambili-site",
+    "sku": "sim-relief-kit",
+    "quantity": 100,
+    "objective": "earliest_delivery",
+    "deadline": "2026-10-24T10:30:00Z",
+    "handlingMinutes": 10,
+    "bufferMinutes": 10,
+    "fuelReserveLitres": 5,
+    "minimumIndependentOrigins": 2
+  },
+  "inventory": [
+    { "id": "sim-stock-1", "depot_id": "sim-bamenda-hub", "sku": "sim-relief-kit", "available_units": 120, "unit_mass_kg": 10, "observed_at": "2026-10-24T08:45:00Z", "expires_at": "2026-10-24T11:00:00Z", "source_id": "sim-warehouse-ledger", "simulated": true }
+  ],
+  "vehicles": [
+    { "id": "sim-heavy-truck", "depot_id": "sim-bamenda-hub", "payload_kg": 3000, "tare_kg": 4800, "fuel_litres": 30, "litres_per_km": 0.4, "four_wheel_drive": false, "available": true, "observed_at": "2026-10-24T08:45:00Z", "expires_at": "2026-10-24T11:00:00Z", "source_id": "sim-fleet-ledger", "simulated": true },
+    { "id": "sim-light-truck", "depot_id": "sim-bamenda-hub", "payload_kg": 1600, "tare_kg": 2100, "fuel_litres": 30, "litres_per_km": 0.25, "four_wheel_drive": true, "available": true, "observed_at": "2026-10-24T08:45:00Z", "expires_at": "2026-10-24T11:00:00Z", "source_id": "sim-fleet-ledger", "simulated": true }
+  ],
+  "segments": [
+    { "route_id": "sim-direct", "sequence": 1, "segment_id": "sim-hub-mile4", "from_node": "sim-bamenda-hub", "to_node": "sim-mile4", "distance_km": 8, "travel_minutes": 15, "max_gross_kg": 6500, "requires_four_wheel_drive": false, "source_id": "sim-route-survey", "expires_at": "2026-10-24T11:00:00Z", "simulated": true },
+    { "route_id": "sim-direct", "sequence": 2, "segment_id": "sim-mile4-bambili", "from_node": "sim-mile4", "to_node": "sim-bambili-site", "distance_km": 12, "travel_minutes": 25, "max_gross_kg": 3500, "requires_four_wheel_drive": false, "source_id": "sim-route-survey", "expires_at": "2026-10-24T11:00:00Z", "simulated": true },
+    { "route_id": "sim-detour", "sequence": 1, "segment_id": "sim-hub-detour", "from_node": "sim-bamenda-hub", "to_node": "sim-detour-junction", "distance_km": 12, "travel_minutes": 25, "max_gross_kg": 7000, "requires_four_wheel_drive": true, "source_id": "sim-route-survey", "expires_at": "2026-10-24T11:00:00Z", "simulated": true },
+    { "route_id": "sim-detour", "sequence": 2, "segment_id": "sim-detour-bambili", "from_node": "sim-detour-junction", "to_node": "sim-bambili-site", "distance_km": 18, "travel_minutes": 35, "max_gross_kg": 6500, "requires_four_wheel_drive": true, "source_id": "sim-route-survey", "expires_at": "2026-10-24T11:00:00Z", "simulated": true }
+  ]
+}

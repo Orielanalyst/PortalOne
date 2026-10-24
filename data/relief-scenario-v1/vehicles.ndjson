@@ -1,0 +1,2 @@
+{"id":"sim-heavy-truck","depot_id":"sim-bamenda-hub","payload_kg":3000,"tare_kg":4800,"fuel_litres":30,"litres_per_km":0.4,"four_wheel_drive":false,"available":true,"observed_at":"2026-10-24T08:45:00Z","expires_at":"2026-10-24T11:00:00Z","source_id":"sim-fleet-ledger","simulated":true}
+{"id":"sim-light-truck","depot_id":"sim-bamenda-hub","payload_kg":1600,"tare_kg":2100,"fuel_litres":30,"litres_per_km":0.25,"four_wheel_drive":true,"available":true,"observed_at":"2026-10-24T08:45:00Z","expires_at":"2026-10-24T11:00:00Z","source_id":"sim-fleet-ledger","simulated":true}
