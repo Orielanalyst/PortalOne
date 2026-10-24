@@ -3,4 +3,5 @@
 .githooks/* text eol=lf
 *.ps1 text eol=crlf
 /vendor/zetaris-getting-started/** text eol=lf
+/vendor/meterless-world-model/** text eol=lf
 /docs/evidence/*.json text eol=lf

@@ -19,6 +19,13 @@ dist
 __pycache__/
 *.pyc
 
+# Acquired installers, isolated checkouts and private runtime artifacts
+.local-tools/
+.runtime/
+
+!vendor/meterless-world-model/dist/
+!vendor/meterless-world-model/dist/**
+
 # editor / OS
 .DS_Store
 .idea
