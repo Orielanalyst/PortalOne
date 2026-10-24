@@ -6,3 +6,6 @@ bun run typecheck
 
 echo "pre-push: tests"
 bun run test
+
+echo "pre-push: build"
+bun run build
