@@ -21,7 +21,9 @@ it('rejects writes and multiple statements on the application read path', async 
 });
 
 it('fails rather than silently using truncated or malformed tables', async () => {
-  for (const payload of [{ headers: ['n'], data: [['1']], total: 51 }, { headers: ['n'], data: [[]], total: 1 }]) {
+  for (const payload of [{ headers: ['n'], data: [['1']], total: 51 },
+    { headers: ['n'], data: Array.from({ length: 50 }, () => ['1']), total: 50 },
+    { headers: ['n'], data: [[]], total: 1 }]) {
     const client = new ZetarisClient({ baseUrl: 'http://localhost:3000', orgId: '1', token: 'test',
       fetch: vi.fn(async () => Response.json(payload)) as unknown as typeof fetch });
     await expect(client.query('SELECT 1 AS n')).rejects.toThrow();

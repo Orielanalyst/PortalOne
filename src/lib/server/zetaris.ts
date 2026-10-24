@@ -48,7 +48,8 @@ export class ZetarisClient {
     if (!Array.isArray(result.headers) || !result.headers.every(item => typeof item === 'string') ||
       !Array.isArray(result.data) || !result.data.every(row => Array.isArray(row) && row.length === result.headers.length) ||
       !Number.isFinite(Number(result.total)) || Number(result.total) < 0) throw new Error('Unexpected Zetaris table response.');
-    if (result.data.length > 50 || Number(result.total) > 50) throw new Error('Zetaris row budget exceeded; narrow the query.');
+    // A full page may hide a fifty-first origin. Fail closed at the boundary.
+    if (result.data.length >= 50 || Number(result.total) >= 50) throw new Error('Zetaris row budget reached; narrow the query.');
     return result;
   }
   /** Provisioning only; never offered to the planner. No SQL/error bodies logged. */

@@ -114,6 +114,9 @@ for (const table of ['route_segments', 'observations']) {
     path "${fileRoot}/${table}.json")`, `SELECT COUNT(*) AS n FROM PORTALONE_SCENARIO_V1.${table}`);
 }
 const counts: Record<string, unknown> = {};
+const writes = docker(['exec', database, 'psql', '-U', 'relief_owner', '-d', 'relief', '-At', '-c',
+  "SELECT bool_or(has_table_privilege('relief_reader',t.tbl,p.priv)) FROM (VALUES ('inventory'),('vehicles')) t(tbl) CROSS JOIN (VALUES ('INSERT'),('UPDATE'),('DELETE'),('TRUNCATE'),('REFERENCES'),('TRIGGER')) p(priv)"]);
+if (writes.text !== 'f') throw new Error('The source query role unexpectedly has write privileges.');
 for (const [source, table] of [['PORTALONE_LOGISTICS_V1', 'inventory'], ['PORTALONE_LOGISTICS_V1', 'vehicles'],
   ['PORTALONE_SCENARIO_V1', 'route_segments'], ['PORTALONE_SCENARIO_V1', 'observations']]) {
   const result = await client.query(`SELECT COUNT(*) AS n FROM ${source}.${table}`);
@@ -122,5 +125,7 @@ for (const [source, table] of [['PORTALONE_LOGISTICS_V1', 'inventory'], ['PORTAL
   if (actual !== expected) throw new Error(`Source count mismatch for ${table}.`);
   counts[`${source}.${table}`] = { actual, expected };
 }
-console.log(JSON.stringify({ ...plan, counts, verifiedAt: new Date().toISOString(),
-  sourceRole: 'relief_reader, SELECT-only', credentialValuesLogged: false }, null, 2));
+const receipt = { ...plan, counts, verifiedAt: new Date().toISOString(),
+  sourceRole: 'relief_reader, SELECT-only', testedSourceWritePrivileges: false, credentialValuesLogged: false };
+if (process.argv.includes('--evidence')) writeFileSync('docs/evidence/relief-provision-2026-10-24.json', JSON.stringify(receipt, null, 2) + '\n');
+console.log(JSON.stringify(receipt, null, 2));

@@ -102,3 +102,13 @@ it('checks the earliest-delivery objective against independently feasible altern
   expect(result.violations[0]?.code).toBe('EARLIER_ELIGIBLE_CANDIDATE');
   expect(result.violations[0]?.message).toContain('20 minutes earlier');
 });
+
+it('holds a malformed planner contract before treating it as an eligible proposal', async () => {
+  const malformed: ReliefPlanner = { mode: 'offline-enumeration', propose: async () => ({
+    proposal: { routeId: 'sim-direct', vehicleId: null, rationale: 'Invalid mixed null selection.' },
+  }) };
+  const result = await runRelief({ mission: pack.mission, asOf: pack.clock, source, planner: malformed, world: world() });
+  expect(result.disposition).toBe('hold');
+  expect(result.proposal).toBeNull();
+  expect(result.trackedPlan).toBeNull();
+});

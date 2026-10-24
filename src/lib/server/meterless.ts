@@ -52,9 +52,10 @@ export class MeterlessClient {
   async complete(prompt: string, model = 'meterless/auto', timeoutMs = 180_000, options: { signal?: AbortSignal } = {}) {
     if (!model.startsWith('meterless/')) throw new Error('Choose a routing mode returned by Meterless.');
     const started = performance.now();
+    const timeout = Math.max(1, Math.floor(timeoutMs));
     const response = await this.request(`${this.baseUrl}/chat/completions`, {
       method: 'POST', headers: this.headers(true), signal: options.signal
-        ? AbortSignal.any([AbortSignal.timeout(timeoutMs), options.signal]) : AbortSignal.timeout(timeoutMs),
+        ? AbortSignal.any([AbortSignal.timeout(timeout), options.signal]) : AbortSignal.timeout(timeout),
       body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }],
         max_tokens: 128, temperature: 0, stream: false,
         chat_template_kwargs: { enable_thinking: false } }),

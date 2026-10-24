@@ -1,6 +1,7 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { runRelief } from '../src/lib/server/relief-agent';
 import { FixtureReliefSource, readScenario, ZetarisReliefSource } from '../src/lib/server/relief-source';
 import { EnumerationReliefPlanner, NightshiftReliefPlanner } from '../src/lib/server/relief-planner';
@@ -32,10 +33,26 @@ const impossible = await runRelief({ mission: { ...pack.mission, deadline: '2026
   asOf: pack.clock, source, planner, world });
 if (impossible.disposition !== 'hold') throw new Error('Impossible deadline must hold.');
 const sourceFiles = ['relief-agent', 'relief-planner', 'relief-validator', 'relief-source', 'relief-data', 'relief-world', 'meterless', 'zetaris'];
+const hash = (data: string | Buffer) => createHash('sha256').update(data).digest('hex');
+let checkout: { commit: string | null; dirty: boolean | null } = { commit: null, dirty: null };
+try {
+  const commit = Bun.spawnSync(['git', 'rev-parse', 'HEAD'], { stdout: 'pipe', stderr: 'pipe' });
+  const status = Bun.spawnSync(['git', 'status', '--porcelain', '--', 'src/lib/server', 'scripts/demo-relief-agent.ts'], { stdout: 'pipe', stderr: 'pipe' });
+  if (commit.exitCode === 0 && status.exitCode === 0) checkout = { commit: commit.stdout.toString().trim(), dirty: Boolean(status.stdout.toString().trim()) };
+} catch { /* Source archives and standalone replay do not require Git. */ }
+const entry = fileURLToPath(import.meta.url);
 const receipt = { capturedAt: new Date().toISOString(), mode: live ? 'Live local Zetaris and Nightshift over synthetic inputs' : 'Offline fixture and enumeration; no sponsor calls',
-  sourceHashes: sourceFiles.map(name => ({ file: `src/lib/server/${name}.ts`, sha256: createHash('sha256')
-    .update(readFileSync(`src/lib/server/${name}.ts`)).digest('hex') })),
+  sourceCheckout: checkout,
+  entryArtifact: { file: relative(process.cwd(), entry).replaceAll('\\', '/'), sha256: hash(readFileSync(entry)) },
+  sourceHashes: sourceFiles.map(name => {
+    const file = `src/lib/server/${name}.ts`;
+    if (!existsSync(file)) return { file, available: false };
+    const data = readFileSync(file);
+    return { file, available: true, sha256: hash(data), sha256_lf: hash(data.toString('utf8').replaceAll('\r\n', '\n')) };
+  }),
+  sourceHashScope: 'Files present at capture; actual executed script or bundle is identified separately by entryArtifact',
   inputManifest: 'data/relief-scenario-v1/manifest.json',
+  inputManifestSha256: hash(readFileSync('data/relief-scenario-v1/manifest.json')),
   initialDraftOrigin: 'Explicit synthetic stress-test fixture, not an AI-generated draft or a human approval',
   checks: { grossWeightRejected: true, revisedForOperatorReview: true, changedEvidenceInvalidated: true,
     replannedToDetour: true, impossibleMissionHeld: true, dispatchAuthorized: false },
