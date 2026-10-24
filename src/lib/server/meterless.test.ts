@@ -41,4 +41,23 @@ it('sends required headers and keeps routing mode separate from actual model evi
   expect(url).toBe('http://localhost:8088/v1/chat/completions');
   expect(options.headers).toMatchObject({ Authorization: 'Bearer test-token',
     'meterless-app': 'portal-one', 'meterless-scope': 'user' });
+  expect(JSON.parse(String(options.body)).chat_template_kwargs).toEqual({ enable_thinking: false });
+});
+
+it.each(['<think>internal trace</think>PORTALONE_OK', 'internal trace</think>PORTALONE_OK'])(
+  'returns only the final answer when a provider includes a thinking prefix', async (content) => {
+    const runtime = new MeterlessClient({ baseUrl: 'localhost:8088', token: 'test',
+      fetch: vi.fn(async () => Response.json({ choices: [{ message: { content } }] })) as unknown as typeof fetch });
+    expect((await runtime.complete('Public smoke prompt')).content).toBe('PORTALONE_OK');
+  });
+
+it.each([
+  { content: '<think>unfinished trace', finish_reason: 'stop' },
+  { content: 'trace only</think>', finish_reason: 'stop' },
+  { content: 'partial answer', finish_reason: 'length' },
+])('rejects unfinished reasoning and token-truncated answers', async (choice) => {
+  const runtime = new MeterlessClient({ baseUrl: 'localhost:8088', token: 'test',
+    fetch: vi.fn(async () => Response.json({ choices: [{ message: { content: choice.content },
+      finish_reason: choice.finish_reason }] })) as unknown as typeof fetch });
+  await expect(runtime.complete('Public smoke prompt')).rejects.toThrow();
 });

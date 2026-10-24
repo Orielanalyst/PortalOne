@@ -23,7 +23,12 @@ if (selected && process.argv.includes('--infer')) {
   try {
     const wrongTokenClient = new MeterlessClient({ baseUrl: selected.baseUrl, token: 'portal-one-invalid-token' });
     receipt['wrongTokenProbe'] = await wrongTokenClient.probe();
-    receipt['completion'] = await selected.complete('Reply with exactly PORTALONE_OK.');
+    const completion = await selected.complete('Reply with exactly PORTALONE_OK.');
+    if (completion.content !== 'PORTALONE_OK') throw new Error('Meterless smoke answer did not match the expected marker.');
+    receipt['completion'] = completion;
+    receipt['expectedMarkerMatched'] = true;
+    receipt['nemotronModelReported'] = completion.responseModel?.startsWith('nvidia/nemotron-') ?? false;
+    receipt['modelIdentitySource'] = 'Nightshift response body model field';
   } catch (error) { receipt['inferenceError'] = error instanceof Error ? error.message : 'Completion failed.'; }
 }
 if (process.argv.includes('--evidence')) {

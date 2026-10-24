@@ -55,7 +55,8 @@ export class MeterlessClient {
     const response = await this.request(`${this.baseUrl}/chat/completions`, {
       method: 'POST', headers: this.headers(true), signal: AbortSignal.timeout(timeoutMs),
       body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }],
-        max_tokens: 128, temperature: 0, stream: false }),
+        max_tokens: 128, temperature: 0, stream: false,
+        chat_template_kwargs: { enable_thinking: false } }),
     });
     if (!response.ok) {
       const error = await response.json().catch(() => null) as { error?: { code?: unknown } } | null;
@@ -65,12 +66,20 @@ export class MeterlessClient {
     }
     const body = await response.json() as {
       model?: unknown;
-      choices?: { message?: { content?: unknown } }[];
+      choices?: { finish_reason?: string; message?: { content?: unknown } }[];
       usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number };
     };
-    const content = body.choices?.[0]?.message?.content;
-    if (typeof content !== 'string' || !content.trim()) throw new Error('Meterless returned no plain-text answer.');
+    const choice = body.choices?.[0];
+    if (choice?.finish_reason === 'length') throw new Error('Meterless answer exceeded its token budget.');
+    const raw = choice?.message?.content;
+    if (typeof raw !== 'string') throw new Error('Meterless returned no plain-text answer.');
+    // Some Nemotron responses put the thinking prefix in content, with only a
+    // closing delimiter. Never return that prefix or an unfinished trace.
+    const end = raw.lastIndexOf('</think>');
+    const content = (end >= 0 ? raw.slice(end + '</think>'.length) : raw).trim();
+    if (!content || content.includes('<think>')) throw new Error('Meterless returned no plain-text answer.');
     return { content, requestedMode: model,
+      reasoningRequested: false,
       responseModel: typeof body.model === 'string' ? body.model : null,
       providerHeader: response.headers.get('x-meterless-provider'),
       modelHeader: response.headers.get('x-meterless-model'),
