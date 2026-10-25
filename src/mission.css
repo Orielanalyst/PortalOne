@@ -169,4 +169,17 @@
 
 @media(prefers-reduced-motion:reduce){.working-ring{animation:none}
 }
+.federated-planning{margin:24px 0 30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;color:#adbdb2}
+.planning-source{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;font-size:11px}
+.planning-source strong{font-weight:500;color:var(--mint)}
+.planning-source span{font-size:9px;color:var(--amber)}
+.federated-planning>small{display:block;font-size:10px;color:var(--dim);line-height:1.8}
+.planning-table-wrap{max-width:100%;overflow:auto;margin:18px 0}
+.planning-table-wrap table{width:100%;border-collapse:collapse;text-align:left;font-size:10px}
+.planning-table-wrap th{color:var(--dim);font-weight:400;padding:8px 10px 8px 0;border-bottom:1px solid var(--line)}
+.planning-table-wrap td{vertical-align:top;padding:12px 10px 12px 0;border-bottom:1px solid #30363860;min-width:72px}
+.planning-table-wrap small{display:block;font-size:8px;color:var(--dim);line-height:1.8}
+.federated-planning details{font-size:10px;color:var(--dim);line-height:1.8}
+.federated-planning summary{cursor:pointer}.federated-planning code{display:block;font-size:9px;overflow-wrap:anywhere;margin-top:5px}
+.federated-planning pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:9px;padding:12px;background:#121819;border-radius:6px}
 
