@@ -1,0 +1,9 @@
+{
+  "mode":"Visual inspection of final native live-run PDF",
+  "runId":"mission-259ef213-3139-47d6-90ab-3b078f318517",
+  "sourceCommit":"ece0ce3862f45654ebe99460a63716178ce54f58",
+  "pages":15,
+  "method":"Poppler rendered all pages at 90 dpi. Pages 1 through 15 were individually inspected.",
+  "checks":{"changeSummaryReadable":true,"actionHeadingsStayWithText":true,"completeFacilityInventory":true,"completeCommunityInventory":true,"locatedAccessCoordinateInventory":true,"demonstrationsAndUnknownsExplicit":true,"sourceEntriesNotSplit":true,"mapLegendScaleAndAttributionPresent":true,"noOverlapOrPlaceholderSections":true},
+  "qualification":"This is layout/source-boundary QA, not independent field verification or expert operational approval."
+}

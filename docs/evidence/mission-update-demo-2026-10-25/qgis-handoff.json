@@ -1,0 +1,72 @@
+{
+  "qgis": "3.44.15-Solothurn",
+  "freshProcess": true,
+  "openedFromZipAtNewMount": true,
+  "displayCrs": "EPSG:32632",
+  "layers": [
+    {
+      "layer": "blockages",
+      "features": 3,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    },
+    {
+      "layer": "intervention_candidates",
+      "features": 4,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    },
+    {
+      "layer": "facility_footprints",
+      "features": 3,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    },
+    {
+      "layer": "facilities",
+      "features": 7,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    },
+    {
+      "layer": "places",
+      "features": 16,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    },
+    {
+      "layer": "roads",
+      "features": 5100,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    },
+    {
+      "layer": "intervention_zones",
+      "features": 0,
+      "crs": "EPSG:4326",
+      "valid": true,
+      "invalidGeometries": 0,
+      "styleLoaded": true,
+      "pathWithinExtractedPack": true
+    }
+  ],
+  "networkEnabled": false
+}

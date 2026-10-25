@@ -1,0 +1,222 @@
+{
+  "runId": "mission-259ef213-3139-47d6-90ab-3b078f318517",
+  "revision": "9801188968c682f007f0c273c149e2e27f8dbdd801fadf47cfa08e523d2832ce",
+  "capturedAt": "2026-10-25T20:18:50.040Z",
+  "publicationCheck": {
+    "revision": "9801188968c682f007f0c273c149e2e27f8dbdd801fadf47cfa08e523d2832ce",
+    "checkedAt": "2026-10-25T20:21:07.880Z"
+  },
+  "previousRunId": "mission-e4b3626d-8442-4e3d-b53f-99f4ab7cfcd4",
+  "qgis": {
+    "qgis": "3.44.15-Solothurn",
+    "layers": [
+      {
+        "layer": "roads",
+        "count": 5100,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      },
+      {
+        "layer": "facilities",
+        "count": 7,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      },
+      {
+        "layer": "blockages",
+        "count": 3,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      },
+      {
+        "layer": "intervention_zones",
+        "count": 0,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      },
+      {
+        "layer": "intervention_candidates",
+        "count": 4,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      },
+      {
+        "layer": "places",
+        "count": 16,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      },
+      {
+        "layer": "facility_footprints",
+        "count": 3,
+        "crs": "EPSG:4326",
+        "valid": true,
+        "invalidGeometries": 0
+      }
+    ],
+    "projectReopened": true,
+    "displayCrs": "EPSG:32632",
+    "sourceCrs": "EPSG:4326",
+    "networkEnabled": false
+  },
+  "files": [
+    {
+      "name": "drafts/critique-v1-260d087a.md",
+      "sha256": "f1aac1f8c29bd723879d9a060567f5c530d5a7594016a5a503fb9559fe94bd92",
+      "bytes": 1338
+    },
+    {
+      "name": "drafts/diff-v1-f4ae15b6.md",
+      "sha256": "ef539a7594f4e63a4674c3b345f0957d8ef147e6ee2fedba126532bae754dc7c",
+      "bytes": 11297
+    },
+    {
+      "name": "drafts/findings-v1-b10baf50.md",
+      "sha256": "28ee584841d0d1c9f3e1fb1ad17707ff693761a8d52ff174f910ef60a11f40a8",
+      "bytes": 3973
+    },
+    {
+      "name": "drafts/plan-v1-5a6d68b5.md",
+      "sha256": "68afbc2c61c4791b4ca0a9949d3b7c20583a6089b3cc5473329e118cd9031b8a",
+      "bytes": 6136
+    },
+    {
+      "name": "drafts/report-v1-e81d8556.md",
+      "sha256": "112076e87aa8720c02f11b0e84a4eb02c3cbb79f998c5355dbd079ce2cae9345",
+      "bytes": 6869
+    },
+    {
+      "name": "evidence.json",
+      "sha256": "a24d99a7ad56243ab9fdd07d03c30037561d8c2f3295a0b767edf0231c1752ab",
+      "bytes": 24411
+    },
+    {
+      "name": "geojson/blockages.geojson",
+      "sha256": "77c84fab805c11c6607dc34518847750f103b47b88d2cf966bbe325f720b43f9",
+      "bytes": 1016
+    },
+    {
+      "name": "geojson/facilities.geojson",
+      "sha256": "8d46c18684cfe311380b160bab4f60002b335105bbadf3c5d5f271a77eaf6be3",
+      "bytes": 2919
+    },
+    {
+      "name": "geojson/facility_footprints.geojson",
+      "sha256": "b3f6823c707c3fe355a65a53d278d62bb807b6e05818166d63dc82a0f016683c",
+      "bytes": 1890
+    },
+    {
+      "name": "geojson/intervention_candidates.geojson",
+      "sha256": "3b0da53fb4c46a5ea9fd786b4e2fcaf3098fb999a39df8a201c26d1dcf0560ae",
+      "bytes": 1011
+    },
+    {
+      "name": "geojson/intervention_zones.geojson",
+      "sha256": "ed778c73ea51338d6576fb5992b189f2b94d9f3d5e199f46c1af520d6b0b3e6c",
+      "bytes": 42
+    },
+    {
+      "name": "geojson/places.geojson",
+      "sha256": "a1538db17773da70b2fe30fac8c3559ce8c5ca873761629088dd1c21fd29bd51",
+      "bytes": 3914
+    },
+    {
+      "name": "geojson/roads.geojson",
+      "sha256": "a54b89d57c4675a06b84ce249ac54ff368a5a21b6a6c083ab3763b80bd878edd",
+      "bytes": 3618207
+    },
+    {
+      "name": "map.pdf",
+      "sha256": "4644dad57d1dfb46b4dbcaf09491c8c91db6b4047544a3ff6e9a4d9a9400af2e",
+      "bytes": 897107
+    },
+    {
+      "name": "map.png",
+      "sha256": "a695135c8a1d80b09227e6c83d2ff20871a70949fcf0feda3ddc4681b6724bee",
+      "bytes": 1058794
+    },
+    {
+      "name": "mission-memory.json",
+      "sha256": "fda5bc19cb1031463da137d47724c01def6357b80d0c7d23163daf1487f57a57",
+      "bytes": 1926
+    },
+    {
+      "name": "mission.gpkg",
+      "sha256": "966516ad722fb30f8b4b883a42936d65076d3e65bce50a01226d687a12255b3a",
+      "bytes": 2428928
+    },
+    {
+      "name": "mission.qgz",
+      "sha256": "8e2d22e9698aec5ab3c90d4150da61fb03f569e764fdbc1feba119c0f9097bb3",
+      "bytes": 15898
+    },
+    {
+      "name": "pdf-validation.json",
+      "sha256": "9e8798d6d081c4d0822e5f3f5103484bc8a37a3d24dd1a9b763795a0029648f3",
+      "bytes": 97
+    },
+    {
+      "name": "qgis-validation.json",
+      "sha256": "1a4692e54a4a1baca4d523de27e2e79303cd3e8941c7c711b6765e6b657ec6e6",
+      "bytes": 1139
+    },
+    {
+      "name": "README.txt",
+      "sha256": "9612d81b1a50a93edd9481683677a01f8a24fa199c5bd461c53a86d9ffdabd0f",
+      "bytes": 610
+    },
+    {
+      "name": "report.md",
+      "sha256": "112076e87aa8720c02f11b0e84a4eb02c3cbb79f998c5355dbd079ce2cae9345",
+      "bytes": 6869
+    },
+    {
+      "name": "report.pdf",
+      "sha256": "912168383173bba5d3b05938e88aae41a4bae952f24ff0cf46e308fc151c9a76",
+      "bytes": 896927
+    },
+    {
+      "name": "styles/blockages.qml",
+      "sha256": "439ece0c6227a264862dff78e72347aebbf9bb991645403ce8ad3e06427af180",
+      "bytes": 16403
+    },
+    {
+      "name": "styles/facilities.qml",
+      "sha256": "a6b4d94b1c0b0a293b9037cd16a1ed3d53a89f1a288de3327ee5944cddd27498",
+      "bytes": 17772
+    },
+    {
+      "name": "styles/facility_footprints.qml",
+      "sha256": "226fe26c4217d5b8c6a3ff239ea66f561f9f6a1938078b316f6b7bd46e74ca42",
+      "bytes": 15809
+    },
+    {
+      "name": "styles/intervention_candidates.qml",
+      "sha256": "ea2eb68a5f70b1ff80b327fd7af06bedc34f7fe4b7643c97df03bec522ff2858",
+      "bytes": 15522
+    },
+    {
+      "name": "styles/intervention_zones.qml",
+      "sha256": "043909066434f4510825cbd76aafd4a4e815969fa4ea45bbe2d1ba23ac763cb1",
+      "bytes": 14095
+    },
+    {
+      "name": "styles/places.qml",
+      "sha256": "39a5b38c689eac5576dda89a57a37f0c997ff0a377e606124ee5aa87fe6aa13a",
+      "bytes": 27447
+    },
+    {
+      "name": "styles/roads.qml",
+      "sha256": "b8e30fe30b5f82749b429699c6cb2517c4d9fa686363a50ed0ea61b93a860627",
+      "bytes": 20142
+    }
+  ],
+  "operationalStatus": "hold",
+  "dispatchAuthorized": false
+}
