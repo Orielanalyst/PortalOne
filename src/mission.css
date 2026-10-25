@@ -36,6 +36,9 @@
 .agent-line strong{font-size:11px;font-weight:500;color:var(--ink)}
 .agent-line small{color:var(--dim);font-size:9px;margin-left:auto}
 .agent-message p{color:#c0cbc7;margin:12px 0}
+.conversation-receipt{font-size:9px;color:var(--dim);margin-top:10px;overflow-wrap:anywhere}
+.conversation-receipt summary{cursor:pointer}
+.conversation-mode{display:block;font-size:9px;color:var(--dim);margin-top:10px}
 .trace-link{color:#aebeb1;display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;font-size:10px!important;padding:3px 0}
 .evidence-labels{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .evidence-labels span{border:1px solid var(--line);padding:2px 7px;border-radius:4px;color:var(--dim);font-size:9px}

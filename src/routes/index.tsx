@@ -26,16 +26,17 @@ function Home() {
     void refresh(); const timer = setInterval(() => void refresh(), 1500);
     return () => { cancelled = true; clearInterval(timer); };
   }, [selected]);
-  useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [view?.runs.length, view?.activeRunId]);
-  async function send(text = message) {
-    if (sending || view?.activeRunId || text.trim().length < 5) return;
+  useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [view?.runs.length, view?.activeRunId, view?.conversation?.length, view?.chatBusy]);
+  async function send(text = message, directReplay = false) {
+    if (sending || view?.chatBusy || !text.trim()) return;
     setSending(true); setError('');
     try {
       const response = await fetch('/api/mission', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'investigate', message: text, watchMinutes: watch && view?.mode !== 'offline-replay' ? 30 : 0 }) });
+        body: JSON.stringify({ action: directReplay ? 'investigate' : 'chat', message: text, watchMinutes: watch && view?.mode !== 'offline-replay' ? 30 : 0 }) });
       if (!response.ok) throw new Error(); const receipt = await response.json();
-      setSelected(null); setMessage(''); setTab('Activity');
-    } catch { setError('Unable to start the investigation. Wait for any active run to finish, then retry.'); }
+      setMessage('');
+      if (receipt.runId) { setSelected(null); setTab('Activity'); }
+    } catch { setError('Unable to send your message. Check the connection and wait for any pending reply, then retry.'); }
     finally { setSending(false); }
   }
   async function stopMonitoring() {
@@ -43,6 +44,12 @@ function Home() {
     if (response.ok) { const current = await fetch('/api/mission'); if (current.ok) setView(await current.json()); }
   }
   const busy = !!view?.activeRunId || sending, current = view?.selected;
+  const chatBusy = sending || !!view?.chatBusy;
+  const linkedRuns = new Set((view?.conversation ?? []).flatMap(turn => turn.runId ? [turn.runId] : []));
+  const exchanges = [
+    ...(view?.runs ?? []).filter(run => !linkedRuns.has(run.id)).map(run => ({ id: run.id, at: run.startedAt, run, turn: null })),
+    ...(view?.conversation ?? []).map(turn => ({ id: turn.id, at: turn.createdAt, turn, run: view?.runs.find(run => run.id === turn.runId) ?? null })),
+  ].sort((a, b) => a.at.localeCompare(b.at));
   return <div className="mission-app">
     <header className="mission-header"><div className="mission-brand"><span className="brand-mark"><Waves size={21} /></span><div><strong>ReliefIntel</strong><span>Mission control</span></div></div>
       <div className="header-status"><span className={`status-dot ${view?.sourceStatus === 'online' ? 'online' : ''}`} />{view?.mode === 'offline-replay' ? 'OFFLINE REPLAY · no model calls' : view?.federationStatus === 'unavailable' ? 'Federation unavailable' : view?.federationStatus === 'online' ? 'Kobo + Zetaris connected' : view?.sourceStatus === 'online' ? 'Kobo connected' : view?.sourceStatus === 'unavailable' ? 'Source unavailable' : 'Ready to investigate'}
@@ -53,18 +60,22 @@ function Home() {
       <section className="conversation" aria-label="Mission conversation">
         <div className="conversation-title"><span><span className="status-dot online" /> Mission Coordinator</span><small>One conversation. A shared picture.</small></div>
         <div className="conversation-scroll"><div className="coordinator-intro"><span className="eyebrow">LOCAL KNOWLEDGE, CONNECTED</span><h1>Understand the ground.<br />Then make the call.</h1><p>Tell me where you’re working. I’ll gather community signals, ground the places on a map, and show what we know — and what needs checking.</p></div>
-          {!view?.runs.length && <button className="starter" onClick={() => void send(example)} disabled={busy}><MapIcon size={17} /><span>Investigate the Bambili area</span><ArrowUpRight size={16} /></button>}
-          {[...(view?.runs ?? [])].reverse().map(run => <article className="conversation-turn" key={run.id}>
-            <button className={`user-message ${selected === run.id ? 'selected-message' : ''}`} onClick={() => setSelected(run.id)}><span className="eyebrow">{run.cause === 'operator' ? 'YOUR MISSION' : 'NEW SOURCE ACTIVITY'}</span>{run.message}<time>{time(run.startedAt)}</time></button>
-            <div className="agent-message"><div className="agent-line"><Waves size={15} /><strong>Mission Coordinator</strong><small>{run.status === 'running' ? 'Working' : run.status === 'interrupted' ? 'Interrupted' : 'Complete'}</small></div>
-              <p>{run.result?.summary ?? (run.status === 'running' ? 'Delegating the investigation. Follow each step in the activity trace.' : 'This run was interrupted. Start a fresh investigation to check current evidence.')}</p>
-              <button className="trace-link" onClick={() => { setSelected(run.id); setTab('Activity'); }}><Activity size={14} />View investigation trace<ChevronRight size={14} /></button>
-              {run.result && <div className="evidence-labels"><span>{run.result.demoReports} demonstration</span><span>{run.result.liveReports} live-labelled reports</span><span className="hold-label">{view?.assessmentStatuses?.[run.id] === 'invalidated' ? 'Superseded · fresh review required' : 'Planning on hold'}</span></div>}
-            </div></article>)}<div ref={end} />
+          {!view?.runs.length && (!view?.conversation?.length || view?.mode === 'offline-replay') && <button className="starter" onClick={() => void send(example, view?.mode === 'offline-replay')} disabled={busy}><MapIcon size={17} /><span>Investigate the Bambili area</span><ArrowUpRight size={16} /></button>}
+          {exchanges.map(({ id, run, turn }) => { const conclusion = view?.conversationSummaries?.find(item => item.runId === run?.id); return <article className="conversation-turn" key={id}>
+            <button className={`user-message ${run && selected === run.id ? 'selected-message' : ''}`} onClick={() => { if (run) setSelected(run.id); }}><span className="eyebrow">{turn ? 'YOUR MESSAGE' : run?.cause === 'operator' ? 'YOUR MISSION' : 'NEW SOURCE ACTIVITY'}</span>{turn?.message ?? run?.message}<time>{time(turn?.createdAt ?? run!.startedAt)}</time></button>
+            <div className="agent-message"><div className="agent-line"><Waves size={15} /><strong>Mission Coordinator</strong><small>{turn?.status === 'pending' ? 'Replying' : turn?.status === 'failed' ? 'Reply unavailable' : run?.status === 'running' ? 'Investigating' : run?.status === 'interrupted' ? 'Interrupted' : turn ? 'Replied' : 'Complete'}</small></div>
+              {turn && <p>{turn.reply ?? 'Reading your message…'}</p>}
+              {run && <><p>{conclusion?.reply ?? (conclusion?.status === 'pending' ? 'Bringing the findings together…' : run.result?.summary ?? (run.status === 'running' ? 'Delegating the investigation. Follow each step in the activity trace.' : 'This run was interrupted. Start a fresh investigation to check current evidence.'))}</p>
+                <button className="trace-link" onClick={() => { setSelected(run.id); setTab('Activity'); }}><Activity size={14} />View investigation trace<ChevronRight size={14} /></button>
+                {run.result && <div className="evidence-labels"><span>{run.result.demoReports} demonstration</span><span>{run.result.liveReports} live-labelled reports</span><span className="hold-label">{view?.assessmentStatuses?.[run.id] === 'invalidated' ? 'Superseded · fresh review required' : 'Planning on hold'}</span></div>}</>}
+              {turn?.receipt && <details className="conversation-receipt"><summary>Reply model receipt</summary><p>{turn.receipt.responseModel ?? 'Unreported model'} · {turn.receipt.requestedMode} · {turn.receipt.durationMs} ms</p></details>}
+              {conclusion?.receipt && <details className="conversation-receipt"><summary>Summary model receipt</summary><p>{conclusion.receipt.responseModel ?? 'Unreported model'} · {conclusion.receipt.requestedMode} · {conclusion.receipt.durationMs} ms</p></details>}
+              {turn?.mode === 'offline-replay' && <small className="conversation-mode">Offline replay · no model call</small>}
+            </div></article>; })}<div ref={end} />
         </div>
         <div className="composer-area">{error && <p role="alert" className="mission-error">{error}</p>}<div className="composer"><textarea aria-label="Message the Mission Coordinator" placeholder="Describe your mission or ask about an area…" value={message} onChange={e => setMessage(e.target.value)} maxLength={2000}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send(); } }} />
-          <div className="composer-bottom"><label><input type="checkbox" checked={watch && view?.mode !== 'offline-replay'} disabled={view?.mode === 'offline-replay'} onChange={e => setWatch(e.target.checked)} />Watch new reports for 30 min</label><button aria-label="Send mission" className="send-button" disabled={busy || message.trim().length < 5} onClick={() => void send()}>{busy ? <span className="working-ring" /> : <ArrowUp size={18} />}</button></div>
+          <div className="composer-bottom"><label><input type="checkbox" checked={watch && view?.mode !== 'offline-replay'} disabled={view?.mode === 'offline-replay'} onChange={e => setWatch(e.target.checked)} />Watch new reports for 30 min</label><button aria-label="Send message" className="send-button" disabled={chatBusy || !message.trim()} onClick={() => void send()}>{chatBusy ? <span className="working-ring" /> : <ArrowUp size={18} />}</button></div>
         </div><p className="composer-note"><Shield size={11} />Evidence informs decisions. An operator authorizes action.</p></div>
       </section>
       <section className="workspace" aria-label="Investigation workspace">
