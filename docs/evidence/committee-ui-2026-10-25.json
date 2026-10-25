@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-25T18:21:34.671394+00:00",
+  "checkedAt": "2026-10-25T18:23:18.618512+00:00",
   "layout": {
     "mode": "explicit UI fixture; no model or source calls",
     "checkedAt": "2026-10-25T18:20:23.713Z",
@@ -134,7 +134,8 @@
       "noPrivateInputOrEnv": true,
       "safeUniqueArchivePaths": true,
       "canonicalPdfMatchesPublicCopy": true,
-      "embeddedManifestMatchesPublicCopy": true
+      "embeddedManifestMatchesPublicCopy": true,
+      "gitWindowsCheckoutPreservesPdfZipManifestBytes": true
     }
   },
   "limitations": [
