@@ -1,0 +1,7 @@
+[
+  {"id":"transport-only","text":"DEMONSTRATION ONLY: report transport smoke test. No incident, need or road condition is asserted."},
+  {"id":"forwarded-example","text":"DEMONSTRATION ONLY: scripted example of a forwarded road-obstruction report near Bambili. This is not an actual incident."},
+  {"id":"map-reference-example","text":"DEMONSTRATION ONLY: synthetic forwarded access-constraint marker at the mapped Bambili community reference. Coordinates are a public map reference selected for the mission-update rehearsal, not a field observation. No actual incident is asserted."},
+  {"id":"negation-example","text":"DEMONSTRATION ONLY. The road at Bambili is not blocked in this fictional scenario; the clinic's operating status is unknown. This is not a field observation."},
+  {"id":"french-example","text":"DÉMONSTRATION UNIQUEMENT. Dans cet exemple fictif à Bambili, la route n'est pas bloquée et la capacité du centre de santé est inconnue. Ce texte ne décrit aucun incident réel."}
+]

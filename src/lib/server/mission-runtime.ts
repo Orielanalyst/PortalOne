@@ -18,6 +18,8 @@ import { runCommitteeMission } from './committee-mission';
 import { buildCommitteeBundle } from './committee-export';
 import { MissionWorld, observeMissionEvidence } from './mission-world';
 import type { CommitteeWriter, CommitteeExporter } from './committee-mission';
+import { NightshiftSignalInterpreter } from './signal-interpretation';
+import type { SignalInterpreter } from './signal-interpretation';
 
 function sourceRevision() {
   try {
@@ -45,7 +47,7 @@ export class MissionRuntime {
   private federationStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
   constructor(private readonly options: { journal?: MissionJournal; source?: { origin: string | null; snapshot(signal?: AbortSignal,onRetry?:(detail:string)=>void): Promise<KoboSnapshot> };
     dispatcher?: MissionDispatcher; pollIntervalMs?: number; evidence?: MissionEvidence; logistics?: MissionLogistics; conversation?: MissionConversation;
-    world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter } = {}) {
+    world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter; interpreter?:SignalInterpreter } = {}) {
     if (process.env['RELIEFINTEL_MODE'] && !['live', 'offline-replay'].includes(process.env['RELIEFINTEL_MODE'])) throw new Error('Unsupported ReliefIntel runtime mode.');
     this.journal = options.journal ?? new MissionJournal(`.runtime/${this.mode === 'live' ? 'mission' : 'mission-replay'}/journal.sqlite`);
     this.world=options.world ?? new MissionWorld({namespace:this.mode==='live'?'live-committee':'offline-committee',directory:options.journal?undefined:`.runtime/${this.mode==='live'?'mission':'mission-replay'}`});
@@ -143,7 +145,8 @@ export class MissionRuntime {
       catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString();this.journal.event(run.id,'intake','source_read_failed','Kobo source could not be refreshed; the current snapshot is unconfirmed and publication remains blocked.');throw error; }
     } };
     const writer=this.options.committeeWriter ?? client;
-    const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
+    const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,
+      interpreter:this.options.interpreter ?? (client?new NightshiftSignalInterpreter(client):undefined),exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
     void investigation.then(async result => {
       const assessment = this.journal.assessments(run.id).find(a => a.id === result.assessmentId);
       if (assessment?.status === 'checked' && this.monitor?.sessionId === run.sessionId) this.monitor.lastRevision = assessment.evidence.revision;

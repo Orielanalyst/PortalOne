@@ -11,6 +11,8 @@ import type { MissionDossier } from './mission-dossier';
 import { MissionWorld, observeMissionEvidence } from './mission-world';
 import type { MissionMemoryView } from './mission-world';
 import { CitationStream } from './citation-stream';
+import { interpretReports } from './signal-interpretation';
+import type { SignalInterpreter } from './signal-interpretation';
 
 export type CommitteeWriter = Pick<MeterlessClient, 'stream'>;
 export type CommitteeExporter = (input: { dossier: MissionDossier; journal: MissionJournal; finalDocumentId: string; signal: AbortSignal;
@@ -19,7 +21,7 @@ const State = Annotation.Root({ plan: Annotation<string>(), planId: Annotation<s
   critique: Annotation<string>(), revise: Annotation<boolean>() });
 export async function runCommitteeMission(options: { run: JournalRun; journal: MissionJournal; map: CommunityMap;
   readSource: (signal: AbortSignal) => Promise<KoboSnapshot>; evidence: MissionEvidence; writer: CommitteeWriter; exporter: CommitteeExporter;
-  world?:MissionWorld; onFailure?: (error: unknown) => void }): Promise<MissionResult> {
+  world?:MissionWorld; interpreter?:SignalInterpreter; onFailure?: (error: unknown) => void }): Promise<MissionResult> {
   const { run, journal, map, writer } = options;
   const world=options.world ?? new MissionWorld();
   const signal = AbortSignal.timeout(600_000);
@@ -36,6 +38,7 @@ export async function runCommitteeMission(options: { run: JournalRun; journal: M
   let publicationRepairs = 2;
   let observedSnapshot:KoboSnapshot|undefined;
   let expertFindings='';
+  const interpretationBudget={remaining:4,signal:AbortSignal.any([signal,AbortSignal.timeout(90_000)])};
   const handoff = (actor: string, name: string, purpose: string) => {
     journal.event(run.id,'coordinator','handoff',`Mission Coordinator → ${name}: ${purpose}`,[],parent);
     return journal.startTask(run.id,parent,actor,`${name}: ${purpose}`);
@@ -51,7 +54,8 @@ export async function runCommitteeMission(options: { run: JournalRun; journal: M
     const previousRunId=journal.lineage(run.id).previousRunId;
     const previous=previousRunId?world.view(previousRunId).plans.at(-1):null;
     return buildDossier(run.id,run.message,snapshot,evidence,map,previousRunId && previous?.status==='invalidated'
-      ? {previousRunId,previousRevision:previous.revision,changes:previous.changes}:undefined);
+      ? {previousRunId,previousRevision:previous.revision,changes:previous.changes}:undefined,
+      journal.interpretations(run.id).filter(item=>snapshot.records.some(record=>record.signal.id===item.signalId)));
   }
   async function rememberPlan(documentId:string,version:number) {
     const memory=await world.recordPlan({runId:run.id,documentId,version,evidence});
@@ -111,6 +115,7 @@ ${kind==='critique'?'Regenerate this evaluation from the supplied latest plan an
       journal.event(run.id,'expert','tool_started','Kobo: retrieving the current private project snapshot.',[],task,parent);
       snapshot = await options.readSource(signal); signal.throwIfAborted(); journal.ingest(snapshot);observedSnapshot=snapshot;
       journal.event(run.id,'expert','tool_completed',`Kobo returned ${snapshot.count} records.`,snapshot.records.map(record=>record.signal.id),task,parent);
+      if(options.interpreter)await interpretReports({snapshot,runId:run.id,journal,interpreter:options.interpreter,signal,taskId:task,parentTaskId:parent,budget:interpretationBudget});
       evidence = await query('expert',task,snapshot);
       dossier = prepareDossier(); journal.saveCitations(dossier.citations);
       journal.event(run.id,'expert','tool_completed',`Map source inspected: ${dossier.layers['facilities']!.features.length} health features; ${dossier.layers['roads']!.features.length} road line features. Capacity and current operating status are unknown.`,dossier.citations.filter(item=>['map','facility'].includes(item.kind)).map(item=>item.id),task,parent);
@@ -147,7 +152,11 @@ MISSION EXPERT FINDINGS:\n${expertFindings}`,1);
       const fresh = await options.readSource(signal); signal.throwIfAborted(); journal.ingest(fresh);observedSnapshot=fresh;
       const current = await query('evaluator',task,fresh);
       const matched = assessmentId ? journal.checkAssessment(assessmentId,current) : false;
-      if (!matched) { snapshot=fresh; evidence=current; dossier=prepareDossier(); journal.saveCitations(dossier.citations); }
+      if (!matched) {
+        snapshot=fresh; evidence=current;
+        if(options.interpreter)await interpretReports({snapshot,runId:run.id,journal,interpreter:options.interpreter,signal,taskId:task,parentTaskId:parent,budget:interpretationBudget});
+        dossier=prepareDossier(); journal.saveCitations(dossier.citations);
+      }
       journal.event(run.id,'evaluator','independent_check',matched ? 'Fresh Kobo and Zetaris reads match the plan evidence revision. Operational evidence gaps still apply.' : 'Evidence changed after planning. This draft is superseded and must be revised.',[state.planId],task,parent);
       const critique = await write('evaluator',task,'critique',`Evaluation of plan v${state.version}`,
         `Critique this plan against its source support, geographic scope, facility/road uncertainty, action ownership and proceed/hold conditions. Distinguish document quality from operational approval.

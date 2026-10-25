@@ -7,6 +7,7 @@ import type { FederatedEvidence } from './community-evidence';
 import type { LogisticsAdvice } from './mission-logistics';
 import type { ConversationReceipt } from './mission-conversation';
 import type { EvidenceCitation, MissionDocument, ReportBundle, JournalChange } from '../mission-artifacts';
+import type { Interpretation } from './signal-interpretation';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
@@ -59,6 +60,20 @@ export class MissionJournal {
       CREATE TABLE IF NOT EXISTS report_bundles(run_id TEXT PRIMARY KEY REFERENCES runs(id),value TEXT NOT NULL);`);
     this.db.exec(`CREATE TABLE IF NOT EXISTS mission_replacements(previous_run_id TEXT PRIMARY KEY REFERENCES runs(id),
       next_run_id TEXT NOT NULL UNIQUE REFERENCES runs(id),created_at TEXT NOT NULL);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS signal_interpretations(id TEXT PRIMARY KEY,cache_key TEXT NOT NULL,
+      run_id TEXT NOT NULL REFERENCES runs(id),signal_id TEXT NOT NULL REFERENCES signals(id),status TEXT NOT NULL,value TEXT NOT NULL,
+      UNIQUE(run_id,signal_id)); CREATE INDEX IF NOT EXISTS interpretation_cache ON signal_interpretations(cache_key,status);`);
+  }
+  saveInterpretation(value:Interpretation) {
+    this.db.prepare('INSERT INTO signal_interpretations VALUES(?,?,?,?,?,?)').run(value.id,value.cacheKey,value.runId,value.signalId,value.status,JSON.stringify(value));
+    this.changed();
+  }
+  interpretations(runId:string):Interpretation[] {
+    return this.db.prepare('SELECT value FROM signal_interpretations WHERE run_id=? ORDER BY rowid').all(runId).map(row=>JSON.parse(row['value'] as string));
+  }
+  cachedInterpretation(key:string):Interpretation|null {
+    const row=this.db.prepare("SELECT value FROM signal_interpretations WHERE cache_key=? AND status='accepted' ORDER BY rowid LIMIT 1").get(key);
+    return row?JSON.parse(row['value'] as string):null;
   }
   close() { this.db.close(); }
   beginConversation(message: string, mode: ConversationTurn['mode']) {

@@ -6,6 +6,8 @@ import type { KoboSnapshot } from './kobo';
 import type { FederatedEvidence } from './community-evidence';
 import { describeMemoryChange } from './mission-world';
 import type { MemoryChange } from './mission-world';
+import { interpretationStatement } from './signal-interpretation';
+import type { Interpretation } from './signal-interpretation';
 
 export type MissionDossier = { runId: string; objective: string; capturedAt: string; revision: string;
   citations: EvidenceCitation[]; modelEvidence: Pick<EvidenceCitation,'id'|'kind'|'title'|'statement'>[]; gaps: string[];
@@ -19,7 +21,7 @@ const coordinate = (value: unknown): Position | null => {
 };
 const collection = (features: Feature[]): FeatureCollection => ({ type: 'FeatureCollection', features });
 export const calendarDays = (text:string) => text.match(/\b\d{4}-\d{2}-\d{2}(?=T|\b)/g) ?? [];
-export function buildDossier(runId: string, objective: string, snapshot: KoboSnapshot, evidence: FederatedEvidence, map: CommunityMap,update?:MissionDossier['update']): MissionDossier {
+export function buildDossier(runId: string, objective: string, snapshot: KoboSnapshot, evidence: FederatedEvidence, map: CommunityMap,update?:MissionDossier['update'],interpretations:Interpretation[]=[]): MissionDossier {
   const citations: EvidenceCitation[] = [];
   function cite(kind: EvidenceCitation['kind'], key: string, title: string, statement: string, sourceUrl: string | null, observedAt: string | null = null) {
     const id = `E${digest([kind,key,statement]).slice(0, 10)}`;
@@ -50,10 +52,15 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   const missing: string[] = [];
   for (const { signal } of snapshot.records) {
     const grounding = map.resolve(signal);
+    const reading=interpretations.find(item=>item.signalId===signal.id);
     const id = cite('report',signal.id,`${signal.placeName} · ${signal.category.replaceAll('_',' ')}`,
-      `${signal.mode === 'demo' ? 'Demonstration' : 'Live-labelled, unverified'} ${signal.category.replaceAll('_',' ')} report for ${signal.placeName}; relationship ${signal.relation}; observed ${signal.observedAt}. ${grounding.gap} Origin is unverified.`, null, signal.observedAt);
+      `${signal.mode === 'demo' ? 'Demonstration' : 'Live-labelled, unverified'} form category ${signal.category.replaceAll('_',' ')} for ${signal.placeName}; relationship ${signal.relation}; observed ${signal.observedAt}. ${grounding.gap} Origin is unverified. A selected form category does not establish an affirmative narrative claim.`, null, signal.observedAt);
+    if(reading)cite('interpretation',reading.id,`${signal.placeName} · report text interpretation`,
+      `Report version ${signal.id}; text SHA-256 ${reading.textSha256}. ${interpretationStatement(reading)}`,null,signal.observedAt);
     if (['road_blockage','access_restriction'].includes(signal.category)) {
-      if (grounding.status === 'reported_gps' && grounding.location) blockages.push({ type:'Feature',id:signal.id,
+      const textSupportsAccess=!reading || reading.status==='accepted' && reading.claims.some(claim=>['road_blockage','access_restriction'].includes(claim.category) && claim.assertion!=='denied');
+      if(!textSupportsAccess)missing.push(`${signal.id}: form category indicates access constraints, but no accepted affirmative or uncertain text claim supports it. The record is excluded from the blockage point layer; this does not establish road clearance.`);
+      else if (grounding.status === 'reported_gps' && grounding.location) blockages.push({ type:'Feature',id:signal.id,
         geometry:{type:'Point',coordinates:[grounding.location.lng,grounding.location.lat]},properties:{name:`${signal.placeName} reported access constraint`,status:'reported_unverified',mode:signal.mode,evidence_id:id,precision:'rounded_approximately_100m',road_segment:'unconfirmed'} });
       else missing.push(`${signal.id}: reported ${signal.category.replaceAll('_',' ')} has no usable incident coordinate; it is excluded from the blockage point layer.`);
     }
@@ -61,9 +68,10 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
       geometry:{type:'Point',coordinates:[place.lng,place.lat]},properties:{name:place.name,status:'verification_candidate_not_delivery_zone',ambiguous:grounding.status === 'ambiguous',evidence_id:id} });
   }
   const gaps = [...new Set([
+    ...(interpretations.length?[`Report text interpretation: ${interpretations.filter(item=>item.status==='accepted').length} accepted source-span checks; ${interpretations.filter(item=>item.status!=='accepted').length} held, failed or budget-limited readings. Only exact published synthetic examples are eligible for model transmission. A checked quote is not semantic or field verification; text denial/absence of an incident never certifies a road open.`]:[]),
     'Facility capacity, operating hours, services and current availability require direct confirmation; mapped health features are not an exhaustive hospital inventory.',
     'Current road passability, exact incident locations and affected road segments are unverified. No road is certified open or impassable by this map.',
-    `Location handling: ${blockages.length} reported access observations have submitted coordinate references and are retained in the reported-access layer; ${missing.length} other access reports lack usable coordinates and are excluded. Retained points remain unverified, may be demonstrations and do not establish actual incident locations. Do not generalize the unlocated reports to every access observation.`,
+    `Location handling: ${blockages.length} reported access observations have submitted coordinate references and are retained in the reported-access layer; ${missing.length} other access records lack usable coordinates or accepted narrative support and are excluded. Retained points remain unverified, may be demonstrations and do not establish actual incident locations. Exclusion never establishes road clearance.`,
     'No surveyed intervention boundaries or approved delivery zones were supplied; the intervention_zones polygon layer is intentionally empty.',
     'Cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision must be supplied before executable delivery planning.',
     ...(evidence.demoCount ? ['Demonstration reports cannot corroborate an actual incident.'] : []),
@@ -81,7 +89,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   cite('map',`layers-${evidence.revision}`,'Generated evidence layer inventory',
     `Generated layer feature counts: ${JSON.stringify(Object.fromEntries(Object.entries(layers).map(([name,layer])=>[name,layer.features.length])))}. Blockage features are reported/unverified access observations, including demonstrations; they are not independently confirmed incidents. Intervention candidates are community references, not surveyed delivery zones.`,null,evidence.fetchedAt);
   return {runId,objective,capturedAt:new Date().toISOString(),revision:evidence.revision,citations,
-    modelEvidence:citations.filter(item=>item.kind !== 'report').concat(citations.filter(item=>item.kind==='report').slice(0,12)).map(({id,kind,title,statement})=>({id,kind,title,
+    modelEvidence:citations.filter(item=>!['report','interpretation'].includes(item.kind)).concat(citations.filter(item=>item.kind==='report').slice(0,12),citations.filter(item=>item.kind==='interpretation').slice(0,12)).map(({id,kind,title,statement})=>({id,kind,title,
       statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')})),gaps,layers,
     bounds:map.manifest.bounds,attribution:map.manifest.attribution,mapVersion:map.manifest.version,...(update?{update}:{})};
 }
