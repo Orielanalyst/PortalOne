@@ -12,6 +12,8 @@
 /vendor/npm-registry/*.md text eol=lf
 /vendor/npm-registry/*.LICENSE text eol=lf
 /docs/evidence/**/*.json text eol=lf
+# Preserve the native renderer receipt bytes referenced by the live proof hash.
+/docs/evidence/mission-update-demo-2026-10-25/pdf-validation.json -text
 *.pdf binary
 *.zip binary
 *.gpkg binary
