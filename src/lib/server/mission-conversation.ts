@@ -25,15 +25,15 @@ export interface MissionConversation {
 /** Reuse the installed Nightshift contract; conversation has no data or specialist tools. */
 export class NightshiftConversation implements MissionConversation {
   constructor(private readonly client: MeterlessClient, private readonly receipt: (receipt: ConversationReceipt) => void = () => {}) {}
-  private async answer(prompt: string, signal: AbortSignal, onDelta?: (text: string) => void) {
-    if (!onDelta) return this.client.complete(prompt, 'meterless/fast', 45_000, { signal, maxTokens: 256 });
+  private async answer(prompt: string, signal: AbortSignal, onDelta?: (text: string) => void, model:string=NEMOTRON_STREAM_MODELS.fast) {
+    if (!onDelta && model===NEMOTRON_STREAM_MODELS.fast) return this.client.complete(prompt, 'meterless/fast', 45_000, { signal, maxTokens: 256 });
     let json = '', visible = '';
-    return this.client.stream(prompt, NEMOTRON_STREAM_MODELS.fast, { signal, maxTokens: 512, jsonMode:true,timeoutMs: 45_000, onDelta(delta) {
+    return this.client.stream(prompt, model, { signal, maxTokens: 512, jsonMode:true,timeoutMs: 45_000, onDelta(delta) {
       json += delta;
       let value: unknown; try { value = parsePartial(json); } catch { return; }
       const next = (value as { reply?: unknown })?.reply;
       if (typeof next !== 'string' || !next.startsWith(visible)) return;
-      const addition = next.slice(visible.length); visible = next; if (addition) onDelta(addition);
+      const addition = next.slice(visible.length); visible = next; if (addition) onDelta?.(addition);
     } });
   }
   async respond(context: ConversationContext, signal: AbortSignal, onDelta?: (text: string) => void) {
@@ -54,7 +54,7 @@ Return JSON only. For conversation: {"action":"reply","reply":"your answer or cl
 For an authorized investigation: {"action":"investigate","reply":"acknowledge the specific investigation you are starting","mission":{"area":"user-supplied area","objective":"user-requested evidence objective"}}.
 HISTORICAL CONTEXT:${JSON.stringify({history:context.history,activeMission:context.activeMission,lastInvestigation:context.lastInvestigation})}
 LATEST USER MESSAGE:${JSON.stringify(context.message)}
-Decide your action from the LATEST USER MESSAGE, using historical context only to resolve references. An active mission is the only reason to defer an otherwise explicit, supported investigation.`, signal, onDelta);
+Decide your action from the LATEST USER MESSAGE, using historical context only to resolve references. An active mission is the only reason to defer an otherwise explicit, supported investigation.`, signal, onDelta,NEMOTRON_STREAM_MODELS.deep);
     signal.throwIfAborted();
     this.receipt({ requestedMode: answer.requestedMode, responseModel: answer.responseModel, usage: answer.usage, durationMs: answer.durationMs,
       ...('deltas' in answer ? { deltas: answer.deltas, firstDeltaMs: answer.firstDeltaMs,upstream:answer.upstream } : {}) });
