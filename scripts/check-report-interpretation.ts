@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {existsSync,mkdirSync,writeFileSync} from 'node:fs';
 import examples from '../data/kobo/interpretation-examples-v1.json';
-import {NightshiftSignalInterpreter,validateQuotedClaims,textHash} from '../src/lib/server/signal-interpretation';
+import {NightshiftSignalInterpreter,validateQuotedClaims,textHash,InterpretationCheckError} from '../src/lib/server/signal-interpretation';
 import {configuredNightshift} from '../src/lib/server/runtime-config';
 
 if(!process.argv.includes('--apply')) {
@@ -29,6 +29,7 @@ try {
   writeFileSync(target,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:Bun.spawnSync(['git','rev-parse','HEAD']).stdout.toString().trim(),
     input:'Exact checked-in public synthetic examples only; no private narrative transmitted.',results,passed:true},null,2)+'\n');
 }catch(error) {
-  writeFileSync(`${directory}/failed-${Date.now()}.json`,JSON.stringify({at:new Date().toISOString(),results,error:error instanceof Error?error.message:'Failed'},null,2)+'\n');
+  writeFileSync(`${directory}/failed-${Date.now()}.json`,JSON.stringify({at:new Date().toISOString(),results,error:error instanceof Error?error.message:'Failed',
+    ...(error instanceof InterpretationCheckError?{rejectedAttempt:error.attempt}:{})},null,2)+'\n');
   throw error;
 }
