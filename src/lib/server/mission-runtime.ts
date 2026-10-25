@@ -33,7 +33,7 @@ export class MissionRuntime {
   readonly journal: MissionJournal;
   readonly world: MissionWorld;
   readonly map = new CommunityMap();
-  private readonly source: { origin: string | null; snapshot(signal?: AbortSignal): Promise<KoboSnapshot> };
+  private readonly source: { origin: string | null; snapshot(signal?: AbortSignal,onRetry?:(detail:string)=>void): Promise<KoboSnapshot> };
   private readonly evidence: MissionEvidence;
   private active: string | null = null;
   private chatting = false;
@@ -43,7 +43,7 @@ export class MissionRuntime {
   private checkedAt: string | null = null;
   private polling = false;
   private federationStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
-  constructor(private readonly options: { journal?: MissionJournal; source?: { origin: string | null; snapshot(signal?: AbortSignal): Promise<KoboSnapshot> };
+  constructor(private readonly options: { journal?: MissionJournal; source?: { origin: string | null; snapshot(signal?: AbortSignal,onRetry?:(detail:string)=>void): Promise<KoboSnapshot> };
     dispatcher?: MissionDispatcher; pollIntervalMs?: number; evidence?: MissionEvidence; logistics?: MissionLogistics; conversation?: MissionConversation;
     world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter } = {}) {
     if (process.env['RELIEFINTEL_MODE'] && !['live', 'offline-replay'].includes(process.env['RELIEFINTEL_MODE'])) throw new Error('Unsupported ReliefIntel runtime mode.');
@@ -139,8 +139,8 @@ export class MissionRuntime {
       try { const context = await this.evidence.load(snapshot, signal); await observeMissionEvidence(this.world,this.journal,context,run.id); this.federationStatus = 'online'; return context; }
       catch (error) { this.federationStatus = 'unavailable'; throw error; }
     } }, readSource: async (signal: AbortSignal) => {
-      try { const snapshot = await this.source.snapshot(signal); this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt; return snapshot; }
-      catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString(); throw error; }
+      try { const snapshot = await this.source.snapshot(signal,detail=>this.journal.event(run.id,'intake','source_read_retry',detail)); this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt; return snapshot; }
+      catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString();this.journal.event(run.id,'intake','source_read_failed','Kobo source could not be refreshed; the current snapshot is unconfirmed and publication remains blocked.');throw error; }
     } };
     const writer=this.options.committeeWriter ?? client;
     const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
@@ -166,7 +166,7 @@ export class MissionRuntime {
     let koboRead = false;
     try {
       const signal = AbortSignal.timeout(Math.max(1, Math.min(30_000, watching.until - Date.now())));
-      const snapshot = await this.source.snapshot(signal);
+      const snapshot = await this.source.snapshot(signal,detail=>this.journal.event(watching.runId,'intake','source_read_retry',detail));
       koboRead = true;
       if (this.monitor !== watching) return;
       if (Date.now() >= watching.until) { this.stopMonitor(); return; }

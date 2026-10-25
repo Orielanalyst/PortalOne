@@ -1,5 +1,10 @@
 import { z } from 'zod';
 import { createHash } from 'node:crypto';
+import pRetry from 'p-retry';
+
+class KoboReadError extends Error {
+  constructor(message:string,readonly retryable:boolean){super(message);}
+}
 
 const record = z.object({
   _id: z.number().int().positive(), _uuid: z.string().min(1).max(128),
@@ -50,28 +55,36 @@ export class KoboClient {
     if (!/^[a-zA-Z0-9]{8,64}$/.test(options.projectUid) || !options.token.trim()) throw new Error('Kobo local configuration is incomplete.');
     this.sourceId = `kobo:${options.projectUid}`;
   }
-  async snapshot(signal?: AbortSignal): Promise<KoboSnapshot> {
+  async snapshot(signal?: AbortSignal,onRetry?:(detail:string)=>void): Promise<KoboSnapshot> {
+    return pRetry(()=>this.readSnapshot(signal),{retries:1,minTimeout:1000,maxTimeout:1000,factor:1,maxRetryTime:65_000,signal,
+      shouldRetry:({error})=>error instanceof KoboReadError && error.retryable,
+      onFailedAttempt:({error,retriesLeft})=>{if(error instanceof KoboReadError && error.retryable && retriesLeft>0)onRetry?.('Kobo source read was interrupted; retrying the complete snapshot once.');}});
+  }
+  private async readSnapshot(signal?: AbortSignal): Promise<KoboSnapshot> {
+    signal?.throwIfAborted();
     const checkedAt = new Date().toISOString();
     const records: SignalInput[] = [], seen = new Set<number>();
     let count: number | null = null;
     for (let start = 0; start < 1000; start += 100) {
       const url = new URL(`/api/v2/assets/${this.options.projectUid}/data/`, this.origin);
       url.searchParams.set('limit', '100'); url.searchParams.set('start', String(start)); url.searchParams.set('sort', '{"_id":1}');
-      const response = await (this.options.fetch ?? fetch)(url, { headers: { Authorization: `Token ${this.options.token}`, Accept: 'application/json' },
-        redirect: 'error', signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(30_000)]) : AbortSignal.timeout(30_000) });
-      if (!response.ok) throw new Error(`Kobo read failed (HTTP ${response.status}).`);
+      let response:Response;
+      try { response = await (this.options.fetch ?? fetch)(url, { headers: { Authorization: `Token ${this.options.token}`, Accept: 'application/json' },
+        redirect: 'error', signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(30_000)]) : AbortSignal.timeout(30_000) }); }
+      catch(error){if(signal?.aborted)throw error;throw new KoboReadError('Kobo source transport was interrupted.',true);}
+      if (!response.ok) throw new KoboReadError(`Kobo read failed (HTTP ${response.status}).`,response.status===429 || response.status>=500);
       const text = await response.text();
       if (text.length > 2_000_000) throw new Error('Kobo page exceeded its size budget.');
       const page = z.object({ count: z.number().int().min(0).max(1000), next: z.string().nullable(), results: z.array(z.unknown()).max(100) }).parse(JSON.parse(text));
-      if (count !== null && count !== page.count) throw new Error('Kobo changed during pagination; retry a complete scan.');
+      if (count !== null && count !== page.count) throw new KoboReadError('Kobo changed during pagination; retry a complete scan.',true);
       count = page.count;
       for (const raw of page.results) {
         const input = normalizeKobo(raw, this.options.projectUid, checkedAt);
-        if (seen.has(input.signal.submissionId)) throw new Error('Kobo pagination repeated an ID; retry a complete scan.');
+        if (seen.has(input.signal.submissionId)) throw new KoboReadError('Kobo pagination repeated an ID; retry a complete scan.',true);
         seen.add(input.signal.submissionId); records.push(input);
       }
       if (!page.next) {
-        if (records.length !== count) throw new Error('Kobo scan was incomplete.');
+        if (records.length !== count) throw new KoboReadError('Kobo scan was incomplete.',true);
         return { sourceId: this.sourceId, checkedAt, count, records };
       }
       if (!page.results.length) throw new Error('Kobo returned an empty intermediate page.');
