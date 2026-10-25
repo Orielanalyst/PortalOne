@@ -48,7 +48,7 @@ it('sends required headers and keeps routing mode separate from actual model evi
 it('bounds explicit conversation token budgets before making a provider request', async () => {
   const request = vi.fn();
   const runtime = new MeterlessClient({ baseUrl: 'localhost:8088', token: 'test', fetch: request });
-  for (const maxTokens of [0, 513, 1.5]) await expect(runtime.complete('Hello', 'meterless/fast', 1000, { maxTokens })).rejects.toThrow('budget');
+  for (const maxTokens of [0, 4097, 1.5]) await expect(runtime.complete('Hello', 'meterless/fast', 1000, { maxTokens })).rejects.toThrow('budget');
   expect(request).not.toHaveBeenCalled();
 });
 

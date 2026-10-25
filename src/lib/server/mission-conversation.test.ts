@@ -27,8 +27,7 @@ function setup(conversation?: MissionConversation) {
 }
 
 it('replies to a greeting through the model adapter without reading data, delegating or enabling a watch', async () => {
-  const request = vi.fn(async () => Response.json({ model: 'nvidia/test', choices: [{ finish_reason: 'stop',
-    message: { content: JSON.stringify(reply('Hello! What area or mission would you like us to work on?')) } }] }));
+  const request = vi.fn(async () => new Response(`data: ${JSON.stringify({model:'nvidia/test',choices:[{delta:{content:JSON.stringify(reply('Hello! What area or mission would you like us to work on?'))},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
   const client = new MeterlessClient({ baseUrl: 'localhost:8088', token: 'private-test-token', fetch: request as unknown as typeof fetch });
   const callbacks = vi.fn(); const { runtime, journal, source, dispatcher } = setup(new NightshiftConversation(client, callbacks));
   try {
