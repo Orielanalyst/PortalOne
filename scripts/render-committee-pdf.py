@@ -19,6 +19,7 @@ styles.add(ParagraphStyle(name="MissionSmall",parent=styles["MissionBody"],fontS
 styles["Heading2"].textColor=colors.HexColor("#167c8a"); styles["Heading2"].spaceBefore=15; styles["Heading2"].spaceAfter=8
 styles["Heading3"].spaceBefore=10
 styles["Heading3"].fontName="Helvetica-Bold"; styles["Heading3"].fontSize=11; styles["Heading3"].leading=14
+for heading in ("Heading1","Heading2","Heading3"): styles[heading].keepWithNext=True
 width=174*mm; story=[]
 def inline(text):
     value=html.escape(str(text).replace("→"," then "))
@@ -79,8 +80,20 @@ for citation in data["citations"]:
     title='<a name="source-'+citation["id"]+'"/>'+html.escape('['+source_numbers[citation["id"]]+'] '+citation["title"])
     entry=[Paragraph(title,styles["Heading3"]),p('Source ID: '+citation["id"],True)]
     statement=citation["statement"]
-    if citation["kind"]=="query" and statement.startswith("{"): statement="Bounded community/resource query result. The complete source rows, query identifiers and evidence revision are retained in evidence.json; synthetic/expired status is preserved."
+    query=None
+    if citation["kind"]=="query" and statement.startswith("{"):
+        query=json.loads(statement)
+        statement=f"Bounded community/resource query result: {query['reports']} reports, {query['demonstration']} demonstration, {query['liveLabelled']} live-labelled and {query['forwarded']} forwarded. Candidate rows can share ambiguous reports; do not sum them as independent observations. Resource values below are source references, not actual confirmed NGO resources."
     entry.append(p(statement,True))
+    if query:
+        rows=[["Community candidate","Reports demo/live","Stock reference","Fleet reference","Status"]]
+        for row in query["communities"]:
+            stock="No confirmation" if row["stockUnits"] is None else str(row["stockUnits"])+" units x "+str(row["unitMassKg"])+" kg"
+            fleet="No confirmation" if row["fleetCount"] is None else str(row["fleetCount"])+" vehicles"
+            expired=(row["stockUnits"] is not None and not row["stockFresh"]) or (row["fleetCount"] is not None and not row["fleetFresh"])
+            status=("Synthetic; " if row["logisticsSimulated"] else "")+("expired" if expired else "unconfirmed" if row["stockUnits"] is None and row["fleetCount"] is None else "source-current; unverified")
+            rows.append([row["name"],str(row["demo"])+" / "+str(row["live"]),stock,fleet,status])
+        entry.append(table(rows,[35*mm,27*mm,39*mm,32*mm,41*mm]))
     if citation.get("sourceUrl"): entry.append(Paragraph('<link href="'+html.escape(citation["sourceUrl"],quote=True)+'" color="#147384">Open original source</link> | '+html.escape(citation["recordId"]),styles["MissionSmall"]))
     else: entry.append(p("Traceable record: "+citation["recordId"],True))
     story.append(KeepTogether(entry))
