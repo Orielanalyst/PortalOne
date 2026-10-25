@@ -8,6 +8,7 @@ import { MissionJournal } from './mission-journal';
 import { CommunityMap } from './community-map';
 import { runMission } from './mission-coordinator';
 import type { MissionDispatcher } from './mission-coordinator';
+import { MissionRuntime } from './mission-runtime';
 
 const at = '2026-10-25T06:00:00Z';
 const raw = (extra = {}) => ({ _id: 1, _uuid: 'demo-uuid', report_mode: 'demo', observed_at: at, place_name: 'Bambili', category: 'other',
@@ -114,4 +115,24 @@ it('restricts credential-bearing requests to an official origin and refuses unst
   const source = new KoboClient({ server: 'https://kf.kobotoolbox.org', token: 'test', projectUid: 'project123', fetch: request as unknown as typeof fetch });
   await expect(source.snapshot()).rejects.toThrow('incomplete');
   expect(String(request.mock.calls[0])).not.toContain('test');
+});
+it.each(['stopped', 'expired'])('does not start another investigation when an in-flight watch has %s', async condition => {
+  const journal = new MissionJournal(':memory:');
+  let completePoll: ((value: KoboSnapshot) => void) | undefined;
+  let calls = 0;
+  const source = { origin: 'https://kf.kobotoolbox.org', async snapshot() {
+    if (++calls <= 3) return snapshot();
+    return new Promise<KoboSnapshot>(resolve => { completePoll = resolve; });
+  } };
+  const runtime = new MissionRuntime({ journal, source, dispatcher, pollIntervalMs: 5 });
+  try {
+    runtime.start('Investigate Bambili', 30);
+    await vi.waitFor(() => expect(completePoll).toBeDefined(), { timeout: 2000, interval: 10 });
+    if (condition === 'stopped') runtime.stopMonitor();
+    else vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 31 * 60_000);
+    completePoll!(snapshot([raw(), raw({ _id: 2, _uuid: 'new-demo', place_name: 'Bambui' })]));
+    await new Promise(resolve => setTimeout(resolve, 25));
+    expect(journal.recent()).toHaveLength(1); expect(runtime.state().monitorUntil).toBeNull();
+    expect(journal.signals()).toHaveLength(1);
+  } finally { runtime.stopMonitor(); vi.restoreAllMocks(); journal.close(); }
 });

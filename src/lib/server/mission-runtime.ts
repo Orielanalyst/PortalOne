@@ -4,22 +4,27 @@ import { configuredKobo } from './kobo';
 import { configuredNightshift } from './runtime-config';
 import { NightshiftDispatcher, runMission } from './mission-coordinator';
 import type { JournalRun } from './mission-journal';
+import type { KoboSnapshot } from './kobo';
+import type { MissionDispatcher } from './mission-coordinator';
 import { replayCommunitySource, replayDispatcher } from './mission-replay';
 
 /** One local application process owns this journal and its bounded monitoring loop. */
-class MissionRuntime {
+export class MissionRuntime {
   readonly mode = process.env['RELIEFINTEL_MODE'] === 'offline-replay' ? 'offline-replay' : 'live';
-  readonly journal = new MissionJournal(`.runtime/${this.mode === 'live' ? 'mission' : 'mission-replay'}/journal.sqlite`);
+  readonly journal: MissionJournal;
   readonly map = new CommunityMap();
-  private readonly source = this.mode === 'live' ? configuredKobo() : replayCommunitySource;
+  private readonly source: { origin: string | null; snapshot(signal?: AbortSignal): Promise<KoboSnapshot> };
   private active: string | null = null;
   private monitor: { sessionId: string; message: string; until: number } | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
   private sourceStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
   private checkedAt: string | null = null;
   private polling = false;
-  constructor() {
+  constructor(private readonly options: { journal?: MissionJournal; source?: { origin: string | null; snapshot(signal?: AbortSignal): Promise<KoboSnapshot> };
+    dispatcher?: MissionDispatcher; pollIntervalMs?: number } = {}) {
     if (process.env['RELIEFINTEL_MODE'] && !['live', 'offline-replay'].includes(process.env['RELIEFINTEL_MODE'])) throw new Error('Unsupported ReliefIntel runtime mode.');
+    this.journal = options.journal ?? new MissionJournal(`.runtime/${this.mode === 'live' ? 'mission' : 'mission-replay'}/journal.sqlite`);
+    this.source = options.source ?? (this.mode === 'live' ? configuredKobo() : replayCommunitySource);
     // No implicit dispatch/replay on restart. Persisted partial runs remain inspectable.
     for (const run of this.journal.recent()) if (run.status === 'running') {
       this.journal.event(run.id, 'runtime', 'interrupted', 'Application restarted; this investigation was interrupted. Start a fresh check.');
@@ -28,14 +33,14 @@ class MissionRuntime {
   }
   start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string) {
     if (this.active) throw new Error('An investigation is already running.');
-    const client = this.mode === 'live' ? configuredNightshift() : null;
+    const client = this.mode === 'live' && !this.options.dispatcher ? configuredNightshift() : null;
     const run = this.journal.startRun(message, cause, sessionId);
     this.active = run.id;
     if (cause === 'operator') {
       this.stopMonitor();
       if (watchMinutes && this.mode === 'live') this.monitor = { sessionId: run.sessionId, message, until: Date.now() + watchMinutes * 60_000 };
     }
-    const dispatcher = client ? new NightshiftDispatcher(client, receipt => this.journal.event(run.id, 'coordinator', 'model_receipt', receipt)) : replayDispatcher;
+    const dispatcher = this.options.dispatcher ?? (client ? new NightshiftDispatcher(client, receipt => this.journal.event(run.id, 'coordinator', 'model_receipt', receipt)) : replayDispatcher);
     void runMission({ run, journal: this.journal, map: this.map, dispatcher, readSource: async signal => {
       try { const snapshot = await this.source.snapshot(signal); this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt; return snapshot; }
       catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString(); throw error; }
@@ -46,15 +51,18 @@ class MissionRuntime {
   private schedule() {
     if (this.timer) clearTimeout(this.timer);
     if (!this.monitor || Date.now() >= this.monitor.until) { this.stopMonitor(); return; }
-    this.timer = setTimeout(() => { this.timer = null; void this.poll(); }, 20_000);
+    this.timer = setTimeout(() => { this.timer = null; void this.poll(); }, this.options.pollIntervalMs ?? 20_000);
     this.timer.unref?.();
   }
   private async poll() {
     if (!this.monitor || Date.now() >= this.monitor.until) { this.stopMonitor(); return; }
     if (this.active || this.polling) { this.schedule(); return; }
+    const watching = this.monitor;
     this.polling = true;
     try {
-      const snapshot = await this.source.snapshot();
+      const snapshot = await this.source.snapshot(AbortSignal.timeout(Math.max(1, Math.min(30_000, watching.until - Date.now()))));
+      if (this.monitor !== watching) return;
+      if (Date.now() >= watching.until) { this.stopMonitor(); return; }
       const previousStatus = this.sourceStatus;
       this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt;
       const intake = this.journal.ingest(snapshot);
@@ -63,6 +71,8 @@ class MissionRuntime {
         this.journal.event(runId, 'intake', 'source_change', `${intake.changed.length} new or edited report versions triggered this investigation.`, intake.changed);
       }
     } catch {
+      if (this.monitor !== watching) return;
+      if (Date.now() >= watching.until) { this.stopMonitor(); return; }
       const latest = this.journal.recent()[0];
       if (latest && this.sourceStatus !== 'unavailable') this.journal.event(latest.id, 'intake', 'source_unavailable', 'Kobo polling failed. Cached reports are not current source confirmation.');
       this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString();
