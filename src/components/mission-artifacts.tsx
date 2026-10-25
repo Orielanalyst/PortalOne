@@ -9,7 +9,7 @@ export function ActiveWork({view}:{view:MissionView}) {
   const latest=view.events.filter(event=>event.kind!=='model_receipt').at(-1);
   const stages=[['findings','Investigate'],['plan','Plan v1'],['critique','Evaluate'],['diff','Revise'],['report','Report']];
   return <div className="active-work"><ol>{stages.map(([kind,label],index)=><li key={kind} data-complete={documents.some(document=>document.kind===kind && document.status==='published')} data-active={active?.kind===kind}><span>{String(index+1).padStart(2,'0')}</span>{label}</li>)}</ol>
-    {view.activeRunId===view.selected?.id && <div className="active-handoff"><span className="working-ring"/><div><strong>{actorName(active?.actor ?? latest?.actor ?? 'coordinator')}</strong><p>{active?.title ?? latest?.detail ?? 'Preparing the next handoff.'}</p></div></div>}
+    <div className="active-handoff">{view.activeRunId===view.selected?.id ? <><span className="working-ring"/><div><strong>{actorName(active?.actor ?? latest?.actor ?? 'coordinator')}</strong><p>{active?.title ?? latest?.detail ?? 'Preparing the next handoff.'}</p></div></> : <div><strong>{view.reportBundle?.status==='ready'?'Committee draft ready':view.selected?.result?'Mission review on hold':'Ready to investigate'}</strong><p>{view.reportBundle?.status==='ready'?'Open Report for the PDF and GIS pack. Field confirmations remain open.':view.selected?.result?.summary ?? 'Describe the area and question in the conversation.'}</p></div>}</div>
   </div>;
 }
 export function DocumentView({document}:{document:MissionDocument}) {
@@ -33,7 +33,9 @@ export function PlanArtifacts({view}:{view:MissionView}) {
 export function CommitteeReport({view}:{view:MissionView}) {
   const document=view.documents.filter(document=>document.runId===view.selected?.id && document.kind==='report').at(-1),bundle=view.reportBundle;
   const download=(name:string)=>`/api/mission/download?run=${encodeURIComponent(view.selected?.id ?? '')}&file=${encodeURIComponent(name)}`;
-  return <div className="committee-report">{bundle?.status==='ready'?<div className="download-pack"><strong>Committee draft and geodata are ready.</strong><p>{bundle.note}</p><div><a href={download('report.pdf')}>Download committee PDF</a><a href={download('committee-pack.zip')}>Download complete GIS pack</a></div><small><a href={download('mission.gpkg')}>GeoPackage</a> · <a href={download('map.pdf')}>Full-resolution map PDF</a> · Native QGIS project, GeoJSON, styles, sources and draft history are included in the ZIP.</small></div>
+  const reportName=bundle?.files.filter(file=>/^report(?:-edition-\d+)?\.pdf$/.test(file.name)).at(-1)?.name ?? 'report.pdf';
+  const packName=bundle?.files.filter(file=>/^committee-pack(?:-edition-\d+)?\.zip$/.test(file.name)).at(-1)?.name ?? 'committee-pack.zip';
+  return <div className="committee-report">{bundle?.status==='ready'?<div className="download-pack"><strong>Committee draft and geodata are ready.</strong><p>{bundle.note}</p><div><a href={download(reportName)}>Download committee PDF</a><a href={download(packName)}>Download complete GIS pack</a></div><small><a href={download('mission.gpkg')}>GeoPackage</a> · <a href={download('map.pdf')}>Full-resolution map PDF</a> · Native QGIS project, GeoJSON, styles, sources and draft history are included in the ZIP.</small></div>
     :bundle?<div className="export-status"><span className={bundle.status==='building'?'working-ring':''}/>{bundle.note}</div>:<p className="artifact-empty">The report will follow the published plan and evaluator review. Export stages will appear in Activity.</p>}{document && <DocumentView document={document}/>}</div>;
 }
 export function SourceRegister({view}:{view:MissionView}) {
