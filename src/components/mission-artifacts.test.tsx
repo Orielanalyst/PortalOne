@@ -20,3 +20,12 @@ it('downloads the newest retained layout edition while original exports remain r
   expect(getByRole('link',{name:'Download committee PDF'})).toHaveAttribute('href','/api/mission/download?run=mission-test&file=report-edition-2.pdf');
   expect(getByRole('link',{name:'Download complete GIS pack'})).toHaveAttribute('href','/api/mission/download?run=mission-test&file=committee-pack-edition-2.zip');
 });
+it('labels superseded downloads as historical and opens the replacement only on user selection',()=>{
+  const onSelectRun=vi.fn();
+  const view={selected:{id:'mission-old'},documents:[],currency:{status:'superseded',reason:'Evidence changed.',replacementRunId:'mission-new',previousRunId:null},
+    reportBundle:{status:'ready',files:[{name:'report.pdf'},{name:'committee-pack.zip'}]}} as unknown as MissionView;
+  const {getByRole,queryByRole}=render(<CommitteeReport view={view} onSelectRun={onSelectRun}/>);
+  expect(queryByRole('link',{name:'Download committee PDF'})).toBeNull();
+  expect(getByRole('link',{name:'Download historical PDF'})).toHaveAttribute('href','/api/mission/download?run=mission-old&file=report.pdf&historical=1');
+  expect(onSelectRun).not.toHaveBeenCalled();fireEvent.click(getByRole('button',{name:'Open replacement mission'}));expect(onSelectRun).toHaveBeenCalledWith('mission-new');
+});

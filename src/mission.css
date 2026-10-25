@@ -202,3 +202,11 @@
 .federated-planning summary{cursor:pointer}.federated-planning code{display:block;font-size:9px;overflow-wrap:anywhere;margin-top:5px}
 .federated-planning pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:9px;padding:12px;background:#121819;border-radius:6px}
 
+.mission-currency,.mission-lineage{margin:0 0 24px;padding:18px 20px;border:1px solid #997943;border-radius:9px;background:#312a1d;color:#ead5aa;overflow-wrap:anywhere}
+.mission-lineage{background:transparent;border-color:var(--line);color:inherit}
+.mission-currency p,.mission-lineage p{font-size:13px;line-height:1.65;margin:8px 0}
+.mission-currency button,.mission-lineage button{border:1px solid currentColor;border-radius:5px;background:transparent;color:inherit;padding:7px 11px;cursor:pointer}
+.mission-memory{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.mission-memory summary{cursor:pointer;color:var(--dim)}
+.mission-memory article{padding:12px 0;border-bottom:1px solid var(--line)}
+.mission-memory article>code{display:block;font-size:10px;margin:6px 0;overflow-wrap:anywhere}
