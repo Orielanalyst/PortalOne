@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-25",
+  "checkedCommit": "fa1c730f634239a78e0d2e36c67844b0f304be95",
+  "branch": "codex/execution-readiness",
+  "command": "git push origin codex/execution-readiness",
+  "mandatoryHook": ".githooks/pre-push",
+  "localChecks": {
+    "typecheck": "passed",
+    "vitest": {"files": 16, "tests": 108, "result": "passed"},
+    "worldModelConformance": {"checks": 8, "result": "passed"},
+    "vendoredArchives": {"archives": 144, "result": "passed"},
+    "reportWheels": {"wheels": 4, "result": "passed"},
+    "httpDisabledReliefReplay": "passed",
+    "httpDisabledMissionReplay": "passed",
+    "productionClientAndServerBuild": "passed",
+    "publishedArtifactCheckoutHashes": {"files": 5, "result": "passed"},
+    "originalUserDocumentHashes": "unchanged"
+  },
+  "push": "succeeded; remote branch matched checkedCommit",
+  "hostedChecks": {
+    "ci": "https://github.com/Orielanalyst/PortalOne/actions/runs/40231436530",
+    "smoke": "https://github.com/Orielanalyst/PortalOne/actions/runs/40231436528",
+    "stepsStarted": false,
+    "result": "failure before execution",
+    "annotation": "The job was not started because your account is locked due to a billing issue."
+  },
+  "limits": "Local structural checks and native live demonstration do not establish field truth, operational approval, deployment or a passing hosted CI run."
+}

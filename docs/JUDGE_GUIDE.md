@@ -51,7 +51,8 @@ not constitute a product connector.
 | Community geography | [Map manifest](../data/community-map-v1/manifest.json) | actual OSM/HOT data: 5,111 road features, 16 places and seven facilities; ODbL attribution and hashes retained |
 | Dynamic community/logistics federation | [Planning preflight](FEDERATED_PLANNING.md), [live-change receipt](evidence/federated-live-change-2026-10-25.json) | actual report submission automatically invalidates the earlier assessment and starts fresh review; exact-batch joins and separate checker queries; logistics synthetic/expired |
 | Final delivery UI, demo and slides | [Execution plan](EXECUTION_PLAN.md) | live delivery integration, operator approval and submission materials remain |
-| Hosted CI | [Latest inspected run before this push](https://github.com/Orielanalyst/PortalOne/actions/runs/40172156090) | startup failure before jobs run; earlier account billing error documented; this run does not expose a new exact cause |
+| Local verification | [Latest gate receipt](evidence/mission-update-local-gates-2026-10-25.json) | 108 tests in 16 files, typecheck, eight World Model checks, archive/wheel integrity, both HTTP-disabled replays and production build pass at fa1c730 |
+| Hosted CI | [Inspected CI run](https://github.com/Orielanalyst/PortalOne/actions/runs/40231436530) | no steps started; GitHub annotation: account locked due to a billing issue. This is separate from passing local checks. |
 
 ## Review the work boundary
 
