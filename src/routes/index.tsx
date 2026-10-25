@@ -33,6 +33,7 @@ function Home() {
   const streamedLength=view?.documents?.reduce((sum,document)=>sum+document.markdown.length,0) ?? 0;
   useLayoutEffect(()=>{if(followConversation.current && conversationScroll.current) conversationScroll.current.scrollTop=conversationScroll.current.scrollHeight;},[streamedLength,view?.conversation.length,view?.activeRunId]);
   useLayoutEffect(()=>{if(tab==='Activity' && followWorkspace.current && workspaceScroll.current) workspaceScroll.current.scrollTop=workspaceScroll.current.scrollHeight;},[streamedLength,view?.events.length,tab]);
+  useLayoutEffect(()=>{if(tab!=='Activity' && workspaceScroll.current)workspaceScroll.current.scrollTop=0;},[tab,selected]);
   async function send(text = message, directReplay = false) {
     if (sending || view?.chatBusy || !text.trim()) return;
     setSending(true); setError('');
