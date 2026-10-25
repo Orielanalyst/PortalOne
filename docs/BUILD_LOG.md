@@ -152,3 +152,30 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
 - G2/G3 are verified locally. G4 still needs version-bound operator decisions and
   recovery for interrupted runs; G5 interface redesign remains deferred. Completed
   CLI receipts and World Model state persist, but LangGraph run state is in memory.
+
+### 25 October — live vision alignment
+
+- Re-read the full original brainstorming (23,996 bytes), all 1,698 event-document
+  lines, the attached architectural summary and the user's additional API comparison.
+  The original documents remain unmodified. The user's correction restores live
+  signal capture, spatial grounding and automatic changed-evidence reaction to
+  required scope; the synthetic CLI remains a baseline, not the whole product.
+- Added LIVE_VISION.md with a layer-by-layer gap audit, provider/access gates,
+  implementation order, full-path acceptance scenario and explicit distinctions
+  among live services, actual observations, demonstration reports and replay.
+  Updated the execution plan and judge entrypoint to reflect the corrected order.
+- Reviewed primary Telegram, Kobo, Firecrawl, ReliefWeb, ACLED, OSM, Google Places,
+  Twilio and Inngest documentation. No matching installed source connector was
+  found. No source credentials, account settings, billing or product UI changed.
+- Credential-free probes: Firecrawl anonymous search returned HTTP 403; both
+  bounded Overpass place queries timed out after 30 seconds. HDX CKAN returned
+  HTTP 200 and one Cameroon-tagged dataset metadata record; resource contents,
+  corridor coverage and operational relevance were not validated. See the dated
+  feasibility receipt. These are access results, not implemented connectors.
+- No application runtime code changed and no new product feature is marked done.
+  G3a live intake/grounding and G3b dynamic federation now precede expanding
+  standalone approval storage or polishing the earlier interface.
+- Planning checks passed: all 24 local Markdown links in the changed documents
+  resolve, the four-result JSON receipt parses, both raw-document hashes match
+  their earlier values and `git diff --check` passes. Runtime tests are not new
+  evidence for this documentation-only change.

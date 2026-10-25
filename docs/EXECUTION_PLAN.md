@@ -1,4 +1,4 @@
-# Execution plan — 2026-10-24
+# Execution plan — revised 2026-10-25
 
 PortalOne / ReliefIntel helps an aid coordinator decide whether to dispatch,
 hold, or request verification for one delivery in the Bamenda–Bambili corridor.
@@ -8,6 +8,13 @@ remain labelled synthetic or unverified until supported by permitted evidence.
 This plan supersedes the earlier Mbeli flood plan. Existing UI and application
 code are an inventoried baseline, not an accepted design for the new product.
 No UI redesign is part of the environment audit.
+
+**25 October scope correction:** [LIVE_VISION.md](LIVE_VISION.md) restores live
+signal intake, deduplication, spatial grounding and automatic evidence-triggered
+re-evaluation as required product work. The synthetic CLI is a verified baseline,
+not the completed ReliefIntel vision. Its live sponsor calls do not establish
+live community or public-source ingestion. The new source checks and build order
+in that document take priority over the earlier decision to defer these layers.
 
 ## 1. Rubric decode
 
@@ -38,6 +45,8 @@ Rules and declaration boundaries are in `PROVENANCE.md`.
 | Orchestration | LangGraph JS 1.5.2 + Core 1.3.0 | MIT; pinned and archived; conditional-loop smoke and live bounded scenarios pass |
 | Constraints | Exhaustive comparison of four predefined route/vehicle candidates | Deterministic mass, payload, fuel, drive type, freshness, corroboration, deadline and earliest-eligible objective; no general route optimizer needed |
 | Data | Synthetic v1 pack, isolated Postgres and JSON files | Manifest hashes; counts and joined results independently matched; read-only source query role verified |
+| Live signal intake | Community reporting plus bounded public-source collection | Required next: access proof, durable receipts/cursors, deduplication and structured extraction; see LIVE_VISION |
+| Spatial grounding | Sourced community aliases and attributed road geometry | Required next: candidate place/segment resolution with uncertainty; no real mapped corridor or surveyed detour verified yet |
 | UI | Existing React application and established map components | Deferred until the core run works; new design comes later |
 
 Use available skills and connectors where they fit. There is no installed Zetaris
@@ -49,8 +58,9 @@ dependency and record its license and test result.
 
 ## 3. Stack kill list
 
-- Satellite analysis, regional crawling, live GPS and automatic field messages:
-  deferred; the first scenario does not depend on their access or latency.
+- Satellite analysis, unrestricted regional crawling, live GPS hardware and
+  automatic field messages: deferred. Corridor-specific live intake, public
+  retrieval and spatial grounding are required; provider access is gated first.
 - Separate vector database, Redis and additional storage services: deferred until
   a measured requirement justifies them. Preserve provenance before similarity.
 - All four Meterless Engines: adopt one working engine first.
@@ -64,9 +74,11 @@ dependency and record its license and test result.
 
 ## 4. The one integration
 
-Mission request -> bounded Zetaris evidence -> versioned shared state -> planner
-and calculation tools -> independent validator -> revise, hold or request
-verification -> operator review.
+Mission request and new report -> provenance/deduplication -> structured claim
+and spatial grounding -> bounded Zetaris federation -> versioned shared state ->
+planner and calculation tools -> independent validator -> revise, hold or request
+targeted verification -> version-bound operator review. Incoming relevant
+evidence must trigger this re-evaluation without manually starting another demo.
 
 An incoming observation can invalidate an assumption of an earlier recommendation.
 Preserve observations, assessments and decisions separately. Every decision links
@@ -95,22 +107,29 @@ completion times. Each gate requires its acceptance evidence before marking done
 | G1 Power + engine | 24 Oct next; cap 2 hours | Nightshift auth + real completion; actual Nemotron identity; World Model reference/conformance result | verified locally: World Model feature, auth rejection and final-text Nemotron completion; see runtime receipt |
 | G2 Scenario + data | 25 Oct morning | Small licensed/synthetic pack, source manifest, repeatable registration and joined relief evidence through Zetaris | verified locally on 24 Oct; provisioning and cross-source receipts linked in judge guide |
 | G3 Agent core | 25 Oct | Validator rejects a candidate, planner revises, impossible case holds; bounded run and event trace | verified locally on 24 Oct; live Nightshift/Zetaris trace plus explicit offline replay |
-| G4 Changed evidence | 26 Oct morning | Duplicate, contradiction, expiry and new-event cases; affected plan invalidation; safe operator review | partial: road-assumption tests and live invalidation/replan pass; full mission/logistics version binding, operator approval and recovery still to implement |
+| G3a Live intake + grounding | 25 Oct next | Newly received report, durable provenance/cursor, duplicate handling, structured extraction and sourced place/segment candidates; external source access proof | required, not implemented; access probes are separate from connectors |
+| G3b Dynamic federation | 26 Oct morning | Incoming claim becomes query-visible in Zetaris and automatically invalidates affected plans; checker requests evidence/revision/hold | required, not implemented; existing CLI manually advances a simulated snapshot |
+| G4 Changed evidence + review | 26 Oct | Duplicate, contradiction, expiry and new-event cases; full dependency invalidation; version-bound operator review and recovery | partial: road-assumption tests and manually triggered live invalidation/replan pass; automatic intake trigger, full mission/logistics binding, operator approval and recovery still to implement |
 | G5 Interface + rehearsal | 26 Oct | New interface consumes real events; three scenarios run; offline state explicit; video rehearsal | deferred |
 | G6 Submission package | 27 Oct by 21:00 | Video, slides, public runnable repo, declarations and sponsor evidence checked | not started |
 
 Official hard deadline: **28 Oct 00:45 Douala = 27 Oct 23:45 UTC**.
 The target submission leaves 3 hours 45 minutes of buffer. Do not change the
 submission track, repo visibility or account billing as part of this plan audit.
+G3a/G3b now precede expanding standalone review storage or interface polish.
 
 ## 6. Three-minute demo
 
-- 0:00–0:25: user, delivery request and clearly labelled scenario assumptions.
-- 0:25–1:00: Zetaris evidence joins; show record IDs and freshness.
-- 1:00–1:45: candidate rejected for an exact constraint; revision changes it.
-- 1:45–2:20: new observation invalidates the recommendation; system revises or holds.
-- 2:20–2:45: operator sees evidence, limitations and the action awaiting review.
-- 2:45–3:00: actual sponsor query/model/engine receipts and reproducibility entrypoint.
+- 0:00–0:25: user, delivery request, collection window and labelled demo records.
+- 0:25–1:20: public retrieval/community intake, forwarded-copy handling and
+  vernacular place grounding with provenance and uncertainty.
+- 1:20–1:55: Zetaris evidence joins, exact constraint rejection and corrected plan.
+- 1:55–2:35: a newly submitted demonstration report automatically invalidates the
+  affected recommendation; the system verifies, revises or holds.
+- 2:35–3:00: evidence-linked operator review, actual model/engine receipts and mode.
+
+This is the target demonstration, not a claim that live intake or the new UI
+already works. The detailed acceptance boundary is in LIVE_VISION.md.
 
 ## 7. Risk register
 

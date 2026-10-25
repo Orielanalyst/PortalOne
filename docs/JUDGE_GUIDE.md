@@ -3,6 +3,11 @@
 **As of 2026-10-24: core CLI verified on synthetic missions.** The browser
 interface is the earlier scaffold and does not consume this core yet.
 
+**25 October direction:** [Live vision and delivery boundary](LIVE_VISION.md)
+records the gap between this baseline and ReliefIntel's intended live signal,
+spatial grounding and automatic re-evaluation workflow. Those layers are required
+next work. Access probes do not constitute a product connector.
+
 ## What exists and what is next
 
 | Capability | Evidence | State |
@@ -17,6 +22,7 @@ interface is the earlier scaffold and does not consume this core yet.
 | Nightshift authentication and discovery | [Runtime receipt](evidence/meterless-2026-10-24.json) | running; valid token accepted and wrong token rejected |
 | Pinned engine and installed runtime provenance | [Setup receipt](evidence/power-setup-2026-10-24.json) | source hashes, license, installer hash and test results recorded |
 | Nemotron inference | [Live runtime receipt](evidence/meterless-2026-10-24.json) | expected marker returned; Nightshift reported `nvidia/nemotron-3-ultra-550b-a55b`; routing mode remains `meterless/auto` |
+| Live-source feasibility | [25 October access receipt](evidence/live-source-feasibility-2026-10-25.json) | HDX metadata discovery succeeds; Firecrawl anonymous request returns 403; two Overpass requests time out; no product connector implemented |
 | New UI, final demo and slides | [Execution plan](EXECUTION_PLAN.md) | deferred |
 | Hosted CI | [Actions run](https://github.com/Orielanalyst/PortalOne/actions/runs/39986817817) | startup blocked by account billing/spending limit |
 

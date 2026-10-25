@@ -1,0 +1,95 @@
+{
+  "kind": "live-source-feasibility-only",
+  "reviewDate": "2026-10-25",
+  "displayTimezone": "Africa/Douala",
+  "repositoryHeadBeforePlanning": "df43b3258476def561ae605c1443069bae89c170",
+  "execution": "Inline Bun native-fetch probes from the project machine, outside the network-restricted sandbox. One request per listed check, 30-second timeout, no retry, no credentials supplied.",
+  "productConnectorsImplemented": false,
+  "paidAccountCredentialsUsed": false,
+  "checks": [
+    {
+      "name": "firecrawl-anonymous-search",
+      "endpoint": "https://api.firecrawl.dev/v2/search",
+      "testedAt": "2026-10-25T05:26:04.695Z",
+      "status": 403,
+      "durationMs": 928,
+      "bytes": 394,
+      "responseSha256": "8db4778b5186570ab36c8244b5534b0737e8b3804d9c8ebaf6fc4051ac1a0038",
+      "parsedRows": null,
+      "serviceSuccess": false,
+      "osmDataTimestamp": null
+    },
+    {
+      "name": "osm-place-coverage",
+      "endpoint": "https://overpass-api.de/api/interpreter",
+      "testedAt": "2026-10-25T05:26:33.770Z",
+      "durationMs": 30003,
+      "error": "timeout"
+    },
+    {
+      "name": "osm-place-coverage-secondary",
+      "endpoint": "https://overpass.private.coffee/api/interpreter",
+      "testedAt": "2026-10-25T05:27:39.256Z",
+      "durationMs": 30001,
+      "error": "timeout"
+    },
+    {
+      "name": "hdx-cameroon-dataset-discovery",
+      "endpoint": "https://data.humdata.org/api/3/action/package_search?q=groups:cmr&rows=1",
+      "testedAt": "2026-10-25T05:27:10.040Z",
+      "status": 200,
+      "durationMs": 785,
+      "bytes": 11274,
+      "responseSha256": "b0612c1afc59da6f7d42a58a5d417a17e5f73426075d42170a5012593bee23d2",
+      "parsedRows": 1,
+      "osmDataTimestamp": null,
+      "items": [
+        {
+          "id": "b704f489-6705-499a-b5f0-22eeb1184b0b",
+          "name": "floodscan",
+          "licenseId": "cc-by-igo",
+          "metadataModified": "2026-10-25T00:31:05.947468",
+          "resourceCount": 2
+        }
+      ]
+    }
+  ],
+  "requests": {
+    "firecrawl-anonymous-search": {
+      "method": "POST",
+      "body": {
+        "query": "site:reliefweb.int Cameroon North-West humanitarian access",
+        "limit": 1,
+        "highlights": false
+      }
+    },
+    "osm-place-coverage": {
+      "method": "POST",
+      "encoding": "application/x-www-form-urlencoded",
+      "data": "[out:json][timeout:20];nwr[\"name\"~\"^(Bamenda|Bambili)$\",i](5.8,10.0,6.1,10.4);out center tags 12;"
+    },
+    "osm-place-coverage-secondary": {
+      "method": "POST",
+      "sameQueryAs": "osm-place-coverage"
+    },
+    "hdx-cameroon-dataset-discovery": {
+      "method": "GET",
+      "query": {
+        "q": "groups:cmr",
+        "rows": 1
+      }
+    }
+  },
+  "interpretation": [
+    "Firecrawl documentation described anonymous search, but this machine received HTTP 403. The response was not diagnosed as a specific authentication, credit or regional restriction.",
+    "Two Overpass endpoints timed out. No map coverage, geometry or road attributes were obtained or verified.",
+    "HDX CKAN dataset discovery worked. A Cameroon tag and recent metadata modification do not establish resource freshness, corridor coverage or useful operational evidence.",
+    "No real field observation, community channel, grounded road network or automatic replan trigger was connected by these probes.",
+    "The preceding default-sandbox attempt failed network requests before HTTP responses; it is not classified as provider outage."
+  ],
+  "documentation": {
+    "firecrawl": "https://docs.firecrawl.dev/features/search",
+    "overpass": "https://wiki.openstreetmap.org/wiki/Overpass_API",
+    "hdxRequest": "https://data.humdata.org/api/3/action/package_search?q=groups:cmr&rows=1"
+  }
+}
