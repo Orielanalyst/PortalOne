@@ -13,10 +13,11 @@ it('renders GFM tables, lists and traceable evidence links while suppressing ext
   expect(container.querySelector('a')?.getAttribute('href')).toContain('/api/mission/evidence?run=mission-test');expect(container.querySelector('img')).toBeNull();
 });
 it('renders a completed streaming table header before its separator arrives and withholds ambiguous pipe syntax',()=>{
-  const {container,rerender}=render(<MissionMarkdown text={'| Facility | Cap'} streaming/>);
+  const prefix='## Completed section\n\nA stable paragraph.\n\n';
+  const {container,rerender}=render(<MissionMarkdown text={prefix+'| Facility | Cap'} streaming/>);
   expect(container.textContent).not.toContain('|');
-  rerender(<MissionMarkdown text={'| Facility | Capacity |'} streaming/>);
+  rerender(<MissionMarkdown text={prefix+'| Facility | Capacity |'} streaming/>);
   expect(container.querySelector('table')).not.toBeNull();expect(container.querySelector('th')?.textContent).toBe('Facility');
-  rerender(<MissionMarkdown text={'| Facility | Capacity |\n| --- | --- |\n| Clinic | Unknown'} streaming/>);
+  rerender(<MissionMarkdown text={prefix+'| Facility | Capacity |\n| --- | --- |\n| Clinic | Unknown'} streaming/>);
   expect(container.querySelector('td')?.textContent).toBe('Clinic');
 });
