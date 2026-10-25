@@ -1,0 +1,4 @@
+[
+  {"_id":1,"_uuid":"offline-bambili-v1","report_mode":"demo","observed_at":"2026-10-25T06:00:00Z","place_name":"Bambili","category":"other","report_text":"OFFLINE REPLAY ONLY. No incident or need asserted.","source_relation":"direct"},
+  {"_id":2,"_uuid":"offline-bambui-v1","report_mode":"demo","observed_at":"2026-10-25T06:05:00Z","place_name":"Bambui","category":"other","report_text":"OFFLINE REPLAY ONLY. No incident or need asserted.","source_relation":"forwarded"}
+]

@@ -1,0 +1,29 @@
+{
+  "survey": [
+    { "type": "note", "name": "purpose", "label": "ReliefIntel field observation. Do not include reporter names, phone numbers or identifying details. This form records reports for review; it does not authorize travel." },
+    { "type": "select_one report_modes", "name": "report_mode", "label": "Is this a demonstration or a real observation?", "required": true, "default": "demo" },
+    { "type": "dateTime", "name": "observed_at", "label": "When was the situation observed? Include the local timezone.", "required": true },
+    { "type": "text", "name": "place_name", "label": "Where? Use the community name and local landmark.", "required": true },
+    { "type": "geopoint", "name": "location", "label": "Optional location pin", "hint": "Leave blank if the location is uncertain. Do not record a reporter's private location." },
+    { "type": "select_one categories", "name": "category", "label": "What kind of observation is this?", "required": true },
+    { "type": "text", "name": "report_text", "label": "Describe only what was observed or reported.", "required": true, "constraint": "string-length(.) <= 2000", "constraint_message": "Keep the description under 2,000 characters." },
+    { "type": "select_one relations", "name": "source_relation", "label": "How was this information obtained?", "required": true },
+    { "type": "text", "name": "origin_reference", "label": "Optional original report reference", "hint": "Use a report code, not a person's name or phone number. A forwarded copy is not an independent witness." },
+    { "type": "note", "name": "uncertainty", "label": "Unconfirmed reports and map locations remain uncertain until checked. Missing reports do not mean a road is clear." }
+  ],
+  "choices": [
+    { "list_name": "report_modes", "name": "demo", "label": "Demonstration / test report" },
+    { "list_name": "report_modes", "name": "live", "label": "Real observation" },
+    { "list_name": "categories", "name": "road_blockage", "label": "Reported road blockage" },
+    { "list_name": "categories", "name": "road_condition", "label": "Road or bridge condition" },
+    { "list_name": "categories", "name": "access_restriction", "label": "Reported access restriction" },
+    { "list_name": "categories", "name": "service_status", "label": "Clinic, water point or service status" },
+    { "list_name": "categories", "name": "supply_need", "label": "Reported supply need" },
+    { "list_name": "categories", "name": "weather", "label": "Weather or terrain observation" },
+    { "list_name": "categories", "name": "other", "label": "Other / unclear" },
+    { "list_name": "relations", "name": "direct", "label": "Direct observation" },
+    { "list_name": "relations", "name": "forwarded", "label": "Forwarded or copied report" },
+    { "list_name": "relations", "name": "reported", "label": "Reported by someone else" }
+  ],
+  "settings": { "form_title": "ReliefIntel — Field Observation", "id_string": "reliefintel_field_v1", "version": "2026102501", "default_language": "English" }
+}

@@ -1,0 +1,1772 @@
+{
+  "version": "community-map-v1",
+  "preparedAt": "2026-10-25T06:21:10.459Z",
+  "bounds": [
+    10.1,
+    5.9,
+    10.3,
+    6.1
+  ],
+  "attribution": "© OpenStreetMap contributors; distributed through Humanitarian OpenStreetMap Team / HDX",
+  "license": "ODbL-1.0",
+  "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "selection": "Whole features whose geographic bounding boxes overlap the viewing extent; geometries are not clipped or surveyed.",
+  "limits": "Mapped geography only. No claim of current passability, facility operation, security, bridge certification or completeness.",
+  "parser": "shpjs@6.2.0",
+  "sources": [
+    {
+      "layer": "roads",
+      "dataset": "hotosm_cmr_roads",
+      "resource": "ed7bec54-d9a0-4917-960f-11166122d840",
+      "url": "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/roads/hotosm_cmr_roads_osm_shp.zip",
+      "cached": true,
+      "localArchiveModifiedAt": "2026-10-25T06:18:17.362Z",
+      "archiveSha256": "389c3571a2092b61654133725ddd7c1eb832fa786eb43dd4c1585492e74fbc33",
+      "archiveBytes": 81493512,
+      "sourceFeatureCount": 325577,
+      "sourceMetadata": {
+        "type": "Feature",
+        "stac_version": "1.1.0",
+        "stac_extensions": [
+          "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+        ],
+        "id": "hotosm_cmr_roads-osm",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                8.4987335,
+                1.6537134
+              ],
+              [
+                16.1364321,
+                1.6537134
+              ],
+              [
+                16.1364321,
+                13.0750315
+              ],
+              [
+                8.4987335,
+                13.0750315
+              ],
+              [
+                8.4987335,
+                1.6537134
+              ]
+            ]
+          ]
+        },
+        "bbox": [
+          8.4987335,
+          1.6537134,
+          16.1364321,
+          13.0750315
+        ],
+        "properties": {
+          "oex:category": "roads",
+          "oex:source": "osm",
+          "oex:dataset_source": "OpenStreetMap (Geofabrik CMR 2026-10-07)",
+          "oex:snapshot": "2026-10-07",
+          "oex:boundary": "geoBoundaries gbOpen ADM0",
+          "oex:version": "0.4.15",
+          "oex:pcode_source_date": "2025-07-29",
+          "oex:geometry_types": {
+            "LINESTRING": 305926,
+            "POINT": 19307,
+            "POLYGON": 344
+          },
+          "title": "Roads of Cameroon",
+          "description": "325,577 features: 305,926 lines, 19,307 points, 344 polygons. 1 of 13 attributes are filled for at least half of the features.",
+          "license": "ODbL-1.0",
+          "created": "2026-10-08T09:26:21Z",
+          "keywords": [
+            "geodata",
+            "roads",
+            "transportation"
+          ],
+          "providers": [
+            {
+              "name": "OpenStreetMap (Geofabrik CMR 2026-10-07)",
+              "roles": [
+                "producer",
+                "licensor"
+              ]
+            }
+          ],
+          "proj:code": "EPSG:4326",
+          "table:row_count": 325577,
+          "table:primary_geometry": "geom",
+          "table:columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 325577,
+              "oex:top_values": []
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "oex:null_count": 313436,
+              "oex:null_percent": 96.27,
+              "oex:distinct_count": 7267,
+              "oex:top_values": []
+            },
+            {
+              "name": "name_en",
+              "type": "VARCHAR",
+              "oex:null_count": 325462,
+              "oex:null_percent": 99.96,
+              "oex:distinct_count": 59,
+              "oex:top_values": [
+                {
+                  "value": "Kribi Lolabé Motorway",
+                  "count": 16
+                },
+                {
+                  "value": "Food Market Road",
+                  "count": 7
+                },
+                {
+                  "value": "HIBMAT Street",
+                  "count": 6
+                },
+                {
+                  "value": "Longla Street",
+                  "count": 6
+                },
+                {
+                  "value": "Sonac Street",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "name": "name_fr",
+              "type": "VARCHAR",
+              "oex:null_count": 325353,
+              "oex:null_percent": 99.93,
+              "oex:distinct_count": 86,
+              "oex:top_values": [
+                {
+                  "value": "Route Kumba - Mamfé",
+                  "count": 18
+                },
+                {
+                  "value": "Rue 3.700",
+                  "count": 18
+                },
+                {
+                  "value": "Autoroute Kribi Lolabé",
+                  "count": 16
+                },
+                {
+                  "value": "Route Mamfé - Eyumodjock",
+                  "count": 12
+                },
+                {
+                  "value": "Route Eyumodjock - Ekok",
+                  "count": 9
+                }
+              ]
+            },
+            {
+              "name": "highway",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 45,
+              "oex:top_values": [
+                {
+                  "value": "residential",
+                  "count": 157101
+                },
+                {
+                  "value": "path",
+                  "count": 47712
+                },
+                {
+                  "value": "track",
+                  "count": 39377
+                },
+                {
+                  "value": "unclassified",
+                  "count": 36012
+                },
+                {
+                  "value": "street_lamp",
+                  "count": 18326
+                }
+              ]
+            },
+            {
+              "name": "surface",
+              "type": "VARCHAR",
+              "oex:null_count": 188247,
+              "oex:null_percent": 57.82,
+              "oex:distinct_count": 41,
+              "oex:top_values": [
+                {
+                  "value": "unpaved",
+                  "count": 104257
+                },
+                {
+                  "value": "ground",
+                  "count": 20541
+                },
+                {
+                  "value": "asphalt",
+                  "count": 5940
+                },
+                {
+                  "value": "paved",
+                  "count": 3398
+                },
+                {
+                  "value": "dirt",
+                  "count": 1385
+                }
+              ]
+            },
+            {
+              "name": "smoothness",
+              "type": "VARCHAR",
+              "oex:null_count": 322746,
+              "oex:null_percent": 99.13,
+              "oex:distinct_count": 12,
+              "oex:top_values": [
+                {
+                  "value": "intermediate",
+                  "count": 1208
+                },
+                {
+                  "value": "good",
+                  "count": 578
+                },
+                {
+                  "value": "p",
+                  "count": 522
+                },
+                {
+                  "value": "very_bad",
+                  "count": 141
+                },
+                {
+                  "value": "excellent",
+                  "count": 138
+                }
+              ]
+            },
+            {
+              "name": "width",
+              "type": "VARCHAR",
+              "oex:null_count": 323048,
+              "oex:null_percent": 99.22,
+              "oex:distinct_count": 414,
+              "oex:top_values": [
+                {
+                  "value": "4",
+                  "count": 716
+                },
+                {
+                  "value": "7",
+                  "count": 317
+                },
+                {
+                  "value": "6",
+                  "count": 299
+                },
+                {
+                  "value": "8",
+                  "count": 149
+                },
+                {
+                  "value": "5",
+                  "count": 139
+                }
+              ]
+            },
+            {
+              "name": "lanes",
+              "type": "VARCHAR",
+              "oex:null_count": 323844,
+              "oex:null_percent": 99.47,
+              "oex:distinct_count": 5,
+              "oex:top_values": [
+                {
+                  "value": "2",
+                  "count": 1338
+                },
+                {
+                  "value": "1",
+                  "count": 322
+                },
+                {
+                  "value": "4",
+                  "count": 46
+                },
+                {
+                  "value": "3",
+                  "count": 23
+                },
+                {
+                  "value": "6",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "name": "oneway",
+              "type": "VARCHAR",
+              "oex:null_count": 320391,
+              "oex:null_percent": 98.41,
+              "oex:distinct_count": 2,
+              "oex:top_values": [
+                {
+                  "value": "yes",
+                  "count": 3596
+                },
+                {
+                  "value": "no",
+                  "count": 1590
+                }
+              ]
+            },
+            {
+              "name": "bridge",
+              "type": "VARCHAR",
+              "oex:null_count": 322522,
+              "oex:null_percent": 99.06,
+              "oex:distinct_count": 3,
+              "oex:top_values": [
+                {
+                  "value": "yes",
+                  "count": 3050
+                },
+                {
+                  "value": "low_water_crossing",
+                  "count": 4
+                },
+                {
+                  "value": "boardwalk",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "layer",
+              "type": "VARCHAR",
+              "oex:null_count": 322726,
+              "oex:null_percent": 99.12,
+              "oex:distinct_count": 8,
+              "oex:top_values": [
+                {
+                  "value": "1",
+                  "count": 2769
+                },
+                {
+                  "value": "-1",
+                  "count": 70
+                },
+                {
+                  "value": "2",
+                  "count": 5
+                },
+                {
+                  "value": "5",
+                  "count": 2
+                },
+                {
+                  "value": "-2",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "source",
+              "type": "VARCHAR",
+              "oex:null_count": 325577,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "adm0_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "CMR",
+                  "count": 325577
+                }
+              ]
+            },
+            {
+              "name": "adm0_name",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "Cameroon",
+                  "count": 325577
+                }
+              ]
+            },
+            {
+              "name": "adm1_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 142,
+              "oex:null_percent": 0.04,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "CM002",
+                  "count": 67465
+                },
+                {
+                  "value": "CM001",
+                  "count": 53647
+                },
+                {
+                  "value": "CM008",
+                  "count": 45987
+                },
+                {
+                  "value": "CM004",
+                  "count": 34665
+                },
+                {
+                  "value": "CM005",
+                  "count": 33635
+                }
+              ]
+            },
+            {
+              "name": "adm1_name",
+              "type": "VARCHAR",
+              "oex:null_count": 142,
+              "oex:null_percent": 0.04,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "Centre",
+                  "count": 67465
+                },
+                {
+                  "value": "Adamaoua",
+                  "count": 53647
+                },
+                {
+                  "value": "Ouest",
+                  "count": 45987
+                },
+                {
+                  "value": "Extrême-Nord",
+                  "count": 34665
+                },
+                {
+                  "value": "Littoral",
+                  "count": 33635
+                }
+              ]
+            },
+            {
+              "name": "adm2_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 142,
+              "oex:null_percent": 0.04,
+              "oex:distinct_count": 58,
+              "oex:top_values": [
+                {
+                  "value": "CM002007",
+                  "count": 30447
+                },
+                {
+                  "value": "CM005004",
+                  "count": 23263
+                },
+                {
+                  "value": "CM001004",
+                  "count": 21489
+                },
+                {
+                  "value": "CM001005",
+                  "count": 17486
+                },
+                {
+                  "value": "CM002005",
+                  "count": 14934
+                }
+              ]
+            },
+            {
+              "name": "adm2_name",
+              "type": "VARCHAR",
+              "oex:null_count": 142,
+              "oex:null_percent": 0.04,
+              "oex:distinct_count": 58,
+              "oex:top_values": [
+                {
+                  "value": "Mfoundi",
+                  "count": 30447
+                },
+                {
+                  "value": "Wouri",
+                  "count": 23263
+                },
+                {
+                  "value": "Mbéré",
+                  "count": 21489
+                },
+                {
+                  "value": "Vina",
+                  "count": 17486
+                },
+                {
+                  "value": "Mefou-et-Afamba",
+                  "count": 14934
+                }
+              ]
+            },
+            {
+              "name": "adm3_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 142,
+              "oex:null_percent": 0.04,
+              "oex:distinct_count": 359,
+              "oex:top_values": [
+                {
+                  "value": "CM001004003",
+                  "count": 14430
+                },
+                {
+                  "value": "CM002005008",
+                  "count": 9175
+                },
+                {
+                  "value": "CM005004003",
+                  "count": 9005
+                },
+                {
+                  "value": "CM002007001",
+                  "count": 8043
+                },
+                {
+                  "value": "CM005004005",
+                  "count": 7068
+                }
+              ]
+            },
+            {
+              "name": "adm3_name",
+              "type": "VARCHAR",
+              "oex:null_count": 142,
+              "oex:null_percent": 0.04,
+              "oex:distinct_count": 359,
+              "oex:top_values": [
+                {
+                  "value": "Meiganga",
+                  "count": 14430
+                },
+                {
+                  "value": "Soa",
+                  "count": 9175
+                },
+                {
+                  "value": "Douala 3e",
+                  "count": 9005
+                },
+                {
+                  "value": "Yaounde 1er",
+                  "count": 8043
+                },
+                {
+                  "value": "Douala 5e",
+                  "count": 7068
+                }
+              ]
+            },
+            {
+              "name": "adm4_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 325577,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "adm4_name",
+              "type": "VARCHAR",
+              "oex:null_count": 325577,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "name_latin",
+              "type": "VARCHAR",
+              "oex:null_count": 313436,
+              "oex:null_percent": 96.27,
+              "oex:distinct_count": 7258,
+              "oex:top_values": []
+            }
+          ],
+          "datetime": "2026-10-07T00:00:00Z"
+        },
+        "links": [
+          {
+            "rel": "license",
+            "href": "https://opendatacommons.org/licenses/odbl/1-0/",
+            "title": "Open Database License (ODC-ODbL)"
+          },
+          {
+            "rel": "root",
+            "href": "https://production-raw-data-api.s3.amazonaws.com/ISO3/catalog.json",
+            "type": "application/json"
+          }
+        ],
+        "assets": {}
+      }
+    },
+    {
+      "layer": "places",
+      "dataset": "hotosm_cmr_populated_places",
+      "resource": "18cfc3dd-e90d-41b8-aa36-fc25050a203c",
+      "url": "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/populated_places/hotosm_cmr_populated_places_osm_geojson.zip",
+      "cached": true,
+      "localArchiveModifiedAt": "2026-10-25T06:18:59.018Z",
+      "archiveSha256": "69f51c6f35bcd27b50fb92b3984af5398e6d0dc20da7dee4c81f1da761e84334",
+      "archiveBytes": 28493171,
+      "sourceFeatureCount": 157896,
+      "sourceMetadata": {
+        "type": "Feature",
+        "stac_version": "1.1.0",
+        "stac_extensions": [
+          "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+        ],
+        "id": "hotosm_cmr_populated_places-osm",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                8.5042929,
+                1.6549611
+              ],
+              [
+                16.1372083,
+                1.6549611
+              ],
+              [
+                16.1372083,
+                13.0771587
+              ],
+              [
+                8.5042929,
+                13.0771587
+              ],
+              [
+                8.5042929,
+                1.6549611
+              ]
+            ]
+          ]
+        },
+        "bbox": [
+          8.5042929,
+          1.6549611,
+          16.1372083,
+          13.0771587
+        ],
+        "properties": {
+          "oex:category": "populated_places",
+          "oex:source": "osm",
+          "oex:dataset_source": "OpenStreetMap (Geofabrik CMR 2026-10-07)",
+          "oex:snapshot": "2026-10-07",
+          "oex:boundary": "geoBoundaries gbOpen ADM0",
+          "oex:version": "0.4.15",
+          "oex:pcode_source_date": "2025-07-29",
+          "oex:geometry_types": {
+            "POLYGON": 145071,
+            "POINT": 12763,
+            "MULTIPOLYGON": 57,
+            "LINESTRING": 5
+          },
+          "title": "Populated Places of Cameroon",
+          "description": "157,896 features: 145,071 polygons, 12,763 points, 57 multipolygons, 5 lines. 1 of 9 attributes are filled for at least half of the features.",
+          "license": "ODbL-1.0",
+          "created": "2026-10-08T09:38:34Z",
+          "keywords": [
+            "geodata",
+            "populated places-settlements"
+          ],
+          "providers": [
+            {
+              "name": "OpenStreetMap (Geofabrik CMR 2026-10-07)",
+              "roles": [
+                "producer",
+                "licensor"
+              ]
+            }
+          ],
+          "proj:code": "EPSG:4326",
+          "table:row_count": 157896,
+          "table:primary_geometry": "geom",
+          "table:columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 157896,
+              "oex:top_values": []
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "oex:null_count": 145778,
+              "oex:null_percent": 92.33,
+              "oex:distinct_count": 10517,
+              "oex:top_values": []
+            },
+            {
+              "name": "name_en",
+              "type": "VARCHAR",
+              "oex:null_count": 157863,
+              "oex:null_percent": 99.98,
+              "oex:distinct_count": 30,
+              "oex:top_values": [
+                {
+                  "value": "Mara",
+                  "count": 2
+                },
+                {
+                  "value": "Kinabari",
+                  "count": 2
+                },
+                {
+                  "value": "Mwanjeken",
+                  "count": 2
+                },
+                {
+                  "value": "Maroua",
+                  "count": 1
+                },
+                {
+                  "value": "Lagdo",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "name_fr",
+              "type": "VARCHAR",
+              "oex:null_count": 157793,
+              "oex:null_percent": 99.93,
+              "oex:distinct_count": 99,
+              "oex:top_values": [
+                {
+                  "value": "Poukebi",
+                  "count": 2
+                },
+                {
+                  "value": "Kaélé",
+                  "count": 2
+                },
+                {
+                  "value": "Kinabari",
+                  "count": 2
+                },
+                {
+                  "value": "Mbéré",
+                  "count": 2
+                },
+                {
+                  "value": "Ngale",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "place",
+              "type": "VARCHAR",
+              "oex:null_count": 144942,
+              "oex:null_percent": 91.8,
+              "oex:distinct_count": 8,
+              "oex:top_values": [
+                {
+                  "value": "village",
+                  "count": 10675
+                },
+                {
+                  "value": "hamlet",
+                  "count": 1468
+                },
+                {
+                  "value": "isolated_dwelling",
+                  "count": 407
+                },
+                {
+                  "value": "town",
+                  "count": 349
+                },
+                {
+                  "value": "city",
+                  "count": 52
+                }
+              ]
+            },
+            {
+              "name": "landuse",
+              "type": "VARCHAR",
+              "oex:null_count": 12838,
+              "oex:null_percent": 8.13,
+              "oex:distinct_count": 4,
+              "oex:top_values": [
+                {
+                  "value": "residential",
+                  "count": 145050
+                },
+                {
+                  "value": "meadow",
+                  "count": 6
+                },
+                {
+                  "value": "village_green",
+                  "count": 1
+                },
+                {
+                  "value": "farmland",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "population",
+              "type": "VARCHAR",
+              "oex:null_count": 157801,
+              "oex:null_percent": 99.94,
+              "oex:distinct_count": 80,
+              "oex:top_values": [
+                {
+                  "value": "0",
+                  "count": 4
+                },
+                {
+                  "value": "1000",
+                  "count": 3
+                },
+                {
+                  "value": "210",
+                  "count": 3
+                },
+                {
+                  "value": "100",
+                  "count": 3
+                },
+                {
+                  "value": "500",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "name": "is_in",
+              "type": "VARCHAR",
+              "oex:null_count": 157882,
+              "oex:null_percent": 99.99,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "Nchen Lewoh Council Area, Lebialem Division, South West Region, Cameroon",
+                  "count": 14
+                }
+              ]
+            },
+            {
+              "name": "source",
+              "type": "VARCHAR",
+              "oex:null_count": 157896,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "adm0_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "CMR",
+                  "count": 157896
+                }
+              ]
+            },
+            {
+              "name": "adm0_name",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "Cameroon",
+                  "count": 157896
+                }
+              ]
+            },
+            {
+              "name": "adm1_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 36,
+              "oex:null_percent": 0.02,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "CM008",
+                  "count": 32010
+                },
+                {
+                  "value": "CM001",
+                  "count": 29777
+                },
+                {
+                  "value": "CM002",
+                  "count": 25174
+                },
+                {
+                  "value": "CM004",
+                  "count": 16323
+                },
+                {
+                  "value": "CM006",
+                  "count": 13078
+                }
+              ]
+            },
+            {
+              "name": "adm1_name",
+              "type": "VARCHAR",
+              "oex:null_count": 36,
+              "oex:null_percent": 0.02,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "Ouest",
+                  "count": 32010
+                },
+                {
+                  "value": "Adamaoua",
+                  "count": 29777
+                },
+                {
+                  "value": "Centre",
+                  "count": 25174
+                },
+                {
+                  "value": "Extrême-Nord",
+                  "count": 16323
+                },
+                {
+                  "value": "Nord",
+                  "count": 13078
+                }
+              ]
+            },
+            {
+              "name": "adm2_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 36,
+              "oex:null_percent": 0.02,
+              "oex:distinct_count": 58,
+              "oex:top_values": [
+                {
+                  "value": "CM001004",
+                  "count": 10512
+                },
+                {
+                  "value": "CM008005",
+                  "count": 8492
+                },
+                {
+                  "value": "CM008003",
+                  "count": 7918
+                },
+                {
+                  "value": "CM001005",
+                  "count": 6891
+                },
+                {
+                  "value": "CM002003",
+                  "count": 5551
+                }
+              ]
+            },
+            {
+              "name": "adm2_name",
+              "type": "VARCHAR",
+              "oex:null_count": 36,
+              "oex:null_percent": 0.02,
+              "oex:distinct_count": 58,
+              "oex:top_values": [
+                {
+                  "value": "Mbéré",
+                  "count": 10512
+                },
+                {
+                  "value": "Menoua",
+                  "count": 8492
+                },
+                {
+                  "value": "Hauts-Plateaux",
+                  "count": 7918
+                },
+                {
+                  "value": "Vina",
+                  "count": 6891
+                },
+                {
+                  "value": "Mbam-et-Inoubou",
+                  "count": 5551
+                }
+              ]
+            },
+            {
+              "name": "adm3_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 36,
+              "oex:null_percent": 0.02,
+              "oex:distinct_count": 360,
+              "oex:top_values": [
+                {
+                  "value": "CM001004003",
+                  "count": 6653
+                },
+                {
+                  "value": "CM008003002",
+                  "count": 4539
+                },
+                {
+                  "value": "CM008005001",
+                  "count": 3577
+                },
+                {
+                  "value": "CM001001002",
+                  "count": 3482
+                },
+                {
+                  "value": "CM001004001",
+                  "count": 2610
+                }
+              ]
+            },
+            {
+              "name": "adm3_name",
+              "type": "VARCHAR",
+              "oex:null_count": 36,
+              "oex:null_percent": 0.02,
+              "oex:distinct_count": 360,
+              "oex:top_values": [
+                {
+                  "value": "Meiganga",
+                  "count": 6653
+                },
+                {
+                  "value": "Bamendjou",
+                  "count": 4539
+                },
+                {
+                  "value": "Dschang",
+                  "count": 3577
+                },
+                {
+                  "value": "Tibati",
+                  "count": 3482
+                },
+                {
+                  "value": "Dir",
+                  "count": 2610
+                }
+              ]
+            },
+            {
+              "name": "adm4_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 157896,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "adm4_name",
+              "type": "VARCHAR",
+              "oex:null_count": 157896,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "name_latin",
+              "type": "VARCHAR",
+              "oex:null_count": 145777,
+              "oex:null_percent": 92.32,
+              "oex:distinct_count": 10395,
+              "oex:top_values": []
+            }
+          ],
+          "datetime": "2026-10-07T00:00:00Z"
+        },
+        "links": [
+          {
+            "rel": "license",
+            "href": "https://opendatacommons.org/licenses/odbl/1-0/",
+            "title": "Open Database License (ODC-ODbL)"
+          },
+          {
+            "rel": "root",
+            "href": "https://production-raw-data-api.s3.amazonaws.com/ISO3/catalog.json",
+            "type": "application/json"
+          }
+        ],
+        "assets": {}
+      }
+    },
+    {
+      "layer": "facilities",
+      "dataset": "hotosm_cmr_health_facilities",
+      "resource": "1bfd4ef1-f8b0-4b15-b03c-1b77daa83c48",
+      "url": "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/health_facilities/hotosm_cmr_health_facilities_osm_geojson.zip",
+      "retrievedAt": "2026-10-25T06:21:10.349Z",
+      "etag": "\"dbb55d532320be9ed75d76235ca46beb\"",
+      "lastModified": "Thu, 08 Oct 2026 09:38:15 GMT",
+      "localArchiveModifiedAt": "2026-10-25T06:21:10.348Z",
+      "archiveSha256": "346ad8734f61832499c73ba7526316781d1c04ae471f7893aa6d57dda6093969",
+      "archiveBytes": 214559,
+      "sourceFeatureCount": 2108,
+      "sourceMetadata": {
+        "type": "Feature",
+        "stac_version": "1.1.0",
+        "stac_extensions": [
+          "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+        ],
+        "id": "hotosm_cmr_health_facilities-osm",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                8.8724439,
+                2.0497359
+              ],
+              [
+                16.0672009,
+                2.0497359
+              ],
+              [
+                16.0672009,
+                12.3896112
+              ],
+              [
+                8.8724439,
+                12.3896112
+              ],
+              [
+                8.8724439,
+                2.0497359
+              ]
+            ]
+          ]
+        },
+        "bbox": [
+          8.8724439,
+          2.0497359,
+          16.0672009,
+          12.3896112
+        ],
+        "properties": {
+          "oex:category": "health_facilities",
+          "oex:source": "osm",
+          "oex:dataset_source": "OpenStreetMap (Geofabrik CMR 2026-10-07)",
+          "oex:snapshot": "2026-10-07",
+          "oex:boundary": "geoBoundaries gbOpen ADM0",
+          "oex:version": "0.4.15",
+          "oex:pcode_source_date": "2025-07-29",
+          "oex:geometry_types": {
+            "POINT": 1159,
+            "POLYGON": 949
+          },
+          "title": "Health Facilities of Cameroon",
+          "description": "2,108 features: 1,159 points, 949 polygons. 3 of 13 attributes are filled for at least half of the features.",
+          "license": "ODbL-1.0",
+          "created": "2026-10-08T09:38:06Z",
+          "keywords": [
+            "geodata",
+            "health",
+            "health facilities"
+          ],
+          "providers": [
+            {
+              "name": "OpenStreetMap (Geofabrik CMR 2026-10-07)",
+              "roles": [
+                "producer",
+                "licensor"
+              ]
+            }
+          ],
+          "proj:code": "EPSG:4326",
+          "table:row_count": 2108,
+          "table:primary_geometry": "geom",
+          "table:columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 2108,
+              "oex:top_values": []
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "oex:null_count": 230,
+              "oex:null_percent": 10.91,
+              "oex:distinct_count": 1708,
+              "oex:top_values": []
+            },
+            {
+              "name": "name_en",
+              "type": "VARCHAR",
+              "oex:null_count": 2076,
+              "oex:null_percent": 98.48,
+              "oex:distinct_count": 32,
+              "oex:top_values": [
+                {
+                  "value": "Foundation Grace Divine",
+                  "count": 1
+                },
+                {
+                  "value": "Refugies Camp",
+                  "count": 1
+                },
+                {
+                  "value": "Wum District Hospital",
+                  "count": 1
+                },
+                {
+                  "value": "Mokolo Pharmacy",
+                  "count": 1
+                },
+                {
+                  "value": "Edea Regional Hospital",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "name_fr",
+              "type": "VARCHAR",
+              "oex:null_count": 2047,
+              "oex:null_percent": 97.11,
+              "oex:distinct_count": 61,
+              "oex:top_values": [
+                {
+                  "value": "Hôpital Jamot",
+                  "count": 1
+                },
+                {
+                  "value": "Hôpital Mamfé",
+                  "count": 1
+                },
+                {
+                  "value": "Hôpital des Yeux de Magrabi ICO",
+                  "count": 1
+                },
+                {
+                  "value": "centre médical Dikolo",
+                  "count": 1
+                },
+                {
+                  "value": "Pharmacie Rapido Fiango",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "amenity",
+              "type": "VARCHAR",
+              "oex:null_count": 110,
+              "oex:null_percent": 5.22,
+              "oex:distinct_count": 9,
+              "oex:top_values": [
+                {
+                  "value": "clinic",
+                  "count": 718
+                },
+                {
+                  "value": "hospital",
+                  "count": 456
+                },
+                {
+                  "value": "pharmacy",
+                  "count": 442
+                },
+                {
+                  "value": "doctors",
+                  "count": 353
+                },
+                {
+                  "value": "dentist",
+                  "count": 24
+                }
+              ]
+            },
+            {
+              "name": "building",
+              "type": "VARCHAR",
+              "oex:null_count": 1423,
+              "oex:null_percent": 67.5,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "yes",
+                  "count": 600
+                },
+                {
+                  "value": "hospital",
+                  "count": 58
+                },
+                {
+                  "value": "public",
+                  "count": 17
+                },
+                {
+                  "value": "office",
+                  "count": 2
+                },
+                {
+                  "value": "hangar",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "healthcare",
+              "type": "VARCHAR",
+              "oex:null_count": 1106,
+              "oex:null_percent": 52.47,
+              "oex:distinct_count": 22,
+              "oex:top_values": [
+                {
+                  "value": "clinic",
+                  "count": 269
+                },
+                {
+                  "value": "hospital",
+                  "count": 254
+                },
+                {
+                  "value": "pharmacy",
+                  "count": 184
+                },
+                {
+                  "value": "doctor",
+                  "count": 155
+                },
+                {
+                  "value": "yes",
+                  "count": 52
+                }
+              ]
+            },
+            {
+              "name": "healthcare_speciality",
+              "type": "VARCHAR",
+              "oex:null_count": 2057,
+              "oex:null_percent": 97.58,
+              "oex:distinct_count": 20,
+              "oex:top_values": [
+                {
+                  "value": "general",
+                  "count": 28
+                },
+                {
+                  "value": "dentist",
+                  "count": 2
+                },
+                {
+                  "value": "ophthalmology",
+                  "count": 2
+                },
+                {
+                  "value": "gynaecology",
+                  "count": 2
+                },
+                {
+                  "value": "cardiology",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "operator_type",
+              "type": "VARCHAR",
+              "oex:null_count": 2081,
+              "oex:null_percent": 98.72,
+              "oex:distinct_count": 7,
+              "oex:top_values": [
+                {
+                  "value": "public",
+                  "count": 15
+                },
+                {
+                  "value": "private",
+                  "count": 7
+                },
+                {
+                  "value": "religious",
+                  "count": 1
+                },
+                {
+                  "value": "university",
+                  "count": 1
+                },
+                {
+                  "value": "government",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "capacity_persons",
+              "type": "VARCHAR",
+              "oex:null_count": 2108,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "addr_full",
+              "type": "VARCHAR",
+              "oex:null_count": 2107,
+              "oex:null_percent": 99.95,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "Sigal, Sigal/karcha, Kala Balge, BO",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "addr_city",
+              "type": "VARCHAR",
+              "oex:null_count": 2053,
+              "oex:null_percent": 97.39,
+              "oex:distinct_count": 33,
+              "oex:top_values": [
+                {
+                  "value": "Yaoundé VI",
+                  "count": 11
+                },
+                {
+                  "value": "Yaoundé",
+                  "count": 7
+                },
+                {
+                  "value": "Douala V",
+                  "count": 2
+                },
+                {
+                  "value": "Ebolowa",
+                  "count": 2
+                },
+                {
+                  "value": "Kouoptamo",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "source",
+              "type": "VARCHAR",
+              "oex:null_count": 2108,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "adm0_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "CMR",
+                  "count": 2108
+                }
+              ]
+            },
+            {
+              "name": "adm0_name",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 1,
+              "oex:top_values": [
+                {
+                  "value": "Cameroon",
+                  "count": 2108
+                }
+              ]
+            },
+            {
+              "name": "adm1_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "CM002",
+                  "count": 1014
+                },
+                {
+                  "value": "CM005",
+                  "count": 281
+                },
+                {
+                  "value": "CM008",
+                  "count": 164
+                },
+                {
+                  "value": "CM010",
+                  "count": 151
+                },
+                {
+                  "value": "CM006",
+                  "count": 139
+                }
+              ]
+            },
+            {
+              "name": "adm1_name",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 10,
+              "oex:top_values": [
+                {
+                  "value": "Centre",
+                  "count": 1014
+                },
+                {
+                  "value": "Littoral",
+                  "count": 281
+                },
+                {
+                  "value": "Ouest",
+                  "count": 164
+                },
+                {
+                  "value": "Sud-Ouest",
+                  "count": 151
+                },
+                {
+                  "value": "Nord",
+                  "count": 139
+                }
+              ]
+            },
+            {
+              "name": "adm2_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 57,
+              "oex:top_values": [
+                {
+                  "value": "CM002007",
+                  "count": 745
+                },
+                {
+                  "value": "CM005004",
+                  "count": 240
+                },
+                {
+                  "value": "CM006001",
+                  "count": 122
+                },
+                {
+                  "value": "CM010001",
+                  "count": 115
+                },
+                {
+                  "value": "CM002005",
+                  "count": 112
+                }
+              ]
+            },
+            {
+              "name": "adm2_name",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 57,
+              "oex:top_values": [
+                {
+                  "value": "Mfoundi",
+                  "count": 745
+                },
+                {
+                  "value": "Wouri",
+                  "count": 240
+                },
+                {
+                  "value": "Bénoué",
+                  "count": 122
+                },
+                {
+                  "value": "Fako",
+                  "count": 115
+                },
+                {
+                  "value": "Mefou-et-Afamba",
+                  "count": 112
+                }
+              ]
+            },
+            {
+              "name": "adm3_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 186,
+              "oex:top_values": [
+                {
+                  "value": "CM002007005",
+                  "count": 215
+                },
+                {
+                  "value": "CM002007001",
+                  "count": 148
+                },
+                {
+                  "value": "CM002007006",
+                  "count": 107
+                },
+                {
+                  "value": "CM002007004",
+                  "count": 106
+                },
+                {
+                  "value": "CM002005008",
+                  "count": 101
+                }
+              ]
+            },
+            {
+              "name": "adm3_name",
+              "type": "VARCHAR",
+              "oex:null_count": 0,
+              "oex:null_percent": 0,
+              "oex:distinct_count": 186,
+              "oex:top_values": [
+                {
+                  "value": "Yaounde 5e",
+                  "count": 215
+                },
+                {
+                  "value": "Yaounde 1er",
+                  "count": 148
+                },
+                {
+                  "value": "Yaounde 6e",
+                  "count": 107
+                },
+                {
+                  "value": "Yaounde 4e",
+                  "count": 106
+                },
+                {
+                  "value": "Soa",
+                  "count": 101
+                }
+              ]
+            },
+            {
+              "name": "adm4_pcode",
+              "type": "VARCHAR",
+              "oex:null_count": 2108,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "adm4_name",
+              "type": "VARCHAR",
+              "oex:null_count": 2108,
+              "oex:null_percent": 100,
+              "oex:distinct_count": 0,
+              "oex:top_values": []
+            },
+            {
+              "name": "name_latin",
+              "type": "VARCHAR",
+              "oex:null_count": 222,
+              "oex:null_percent": 10.53,
+              "oex:distinct_count": 1707,
+              "oex:top_values": []
+            }
+          ],
+          "datetime": "2026-10-07T00:00:00Z"
+        },
+        "links": [
+          {
+            "rel": "license",
+            "href": "https://opendatacommons.org/licenses/odbl/1-0/",
+            "title": "Open Database License (ODC-ODbL)"
+          },
+          {
+            "rel": "root",
+            "href": "https://production-raw-data-api.s3.amazonaws.com/ISO3/catalog.json",
+            "type": "application/json"
+          }
+        ],
+        "assets": {}
+      }
+    }
+  ],
+  "files": [
+    {
+      "file": "roads.geojson",
+      "sha256": "62d819622f868df25c260fd57aaf0ec06fb303190890743203bdab873d796836",
+      "bytes": 3360549,
+      "features": 5111
+    },
+    {
+      "file": "places.geojson",
+      "sha256": "7dcbb40f907bef74233f2991b84cfb405c46a12bd3d0000db99d31c0aa2838e1",
+      "bytes": 3915,
+      "features": 16
+    },
+    {
+      "file": "facilities.geojson",
+      "sha256": "06ab4b5113edf9364886f3446d1e6b7b91961ce1bb52a6095d4f5a5b2c5a8de6",
+      "bytes": 3016,
+      "features": 7
+    }
+  ]
+}
