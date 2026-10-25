@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { MeterlessClient } from './meterless';
+import { MeterlessClient,NEMOTRON_STREAM_MODELS } from './meterless';
 import { MissionJournal } from './mission-journal';
 const frame=(value:unknown)=>`data: ${JSON.stringify(value)}\n\n`;
 function client(text:string,finish='stop',done=true) {
@@ -18,11 +18,17 @@ it('decodes split UTF-8 SSE tokens, ignores private reasoning and preserves the 
   expect(result).toMatchObject({responseModel:'test-provider',requestedMode:'meterless/fast',usage:{total_tokens:13}});
   expect(result.content).not.toContain('private reasoning');expect(result.firstDeltaMs).not.toBeNull();
 });
-it.each(['length','missing_done','private_tag'])('rejects %s streams rather than publishing a successful answer',async fault=>{
+it.each(['length','missing_done','private_tag','scratchpad'])('rejects %s streams rather than publishing a successful answer',async fault=>{
   const seen:string[]=[];
-  const stream=client(fault==='private_tag'?'<think>hidden content</think>answer':'Incomplete public text',fault==='length'?'length':'stop',fault!=='missing_done');
+  const stream=client(fault==='private_tag'?'<think>hidden content</think>answer':fault==='scratchpad'?'<scratchpad>hidden content</scratchpad>answer':'Incomplete public text',fault==='length'?'length':'stop',fault!=='missing_done');
   await expect(stream.stream('Public prompt','meterless/fast',{onDelta:text=>seen.push(text)})).rejects.toThrow();
   expect(seen.join('')).not.toContain('hidden content');
+});
+it.each(['cache','quality_buffer','reasoning_scaffold','model_substitution','missing_receipt'])('refuses to certify %s as native single-model streaming',async fault=>{
+  const receipt={cache:{status:fault==='cache'?'exact':'miss'},phases:[{}],quality_race:{active:fault==='quality_buffer'},reasoning_scaffold:{active:fault==='reasoning_scaffold'}};
+  const body=frame({model:fault==='model_substitution'?'different-model':NEMOTRON_STREAM_MODELS.fast,choices:[{delta:{content:'A public answer.'},finish_reason:'stop'}],meterless:fault==='missing_receipt'?{}:{from_cache:fault==='cache',receipt}})+'data: [DONE]\n\n';
+  const stream=new MeterlessClient({baseUrl:'localhost:8088',token:'test',fetch:vi.fn(async()=>new Response(body,{headers:{'content-type':'text/event-stream'}})) as unknown as typeof fetch});
+  await expect(stream.stream('Public prompt',NEMOTRON_STREAM_MODELS.fast,{onDelta:()=>{}})).rejects.toThrow('fresh single-model streaming');
 });
 it('publishes document deltas while the artifact is still streaming and freezes published drafts',()=>{
   const journal=new MissionJournal(':memory:');const changes:unknown[]=[];const unsubscribe=journal.subscribe(change=>changes.push(change));

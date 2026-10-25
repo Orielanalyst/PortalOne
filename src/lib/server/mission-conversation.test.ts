@@ -3,7 +3,7 @@ import { MissionJournal } from './mission-journal';
 import { MissionRuntime } from './mission-runtime';
 import { NightshiftConversation } from './mission-conversation';
 import type { ConversationContext, ConversationDecision, MissionConversation } from './mission-conversation';
-import { MeterlessClient } from './meterless';
+import { MeterlessClient,NEMOTRON_STREAM_MODELS } from './meterless';
 import { CommunityMap } from './community-map';
 import { FixtureCommunityEvidence } from './community-evidence';
 import { normalizeKobo } from './kobo';
@@ -27,14 +27,14 @@ function setup(conversation?: MissionConversation) {
 }
 
 it('replies to a greeting through the model adapter without reading data, delegating or enabling a watch', async () => {
-  const request = vi.fn(async () => new Response(`data: ${JSON.stringify({model:'nvidia/test',choices:[{delta:{content:JSON.stringify(reply('Hello! What area or mission would you like us to work on?'))},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
+  const request = vi.fn(async () => new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.fast,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify(reply('Hello! What area or mission would you like us to work on?'))},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
   const client = new MeterlessClient({ baseUrl: 'localhost:8088', token: 'private-test-token', fetch: request as unknown as typeof fetch });
   const callbacks = vi.fn(); const { runtime, journal, source, dispatcher } = setup(new NightshiftConversation(client, callbacks));
   try {
     const turn = await runtime.chat('Hello', 30);
     expect(turn).toMatchObject({ status: 'replied', action: 'reply', runId: null, mode: 'live-model' });
     expect(turn.reply).toContain('What area'); expect(request).toHaveBeenCalledTimes(1);
-    expect(callbacks).toHaveBeenCalledWith(expect.objectContaining({ responseModel: 'nvidia/test' }));
+    expect(callbacks).toHaveBeenCalledWith(expect.objectContaining({ responseModel: NEMOTRON_STREAM_MODELS.fast }));
     const body = JSON.parse(String((request.mock.calls[0] as unknown as [string, RequestInit])[1].body));
     expect(body.max_tokens).toBe(256); expect(body.messages[0].content).not.toContain('private-test-token');
     expect(source.snapshot).not.toHaveBeenCalled(); expect(dispatcher.choose).not.toHaveBeenCalled();

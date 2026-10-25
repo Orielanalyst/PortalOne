@@ -80,10 +80,12 @@ export function validateCitedMarkdown(markdown: string, citations: EvidenceCitat
   if (markdown.length < 180 || /\b(TBD|lorem ipsum|insert here|placeholder)\b/i.test(markdown)) throw new Error('Document failed content quality checks.');
   const known = new Set(citations.map(citation=>citation.id));
   const cited = [...markdown.matchAll(/\[(E[a-f0-9]{10})\]/g)].map(match=>match[1]!);
-  if (!cited.length || cited.some(id=>!known.has(id))) throw new Error('Document contains missing or unknown evidence references.');
+  const unknown=[...new Set(cited.filter(id=>!known.has(id)))];
+  if (!cited.length || unknown.length) throw new Error(`Document contains missing or unknown evidence references.${unknown.length?` Unknown IDs: ${unknown.join(', ')}.`:''}`);
   const paragraphs = markdown.split(/\n\s*\n/).map(block=>block.replace(/^\s*#{1,6}\s.*$/gm,'').trim()).filter(Boolean);
   const questionOnly=(block:string)=>block.split('\n').filter(line=>line.trim()).every(line=>/^\s*(?:[-*]|\d+[.)])?\s*(?:what|which|who|when|where|how|is|are|can|does|do)\b.*\?\s*$/i.test(line));
-  if (paragraphs.some(block=>!(/\[E[a-f0-9]{10}\]/.test(block)) && !questionOnly(block))) throw new Error('A factual document paragraph has no evidence reference.');
+  const uncited=paragraphs.flatMap((block,index)=>!(/\[E[a-f0-9]{10}\]/.test(block)) && !questionOnly(block)?[index+1]:[]);
+  if (uncited.length) throw new Error(`Factual document blocks ${uncited.join(', ')} have no evidence reference.`);
   if (/<\/?(?:script|iframe|think)\b/i.test(markdown)) throw new Error('Document contains disallowed markup.');
   return [...new Set(cited)];
 }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import type { MeterlessClient } from './meterless';
+import type { MeterlessClient,StreamAnswer } from './meterless';
+import { NEMOTRON_STREAM_MODELS } from './meterless';
 import { parse as parsePartial } from 'partial-json';
 
 const reply = z.string().trim().min(1).max(800);
@@ -10,7 +11,7 @@ export const ConversationDecision = z.discriminatedUnion('action', [
   }).strict() }).strict(),
 ]);
 export type ConversationDecision = z.infer<typeof ConversationDecision>;
-export type ConversationReceipt = Pick<Awaited<ReturnType<MeterlessClient['complete']>>, 'requestedMode' | 'responseModel' | 'usage' | 'durationMs'> & { firstDeltaMs?: number | null; deltas?: number };
+export type ConversationReceipt = Pick<Awaited<ReturnType<MeterlessClient['complete']>>, 'requestedMode' | 'responseModel' | 'usage' | 'durationMs'> & { firstDeltaMs?: number | null; deltas?: number;upstream?:StreamAnswer['upstream'] };
 export type InvestigationContext = { mission: string; summary: string; at: string | null; gaps: string[];
   reports: { demonstration: number; liveLabelled: number }; communities: string[];
   planning: { status: string; advice: string; mode: string } | null };
@@ -27,7 +28,7 @@ export class NightshiftConversation implements MissionConversation {
   private async answer(prompt: string, signal: AbortSignal, onDelta?: (text: string) => void) {
     if (!onDelta) return this.client.complete(prompt, 'meterless/fast', 45_000, { signal, maxTokens: 256 });
     let json = '', visible = '';
-    return this.client.stream(prompt, 'meterless/fast', { signal, maxTokens: 256, timeoutMs: 45_000, onDelta(delta) {
+    return this.client.stream(prompt, NEMOTRON_STREAM_MODELS.fast, { signal, maxTokens: 256, timeoutMs: 45_000, onDelta(delta) {
       json += delta;
       let value: unknown; try { value = parsePartial(json); } catch { return; }
       const next = (value as { reply?: unknown })?.reply;
@@ -56,7 +57,7 @@ LATEST USER MESSAGE:${JSON.stringify(context.message)}
 Decide your action from the LATEST USER MESSAGE, using historical context only to resolve references. An active mission is the only reason to defer an otherwise explicit, supported investigation.`, signal, onDelta);
     signal.throwIfAborted();
     this.receipt({ requestedMode: answer.requestedMode, responseModel: answer.responseModel, usage: answer.usage, durationMs: answer.durationMs,
-      ...('deltas' in answer ? { deltas: answer.deltas, firstDeltaMs: answer.firstDeltaMs } : {}) });
+      ...('deltas' in answer ? { deltas: answer.deltas, firstDeltaMs: answer.firstDeltaMs,upstream:answer.upstream } : {}) });
     return ConversationDecision.parse(JSON.parse(answer.content));
   }
   async summarize(context: InvestigationContext, signal: AbortSignal, onDelta?: (text: string) => void) {
@@ -70,7 +71,7 @@ DATA:${JSON.stringify(context)}`, signal, onDelta);
     signal.throwIfAborted();
     const result = z.object({ reply }).strict().parse(JSON.parse(answer.content));
     return { reply: result.reply, receipt: { requestedMode: answer.requestedMode, responseModel: answer.responseModel, usage: answer.usage, durationMs: answer.durationMs,
-      ...('deltas' in answer ? { deltas: answer.deltas, firstDeltaMs: answer.firstDeltaMs } : {}) } };
+      ...('deltas' in answer ? { deltas: answer.deltas, firstDeltaMs: answer.firstDeltaMs,upstream:answer.upstream } : {}) } };
   }
 }
 
