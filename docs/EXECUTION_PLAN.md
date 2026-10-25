@@ -45,9 +45,9 @@ Rules and declaration boundaries are in `PROVENANCE.md`.
 | Orchestration | LangGraph JS 1.5.2 + Core 1.3.0 | MIT; pinned and archived; conditional-loop smoke and live bounded scenarios pass |
 | Constraints | Exhaustive comparison of four predefined route/vehicle candidates | Deterministic mass, payload, fuel, drive type, freshness, corroboration, deadline and earliest-eligible objective; no general route optimizer needed |
 | Data | Synthetic v1 pack, isolated Postgres and JSON files | Manifest hashes; counts and joined results independently matched; read-only source query role verified |
-| Live signal intake | Community reporting plus bounded public-source collection | Required next: access proof, durable receipts/cursors, deduplication and structured extraction; see LIVE_VISION |
-| Spatial grounding | Sourced community aliases and attributed road geometry | Required next: candidate place/segment resolution with uncertainty; no real mapped corridor or surveyed detour verified yet |
-| UI | Existing React application and established map components | Deferred until the core run works; new design comes later |
+| Live signal intake | Private Kobo API plus SQLite | Real submission/read, immutable versions and duplicate handling verified; text extraction and public news still required |
+| Spatial grounding | Attributed OSM/HOT extract and Leaflet 1.9.4 | Real roads/places/facilities rendered; exact community matching and ambiguity preserved; road-segment matching remains |
+| UI | React conversation/workspace with real run events | First investigation slice verified; delivery-planning integration and approval UI remain |
 
 Use available skills and connectors where they fit. There is no installed Zetaris
 connector in this chat; official source helpers supply the diagnostic capability.
@@ -107,10 +107,10 @@ completion times. Each gate requires its acceptance evidence before marking done
 | G1 Power + engine | 24 Oct next; cap 2 hours | Nightshift auth + real completion; actual Nemotron identity; World Model reference/conformance result | verified locally: World Model feature, auth rejection and final-text Nemotron completion; see runtime receipt |
 | G2 Scenario + data | 25 Oct morning | Small licensed/synthetic pack, source manifest, repeatable registration and joined relief evidence through Zetaris | verified locally on 24 Oct; provisioning and cross-source receipts linked in judge guide |
 | G3 Agent core | 25 Oct | Validator rejects a candidate, planner revises, impossible case holds; bounded run and event trace | verified locally on 24 Oct; live Nightshift/Zetaris trace plus explicit offline replay |
-| G3a Live intake + grounding | 25 Oct next | Newly received report, durable provenance/cursor, duplicate handling, structured extraction and sourced place/segment candidates; external source access proof | required, not implemented; access probes are separate from connectors |
+| G3a Live intake + grounding | 25 Oct next | Newly received report, durable provenance/cursor, duplicate handling, structured extraction and sourced place/segment candidates; external source access proof | partial: real Kobo transport, versioned intake, attributed map and community grounding pass; text extraction, public news and segment candidates remain |
 | G3b Dynamic federation | 26 Oct morning | Incoming claim becomes query-visible in Zetaris and automatically invalidates affected plans; checker requests evidence/revision/hold | required, not implemented; existing CLI manually advances a simulated snapshot |
-| G4 Changed evidence + review | 26 Oct | Duplicate, contradiction, expiry and new-event cases; full dependency invalidation; version-bound operator review and recovery | partial: road-assumption tests and manually triggered live invalidation/replan pass; automatic intake trigger, full mission/logistics binding, operator approval and recovery still to implement |
-| G5 Interface + rehearsal | 26 Oct | New interface consumes real events; three scenarios run; offline state explicit; video rehearsal | deferred |
+| G4 Changed evidence + review | 26 Oct | Duplicate, contradiction, expiry and new-event cases; full dependency invalidation; version-bound operator review and recovery | partial: new Kobo versions automatically trigger investigations; road-assumption tests/manual CLI invalidation pass; full mission/logistics binding, approval, durable scheduling and graph resumption remain |
+| G5 Interface + rehearsal | 26 Oct | New interface consumes real events; three scenarios run; offline state explicit; video rehearsal | partial: real investigation events/map and explicit offline browser path work; full delivery scenarios and video remain |
 | G6 Submission package | 27 Oct by 21:00 | Video, slides, public runnable repo, declarations and sponsor evidence checked | not started |
 
 Official hard deadline: **28 Oct 00:45 Douala = 27 Oct 23:45 UTC**.

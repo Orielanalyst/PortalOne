@@ -196,3 +196,26 @@ an update at the exact simulation boundary is included.
 Capture receipts deliberately with `--evidence` on the data check, provisioning
 apply and agent demos. Normal replay writes ignored runtime output. Live inference
 uses the provider allowance; the app/receipts never read its NVIDIA key.
+
+## 25 October — live investigation environment
+
+See [LIVE_INTAKE.md](LIVE_INTAKE.md) for Kobo setup, the coordinator/workspace,
+bounded monitoring and explicit browser replay. Node 24.15.0 provides native
+SQLite; Bun 1.4.4 also passed its storage smoke. No additional database service
+was installed for intake. The OSM extract is hash-checked and renders without
+external tiles, fonts or a geocoding key.
+
+Nightshift and Docker Desktop were stopped at the start of this implementation
+session. Restarted the installed applications without replacing data. After API
+health recovered, restarted only the existing `zetaris-driver-1` and
+`portal-one-relief-db` containers. The actual relief-data check independently
+matched all four route/vehicle candidates, eight initial and nine updated origins,
+and ten raw synthetic observations. The first cold query took about 10 seconds;
+subsequent queries took 0.9–1.6 seconds. The source is still synthetic; this check
+does not connect the new Kobo signals to Zetaris.
+
+The community suite adds 11 cases to the earlier 40. Local browser checks cover
+real model-backed submission, activity/evidence/brief navigation, attributed map
+rendering, rejected cross-origin writes, and five widths from 320 to 1440 pixels.
+The new HTTP-disabled mission replay and 30-archive integrity check are in the
+pre-push/CI gates. Hosted CI status is reported separately from these local checks.

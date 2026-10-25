@@ -79,3 +79,16 @@ with Codex assistance. No actual field reports, beneficiary records or surveyed
 detour are represented. The overweight draft is a stress-test fixture; later
 model responses and independent rejections are recorded live outcomes. The live
 trace's source commit and hashes identify the implementation that produced it.
+
+25 October additions: Leaflet 1.9.4 is BSD-2-Clause; the adopted parser/type
+packages and their exact licenses are in the retained npm manifest. The
+`data/community-map-v1/` extract is derived from actual HOT/HDX OpenStreetMap
+archives under ODbL-1.0, with source/output hashes and attribution. It is not CC0
+and is not an independent field survey. Report form/replay fixtures are new work.
+
+The human supplied their Kobo credential locally. Live transport tests use only
+explicitly marked demonstration observations, not real incidents. Public receipts
+exclude keys, raw private reports, reporter identities and exact reporter GPS.
+The implementation disclosure and current boundaries are in AI_USAGE.md and
+LIVE_INTAKE.md. No existing published history, track or repository visibility was
+changed by this implementation.

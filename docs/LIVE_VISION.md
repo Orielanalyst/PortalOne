@@ -10,7 +10,10 @@ plan and triggering independent re-evaluation before operator review.
 The current synthetic CLI proves part of the decision loop. It is an engineering
 baseline, not the complete product or an adequate replacement for live intake.
 Live sponsor calls and live observations are separate claims: we have verified
-the former over synthetic data; the latter remains to be implemented.
+the former over synthetic data. The first live Kobo transport and community-map
+investigation slice is now verified; all submitted observations are labelled
+demonstration reports. See [current proof and limits](LIVE_INTAKE.md). Actual field
+coverage, public news and live delivery-plan integration remain required.
 
 This corrects the 24 October plan's decision to defer signal capture and spatial
 grounding. Keep one mission and the Bamenda–Bambili corridor, but implement every
@@ -42,16 +45,16 @@ An empty search is an evidence gap, not a clear road.
 
 | Stage / role | Current implementation | Required next behaviour / acquisition |
 |---|---|---|
-| Reconnaissance and intake | No live field or public-source connector | Mission area, collection window, source registry, cursors and bounded source refresh; incoming community report endpoint plus one verified external source |
+| Reconnaissance and intake | Private Kobo API, bounded full reconciliation and durable version journal | Demonstration submission/read and automatic new-version investigation pass; public news, durable scheduling and actual field coverage remain |
 | Signal interpretation | Existing inputs already contain structured road claims | Nemotron through Nightshift extracts category, quoted support, place mentions and observation time from incoming text; unknown fields remain unknown |
 | Deduplication and evidence reconciliation | Immutable observation IDs, origin-aware road assessments, forwarded-copy handling | Content fingerprint before inference; bounded paraphrase/event matching without losing original reports or counting forwards as independent witnesses |
-| Spatial grounding | Synthetic segment IDs; no gazetteer or real road geometry | Small attributed OSM extract plus curated, sourced aliases; resolve place candidates and uncertainty; Turf candidate for geometry/distance checks |
+| Spatial grounding | Attributed real OSM/HOT extract, exact normalized community matching and ambiguous-name handling | Sourced local aliases and road-segment candidates remain; place matches do not establish incident locations |
 | Data federation | Real Zetaris joins over static synthetic files and Postgres | Live incident/grounding records in a separate source table joined through Zetaris with logistics and mapped segments; query-visible updates proven |
 | Planner and logistics tools | Nemotron selects among four predefined candidates; independent mass, fuel, stock, drive and time checks | Real mapped corridor alternatives, explicit operating policy and deterministic feasibility tools; OR-Tools is an acquisition candidate if convoy allocation needs it, not an installed solver |
 | Adversarial checker | Fresh independent source reads and exact constraint violations | Independently check active incidents and policy/geographic exclusions; request targeted evidence when an assumption lacks support |
 | Drift detection and replanning | CLI explicitly loads a later simulated snapshot and calls plan review | Ingestion/expiry events automatically find dependent plans, mark them stale and trigger a bounded fresh planning run |
 | Operator review and directive | CLI stops at operator-review disposition | Approval bound to mission, logistics, evidence and plan versions; decision invalidated after relevant drift; resumable/restart-safe work |
-| Product interface | Earlier scaffold, not connected to core | Event/evidence inspector and map consuming actual run state, intake, violations, uncertainty and operator actions |
+| Product interface | Conversation/workspace consumes actual investigation events, intake, map, gaps and model receipts | Integrate live delivery logistics, plan validation and version-bound operator decisions |
 | Operational policy and contingencies | Generic delivery deadline and fixed reserve; no sourced curfew/lockdown policy | Versioned, effective-dated policy and explicit abort/hold triggers; safe-harbour alternatives require their own evidence |
 | Demand, cargo and fleet allocation | One SKU, one quantity and one selected vehicle | Needs/urgency, cold-chain and multi-vehicle allocation remain in the product vision; first live slice uses one declared cargo class and makes these unsupported cases explicit |
 
@@ -65,21 +68,23 @@ and dynamically delegates to specialists; users do not manually select agents.
 The left conversation and right contextual workspace expose delegated work and
 its results. This accepted direction, its boundaries and implementation gate are
 recorded in [ADR 0002](adr/0002-coordinator-and-workspace.md). The existing fixed
-CLI workflow is not yet this supervisor/subagent runtime.
+CLI workflow remains separate. The first supervisor graph now delegates isolated
+tool-backed workers, routes a returned gap to reconnaissance and requires a fresh
+independent check. It does not yet integrate the delivery-planning worker.
 
 ### Source decisions
 
 | Source | Role and first adoption gate | Current boundary |
 |---|---|---|
 | WhatsApp tip-line | Preferred community channel from the user's comparison; verify existing business setup, inbound webhook and a received report | Not connected or access-verified; no private-group scraping |
-| KoboToolbox | Preferred structured volunteer report source; verify server, project, API access and one submission | Not connected; local collection is still required |
+| KoboToolbox | Structured volunteer source, authenticated API and actual report transport | Connected and smoke-tested with labelled demonstration submissions; local field collection is still required |
 | Telegram Bot API | Alternative community transport when a bot/channel is available; prove a received update and durable offset | Not connected; bot-visible updates are not arbitrary channel search or 30-day history |
 | Application field-report endpoint | Immediate common intake contract and demo test surface, independent of provider onboarding | To build; human-entered reports retain their real/demo and unverified status |
 | Firecrawl Search / Scrape | Allowlisted public-source discovery and bounded extraction; verify usable results and available quota before adoption | Documentation reviewed; anonymous search returned HTTP 403 locally on 25 October; no working connector or reason for rejection inferred |
 | ReliefWeb | Humanitarian context with report dates and citations | Official docs require a pre-approved appname; no approved identifier verified |
 | HDX CKAN | Discover small, licensed boundaries/facilities/needs datasets | Dataset-by-dataset coverage, age and license checks required; not a checkpoint feed |
 | ACLED | Background conflict context and patterns if permitted access exists | Requires account/authentication; not an assumed live road-status source |
-| OSM / Overpass | Attributed mapped roads, place candidates and available road attributes | Coverage/access probe is separate from a product connector; missing load/width/access attributes stay unknown |
+| OSM / Overpass | Attributed mapped roads, place candidates and available road attributes | HOT/HDX source archives acquired; bounded corridor extract retained and rendered locally; Overpass is not a runtime dependency; unknown attributes remain unknown |
 | Google Maps | Candidate display/routing provider if coverage, key, cost and storage/display terms fit | No integration verified; Places content is not copied into an unrestricted permanent gazetteer |
 | Inngest | Candidate durable scheduling, retries, cancellation and ingestion jobs | Not installed or tested; mission dates and stop conditions still belong in our application |
 | Local SMS provider | Later low-connectivity transport after inbound number/access proof | No provider verified; Twilio lists Cameroon two-way SMS as unsupported |
@@ -95,7 +100,9 @@ changes the provider choice, not the requirement for live intake.
 [25 October access receipt](evidence/live-source-feasibility-2026-10-25.json):
 HDX discovery returned HTTP 200 and one metadata record. Firecrawl returned 403;
 two Overpass endpoints timed out. No road geometry or relevant field observation
-was retrieved. Dataset tags and metadata dates alone do not establish coverage.
+was retrieved during those initial probes. Subsequent HOT/HDX archive acquisition
+and Kobo transport are documented in LIVE_INTAKE.md and the map manifest. Dataset
+tags and metadata dates alone do not establish operational coverage.
 
 ## 3. Stack choices and corrections to brainstorming assumptions
 

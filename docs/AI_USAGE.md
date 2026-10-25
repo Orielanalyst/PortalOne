@@ -18,6 +18,16 @@ entrants accountable for it; this file is our chosen detailed disclosure format.
 
 ## How output is controlled
 
+25 October implementation: Codex acquired/pinned Leaflet and map parsers, prepared
+the attributed OSM extract, created the private Kobo form after the human saved
+their token, and implemented intake, SQLite persistence, the supervisor/tool-worker
+graphs, tests, monitoring, explicit replay and the connected interface. Live
+Nightshift responses reported Nemotron 3.5 Lightning and Nemotron 3 Ultra; the
+model selected bounded delegations and public reasons. Geometry, reconciliation
+and readiness checks are code. Transport tests are explicit demonstrations, not
+claimed field incidents. No reporter messages, provider terms, account billing,
+public sharing or dispatch approval were automated.
+
 - The human sets scope, architecture and acceptance criteria.
 - Every AI-written change is typechecked, tested and reviewed before commit.
 - The safety evaluator is deterministic and unit-tested. The model cannot approve

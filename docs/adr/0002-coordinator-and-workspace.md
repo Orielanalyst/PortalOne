@@ -2,7 +2,8 @@
 
 Date: 2026-10-25
 
-Status: accepted product direction; coordinator runtime not implemented.
+Status: accepted; first bounded investigation runtime verified locally. Full
+delivery-planning coordination remains required.
 
 ## Decision
 
@@ -56,9 +57,17 @@ checks pass at 1024, 736, 360 and 320 pixels with no horizontal overflow or scri
 errors. It uses labelled sample records, no model calls and no live basemap.
 It is not the application UI or evidence of a working coordinator runtime.
 
-The application still has the earlier bounded gather/propose/validate/revise CLI.
-Before claiming this architecture implemented, demonstrate actual specialist
-invocation and context separation, targeted feedback routing, persisted task/result
-IDs and limits, fresh independent validation and an interruption/restart case.
-Provider access, live signal ingestion and community geography remain required
-gates in LIVE_VISION.md.
+The application now also has an actual supervisor graph using Nemotron through
+Nightshift, nested source/mapping task graphs, targeted source follow-up and an
+independent fresh-data check. SQLite persists parent/child tasks, report versions,
+events and results. Restart preserves completed work, marks partial work interrupted
+and pauses monitoring; it does not resume in-flight graph steps. The source and
+geometry workers are deterministic tools, not separate autonomous model personas.
+
+The connected browser shows these actual events and OSM geography. Bounded
+monitoring starts a new investigation after a new/edited Kobo record. Gate-bypass,
+timeout, dependency failure, duplicate/version, ambiguity, history/reopen and early
+checker tests pass. The independent checker currently holds because real delivery
+logistics and road evidence are not connected. No concurrent worker execution,
+multi-turn mission memory or integration of the earlier planning CLI is claimed.
+See [LIVE_INTAKE.md](../LIVE_INTAKE.md) for reproduction and remaining gates.

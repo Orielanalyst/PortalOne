@@ -4,7 +4,7 @@
 
 PortalOne combines logistics and road reports, proposes a delivery plan, rejects
 constraint violations and revises or holds. Eligible proposals stop for operator
-review. The current demonstration uses labelled synthetic data and authorizes no dispatch.
+review. Demonstrations use explicitly labelled reports/scenarios and authorize no dispatch.
 
 Built for the **Open Agent Hackathon 2026**. Primary track is pending confirmation;
 the current plan provisionally targets *Reasoning Architecture*.
@@ -16,8 +16,15 @@ and JSON route/report fixtures. LangGraph runs a bounded planner–validator loo
 through Nightshift/Nemotron. World Model tracks evidence and invalidates affected
 plans. The live demonstration rejects an overweight draft, revises, replans after
 a contradictory report and holds an impossible deadline. An explicit offline
-enumeration replay uses the same validator. The browser UI is still the earlier
-scaffold; approval actions and the redesigned interface remain build gates.
+enumeration replay uses the same validator.
+
+25 October: the browser now connects private Kobo intake, a Nemotron coordinator,
+isolated source/mapping workers, targeted evidence follow-up and a fresh independent
+check. It shows actual action traces and attributed OSM geography. New report
+versions automatically trigger another bounded investigation. All cloud transport
+tests remain demonstration records. Live signals are not yet connected to Zetaris
+or the delivery planner; approval actions remain a build gate. See
+[live investigation setup and limits](docs/LIVE_INTAKE.md).
 GitHub Actions is blocked at startup by an account billing/spending limit.
 
 Start with [the judge guide](docs/JUDGE_GUIDE.md), [current execution plan](docs/EXECUTION_PLAN.md)
@@ -43,8 +50,8 @@ secret scan and the pre-push verification.
 ## Run
 
 ```sh
-bun install
-bun run dev        # http://localhost:8080
+bun install --frozen-lockfile
+bun run dev --host 127.0.0.1
 ```
 
 ## Verify
@@ -55,6 +62,7 @@ bun run build
 bun run typecheck
 bun run check:vendor
 bun run check:offline-replay
+bun run check:mission-replay
 ```
 
 Run `bun run demo:relief-agent` for the offline core demonstration, or

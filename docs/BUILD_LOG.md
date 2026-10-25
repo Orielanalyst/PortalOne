@@ -199,3 +199,53 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
   map state. This does not change the live-source readiness results.
 - Read-only runtime smoke checks also confirmed built-in SQLite availability in
   Node 24.15.0 and Bun 1.4.4. No intake storage or endpoint was implemented.
+
+### 25 October — live intake, coordinator and connected workspace
+
+- After the human saved their Kobo key locally, verified access, created the
+  marked private form, compiled and deployed it. Three explicit demonstration
+  reports were submitted and retrieved; zero actual field incidents are claimed.
+  The draft id_string returned 404 on submission; OpenRosa formList revealed the
+  deployed asset UID. Correct writes returned 201. Retry UUIDs persist before
+  transmission. Data and web collection remain authenticated. No messages sent.
+- Acquired Leaflet 1.9.4, shpjs 6.2.0 and pinned dependencies; all 30 retained
+  archives pass local integrity/license checks. Removed an earlier parser after
+  a transitive license could not be verified. Actual HOT/HDX archives produced
+  an attributed ODbL extract: 5,111 road features, 16 places and seven health
+  features. No tiles, fonts or geocoder are fetched; no operating status inferred.
+- Implemented SQLite input/version and task/event journals, bounded full Kobo
+  reconciliation, place grounding with ambiguity, and a Nemotron supervisor.
+  Source/mapping are nested deterministic tool graphs with isolated context.
+  Returned location/provenance gaps trigger targeted reconnaissance follow-up;
+  the checker fetches independently and holds. No separate model persona for
+  every tool, DeepAgents installation or model approval authority is claimed.
+- Actual Nightshift responses reported Nemotron 3.5 Lightning and 3 Ultra;
+  identity, timing, tokens and public parent/child actions are recorded. A new
+  Kobo version automatically triggered a fresh investigation. The Balewa test
+  retained both source place candidates and produced no invented incident pin.
+- The connected conversation/workspace shows actual events, evidence, brief and
+  map. Browser QA passed at 1440/1024/736/390/320 pixels with no overflow or script
+  errors. Visual inspection caught default pins on road points and a style
+  override; line-only road display and explicit styling fixed them. A stale-DOM
+  race in the QA helper was corrected to wait on the exact run's completion.
+- Explicit browser replay uses a separate journal, deterministic task selection
+  and no HTTP/model calls. Completed history persists; partial runs become
+  interrupted after restart. Monitoring polls every 20 seconds for 30 minutes and
+  pauses on restart. Durable schedules, deletion/expiry plan drift and graph-step
+  resumption are not implemented.
+- Restarted installed Nightshift and Docker Desktop after finding both stopped.
+  Reused the existing Zetaris driver/database; live federation again matched four
+  candidates, eight initial/nine updated origins and ten raw synthetic reports.
+  No source database, metastore or prior history was replaced.
+- Local suite: 51 tests, typecheck, 30 archive checks, HTTP-disabled community
+  replay and production build. The push gate also retains World Model conformance
+  and the earlier offline relief replay. CI now pins Node 24.15.0 for SQLite;
+  hosted results are reported separately.
+- Separate commits: `9d364b7` acquisition, `6934268` data, `8351337` intake,
+  `72c5961` orchestration, `ce8cff0` interface and `3c4c3a6` checks. The dated
+  community receipt binds the executed application to `ce8cff0` and source hashes.
+  Raw brainstorming/event hashes still match; those files remain untracked.
+  Credentials and raw journals remain ignored. Published history is append-only.
+- Remaining: live signals into Zetaris/delivery planning, text extraction/public
+  news, road-segment evidence, full mission/logistics binding and human review.
+  G3a/G5 are partial; the full live-delivery vision is not marked complete.

@@ -1,0 +1,495 @@
+{
+  "capturedAt": "2026-10-25T07:07:40.410Z",
+  "applicationSourceCommit": "ce8cff0d9ff68790e1106ffa38ead1e845e17b3c",
+  "mode": "live",
+  "transport": "Actual private Kobo API; all observations explicitly demonstration; zero actual field incidents verified",
+  "run": {
+    "id": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+    "sessionId": "session-b0ace078-ed9a-42d3-a417-e21c61067e54",
+    "message": "Investigate Bambili community signals and map what is missing before delivery planning.",
+    "cause": "source_change",
+    "status": "complete",
+    "startedAt": "2026-10-25T07:05:44.092Z",
+    "finishedAt": "2026-10-25T07:06:18.082Z",
+    "result": {
+      "disposition": "hold",
+      "summary": "Retrieved 3 community reports and grounded 2 locations. Operational planning is on hold pending the listed evidence gaps.",
+      "gaps": [
+        "Multiple mapped places have this name; GPS or local clarification is required.",
+        "Community label matched; the exact incident location and affected road remain unknown.",
+        "Demonstration reports cannot corroborate a real incident.",
+        "Reporter identities and independent origins have not been verified.",
+        "Live stock, fleet, needs and route-segment constraints are not connected to this investigation."
+      ],
+      "signalIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-06c9a41ec48efa4ae9440353c29e8d45"
+      ],
+      "placeIds": [
+        "places-node:2461015822",
+        "places-node:3966435269",
+        "places-node:2461015838",
+        "places-node:1744470346"
+      ],
+      "demoReports": 3,
+      "liveReports": 0
+    }
+  },
+  "events": [
+    {
+      "seq": 62,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "started",
+      "detail": "Investigate community signals, ground places, then run an independent readiness check.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:44.099Z"
+    },
+    {
+      "seq": 63,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": null,
+      "parentTaskId": null,
+      "actor": "intake",
+      "kind": "source_change",
+      "detail": "1 new or edited report versions triggered this investigation.",
+      "evidenceIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1"
+      ],
+      "at": "2026-10-25T07:05:44.105Z"
+    },
+    {
+      "seq": 64,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": null,
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "model_receipt",
+      "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":427,\"completion_tokens\":37,\"total_tokens\":464},\"durationMs\":6082}",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:50.195Z"
+    },
+    {
+      "seq": 65,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "delegated",
+      "detail": "Fetch actual KoboToolbox project data for Bambili to establish baseline community signals and mapped context.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:50.198Z"
+    },
+    {
+      "seq": 66,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-82477377-e1c9-4095-b051-60cbf79da60f",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "recon",
+      "kind": "task_started",
+      "detail": "recon.collect",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:50.208Z"
+    },
+    {
+      "seq": 67,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-82477377-e1c9-4095-b051-60cbf79da60f",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "recon",
+      "kind": "evidence_gap",
+      "detail": "Kobo returned 3 records (3 demonstration); 0 new or edited versions.",
+      "evidenceIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-06c9a41ec48efa4ae9440353c29e8d45"
+      ],
+      "at": "2026-10-25T07:05:50.933Z"
+    },
+    {
+      "seq": 68,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": null,
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "model_receipt",
+      "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":586,\"completion_tokens\":35,\"total_tokens\":621},\"durationMs\":7739}",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:58.678Z"
+    },
+    {
+      "seq": 69,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "delegated",
+      "detail": "Resolve place labels against OSM to ground Bambili location and identify missing provenance fields.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:58.682Z"
+    },
+    {
+      "seq": 70,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-0462087e-6d0a-402c-a8cc-41aa3f1e88f3",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "mapping",
+      "kind": "task_started",
+      "detail": "mapping.ground",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:05:58.691Z"
+    },
+    {
+      "seq": 71,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-0462087e-6d0a-402c-a8cc-41aa3f1e88f3",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "mapping",
+      "kind": "evidence_gap",
+      "detail": "2 community labels matched; road-level location remains unconfirmed.",
+      "evidenceIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-06c9a41ec48efa4ae9440353c29e8d45"
+      ],
+      "at": "2026-10-25T07:05:58.701Z"
+    },
+    {
+      "seq": 72,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": null,
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "model_receipt",
+      "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":797,\"completion_tokens\":29,\"total_tokens\":826},\"durationMs\":5345}",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:04.053Z"
+    },
+    {
+      "seq": 73,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "delegated",
+      "detail": "Recheck exact missing location and provenance fields for Bambili signal before operational planning.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:04.056Z"
+    },
+    {
+      "seq": 74,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-0ed6b351-a671-44ef-8b4c-9d23d90e1ca4",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "recon",
+      "kind": "task_started",
+      "detail": "Recheck the source for the missing fields: Multiple mapped places have this name; GPS or local clarification is required. Community label matched; the exact incident location and affected road remain unknown. Demonstration reports cannot corroborate a real incident. Reporter identities and independent origins have not been verified.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:04.065Z"
+    },
+    {
+      "seq": 75,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-0ed6b351-a671-44ef-8b4c-9d23d90e1ca4",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "recon",
+      "kind": "evidence_gap",
+      "detail": "Kobo returned 3 records (3 demonstration); 0 new or edited versions.",
+      "evidenceIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-06c9a41ec48efa4ae9440353c29e8d45"
+      ],
+      "at": "2026-10-25T07:06:04.986Z"
+    },
+    {
+      "seq": 76,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": null,
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "model_receipt",
+      "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":977,\"completion_tokens\":28,\"total_tokens\":1005},\"durationMs\":6324}",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:11.315Z"
+    },
+    {
+      "seq": 77,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "delegated",
+      "detail": "All recon and mapping tasks complete; gaps identified; ready for independent operational readiness check.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:11.321Z"
+    },
+    {
+      "seq": 78,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-89c9c58e-13b8-4c85-80ec-4ab697c2e808",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "checker",
+      "kind": "task_started",
+      "detail": "checker.check",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:11.330Z"
+    },
+    {
+      "seq": 79,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-89c9c58e-13b8-4c85-80ec-4ab697c2e808",
+      "parentTaskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "actor": "checker",
+      "kind": "evidence_gap",
+      "detail": "Hold. Intake and mapped geography do not establish a feasible delivery or permission to travel.",
+      "evidenceIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-06c9a41ec48efa4ae9440353c29e8d45"
+      ],
+      "at": "2026-10-25T07:06:12.047Z"
+    },
+    {
+      "seq": 80,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": null,
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "model_receipt",
+      "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":1229,\"completion_tokens\":18,\"total_tokens\":1247},\"durationMs\":6009}",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:18.060Z"
+    },
+    {
+      "seq": 81,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "synthesis",
+      "detail": "Checker confirms hold — no further tasks allowed.",
+      "evidenceIds": [],
+      "at": "2026-10-25T07:06:18.065Z"
+    },
+    {
+      "seq": 82,
+      "runId": "mission-803b2c93-3910-4b1b-b460-937b1402736d",
+      "taskId": "task-11ab211a-43f3-4259-86d5-d1d891d0fe90",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "hold",
+      "detail": "Retrieved 3 community reports and grounded 2 locations. Operational planning is on hold pending the listed evidence gaps.",
+      "evidenceIds": [
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-06c9a41ec48efa4ae9440353c29e8d45"
+      ],
+      "at": "2026-10-25T07:06:18.073Z"
+    }
+  ],
+  "groundedPlaceIds": [
+    "places-node:2461015822",
+    "places-node:3966435269",
+    "places-node:2461015838",
+    "places-node:1744470346"
+  ],
+  "ambiguousGrounding": {
+    "signalId": "signal-c231394e187b5398d27deecbf5fe62c1",
+    "status": "ambiguous",
+    "candidates": [
+      {
+        "id": "places-node:2461015822",
+        "name": "Balewa",
+        "kind": "village",
+        "lng": 10.1974985,
+        "lat": 6.0165864
+      },
+      {
+        "id": "places-node:3966435269",
+        "name": "Balewa",
+        "kind": "village",
+        "lng": 10.1838121,
+        "lat": 5.9997297
+      }
+    ],
+    "location": null,
+    "gap": "Multiple mapped places have this name; GPS or local clarification is required."
+  },
+  "reportModes": [
+    {
+      "id": "signal-c231394e187b5398d27deecbf5fe62c1",
+      "mode": "demo",
+      "placeName": "Balewa",
+      "originVerified": false
+    },
+    {
+      "id": "signal-54296ec0bddddc7ee692a1afd6bee32e",
+      "mode": "demo",
+      "placeName": "Bambui",
+      "originVerified": false
+    },
+    {
+      "id": "signal-06c9a41ec48efa4ae9440353c29e8d45",
+      "mode": "demo",
+      "placeName": "Bambili",
+      "originVerified": false
+    }
+  ],
+  "models": [
+    {
+      "requestedMode": "meterless/fast",
+      "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "usage": {
+        "prompt_tokens": 427,
+        "completion_tokens": 37,
+        "total_tokens": 464
+      },
+      "durationMs": 6082
+    },
+    {
+      "requestedMode": "meterless/fast",
+      "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "usage": {
+        "prompt_tokens": 586,
+        "completion_tokens": 35,
+        "total_tokens": 621
+      },
+      "durationMs": 7739
+    },
+    {
+      "requestedMode": "meterless/fast",
+      "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+      "usage": {
+        "prompt_tokens": 797,
+        "completion_tokens": 29,
+        "total_tokens": 826
+      },
+      "durationMs": 5345
+    },
+    {
+      "requestedMode": "meterless/fast",
+      "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+      "usage": {
+        "prompt_tokens": 977,
+        "completion_tokens": 28,
+        "total_tokens": 1005
+      },
+      "durationMs": 6324
+    },
+    {
+      "requestedMode": "meterless/fast",
+      "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+      "usage": {
+        "prompt_tokens": 1229,
+        "completion_tokens": 18,
+        "total_tokens": 1247
+      },
+      "durationMs": 6009
+    }
+  ],
+  "monitoring": {
+    "intervalSeconds": 20,
+    "maxWatchMinutes": 30,
+    "enabledUntil": "2026-10-25T07:32:24.970Z",
+    "trigger": "New Kobo report version; no manual agent start"
+  },
+  "sourceFiles": [
+    {
+      "file": "src/lib/server/kobo.ts",
+      "sha256": "d387d7d8319d9d74131a9b2cb49779886b704d5a803e2aeaa150a7df8783de21"
+    },
+    {
+      "file": "src/lib/server/community-map.ts",
+      "sha256": "2942fcbc5aeef5888c3866507e1b7af31840214d52df083d7cfd7e2c685e6a88"
+    },
+    {
+      "file": "src/lib/server/mission-journal.ts",
+      "sha256": "8c001400654338aae917f8482ba0da57f2d895382e2aaaa8c97c69a0fbfc0687"
+    },
+    {
+      "file": "src/lib/server/mission-coordinator.ts",
+      "sha256": "6f830787ae7980f5a800c75bdcf0411202e58e35f463fc6654123be5a9198207"
+    },
+    {
+      "file": "src/lib/server/mission-runtime.ts",
+      "sha256": "d4acd414508bda832788d09c62894dda745229f7816cbafc47ca4bf149e1ba9d"
+    },
+    {
+      "file": "src/routes/api.mission.ts",
+      "sha256": "424cde3943568c404677783cde4ab61b62618da77a238e68bd3cacf06c775e0a"
+    },
+    {
+      "file": "src/routes/index.tsx",
+      "sha256": "735c43f3ad19bf0003da60efd504bc47929907dbfee62b6ca177a8a11c001fbe"
+    },
+    {
+      "file": "src/components/community-map.tsx",
+      "sha256": "3a48e7b85bbcb4464636ff94c2b1b4f2d7e7f03d30e8bbc784cb8939be7dc64b"
+    },
+    {
+      "file": "data/community-map-v1/manifest.json",
+      "sha256": "292fa6166de47812ef8816a3b1e0d267500c72a6736e99e2fdc419cdd3313085"
+    }
+  ],
+  "browser": {
+    "errors": [],
+    "viewports": [
+      {
+        "width": 1440,
+        "overflow": false
+      },
+      {
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "width": 736,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "overflow": false
+      }
+    ],
+    "runId": "mission-f95fe91b-9d78-4ccf-a68f-71c0926f6de3",
+    "observedTaskActors": [
+      "recon",
+      "mapping",
+      "recon",
+      "checker"
+    ],
+    "mapLabels": [
+      "Bafut",
+      "Akossia",
+      "Bafunge",
+      "Foya",
+      "Balewa",
+      "Bambui",
+      "Mankon",
+      "Bambili",
+      "Balewa",
+      "Ntasen",
+      "Bafreng",
+      "Bayele",
+      "Bamenda",
+      "Kemkom",
+      "Nsongwa",
+      "Mboutou"
+    ]
+  },
+  "limits": [
+    "No live evidence federation into Zetaris yet",
+    "No independent reporter verification",
+    "No current passability or dispatch approval",
+    "One local process; monitoring pauses on restart; graph steps do not resume",
+    "Public news and live stock/fleet not connected to this investigation"
+  ]
+}
