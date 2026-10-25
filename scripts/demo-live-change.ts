@@ -49,7 +49,9 @@ try {
     view.selected?.cause === 'source_change' && view.selected.status === 'complete');
   const next = after.assessments.find(a => a.id === after.selected?.result?.assessmentId);
   const history = await state(runId); const old = history.assessments.find(a => a.id === baseline.id);
-  if (next?.status !== 'checked' || old?.status !== 'invalidated' || next.evidence.revision === baseline.evidence.revision ||
+  const independentlyChecked = next?.checks.some(check => check.matched && check.evidence.revision === next.evidence.revision &&
+    check.evidence.queries.length === 2 && check.evidence.queries.every(q => !next.evidence.queries.some(p => p.id === q.id)));
+  if (next?.status !== 'checked' || !independentlyChecked || old?.status !== 'invalidated' || next.evidence.revision === baseline.evidence.revision ||
       next.evidence.reportCount !== baseline.evidence.reportCount + 1 || next.evidence.forwardedCount !== baseline.evidence.forwardedCount + 1 ||
       next.evidence.liveCount !== 0 || !next.evidence.rows.some(r => r.name === 'Bambili' && r.blockers >= 1) ||
       next.evidence.rows.some(r => r.verifiedOrigins !== 0)) throw new Error('Automatic federated drift proof did not satisfy its assertions.');

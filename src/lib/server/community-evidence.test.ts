@@ -71,6 +71,7 @@ it('routes a changed federated snapshot back to logistics and independently chec
     expect(result.disposition).toBe('hold');
     expect(journal.events(run.id).filter(e => e.kind === 'task_started').map(e => e.actor)).toEqual(['recon', 'mapping', 'recon', 'logistics', 'checker', 'logistics', 'checker']);
     expect(journal.assessments(run.id).map(a => a.status)).toEqual(['invalidated', 'checked']);
+    expect(journal.assessments(run.id).map(a => a.checks.map(c => c.matched))).toEqual([[false], [true]]);
     expect(loads).toBe(4);
   } finally { journal.close(); }
 });

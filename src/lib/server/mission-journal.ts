@@ -11,7 +11,8 @@ export type MissionEvent = { seq: number; runId: string; taskId: string | null; 
 export type MissionResult = { disposition: 'hold'; summary: string; gaps: string[]; signalIds: string[];
   placeIds: string[]; demoReports: number; liveReports: number; assessmentId?: string };
 export type PlanningAssessment = { id: string; runId: string; status: 'draft' | 'checked' | 'invalidated';
-  evidence: FederatedEvidence; advice: LogisticsAdvice; createdAt: string; reason: string | null };
+  evidence: FederatedEvidence; advice: LogisticsAdvice; createdAt: string; reason: string | null;
+  checks: { id: string; matched: boolean; evidence: FederatedEvidence; at: string }[] };
 export type JournalRun = { id: string; sessionId: string; message: string; cause: string; status: 'running' | 'complete' | 'interrupted';
   startedAt: string; finishedAt: string | null; result: MissionResult | null };
 export class MissionJournal {
@@ -35,6 +36,8 @@ export class MissionJournal {
       source_id TEXT NOT NULL,input_revision TEXT NOT NULL,revision TEXT NOT NULL,status TEXT NOT NULL,
       evidence TEXT NOT NULL,advice TEXT NOT NULL,created_at TEXT NOT NULL,reason TEXT);
       CREATE INDEX IF NOT EXISTS assessments_source ON assessments(source_id,status);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS assessment_checks(id TEXT PRIMARY KEY,assessment_id TEXT NOT NULL REFERENCES assessments(id),
+      matched INTEGER NOT NULL,evidence TEXT NOT NULL,checked_at TEXT NOT NULL);`);
   }
   close() { this.db.close(); }
   ingest(snapshot: KoboSnapshot) {
@@ -109,13 +112,20 @@ export class MissionJournal {
   }
   checkAssessment(id: string, evidence: FederatedEvidence) {
     this.observeEvidence(evidence);
-    const updated = this.db.prepare("UPDATE assessments SET status='checked' WHERE id=? AND revision=? AND status='draft'").run(id, evidence.revision);
-    return Number(updated.changes) === 1;
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      const updated = this.db.prepare("UPDATE assessments SET status='checked' WHERE id=? AND revision=? AND status='draft'").run(id, evidence.revision);
+      const matched = Number(updated.changes) === 1;
+      this.db.prepare('INSERT INTO assessment_checks VALUES(?,?,?,?,?)').run(`check-${randomUUID()}`, id, matched ? 1 : 0, JSON.stringify(evidence), new Date().toISOString());
+      this.db.exec('COMMIT'); return matched;
+    } catch (error) { this.db.exec('ROLLBACK'); throw error; }
   }
   assessments(runId: string): PlanningAssessment[] {
-    return this.db.prepare('SELECT * FROM assessments WHERE run_id=? ORDER BY created_at,id').all(runId).map(row => ({
+    return this.db.prepare('SELECT * FROM assessments WHERE run_id=? ORDER BY rowid').all(runId).map(row => ({
       id: row['id'] as string, runId, status: row['status'] as PlanningAssessment['status'], evidence: JSON.parse(row['evidence'] as string),
-      advice: JSON.parse(row['advice'] as string), createdAt: row['created_at'] as string, reason: row['reason'] as string | null }));
+      advice: JSON.parse(row['advice'] as string), createdAt: row['created_at'] as string, reason: row['reason'] as string | null,
+      checks: this.db.prepare('SELECT * FROM assessment_checks WHERE assessment_id=? ORDER BY rowid').all(row['id'] as string).map(check => ({
+        id: check['id'] as string, matched: check['matched'] === 1, evidence: JSON.parse(check['evidence'] as string), at: check['checked_at'] as string })) }));
   }
   failOpenChildren(runId: string) {
     this.db.prepare("UPDATE assessments SET status='invalidated',reason='Investigation failed before independent review.' WHERE run_id=? AND status='draft'").run(runId);
