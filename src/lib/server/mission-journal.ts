@@ -57,6 +57,8 @@ export class MissionJournal {
       status TEXT NOT NULL,markdown TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,metadata TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS citations(run_id TEXT NOT NULL REFERENCES runs(id),id TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(run_id,id));
       CREATE TABLE IF NOT EXISTS report_bundles(run_id TEXT PRIMARY KEY REFERENCES runs(id),value TEXT NOT NULL);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS mission_replacements(previous_run_id TEXT PRIMARY KEY REFERENCES runs(id),
+      next_run_id TEXT NOT NULL UNIQUE REFERENCES runs(id),created_at TEXT NOT NULL);`);
   }
   close() { this.db.close(); }
   beginConversation(message: string, mode: ConversationTurn['mode']) {
@@ -256,5 +258,21 @@ export class MissionJournal {
   }
   recent(): JournalRun[] {
     return this.db.prepare('SELECT id FROM runs ORDER BY started_at DESC LIMIT 20').all().map(row => this.run(row['id'] as string)!);
+  }
+  linkReplacement(previousRunId: string, nextRunId: string) {
+    const before=this.run(previousRunId),after=this.run(nextRunId);
+    if(!before || !after || before.id===after.id || before.sessionId!==after.sessionId)throw new Error('Invalid mission replacement lineage.');
+    this.db.prepare('INSERT INTO mission_replacements VALUES(?,?,?)').run(previousRunId,nextRunId,new Date().toISOString());
+    this.event(previousRunId,'coordinator','replacement_started','Mission Coordinator is preparing a replacement after changed evidence. This run and its downloads remain historical.',[nextRunId]);
+    this.event(nextRunId,'coordinator','replaces_run','Mission Coordinator has started a new evidence review to replace the previous mission snapshot.',[previousRunId]);
+  }
+  lineage(runId:string) {
+    return {previousRunId:this.db.prepare('SELECT previous_run_id FROM mission_replacements WHERE next_run_id=?').get(runId)?.['previous_run_id'] as string|undefined ?? null,
+      replacementRunId:this.db.prepare('SELECT next_run_id FROM mission_replacements WHERE previous_run_id=?').get(runId)?.['next_run_id'] as string|undefined ?? null};
+  }
+  currency(runId:string) {
+    const assessment=this.assessments(runId).at(-1);
+    return {status:assessment?.status==='invalidated'?'superseded' as const:'snapshot' as const,
+      reason:assessment?.status==='invalidated'?assessment.reason:null,...this.lineage(runId)};
   }
 }

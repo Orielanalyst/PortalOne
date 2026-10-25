@@ -16,6 +16,8 @@ import { ConversationDecision, NightshiftConversation, replayConversation } from
 import type { MissionConversation, InvestigationContext } from './mission-conversation';
 import { runCommitteeMission } from './committee-mission';
 import { buildCommitteeBundle } from './committee-export';
+import { MissionWorld, observeMissionEvidence } from './mission-world';
+import type { CommitteeWriter, CommitteeExporter } from './committee-mission';
 
 function sourceRevision() {
   try {
@@ -29,21 +31,24 @@ export class MissionRuntime {
   readonly applicationSourceCommit = sourceRevision();
   readonly mode = process.env['RELIEFINTEL_MODE'] === 'offline-replay' ? 'offline-replay' : 'live';
   readonly journal: MissionJournal;
+  readonly world: MissionWorld;
   readonly map = new CommunityMap();
   private readonly source: { origin: string | null; snapshot(signal?: AbortSignal): Promise<KoboSnapshot> };
   private readonly evidence: MissionEvidence;
   private active: string | null = null;
   private chatting = false;
-  private monitor: { sessionId: string; message: string; until: number; lastRevision?: string; autoRuns: number; workflow: 'investigation' | 'committee' } | null = null;
+  private monitor: { sessionId: string; runId:string; message: string; until: number; lastRevision?: string; autoRuns: number; workflow: 'investigation' | 'committee' } | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
   private sourceStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
   private checkedAt: string | null = null;
   private polling = false;
   private federationStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
   constructor(private readonly options: { journal?: MissionJournal; source?: { origin: string | null; snapshot(signal?: AbortSignal): Promise<KoboSnapshot> };
-    dispatcher?: MissionDispatcher; pollIntervalMs?: number; evidence?: MissionEvidence; logistics?: MissionLogistics; conversation?: MissionConversation } = {}) {
+    dispatcher?: MissionDispatcher; pollIntervalMs?: number; evidence?: MissionEvidence; logistics?: MissionLogistics; conversation?: MissionConversation;
+    world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter } = {}) {
     if (process.env['RELIEFINTEL_MODE'] && !['live', 'offline-replay'].includes(process.env['RELIEFINTEL_MODE'])) throw new Error('Unsupported ReliefIntel runtime mode.');
     this.journal = options.journal ?? new MissionJournal(`.runtime/${this.mode === 'live' ? 'mission' : 'mission-replay'}/journal.sqlite`);
+    this.world=options.world ?? new MissionWorld({namespace:this.mode==='live'?'live-committee':'offline-committee',directory:options.journal?undefined:`.runtime/${this.mode==='live'?'mission':'mission-replay'}`});
     this.source = options.source ?? (this.mode === 'live' ? configuredKobo() : replayCommunitySource);
     this.evidence = options.evidence ?? (this.mode === 'live' ? new ZetarisCommunityEvidence(this.map) : new FixtureCommunityEvidence(this.map));
     this.journal.interruptConversations();
@@ -107,7 +112,7 @@ export class MissionRuntime {
         if (this.active) throw new Error('Investigation already running.');
         // No await between releasing this lock and reserving the investigation slot.
         this.chatting = false;
-        const runId = this.start(`${decision.mission.objective}\nArea: ${decision.mission.area}`, watchMinutes, 'operator', turn.sessionId, this.mode==='live' && !this.options.dispatcher ? 'committee' : 'investigation');
+        const runId = this.start(`${decision.mission.objective}\nArea: ${decision.mission.area}`, watchMinutes, 'operator', turn.sessionId, this.options.committeeWriter || this.mode==='live' && !this.options.dispatcher ? 'committee' : 'investigation');
         this.journal.finishConversation(turn.id, decision.reply, decision.action, runId);
       } else this.journal.finishConversation(turn.id, decision.reply, 'reply');
     } catch {
@@ -118,25 +123,27 @@ export class MissionRuntime {
     } finally { this.chatting = false; this.schedule(); this.journal.changed(); }
     return this.journal.conversation().find(item => item.id === turn.id)!;
   }
-  start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string, workflow: 'investigation' | 'committee' = 'investigation') {
+  start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string, workflow: 'investigation' | 'committee' = 'investigation',previousRunId?:string) {
     if (this.active || this.chatting) throw new Error('The coordinator is already working.');
     const client = this.mode === 'live' && !this.options.dispatcher ? configuredNightshift() : null;
     const run = this.journal.startRun(message, cause, sessionId);
+    if(previousRunId)this.journal.linkReplacement(previousRunId,run.id);
     this.active = run.id;
     if (cause === 'operator') {
       this.stopMonitor();
-      if (watchMinutes && this.mode === 'live') this.monitor = { sessionId: run.sessionId, message, until: Date.now() + watchMinutes * 60_000, autoRuns: 0, workflow };
+      if (watchMinutes && this.mode === 'live') this.monitor = { sessionId: run.sessionId, runId:run.id, message, until: Date.now() + watchMinutes * 60_000, autoRuns: 0, workflow };
     }
     const dispatcher = this.options.dispatcher ?? (client ? new NightshiftDispatcher(client, receipt => this.journal.event(run.id, 'coordinator', 'model_receipt', receipt)) : replayDispatcher);
     const logistics = this.options.logistics ?? (client ? new NightshiftMissionLogistics(client) : new FixtureMissionLogistics());
     const dependencies = { run, journal: this.journal, map: this.map, dispatcher, logistics, evidence: { load: async (snapshot: KoboSnapshot, signal: AbortSignal) => {
-      try { const context = await this.evidence.load(snapshot, signal); this.federationStatus = 'online'; return context; }
+      try { const context = await this.evidence.load(snapshot, signal); await observeMissionEvidence(this.world,this.journal,context,run.id); this.federationStatus = 'online'; return context; }
       catch (error) { this.federationStatus = 'unavailable'; throw error; }
     } }, readSource: async (signal: AbortSignal) => {
       try { const snapshot = await this.source.snapshot(signal); this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt; return snapshot; }
       catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString(); throw error; }
     } };
-    const investigation=workflow==='committee' && client ? runCommitteeMission({...dependencies,writer:client,exporter:buildCommitteeBundle}) : runMission(dependencies);
+    const writer=this.options.committeeWriter ?? client;
+    const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
     void investigation.then(async result => {
       const assessment = this.journal.assessments(run.id).find(a => a.id === result.assessmentId);
       if (assessment?.status === 'checked' && this.monitor?.sessionId === run.sessionId) this.monitor.lastRevision = assessment.evidence.revision;
@@ -172,14 +179,16 @@ export class MissionRuntime {
       this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt;
       this.federationStatus = 'online';
       const intake = this.journal.ingest(snapshot);
-      this.journal.observeEvidence(context);
+      await observeMissionEvidence(this.world,this.journal,context,watching.runId);
+      if(this.monitor!==watching || Date.now()>=watching.until)return;
       if (intake.changed.length || watching.lastRevision !== context.revision || previousStatus === 'unavailable' || previousFederationStatus === 'unavailable') {
         if (watching.autoRuns >= 6) {
           const latest = this.journal.recent()[0]; if (latest) this.journal.event(latest.id, 'runtime', 'watch_budget_exhausted', 'Automatic investigation budget reached. Evidence is superseded; an operator must start a fresh watch.');
           this.stopMonitor(); return;
         }
         watching.autoRuns++; watching.lastRevision = context.revision;
-        const runId = this.start(watching.message, 0, previousStatus === 'unavailable' || previousFederationStatus === 'unavailable' ? 'source_recovered' : 'source_change', watching.sessionId, watching.workflow);
+        const runId = this.start(watching.message, 0, previousStatus === 'unavailable' || previousFederationStatus === 'unavailable' ? 'source_recovered' : 'source_change', watching.sessionId, watching.workflow,watching.runId);
+        watching.runId=runId;
         this.journal.event(runId, 'intake', 'source_change', `${intake.changed.length} new or edited report versions triggered this investigation.`, intake.changed);
       }
     } catch {
@@ -201,6 +210,8 @@ export class MissionRuntime {
       conversationSummaries: this.journal.conversationSummaries(),
       documents: this.journal.documents(selected?.id), citations: selected ? this.journal.citations(selected.id) : [],
       reportBundle: selected ? this.journal.bundle(selected.id) : null,
+      currency:selected?this.journal.currency(selected.id):null,
+      memory:selected?this.world.view(selected.id):null,
       sourceStatus: this.sourceStatus, federationStatus: this.federationStatus, checkedAt: this.checkedAt,
       assessments: selected ? this.journal.assessments(selected.id) : [],
       assessmentStatuses: Object.fromEntries(runs.map(r => [r.id, this.journal.assessments(r.id).at(-1)?.status ?? null])),

@@ -8,15 +8,19 @@ import type { MeterlessClient, StreamAnswer } from './meterless';
 import { NEMOTRON_STREAM_MODELS } from './meterless';
 import { buildDossier, validateCitedMarkdown } from './mission-dossier';
 import type { MissionDossier } from './mission-dossier';
+import { MissionWorld, observeMissionEvidence } from './mission-world';
+import type { MissionMemoryView } from './mission-world';
 
 export type CommitteeWriter = Pick<MeterlessClient, 'stream'>;
-export type CommitteeExporter = (input: { dossier: MissionDossier; journal: MissionJournal; finalDocumentId: string; signal: AbortSignal; progress: (message: string) => void }) => Promise<void>;
+export type CommitteeExporter = (input: { dossier: MissionDossier; journal: MissionJournal; finalDocumentId: string; signal: AbortSignal;
+  memory:MissionMemoryView; validateEvidence:()=>Promise<{revision:string;checkedAt:string}>; progress: (message: string) => void }) => Promise<void>;
 const State = Annotation.Root({ plan: Annotation<string>(), planId: Annotation<string>(), version: Annotation<number>(),
   critique: Annotation<string>(), revise: Annotation<boolean>() });
 export async function runCommitteeMission(options: { run: JournalRun; journal: MissionJournal; map: CommunityMap;
   readSource: (signal: AbortSignal) => Promise<KoboSnapshot>; evidence: MissionEvidence; writer: CommitteeWriter; exporter: CommitteeExporter;
-  onFailure?: (error: unknown) => void }): Promise<MissionResult> {
+  world?:MissionWorld; onFailure?: (error: unknown) => void }): Promise<MissionResult> {
   const { run, journal, map, writer } = options;
+  const world=options.world ?? new MissionWorld();
   const signal = AbortSignal.timeout(600_000);
   const parent = journal.startTask(run.id,null,'coordinator',`Mission Coordinator: establish the evidence, commission a draft plan, evaluate it and produce a committee pack.`,'started');
   const requestedArea=run.message.match(/(?:^|\n)Area:\s*(.+)/)?.[1];
@@ -38,7 +42,17 @@ export async function runCommitteeMission(options: { run: JournalRun; journal: M
     journal.event(run.id,actor,'tool_started','Zetaris: verify the exact report batch and join the bounded community/resource context.',[],taskId,parent);
     const value = await options.evidence.load(current,signal); signal.throwIfAborted();
     for (const receipt of value.queries) journal.event(run.id,actor,'query',`${receipt.name}: ${receipt.rowCount} rows returned in ${receipt.durationMs} ms.`,[receipt.id],taskId,parent);
-    journal.observeEvidence(value); return value;
+    await observeMissionEvidence(world,journal,value,run.id); return value;
+  }
+  function prepareDossier() {
+    const previousRunId=journal.lineage(run.id).previousRunId;
+    const previous=previousRunId?world.view(previousRunId).plans.at(-1):null;
+    return buildDossier(run.id,run.message,snapshot,evidence,map,previousRunId && previous?.status==='invalidated'
+      ? {previousRunId,previousRevision:previous.revision,changes:previous.changes}:undefined);
+  }
+  async function rememberPlan(documentId:string,version:number) {
+    const memory=await world.recordPlan({runId:run.id,documentId,version,evidence});
+    journal.event(run.id,'memory','plan_dependency_recorded',`Meterless World Model bound plan v${version} to its exact evidence revision. A changed revision will invalidate this draft.`,[documentId,...memory.eventIds]);
   }
   async function write(actor: string, taskId: string, kind: 'findings' | 'plan' | 'critique' | 'report', title: string, instruction: string, version = 1, correction = ''): Promise<{id:string;text:string}> {
     const id = journal.beginDocument({runId:run.id,taskId,actor,kind,title:correction ? `${title} · source-check correction` : title,version,metadata:{evidenceRevision:evidence.revision}});
@@ -85,7 +99,7 @@ REJECTED DRAFT:\n${answer.content}`);
       snapshot = await options.readSource(signal); signal.throwIfAborted(); journal.ingest(snapshot);
       journal.event(run.id,'expert','tool_completed',`Kobo returned ${snapshot.count} records.`,snapshot.records.map(record=>record.signal.id),task,parent);
       evidence = await query('expert',task,snapshot);
-      dossier = buildDossier(run.id,run.message,snapshot,evidence,map); journal.saveCitations(dossier.citations);
+      dossier = prepareDossier(); journal.saveCitations(dossier.citations);
       journal.event(run.id,'expert','tool_completed',`Map source inspected: ${dossier.layers['facilities']!.features.length} health features; ${dossier.layers['roads']!.features.length} road line features. Capacity and current operating status are unknown.`,dossier.citations.filter(item=>['map','facility'].includes(item.kind)).map(item=>item.id),task,parent);
       const finding = await write('expert',task,'findings','Mission Expert · evidence findings',
         'Write four concise sections: ## Mission scope, ## Findings, ## Evidence limits, ## Questions for planning. Distinguish observations, uncertain claims and missing inputs. Use cited bullets. Stay below 500 words.');
@@ -97,6 +111,16 @@ REJECTED DRAFT:\n${answer.content}`);
       const task = handoff('planner','Planning Agent','Produce plan v1 using the cited findings. Publish it before evaluation so the user can review it.');
       const plan = await write('planner',task,'plan','Plan v1 · initial committee draft',
         'Produce an initial, substantive committee plan with ## Objective, ## Intervention areas, ## Actions, ## Access and health facilities, ## Risks, ## Decision gates. Propose evidence-supported verification/intervention priorities, accountable roles and sequencing. Explain what remains conditional. Do not substitute a general product description. No dispatch authorization.',1);
+      await rememberPlan(plan.id,1);
+      const previousRunId=journal.lineage(run.id).previousRunId;
+      const previous=previousRunId?journal.documents(previousRunId).filter(document=>document.runId===previousRunId && document.kind==='plan' && document.status==='published').at(-1):null;
+      if(previous) {
+        const diffId=journal.beginDocument({runId:run.id,actor:'planner',kind:'diff',title:'Mission update · changes from the previous mission',version:1,
+          metadata:{fromRunId:previousRunId,fromDocumentId:previous.id,toDocumentId:plan.id}});
+        journal.appendDocument(diffId,`\`\`\`diff\n${createTwoFilesPatch('previous-mission-plan.md','replacement-mission-plan.md',previous.markdown,plan.text,'superseded snapshot','new evidence review')}\n\`\`\``);
+        journal.finishDocument(diffId,'published',{fromRunId:previousRunId,fromDocumentId:previous.id,toDocumentId:plan.id});
+        journal.event(run.id,'coordinator','mission_update_diff','The replacement plan is published with the actual changes from the previous mission. Independent evaluation follows.',[plan.id,diffId],parent);
+      }
       assessmentId = journal.recordAssessment(run.id,evidence,{placeId:null,nextAction:'clarify_mission',rationale:'Cited committee draft published; verify the plan evidence and required mission inputs before any operational decision.'});
       journal.finishTask(task,{documentId:plan.id,assessmentId});
       journal.event(run.id,'coordinator','plan_ready','Planning Agent’s plan v1 is complete and available for review. Mission Coordinator is handing it to the Evaluator Agent.',[plan.id],parent);
@@ -107,7 +131,7 @@ REJECTED DRAFT:\n${answer.content}`);
       const fresh = await options.readSource(signal); signal.throwIfAborted(); journal.ingest(fresh);
       const current = await query('evaluator',task,fresh);
       const matched = assessmentId ? journal.checkAssessment(assessmentId,current) : false;
-      if (!matched) { snapshot=fresh; evidence=current; dossier=buildDossier(run.id,run.message,snapshot,evidence,map); journal.saveCitations(dossier.citations); }
+      if (!matched) { snapshot=fresh; evidence=current; dossier=prepareDossier(); journal.saveCitations(dossier.citations); }
       journal.event(run.id,'evaluator','independent_check',matched ? 'Fresh Kobo and Zetaris reads match the plan evidence revision. Operational evidence gaps still apply.' : 'Evidence changed after planning. This draft is superseded and must be revised.',[state.planId],task,parent);
       const critique = await write('evaluator',task,'critique',`Evaluation of plan v${state.version}`,
         `Critique this plan against its source support, geographic scope, facility/road uncertainty, action ownership and proceed/hold conditions. Distinguish document quality from operational approval.
@@ -127,6 +151,7 @@ Fresh evidence matches draft: ${matched}. PLAN TO REVIEW:\n${state.plan}`,state.
       const plan=await write('planner',task,'plan',`Plan v${version} · revised committee draft`,
         `Revise the complete plan with the same six sections, incorporating the evaluator's actionable requests. Make roles, sequencing and acceptance conditions explicit. Missing facts stay missing.
 Add ## What changed and why, with cited bullets explaining substantive changes. PREVIOUS PLAN:\n${state.plan}\nEVALUATOR CRITIQUE:\n${state.critique}`,version);
+      await rememberPlan(plan.id,version);
       assessmentId=journal.recordAssessment(run.id,evidence,{placeId:null,nextAction:'clarify_mission',rationale:'Revised committee draft published after independent evaluation; operational evidence gaps remain explicit.'});
       const diffId=journal.beginDocument({runId:run.id,actor:'planner',kind:'diff',title:`Changes: v${state.version} → v${version}`,version,taskId:task});
       journal.appendDocument(diffId,`\`\`\`diff\n${createTwoFilesPatch(`plan-v${state.version}.md`,`plan-v${version}.md`,state.plan,plan.text,'published draft','revised after evaluation')}\n\`\`\``);
@@ -142,7 +167,17 @@ Add ## What changed and why, with cited bullets explaining substantive changes. 
 Use a senior coordinator's practical voice with concrete roles, sequencing, evidence dependencies and clear decisions. Refer to the mapped facility inventory and geodata appendix without inventing capacities or exact incident points.
 The reviewed plan and critique follow. Preserve any remaining evaluator objections as explicit limitations. This report is a committee review draft, not an approved dispatch order.
 LATEST PLAN:\n${state.plan}\nLATEST EVALUATION:\n${state.critique}`,state.version);
-      await options.exporter({dossier,journal,finalDocumentId:report.id,signal,progress:message=>journal.event(run.id,'reporter','export_progress',message,[report.id],task,parent)});
+      const verify=async()=>{
+        journal.event(run.id,'evaluator','publication_check','Evaluator Agent is checking Kobo and Zetaris again before publishing the download.',[report.id],task,parent);
+        const fresh=await options.readSource(signal);signal.throwIfAborted();journal.ingest(fresh);
+        const current=await query('evaluator',task,fresh);
+        if(current.revision!==dossier.revision || journal.currency(run.id).status==='superseded')throw new Error('Mission evidence changed before publication.');
+        return {revision:current.revision,checkedAt:current.fetchedAt};
+      };
+      await verify();let publicationChecked=false;
+      await options.exporter({dossier,journal,finalDocumentId:report.id,signal,memory:world.view(run.id),validateEvidence:async()=>{const checked=await verify();publicationChecked=true;return checked;},
+        progress:message=>journal.event(run.id,'reporter','export_progress',message,[report.id],task,parent)});
+      if(!publicationChecked)throw new Error('Exporter omitted the final evidence publication check.');
       journal.finishTask(task,{documentId:report.id});
       journal.event(run.id,'coordinator','report_ready','Committee report and geodata pack are ready to download. Evidence gaps and the operational hold are retained.',[report.id],parent);
       return {};
@@ -159,7 +194,9 @@ LATEST PLAN:\n${state.plan}\nLATEST EVALUATION:\n${state.critique}`,state.versio
   } catch (error) {
     options.onFailure?.(error); journal.failOpenChildren(run.id);
     for (const document of journal.documents(run.id)) if (document.status==='streaming') journal.finishDocument(document.id,'failed');
-    const result: MissionResult={disposition:'hold',summary:'The committee workflow stopped before the final pack was completed. Published drafts and the failed step remain inspectable.',
+    const result: MissionResult={disposition:'hold',summary:journal.currency(run.id).status==='superseded'
+      ? 'Evidence changed during preparation. The previous draft is superseded; a fresh investigation is required before publishing a replacement pack.'
+      : 'The committee workflow stopped before the final pack was completed. Published drafts and the failed step remain inspectable.',
       gaps:['A model, evidence, validation or export step failed; the committee pack is incomplete and no dispatch is authorized.'],signalIds:[],placeIds:[],demoReports:0,liveReports:0};
     journal.event(run.id,'coordinator','workflow_failed',result.summary,[],parent); journal.finishTask(parent,result); journal.finish(run.id,result); return result;
   }

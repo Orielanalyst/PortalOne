@@ -4,10 +4,13 @@ import type { EvidenceCitation } from '../mission-artifacts';
 import type { CommunityMap } from './community-map';
 import type { KoboSnapshot } from './kobo';
 import type { FederatedEvidence } from './community-evidence';
+import { describeMemoryChange } from './mission-world';
+import type { MemoryChange } from './mission-world';
 
 export type MissionDossier = { runId: string; objective: string; capturedAt: string; revision: string;
   citations: EvidenceCitation[]; modelEvidence: Pick<EvidenceCitation,'id'|'kind'|'title'|'statement'>[]; gaps: string[];
-  layers: Record<string, FeatureCollection>; bounds: number[]; attribution: string; mapVersion: string };
+  layers: Record<string, FeatureCollection>; bounds: number[]; attribution: string; mapVersion: string;
+  update?:{previousRunId:string;previousRevision:string;changes:MemoryChange[]} };
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const coordinate = (value: unknown): Position | null => {
   if (!Array.isArray(value)) return null;
@@ -15,13 +18,15 @@ const coordinate = (value: unknown): Position | null => {
   return coordinate(value[0]);
 };
 const collection = (features: Feature[]): FeatureCollection => ({ type: 'FeatureCollection', features });
-export function buildDossier(runId: string, objective: string, snapshot: KoboSnapshot, evidence: FederatedEvidence, map: CommunityMap): MissionDossier {
+export function buildDossier(runId: string, objective: string, snapshot: KoboSnapshot, evidence: FederatedEvidence, map: CommunityMap,update?:MissionDossier['update']): MissionDossier {
   const citations: EvidenceCitation[] = [];
   function cite(kind: EvidenceCitation['kind'], key: string, title: string, statement: string, sourceUrl: string | null, observedAt: string | null = null) {
     const id = `E${digest([kind,key,statement]).slice(0, 10)}`;
     citations.push({ id, runId, kind, title, statement, sourceUrl, observedAt, recordId: key, sha256: digest(statement) }); return id;
   }
   cite('mission','operator', 'Operator mission objective', objective, null);
+  if(update)cite('memory',`${update.previousRunId}:${evidence.revision}`,'Why this mission requires a fresh review',
+    `Meterless World Model marked the previous mission ${update.previousRunId} superseded after its evidence changed. This replacement reviews the new snapshot; it does not authorize dispatch. ${update.changes.length} changed facts. Summary: ${update.changes.filter(change=>change.label!=='Report/map input revision').slice(0,12).map(describeMemoryChange).join('; ') || 'The report/map revision changed'}. The mission-memory.json file preserves the complete comparison.`,null,evidence.fetchedAt);
   const mapId = cite('map',map.manifest.version,'Acquired map extent and coverage',
     `OpenStreetMap/HOT extract ${map.manifest.version}: ${map.layers['roads']!.features.length} road-related features, ${map.places.length} named settlement candidates and ${map.layers['facilities']!.features.length} health features. Bounds ${JSON.stringify(map.manifest.bounds)} in EPSG:4326. Coverage, current road passability and facility operation are unverified.`,
     'https://data.humdata.org/dataset/hotosm_cmr_health_facilities');
@@ -74,7 +79,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   return {runId,objective,capturedAt:new Date().toISOString(),revision:evidence.revision,citations,
     modelEvidence:citations.filter(item=>item.kind !== 'report').concat(citations.filter(item=>item.kind==='report').slice(0,12)).map(({id,kind,title,statement})=>({id,kind,title,
       statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')})),gaps,layers,
-    bounds:map.manifest.bounds,attribution:map.manifest.attribution,mapVersion:map.manifest.version};
+    bounds:map.manifest.bounds,attribution:map.manifest.attribution,mapVersion:map.manifest.version,...(update?{update}:{})};
 }
 
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {

@@ -59,6 +59,18 @@ story += [p("RELIEFINTEL | MISSION COMMITTEE",True),Paragraph("Evidence and inte
     p("This pack records the current evidence, recommended verification and intervention priorities, and the conditions that must be satisfied before an operational decision. Demonstration reports and synthetic resources do not establish actual field conditions."),
     p("Proposed roles and named counterparties in the draft are suggestions requiring committee confirmation. Their presence, participation and appointment have not been verified; confirm an actual responsible person before assigning work."),
     p("Evidence revision: "+dossier["revision"],True),Spacer(1,5*mm)]
+if dossier.get("update"):
+    update=dossier["update"]
+    changes=[change for change in update["changes"] if change["label"]!="Report/map input revision"]
+    memory_cite=next((citation["id"] for citation in data["citations"] if citation["kind"]=="memory"),None)
+    reference=" ["+memory_cite+"]" if memory_cite else ""
+    block=[Paragraph("Why this mission was reviewed again",styles["Heading2"]),p("The previous mission snapshot was superseded after its evidence changed. This pack records a fresh review; field verification and operational hold still apply."+reference),
+        p("Previous mission: "+update["previousRunId"],True)]
+    if changes:
+        value=lambda item: "Unknown" if item is None else "Yes" if item is True else "No" if item is False else str(item)
+        block.append(table([["Changed evidence","Previous snapshot","This snapshot"]]+[[change["label"],value(change["before"]),value(change["after"])] for change in changes[:12]],[84*mm,45*mm,45*mm]))
+    block.append(p("The ZIP includes the full dependency record in mission-memory.json and an actual text diff from the previous mission in drafts/. Report counts do not establish independent witnesses or verified incidents.",True))
+    story.append(KeepTogether(block))
 tokens(data["tokens"])
 story += [PageBreak(),Paragraph("Mapped evidence and coverage",styles["Heading1"]),p("Native QGIS rendering. The scale bar applies to this reproduced map; the full-resolution map PDF and editable QGIS project are included in the pack."),Image(str(root/"map.png"),width=width,height=width*210/297)]
 story += [p("Road geometry indicates mapped existence. It does not establish present passability. Blockage points require report coordinates; no point is invented for an unlocated claim. Intervention candidates are community references, not surveyed zones.")]

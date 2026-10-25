@@ -23,7 +23,7 @@ function publicFiles(folder: string,sub=''): {name:string;sha256:string;bytes:nu
     const bytes=readFileSync(path); return [{name:part.split(sep).join('/'),sha256:createHash('sha256').update(bytes).digest('hex'),bytes:bytes.length}];
   });
 }
-export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,finalDocumentId,signal,progress})=>{
+export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,finalDocumentId,signal,memory,validateEvidence,progress})=>{
   const root=reportDirectory(dossier.runId);
   if (journal.bundle(dossier.runId)?.status==='ready') throw new Error('Published bundles are immutable.');
   mkdirSync(join(root,'geojson'),{recursive:true}); mkdirSync(join(root,'styles'),{recursive:true}); mkdirSync(join(root,'drafts'),{recursive:true});
@@ -38,6 +38,7 @@ export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,f
     const citations=journal.citations(dossier.runId);
     writeFileSync(join(root,'input.json'),JSON.stringify({dossier,citations,tokens:marked.lexer(final.markdown)},null,2));
     writeFileSync(join(root,'report.md'),final.markdown); writeFileSync(join(root,'evidence.json'),JSON.stringify(citations,null,2));
+    writeFileSync(join(root,'mission-memory.json'),JSON.stringify(memory,null,2));
     for (const [name,layer] of Object.entries(dossier.layers)) writeFileSync(join(root,'geojson',`${name}.geojson`),JSON.stringify(layer));
     for (const document of documents) writeFileSync(join(root,'drafts',`${document.kind}-v${document.version}-${document.id.slice(-8)}.md`),document.markdown);
     progress('QGIS: writing the GeoPackage and styled project, reopening every layer and checking feature counts, CRS and geometry.');
@@ -50,8 +51,9 @@ export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,f
     await run(python,[resolve('scripts/render-committee-pdf.py'),root],signal,120_000,env);
     const pdf=JSON.parse(readFileSync(join(root,'pdf-validation.json'),'utf8')); if(pdf.placeholders || !pdf.mapIncluded) throw new Error('PDF validation failed.');
     writeFileSync(join(root,'README.txt'),`RELIEFINTEL COMMITTEE DRAFT - OPERATIONAL HOLD\nEvidence revision: ${dossier.revision}\nCaptured: ${dossier.capturedAt}\nOpen mission.qgz in QGIS. Source CRS: EPSG:4326; map display: EPSG:32632.\nGeoJSON equivalents and per-layer QML styles are included. Capacity and operating status are unverified.\nEmpty blockage/intervention-zone layers are evidence gaps, not an all-clear. Facility polygon reference points are source boundary vertices, not verified entrances.\n${dossier.attribution} | ODbL 1.0\n`);
+    const publicationCheck=await validateEvidence();
     const files=publicFiles(root);
-    writeFileSync(join(root,'manifest.json'),JSON.stringify({runId:dossier.runId,revision:dossier.revision,capturedAt:dossier.capturedAt,qgis,files,operationalStatus:'hold',dispatchAuthorized:false},null,2));
+    writeFileSync(join(root,'manifest.json'),JSON.stringify({runId:dossier.runId,revision:dossier.revision,capturedAt:dossier.capturedAt,publicationCheck,previousRunId:dossier.update?.previousRunId ?? null,qgis,files,operationalStatus:'hold',dispatchAuthorized:false},null,2));
     progress('Packing the PDF, map, editable QGIS project, GeoPackage, GeoJSON, source register and versioned drafts with checksums.');
     await run(python,['-c','import json,sys,zipfile,pathlib; r=pathlib.Path(sys.argv[1]); m=json.loads((r/"manifest.json").read_text()); z=zipfile.ZipFile(r/"committee-pack.zip","w",zipfile.ZIP_DEFLATED); [z.write(r/f["name"],f["name"]) for f in m["files"]]; z.write(r/"manifest.json","manifest.json"); z.close()',root],signal,30_000,env);
     const ready=publicFiles(root),zip=readFileSync(join(root,'committee-pack.zip'));

@@ -46,8 +46,8 @@ it('publishes v1 before evaluation, revises with an actual diff and reports only
   }};
   try {
     const run=journal.startRun('Investigate Bambili and prepare a committee draft.','test');const reads=vi.fn(async()=>source);let exported=false;
-    const result=await runCommitteeMission({run,journal,map,writer,readSource:reads,evidence:new FixtureCommunityEvidence(map),exporter:async()=>{exported=true;}});
-    expect(result.disposition).toBe('hold');expect(exported).toBe(true);expect(reads).toHaveBeenCalledTimes(3);
+    const result=await runCommitteeMission({run,journal,map,writer,readSource:reads,evidence:new FixtureCommunityEvidence(map),exporter:async({validateEvidence})=>{await validateEvidence();exported=true;}});
+    expect(result.disposition).toBe('hold');expect(exported).toBe(true);expect(reads).toHaveBeenCalledTimes(5);
     const documents=journal.documents(run.id);expect(documents.filter(document=>document.kind==='plan').map(document=>document.version)).toEqual([1,2]);
     expect(documents.find(document=>document.kind==='diff')?.markdown).toContain('+## What changed and why');
     const events=journal.events(run.id);const firstPlan=documents.find(document=>document.kind==='plan')!;
@@ -68,7 +68,7 @@ it('preserves a rejected draft and permits one visible source-check repair befor
     return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
   }};
   try {
-    const run=journal.startRun('Prepare a cited Bambili committee draft.','test');const exported=vi.fn(async()=>{});
+    const run=journal.startRun('Prepare a cited Bambili committee draft.','test');const exported=vi.fn(async({validateEvidence}:Parameters<import('./committee-mission').CommitteeExporter>[0])=>{await validateEvidence();});
     await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter:exported});
     expect(exported).toHaveBeenCalledTimes(1);
     expect(journal.documents(run.id).filter(document=>document.kind==='findings').map(document=>document.status)).toEqual(['failed','published']);
