@@ -54,3 +54,24 @@ it('publishes v1 before evaluation, revises with an actual diff and reports only
     expect(published.seq).toBeLessThan(evaluation.seq);expect(events.filter(event=>event.kind==='handoff').every(event=>event.detail.includes('→') || event.detail.includes('Mission Expert'))).toBe(true);
   }finally{journal.close();}
 });
+it('preserves a rejected draft and permits one visible source-check repair before independent review',async()=>{
+  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;
+  const writer:CommitteeWriter={async stream(prompt,mode,options){
+    const id=prompt.match(/"id":"(E[a-f0-9]{10})"/)![1];
+    const paragraph=`The committee must confirm current field evidence before any operational decision. [${id}]`;
+    let content=`## Draft\n\n${paragraph}\n\n${paragraph}\n\n${paragraph}`;
+    if(++calls===1)content+='\n\nThis unsupported factual block must prevent publication.';
+    if(prompt.includes('Start with ## Evaluation'))content=`## Evaluation\n\n**Verdict: ACCEPT_WITH_GAPS** [${id}]\n\n${content}`;
+    options.onDelta(content);
+    return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
+  }};
+  try {
+    const run=journal.startRun('Prepare a cited Bambili committee draft.','test');const exported=vi.fn(async()=>{});
+    await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter:exported});
+    expect(exported).toHaveBeenCalledTimes(1);
+    expect(journal.documents(run.id).filter(document=>document.kind==='findings').map(document=>document.status)).toEqual(['failed','published']);
+    expect(journal.documents(run.id)[0]?.metadata['receipt']).toMatchObject({responseModel:'explicit-test-fixture'});
+    expect(journal.events(run.id).filter(event=>event.kind==='publication_repair')).toHaveLength(1);
+    expect(journal.events(run.id).some(event=>event.kind==='independent_check')).toBe(true);
+  }finally{journal.close();}
+});
