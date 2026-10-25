@@ -10,7 +10,7 @@ it('keeps the draft being read selected when a revised plan arrives, then permit
   const heading=container.querySelector('h2');
   rerender(<PlanArtifacts view={view([first,second])}/>);
   expect(container.querySelector('h2')).toBe(heading);
-  expect(getByRole('button',{name:'Plan v1',exact:true})).toHaveAttribute('aria-pressed','true');
-  fireEvent.click(getByRole('button',{name:'Plan v2',exact:true}));
+  expect(getByRole('button',{name:'Plan v1'})).toHaveAttribute('aria-pressed','true');
+  fireEvent.click(getByRole('button',{name:'Plan v2'}));
   expect(container.querySelector('h2')?.textContent).toBe('Version 2');
 });
