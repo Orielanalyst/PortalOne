@@ -14,6 +14,8 @@ import type { MissionLogistics } from './mission-logistics';
 import { execFileSync } from 'node:child_process';
 import { ConversationDecision, NightshiftConversation, replayConversation } from './mission-conversation';
 import type { MissionConversation, InvestigationContext } from './mission-conversation';
+import { runCommitteeMission } from './committee-mission';
+import { buildCommitteeBundle } from './committee-export';
 
 function sourceRevision() {
   try {
@@ -32,7 +34,7 @@ export class MissionRuntime {
   private readonly evidence: MissionEvidence;
   private active: string | null = null;
   private chatting = false;
-  private monitor: { sessionId: string; message: string; until: number; lastRevision?: string; autoRuns: number } | null = null;
+  private monitor: { sessionId: string; message: string; until: number; lastRevision?: string; autoRuns: number; workflow: 'investigation' | 'committee' } | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
   private sourceStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
   private checkedAt: string | null = null;
@@ -65,13 +67,17 @@ export class MissionRuntime {
     if (!turn || !run || this.mode === 'offline-replay') return;
     const context = this.investigationContext(run); if (!context) return;
     this.journal.beginConversationSummary(runId);
+    const documentId = this.journal.beginDocument({ runId, actor: 'coordinator', kind: 'summary', title: 'Mission Coordinator · findings and next steps' });
     try {
       const conversation = this.options.conversation ?? new NightshiftConversation(configuredNightshift());
       if (!conversation.summarize) throw new Error('No conversational summary model.');
       const signal = AbortSignal.timeout(50_000);
-      const summary = await conversation.summarize(context, signal); signal.throwIfAborted();
+      const summary = await conversation.summarize(context, signal, text => this.journal.appendDocument(documentId, text)); signal.throwIfAborted();
+      if (!this.journal.documents(runId).find(document => document.id === documentId)?.markdown) this.journal.appendDocument(documentId, summary.reply);
+      this.journal.finishDocument(documentId, 'published', { receipt: summary.receipt });
       this.journal.finishConversationSummary(runId, summary.reply, summary.receipt);
     } catch {
+      this.journal.finishDocument(documentId, 'failed');
       this.journal.finishConversationSummary(runId, 'The structured findings are ready below, but I could not complete the model-backed summary. You can still inspect the evidence and blockers.', null);
     }
   }
@@ -79,12 +85,13 @@ export class MissionRuntime {
     const text = message.trim();
     if (!text || text.length > 2000 || ![0, 30].includes(watchMinutes)) throw new Error('Invalid conversation request.');
     if (this.chatting) throw new Error('The coordinator is already replying.');
-    this.chatting = true;
     const summaries = this.journal.conversationSummaries();
     const history = this.journal.conversation().filter(turn => turn.status === 'replied').slice(-6)
       .map(turn => ({ message: turn.message.slice(0, 1200), reply: [turn.reply,
         summaries.find(summary => summary.runId === turn.runId && summary.status === 'complete')?.reply].filter(Boolean).join('\n') }));
     const turn = this.journal.beginConversation(text, this.mode === 'live' ? 'live-model' : 'offline-replay');
+    this.chatting = true;
+    const documentId = this.journal.beginDocument({ turnId: turn.id, actor: 'coordinator', kind: 'reply', title: 'Mission Coordinator · response' });
     try {
       const responder = this.options.conversation ?? (this.mode === 'live'
         ? new NightshiftConversation(configuredNightshift(), receipt => this.journal.conversationReceipt(turn.id, receipt)) : replayConversation);
@@ -92,47 +99,52 @@ export class MissionRuntime {
       const signal = AbortSignal.timeout(50_000);
       const decision = ConversationDecision.parse(await responder.respond({ message: text, history,
         activeMission: this.active ? this.journal.run(this.active)?.message ?? 'Investigation in progress' : null,
-        lastInvestigation: latest ? this.investigationContext(latest) : null }, signal));
+        lastInvestigation: latest ? this.investigationContext(latest) : null }, signal, delta => this.journal.appendDocument(documentId, delta)));
       signal.throwIfAborted();
+      if (!this.journal.documents().find(document => document.id === documentId)?.markdown) this.journal.appendDocument(documentId, decision.reply);
+      this.journal.finishDocument(documentId, 'published', { receipt: this.journal.conversation().find(item => item.id === turn.id)?.receipt });
       if (decision.action === 'investigate') {
         if (this.active) throw new Error('Investigation already running.');
         // No await between releasing this lock and reserving the investigation slot.
         this.chatting = false;
-        const runId = this.start(`${decision.mission.objective}\nArea: ${decision.mission.area}`, watchMinutes, 'operator', turn.sessionId);
+        const runId = this.start(`${decision.mission.objective}\nArea: ${decision.mission.area}`, watchMinutes, 'operator', turn.sessionId, this.mode==='live' && !this.options.dispatcher ? 'committee' : 'investigation');
         this.journal.finishConversation(turn.id, decision.reply, decision.action, runId);
       } else this.journal.finishConversation(turn.id, decision.reply, 'reply');
     } catch {
+      this.journal.finishDocument(documentId, 'failed');
       this.journal.finishConversation(turn.id, this.active
         ? 'An investigation is already running. Follow its activity trace while it finishes; this message did not start another investigation.'
         : 'I could not complete the model-backed reply. Your message is saved; please try again. No investigation was started.', null, null, true);
-    } finally { this.chatting = false; this.schedule(); }
+    } finally { this.chatting = false; this.schedule(); this.journal.changed(); }
     return this.journal.conversation().find(item => item.id === turn.id)!;
   }
-  start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string) {
+  start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string, workflow: 'investigation' | 'committee' = 'investigation') {
     if (this.active || this.chatting) throw new Error('The coordinator is already working.');
     const client = this.mode === 'live' && !this.options.dispatcher ? configuredNightshift() : null;
     const run = this.journal.startRun(message, cause, sessionId);
     this.active = run.id;
     if (cause === 'operator') {
       this.stopMonitor();
-      if (watchMinutes && this.mode === 'live') this.monitor = { sessionId: run.sessionId, message, until: Date.now() + watchMinutes * 60_000, autoRuns: 0 };
+      if (watchMinutes && this.mode === 'live') this.monitor = { sessionId: run.sessionId, message, until: Date.now() + watchMinutes * 60_000, autoRuns: 0, workflow };
     }
     const dispatcher = this.options.dispatcher ?? (client ? new NightshiftDispatcher(client, receipt => this.journal.event(run.id, 'coordinator', 'model_receipt', receipt)) : replayDispatcher);
     const logistics = this.options.logistics ?? (client ? new NightshiftMissionLogistics(client) : new FixtureMissionLogistics());
-    void runMission({ run, journal: this.journal, map: this.map, dispatcher, logistics, evidence: { load: async (snapshot, signal) => {
+    const dependencies = { run, journal: this.journal, map: this.map, dispatcher, logistics, evidence: { load: async (snapshot: KoboSnapshot, signal: AbortSignal) => {
       try { const context = await this.evidence.load(snapshot, signal); this.federationStatus = 'online'; return context; }
       catch (error) { this.federationStatus = 'unavailable'; throw error; }
-    } }, readSource: async signal => {
+    } }, readSource: async (signal: AbortSignal) => {
       try { const snapshot = await this.source.snapshot(signal); this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt; return snapshot; }
       catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString(); throw error; }
-    } }).then(async result => {
+    } };
+    const investigation=workflow==='committee' && client ? runCommitteeMission({...dependencies,writer:client,exporter:buildCommitteeBundle}) : runMission(dependencies);
+    void investigation.then(async result => {
       const assessment = this.journal.assessments(run.id).find(a => a.id === result.assessmentId);
       if (assessment?.status === 'checked' && this.monitor?.sessionId === run.sessionId) this.monitor.lastRevision = assessment.evidence.revision;
       await this.concludeConversation(run.id);
-    }).catch(() => this.journal.interrupt(run.id)).finally(() => { this.active = null; this.schedule(); });
+    }).catch(() => this.journal.interrupt(run.id)).finally(() => { this.active = null; this.schedule(); this.journal.changed(); });
     return run.id;
   }
-  stopMonitor() { this.monitor = null; if (this.timer) clearTimeout(this.timer); this.timer = null; }
+  stopMonitor() { this.monitor = null; if (this.timer) clearTimeout(this.timer); this.timer = null; this.journal.changed(); }
   private schedule() {
     if (this.timer) clearTimeout(this.timer);
     if (!this.monitor || Date.now() >= this.monitor.until) { this.stopMonitor(); return; }
@@ -167,7 +179,7 @@ export class MissionRuntime {
           this.stopMonitor(); return;
         }
         watching.autoRuns++; watching.lastRevision = context.revision;
-        const runId = this.start(watching.message, 0, previousStatus === 'unavailable' || previousFederationStatus === 'unavailable' ? 'source_recovered' : 'source_change', watching.sessionId);
+        const runId = this.start(watching.message, 0, previousStatus === 'unavailable' || previousFederationStatus === 'unavailable' ? 'source_recovered' : 'source_change', watching.sessionId, watching.workflow);
         this.journal.event(runId, 'intake', 'source_change', `${intake.changed.length} new or edited report versions triggered this investigation.`, intake.changed);
       }
     } catch {
@@ -187,6 +199,8 @@ export class MissionRuntime {
     return { mode: this.mode, applicationSourceCommit: this.applicationSourceCommit, runs, selected, events: selected ? this.journal.events(selected.id) : [], activeRunId: this.active,
       conversation: this.journal.conversation(), chatBusy: this.chatting,
       conversationSummaries: this.journal.conversationSummaries(),
+      documents: this.journal.documents(selected?.id), citations: selected ? this.journal.citations(selected.id) : [],
+      reportBundle: selected ? this.journal.bundle(selected.id) : null,
       sourceStatus: this.sourceStatus, federationStatus: this.federationStatus, checkedAt: this.checkedAt,
       assessments: selected ? this.journal.assessments(selected.id) : [],
       assessmentStatuses: Object.fromEntries(runs.map(r => [r.id, this.journal.assessments(r.id).at(-1)?.status ?? null])),

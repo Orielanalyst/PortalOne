@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiMissionRouteImport } from './routes/api.mission'
 import { Route as ApiMapLayerRouteImport } from './routes/api.map.$layer'
+import { Route as ApiMissionDownloadRouteImport } from './routes/api.mission.download'
+import { Route as ApiMissionEvidenceRouteImport } from './routes/api.mission.evidence'
+import { Route as ApiMissionStreamRouteImport } from './routes/api.mission.stream'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,34 +31,77 @@ const ApiMapLayerRoute = ApiMapLayerRouteImport.update({
   path: '/api/map/$layer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiMissionDownloadRoute = ApiMissionDownloadRouteImport.update({
+  id: '/download',
+  path: '/download',
+  getParentRoute: () => ApiMissionRoute,
+} as any)
+const ApiMissionEvidenceRoute = ApiMissionEvidenceRouteImport.update({
+  id: '/evidence',
+  path: '/evidence',
+  getParentRoute: () => ApiMissionRoute,
+} as any)
+const ApiMissionStreamRoute = ApiMissionStreamRouteImport.update({
+  id: '/stream',
+  path: '/stream',
+  getParentRoute: () => ApiMissionRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/api/mission': typeof ApiMissionRoute
+  '/api/mission': typeof ApiMissionRouteWithChildren
   '/api/map/$layer': typeof ApiMapLayerRoute
+  '/api/mission/download': typeof ApiMissionDownloadRoute
+  '/api/mission/evidence': typeof ApiMissionEvidenceRoute
+  '/api/mission/stream': typeof ApiMissionStreamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api/mission': typeof ApiMissionRoute
+  '/api/mission': typeof ApiMissionRouteWithChildren
   '/api/map/$layer': typeof ApiMapLayerRoute
+  '/api/mission/download': typeof ApiMissionDownloadRoute
+  '/api/mission/evidence': typeof ApiMissionEvidenceRoute
+  '/api/mission/stream': typeof ApiMissionStreamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/api/mission': typeof ApiMissionRoute
+  '/api/mission': typeof ApiMissionRouteWithChildren
   '/api/map/$layer': typeof ApiMapLayerRoute
+  '/api/mission/download': typeof ApiMissionDownloadRoute
+  '/api/mission/evidence': typeof ApiMissionEvidenceRoute
+  '/api/mission/stream': typeof ApiMissionStreamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/mission' | '/api/map/$layer'
+  fullPaths:
+    | '/'
+    | '/api/mission'
+    | '/api/map/$layer'
+    | '/api/mission/download'
+    | '/api/mission/evidence'
+    | '/api/mission/stream'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/mission' | '/api/map/$layer'
-  id: '__root__' | '/' | '/api/mission' | '/api/map/$layer'
+  to:
+    | '/'
+    | '/api/mission'
+    | '/api/map/$layer'
+    | '/api/mission/download'
+    | '/api/mission/evidence'
+    | '/api/mission/stream'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/mission'
+    | '/api/map/$layer'
+    | '/api/mission/download'
+    | '/api/mission/evidence'
+    | '/api/mission/stream'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ApiMissionRoute: typeof ApiMissionRoute
+  ApiMissionRoute: typeof ApiMissionRouteWithChildren
   ApiMapLayerRoute: typeof ApiMapLayerRoute
 }
 
@@ -82,12 +128,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMapLayerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/mission/download': {
+      id: '/api/mission/download'
+      path: '/download'
+      fullPath: '/api/mission/download'
+      preLoaderRoute: typeof ApiMissionDownloadRouteImport
+      parentRoute: typeof ApiMissionRoute
+    }
+    '/api/mission/evidence': {
+      id: '/api/mission/evidence'
+      path: '/evidence'
+      fullPath: '/api/mission/evidence'
+      preLoaderRoute: typeof ApiMissionEvidenceRouteImport
+      parentRoute: typeof ApiMissionRoute
+    }
+    '/api/mission/stream': {
+      id: '/api/mission/stream'
+      path: '/stream'
+      fullPath: '/api/mission/stream'
+      preLoaderRoute: typeof ApiMissionStreamRouteImport
+      parentRoute: typeof ApiMissionRoute
+    }
   }
 }
 
+interface ApiMissionRouteChildren {
+  ApiMissionDownloadRoute: typeof ApiMissionDownloadRoute
+  ApiMissionEvidenceRoute: typeof ApiMissionEvidenceRoute
+  ApiMissionStreamRoute: typeof ApiMissionStreamRoute
+}
+
+const ApiMissionRouteChildren: ApiMissionRouteChildren = {
+  ApiMissionDownloadRoute: ApiMissionDownloadRoute,
+  ApiMissionEvidenceRoute: ApiMissionEvidenceRoute,
+  ApiMissionStreamRoute: ApiMissionStreamRoute,
+}
+
+const ApiMissionRouteWithChildren = ApiMissionRoute._addFileChildren(
+  ApiMissionRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ApiMissionRoute: ApiMissionRoute,
+  ApiMissionRoute: ApiMissionRouteWithChildren,
   ApiMapLayerRoute: ApiMapLayerRoute,
 }
 export const routeTree = rootRouteImport
