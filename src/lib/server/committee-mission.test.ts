@@ -28,6 +28,7 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   const dossier=buildDossier('test','Map facilities',source,evidence,map),id=dossier.citations[0]!.id;
   const content=`## Findings\n\n${'A sourced draft statement with explicit limits. '.repeat(5)}[${id}]`;
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
+  expect(validateCitedMarkdown(content+'\n\n## Questions\n\n- What current field confirmation is available?\n- Who will confirm facility capacity?',dossier.citations)).toEqual([id]);
   for(const bad of [content+'\n\nAn unsupported claim.',content.replace(id,'E0000000000'),content+'\n\nTBD',content+`\n\n## Another section\nAn uncited claim.`]) expect(()=>validateCitedMarkdown(bad,dossier.citations)).toThrow();
 });
 it('publishes v1 before evaluation, revises with an actual diff and reports only after independent review',async()=>{
