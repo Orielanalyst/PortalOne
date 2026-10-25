@@ -1,13 +1,15 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { configuredKobo } from '../src/lib/server/kobo';
+import { CommunityMap } from '../src/lib/server/community-map';
 
 const client = configuredKobo();
 mkdirSync('.runtime/kobo', { recursive: true });
 const place = process.argv.includes('--demo-place=Balewa') ? 'Balewa' : process.argv.includes('--demo-place=Bambui') ? 'Bambui' : 'Bambili';
-const blockageDemo = process.argv.includes('--demo-case=road-blockage');
+const missionUpdateDemo=process.argv.includes('--demo-case=mission-update');
+const blockageDemo = process.argv.includes('--demo-case=road-blockage') || missionUpdateDemo;
 if (blockageDemo && place !== 'Bambili') throw new Error('The blockage demonstration is scoped to Bambili only.');
-const proofPath = blockageDemo ? '.runtime/kobo/transport-test-road-blockage.json' : place === 'Bambili' ? '.runtime/kobo/transport-test.json' : `.runtime/kobo/transport-test-${place.toLowerCase()}.json`;
+const proofPath = missionUpdateDemo ? '.runtime/kobo/transport-test-mission-update.json' : blockageDemo ? '.runtime/kobo/transport-test-road-blockage.json' : place === 'Bambili' ? '.runtime/kobo/transport-test.json' : `.runtime/kobo/transport-test-${place.toLowerCase()}.json`;
 if (process.argv.includes('--submit-demo')) {
   // Persist the UUID before the write, so an uncertain network result can be retried without a fresh incident.
   const fixture = existsSync(proofPath) ? JSON.parse(readFileSync(proofPath, 'utf8')) : {
@@ -21,8 +23,11 @@ if (process.argv.includes('--submit-demo')) {
     // Deployment replaces the draft id_string with the asset UID (verified through OpenRosa formList).
     const category = blockageDemo ? 'road_blockage' : 'other';
     const relation = blockageDemo ? 'forwarded' : 'direct';
-    const text = blockageDemo ? 'DEMONSTRATION ONLY: scripted example of a forwarded road-obstruction report near Bambili. This is not an actual incident.' : 'DEMONSTRATION ONLY: report transport smoke test. No incident, need or road condition is asserted.';
-    const xml = `<?xml version="1.0"?><${uid} id="${uid}"><report_mode>demo</report_mode><observed_at>${fixture.at}</observed_at><place_name>${place}</place_name><category>${category}</category><report_text>${text}</report_text><source_relation>${relation}</source_relation><origin_reference>transport-smoke-v1</origin_reference><meta><instanceID>uuid:${fixture.uuid}</instanceID></meta></${uid}>`;
+    const text = missionUpdateDemo ? 'DEMONSTRATION ONLY: synthetic forwarded access-constraint marker at the mapped Bambili community reference. Coordinates are a public map reference selected for the mission-update rehearsal, not a field observation. No actual incident is asserted.' : blockageDemo ? 'DEMONSTRATION ONLY: scripted example of a forwarded road-obstruction report near Bambili. This is not an actual incident.' : 'DEMONSTRATION ONLY: report transport smoke test. No incident, need or road condition is asserted.';
+    const reference=missionUpdateDemo?new CommunityMap().places.find(item=>item.name==='Bambili'):null;
+    if(missionUpdateDemo && !reference)throw new Error('Missing public map reference for the labelled demonstration.');
+    const geopoint=reference?`<location>${reference.lat.toFixed(3)} ${reference.lng.toFixed(3)} 0 100</location>`:'';
+    const xml = `<?xml version="1.0"?><${uid} id="${uid}"><report_mode>demo</report_mode><observed_at>${fixture.at}</observed_at><place_name>${place}</place_name>${geopoint}<category>${category}</category><report_text>${text}</report_text><source_relation>${relation}</source_relation><origin_reference>transport-smoke-v1</origin_reference><meta><instanceID>uuid:${fixture.uuid}</instanceID></meta></${uid}>`;
     const body = new FormData(); body.append('xml_submission_file', new Blob([xml], { type: 'text/xml' }), 'submission.xml');
     // Current KPI includes OpenRosa; legacy kc.* submission URLs can return 404.
     const origin = client.origin;
