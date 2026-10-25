@@ -16,5 +16,8 @@ bun run check:vendor
 echo "pre-push: offline relief replay with HTTP disabled"
 bun run check:offline-replay
 
+echo "pre-push: offline mission investigation with HTTP disabled"
+bun run check:mission-replay
+
 echo "pre-push: build"
 bun run build
