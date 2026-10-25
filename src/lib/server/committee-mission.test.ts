@@ -56,14 +56,17 @@ it('publishes v1 before evaluation, revises with an actual diff and reports only
     expect(published.seq).toBeLessThan(evaluation.seq);expect(events.filter(event=>event.kind==='handoff').every(event=>event.detail.includes('→') || event.detail.includes('Mission Expert'))).toBe(true);
   }finally{journal.close();}
 });
-it('preserves a rejected draft and permits one visible source-check repair before independent review',async()=>{
+it.each(['unknown_reference','output_limit'])('preserves %s and permits one visible repair before independent review',async failure=>{
   const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;const modes:string[]=[],prompts:string[]=[];
   const writer:CommitteeWriter={async stream(prompt,mode,options){
     modes.push(mode);prompts.push(prompt);
     const id=prompt.match(/"id":"(E[a-f0-9]{10})"/)![1];
     const paragraph=`The committee must confirm current field evidence before any operational decision. [${id}]`;
     let content=`## Draft\n\n${paragraph}\n\n${paragraph}\n\n${paragraph}`;
-    if(++calls===1)content+='\n\nThis unknown source must prevent publication. [E0000000000]';
+    if(++calls===1) {
+      if(failure==='output_limit'){options.onDelta('## Findings\n\nAn incomplete provider response.');throw new Error('Provider answer reached its token ceiling; completeness is unconfirmed.');}
+      content+='\n\nThis unknown source must prevent publication. [E0000000000]';
+    }
     if(prompt.includes('Start with ## Evaluation'))content=`## Evaluation\n\n**Verdict: ACCEPT_WITH_GAPS** [${id}]\n\n${content}`;
     options.onDelta(content);
     return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
@@ -73,7 +76,8 @@ it('preserves a rejected draft and permits one visible source-check repair befor
     await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter:exported});
     expect(exported).toHaveBeenCalledTimes(1);
     expect(journal.documents(run.id).filter(document=>document.kind==='findings').map(document=>document.status)).toEqual(['failed','published']);
-    expect(journal.documents(run.id)[0]?.metadata['receipt']).toMatchObject({responseModel:'explicit-test-fixture'});
+    if(failure==='output_limit')expect(journal.documents(run.id)[0]?.metadata['failureReason']).toBe('output_limit');
+    else expect(journal.documents(run.id)[0]?.metadata['receipt']).toMatchObject({responseModel:'explicit-test-fixture'});
     expect(journal.events(run.id).filter(event=>event.kind==='publication_repair')).toHaveLength(1);
     expect(journal.events(run.id).some(event=>event.kind==='independent_check')).toBe(true);
     expect(modes[1]).toBe('nvidia/nemotron-3-ultra-550b-a55b');expect(prompts[1]).not.toContain('E0000000000');
