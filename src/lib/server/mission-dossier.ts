@@ -77,6 +77,8 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
     .map(feature => ({ ...feature, properties: { ...feature.properties, passability:'unknown',evidence_id:mapId } }));
   const layers = { roads:collection(roads),facilities:collection(facilities),blockages:collection(blockages),intervention_zones:collection([]),
     intervention_candidates:collection(candidates),places:map.layers['places']!,facility_footprints:collection(map.layers['facilities']!.features.filter(feature=>feature.geometry.type !== 'Point')) };
+  cite('map',`layers-${evidence.revision}`,'Generated evidence layer inventory',
+    `Generated layer feature counts: ${JSON.stringify(Object.fromEntries(Object.entries(layers).map(([name,layer])=>[name,layer.features.length])))}. Blockage features are reported/unverified access observations, including demonstrations; they are not independently confirmed incidents. Intervention candidates are community references, not surveyed delivery zones.`,null,evidence.fetchedAt);
   return {runId,objective,capturedAt:new Date().toISOString(),revision:evidence.revision,citations,
     modelEvidence:citations.filter(item=>item.kind !== 'report').concat(citations.filter(item=>item.kind==='report').slice(0,12)).map(({id,kind,title,statement})=>({id,kind,title,
       statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')})),gaps,layers,
@@ -95,7 +97,8 @@ export function validateCitedMarkdown(markdown: string, citations: EvidenceCitat
   const paragraphs = markdown.split(/\n\s*\n/).map(block=>block.replace(/^\s*#{1,6}\s.*$/gm,'').trim()).filter(Boolean);
   const questionOnly=(block:string)=>block.split('\n').filter(line=>line.trim()).every(line=>/^\s*(?:[-*]|\d+[.)])?\s*(?:what|which|who|when|where|how|is|are|can|does|do)\b.*\?\s*$/i.test(line));
   const verdictOnly=(block:string)=>/^\*\*Verdict:\s*(REVISE|ACCEPT_WITH_GAPS)\*\*$/.test(block);
-  const uncited=paragraphs.flatMap((block,index)=>!(/\[E[a-f0-9]{10}\]/.test(block)) && !questionOnly(block) && !verdictOnly(block)?[index+1]:[]);
+  const noChangesOnly=(block:string)=>/^(?:[-*]\s*)?None[.!]?$/.test(block);
+  const uncited=paragraphs.flatMap((block,index)=>!(/\[E[a-f0-9]{10}\]/.test(block)) && !questionOnly(block) && !verdictOnly(block) && !noChangesOnly(block)?[index+1]:[]);
   if (uncited.length) throw new Error(`Factual document blocks ${uncited.join(', ')} have no evidence reference.`);
   if (/<\/?(?:script|iframe|think)\b/i.test(markdown)) throw new Error('Document contains disallowed markup.');
   return [...new Set(cited)];

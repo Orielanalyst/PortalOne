@@ -60,6 +60,8 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown(content+'\n\n## Questions\n\n- What current field confirmation is available?\n- Who will confirm facility capacity?',dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown('**Verdict: REVISE**\n\n'+content,dossier.citations)).toEqual([id]);
+  expect(validateCitedMarkdown(content+'\n\n## Required changes\n\n- None.',dossier.citations)).toEqual([id]);
+  expect(()=>validateCitedMarkdown(content+'\n\n- None. All roads are now clear.',dossier.citations)).toThrow('have no evidence reference');
   const sourcedDates=[...dossier.citations,{...dossier.citations[0]!,id:'E2222222222',statement:'Resource observation expires at 2026-10-24T11:00:00Z.'}];
   expect(validateCitedMarkdown(content+'\n\nThe source expiry is 2026-10-24 11:00 UTC. [E2222222222]',sourcedDates)).toContain('E2222222222');
   for(const bad of [content+'\n\nAn unsupported claim.',content.replace(id,'E0000000000'),content+'\n\nTBD',content+`\n\n## Another section\nAn uncited claim.`,content+`\n\nA location at 10.1974985. [${id}]`,content+`\n\nSet an invented reporting deadline of 2026-11-07. [${id}]`]) expect(()=>validateCitedMarkdown(bad,dossier.citations)).toThrow();
