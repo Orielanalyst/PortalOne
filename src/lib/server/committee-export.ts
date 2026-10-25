@@ -30,7 +30,7 @@ export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,f
   journal.saveBundle({runId:dossier.runId,status:'building',revision:dossier.revision,files:[],note:'Building and validating the committee draft and GIS handoff.',createdAt:new Date().toISOString()});
   try {
     const configuration=existsSync('.runtime/report-runtime.json') ? JSON.parse(readFileSync('.runtime/report-runtime.json','utf8')) : {};
-    const python=process.env['REPORT_PYTHON'] ?? configuration.python;
+    const python=process.env['REPORT_PYTHON']?.trim() || configuration.python;
     if (typeof python!=='string' || !existsSync(python)) throw new Error('Configure the local report Python runtime.');
     const env={...process.env,PYTHONPATH:resolve('.local-tools/report-python')};
     const documents=journal.documents(dossier.runId).filter(document=>document.runId===dossier.runId && document.status==='published');
