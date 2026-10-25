@@ -1,5 +1,5 @@
 import { fireEvent,render } from '@testing-library/react';
-import { PlanArtifacts } from './mission-artifacts';
+import { PlanArtifacts,CommitteeReport } from './mission-artifacts';
 import type { MissionView } from '../lib/server/mission-runtime';
 import type { MissionDocument } from '../lib/mission-artifacts';
 it('keeps the draft being read selected when a revised plan arrives, then permits explicit switching',()=>{
@@ -13,4 +13,10 @@ it('keeps the draft being read selected when a revised plan arrives, then permit
   expect(getByRole('button',{name:'Plan v1'})).toHaveAttribute('aria-pressed','true');
   fireEvent.click(getByRole('button',{name:'Plan v2'}));
   expect(container.querySelector('h2')?.textContent).toBe('Version 2');
+});
+it('downloads the newest retained layout edition while original exports remain registered',()=>{
+  const view={selected:{id:'mission-test'},documents:[],reportBundle:{status:'ready',note:'Review draft',files:[{name:'report.pdf'},{name:'committee-pack.zip'},{name:'report-edition-2.pdf'},{name:'committee-pack-edition-2.zip'}]}} as MissionView;
+  const {getByRole}=render(<CommitteeReport view={view}/>);
+  expect(getByRole('link',{name:'Download committee PDF'})).toHaveAttribute('href','/api/mission/download?run=mission-test&file=report-edition-2.pdf');
+  expect(getByRole('link',{name:'Download complete GIS pack'})).toHaveAttribute('href','/api/mission/download?run=mission-test&file=committee-pack-edition-2.zip');
 });
