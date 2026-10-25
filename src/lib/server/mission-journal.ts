@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import type { CommunitySignal, KoboSnapshot } from './kobo';
 import type { FederatedEvidence } from './community-evidence';
 import type { LogisticsAdvice } from './mission-logistics';
+import type { ConversationReceipt } from './mission-conversation';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
@@ -15,6 +16,10 @@ export type PlanningAssessment = { id: string; runId: string; status: 'draft' | 
   checks: { id: string; matched: boolean; evidence: FederatedEvidence; at: string }[] };
 export type JournalRun = { id: string; sessionId: string; message: string; cause: string; status: 'running' | 'complete' | 'interrupted';
   startedAt: string; finishedAt: string | null; result: MissionResult | null };
+export type ConversationTurn = { id: string; sessionId: string; message: string; reply: string | null;
+  mode: 'live-model' | 'offline-replay'; status: 'pending' | 'replied' | 'failed'; action: 'reply' | 'investigate' | null;
+  runId: string | null; createdAt: string; receipt: ConversationReceipt | null };
+export type ConversationSummary = { runId: string; status: 'pending' | 'complete' | 'failed'; reply: string | null; receipt: ConversationReceipt | null };
 export class MissionJournal {
   private readonly db: DatabaseSync;
   constructor(path: string) {
@@ -38,8 +43,52 @@ export class MissionJournal {
       CREATE INDEX IF NOT EXISTS assessments_source ON assessments(source_id,status);`);
     this.db.exec(`CREATE TABLE IF NOT EXISTS assessment_checks(id TEXT PRIMARY KEY,assessment_id TEXT NOT NULL REFERENCES assessments(id),
       matched INTEGER NOT NULL,evidence TEXT NOT NULL,checked_at TEXT NOT NULL);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS conversation_turns(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,
+      message TEXT NOT NULL,reply TEXT,mode TEXT NOT NULL,status TEXT NOT NULL,action TEXT,run_id TEXT REFERENCES runs(id),
+      created_at TEXT NOT NULL,receipt TEXT);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS conversation_summaries(run_id TEXT PRIMARY KEY REFERENCES runs(id),
+      status TEXT NOT NULL,reply TEXT,receipt TEXT);`);
   }
   close() { this.db.close(); }
+  beginConversation(message: string, mode: ConversationTurn['mode']) {
+    const previous = this.conversation().at(-1);
+    const id = `turn-${randomUUID()}`, sessionId = previous?.sessionId ?? `session-${randomUUID()}`;
+    this.db.prepare('INSERT INTO conversation_turns VALUES(?,?,?,?,?,?,?,?,?,?)')
+      .run(id, sessionId, message, null, mode, 'pending', null, null, new Date().toISOString(), null);
+    return this.conversation().find(turn => turn.id === id)!;
+  }
+  conversationReceipt(id: string, receipt: ConversationReceipt) {
+    this.db.prepare("UPDATE conversation_turns SET receipt=? WHERE id=? AND status='pending'").run(JSON.stringify(receipt), id);
+  }
+  finishConversation(id: string, reply: string, action: ConversationTurn['action'], runId: string | null = null, failed = false) {
+    this.db.prepare("UPDATE conversation_turns SET reply=?,action=?,run_id=?,status=? WHERE id=? AND status='pending'")
+      .run(reply, action, runId, failed ? 'failed' : 'replied', id);
+  }
+  interruptConversations() {
+    this.db.prepare("UPDATE conversation_turns SET status='failed',reply='The application restarted before the coordinator reply completed. Check the investigation history before trying again.' WHERE status='pending'").run();
+    this.db.prepare("UPDATE conversation_summaries SET status='failed',reply='The application restarted before the conversational summary completed. The structured investigation result remains available.' WHERE status='pending'").run();
+  }
+  beginConversationSummary(runId: string) {
+    this.db.prepare("INSERT INTO conversation_summaries VALUES(?,'pending',NULL,NULL)").run(runId);
+  }
+  finishConversationSummary(runId: string, reply: string, receipt: ConversationReceipt | null) {
+    this.db.prepare("UPDATE conversation_summaries SET status=?,reply=?,receipt=? WHERE run_id=? AND status='pending'")
+      .run(receipt ? 'complete' : 'failed', reply, receipt ? JSON.stringify(receipt) : null, runId);
+  }
+  conversationSummaries(): ConversationSummary[] {
+    return this.db.prepare('SELECT * FROM conversation_summaries ORDER BY rowid DESC LIMIT 20').all().map(row => ({
+      runId: row['run_id'] as string, status: row['status'] as ConversationSummary['status'], reply: row['reply'] as string | null,
+      receipt: row['receipt'] ? JSON.parse(row['receipt'] as string) : null,
+    }));
+  }
+  conversation(): ConversationTurn[] {
+    return this.db.prepare('SELECT * FROM conversation_turns ORDER BY rowid DESC LIMIT 20').all().reverse().map(row => ({
+      id: row['id'] as string, sessionId: row['session_id'] as string, message: row['message'] as string,
+      reply: row['reply'] as string | null, mode: row['mode'] as ConversationTurn['mode'], status: row['status'] as ConversationTurn['status'],
+      action: row['action'] as ConversationTurn['action'], runId: row['run_id'] as string | null,
+      createdAt: row['created_at'] as string, receipt: row['receipt'] ? JSON.parse(row['receipt'] as string) : null,
+    }));
+  }
   ingest(snapshot: KoboSnapshot) {
     const changed: string[] = [];
     this.db.exec('BEGIN IMMEDIATE');
