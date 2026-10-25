@@ -108,3 +108,17 @@ provenance and dates. No live warehouse or fleet observation is claimed.
 The committee graph, document/source journal, server/UI integration, QGIS scripts and report formatter are new work with Codex assistance. Streamdown/SSE/partial-JSON/diff/marked and report wheels are pinned with license/hash records. The cached official QGIS image is external runtime software; its exact digest and licenses are recorded in vendor/report-wheels/README.md. Installed proprietary Nightshift source was inspected for routing/stream behavior but was not copied or redistributed.
 
 The public committee receipt contains only the controlled demonstration request, normalized public source facts, model/tool receipts and artifact hashes. The PDF/ZIP includes attributed OSM geography and demonstration metadata, without raw Kobo report text, reporter identities, credentials or private input.json. Layout editions preserve the original model narrative/geodata and original export bytes; their source commits differ from the original e555846 live capture and are stated separately. A fresh native QGIS process validates the relocated final pack. Source data remain demonstrations and synthetic expired resources; this is not a field-approved intervention plan.
+
+## 25 October — changed-evidence mission handoff
+
+The browser update increment reuses the retained Meterless World Model engine
+and MIT p-retry 7.1.1 archive. Codex wrote the mission adapter, source-handle
+integration, bounded recovery, snapshot lineage and download guards. Actual
+Lightning/Ultra calls generated the cited narrative; deterministic code resolved
+supplied source handles, computed diffs and rendered/exported geometry and tables.
+The exact ece0ce3 live capture, earlier failures and artifact hashes are in
+evidence/mission-update-2026-10-25.json. A new labelled Kobo observation triggered
+the replacement; its coordinates were selected from a public Bambili map
+reference for the rehearsal, not observed in the field. All seven reports are
+demonstrations and all origins remain unverified. Raw texts, identities, keys and
+private input.json are excluded from the published pack and receipt.

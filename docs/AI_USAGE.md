@@ -20,6 +20,18 @@ entrants accountable for it; this file is our chosen detailed disclosure format.
 
 ## How output is controlled
 
+25 October mission-update increment: Codex integrated the already retained
+Meterless World Model into browser plan dependencies, source drift and replacement
+lineage; reused the acquired p-retry package for bounded source-read recovery;
+and implemented streamed citation-handle resolution, historical download guards,
+publication checks, coordinate inventories and live/UI/native GIS verification.
+Lightning and Ultra generated the actual findings/plans/critiques/report in the
+recorded runs. Code maps supplied source handles and builds inventories/diffs;
+it does not invent evidence. Failed citation, output-limit, ISO-date/control
+validation and final-source-read rehearsals are preserved and fixed forward.
+The final live proof has an exact commit and hashes. Field truth and operational
+approval are not established by that proof.
+
 25 October committee increment: Codex acquired Streamdown, SSE/partial-JSON/diff
 components and the PDF runtime, implemented native streaming, document/source
 storage, the bounded committee graph, GIS/PDF export and browser checks. Nemotron

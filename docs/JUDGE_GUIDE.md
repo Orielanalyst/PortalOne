@@ -1,5 +1,14 @@
 # Judge guide
 
+**Latest live update:** [workflow](MISSION_UPDATES.md),
+[source-bound receipt](evidence/mission-update-2026-10-25.json),
+[15-page PDF](evidence/mission-update-demo-2026-10-25/report.pdf), and
+[native GIS ZIP](evidence/mission-update-demo-2026-10-25/committee-pack.zip).
+A newly submitted demonstration automatically supersedes a published plan and
+triggers a reviewed replacement. The receipt includes real World Model events,
+2,822 incremental updates, unchanged historical PDF bytes and fresh source/export
+checks. Seven demonstration reports remain zero verified field origins.
+
 **Latest checkpoint:** [live committee workflow](COMMITTEE_WORKFLOW.md),
 [recorded run](evidence/committee-workflow-2026-10-25.json),
 [13-page review PDF](evidence/committee-demo-2026-10-25/report.pdf) and
@@ -75,5 +84,9 @@ actual model identity and the operator's final action. A local pass must be
 distinguished from remote CI; fixture results must be distinguished from live
 sponsor calls. Credentials and private reasoning are excluded.
 
-The repository is currently private. Public access and final submission materials
-remain release tasks; this guide alone does not make the project judge-accessible.
+The repository was made public on 25 October at the user's request; anonymous
+GitHub access was verified. The current implementation is on
+[`codex/execution-readiness`](https://github.com/Orielanalyst/PortalOne/tree/codex/execution-readiness).
+The default branch is still `main`; release integration, a clean judge setup and
+final submission materials remain work. Repository visibility does not make the
+local credential-bearing operator server publicly hosted.

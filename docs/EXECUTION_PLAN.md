@@ -1,5 +1,13 @@
 # Execution plan — revised 2026-10-25
 
+Latest: [mission updates](MISSION_UPDATES.md) proves the new committee workflow
+automatically replacing a published snapshot after actual Kobo/Zetaris drift,
+with real World Model dependencies, a cross-mission diff, historical download
+protection and a new native PDF/GIS pack. The repository is public. Exact road
+dependencies, real field/resources, human approval, restart scheduling and the
+submission package remain separate gates; the completed update loop does not
+claim those are finished.
+
 Latest G5 increment: [live committee workflow](COMMITTEE_WORKFLOW.md) now supplies
 native streamed findings/plans/critiques, publication before review, actual diffs
 and PDF/native GIS handoff. The live receipt and separate final layout/UI checks

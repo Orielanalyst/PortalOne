@@ -11,6 +11,15 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
+Latest, 25 October: an actual new Kobo demonstration triggered a replacement
+committee review through Zetaris, Meterless World Model and native Nemotron
+streaming. The older plan became superseded, its original PDF bytes stayed
+unchanged, and a fresh PDF/GIS pack passed final source checks. Two live runs
+observed 2,822 incremental updates. See [mission updates](docs/MISSION_UPDATES.md),
+[the source-bound receipt](docs/evidence/mission-update-2026-10-25.json), and the
+[15-page replacement PDF](docs/evidence/mission-update-demo-2026-10-25/report.pdf).
+Seven labelled demonstrations and zero verified field origins remain explicit.
+
 25 October, latest: the browser now streams cited findings, publishes plan v1
 before evaluation, shows the actual revision diff and produces a downloadable
 committee PDF plus native QGIS/GeoPackage/GeoJSON pack. The live rehearsal observed

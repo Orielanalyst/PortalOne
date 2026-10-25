@@ -4,6 +4,17 @@ Updated 25 October 2026. The browser connects a conversational coordinator to
 evidence investigation, versioned committee drafts, independent review and a
 native PDF/GIS export. These are review documents; dispatch remains on hold.
 
+Later increment: [mission updates](MISSION_UPDATES.md) connects browser plans to
+Meterless World Model, automatically replaces superseded snapshots and guards
+historical downloads. [The live receipt](evidence/mission-update-2026-10-25.json)
+records two native runs at `ece0ce3`, 2,822 incremental updates, actual 6-to-7
+demonstration intake and a fresh 15-page PDF/GIS handoff. This supersedes the
+earlier one-repair/findings-budget and four-record account descriptions below:
+current findings have a 2,000-token ceiling, with at most one repair per document
+and two per run. Citation handles resolve to actual current evidence IDs during
+the provider stream. The original four-record capture and layout editions remain
+preserved as their own historical proof.
+
 The [live browser receipt](evidence/committee-workflow-2026-10-25.json) records
 4,927 incremental updates, publication of v1 before evaluation, a real v2/diff,
 Ultra's acceptance with gaps and the original validated export. It executed
