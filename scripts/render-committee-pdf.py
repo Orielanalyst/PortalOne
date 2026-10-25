@@ -11,6 +11,7 @@ from reportlab.lib.units import mm
 from pypdf import PdfReader
 
 root=Path(sys.argv[1]).resolve(); data=json.loads((root/"input.json").read_text(encoding="utf-8")); dossier=data["dossier"]
+source_numbers={citation["id"]:str(index+1) for index,citation in enumerate(data["citations"])}
 styles=getSampleStyleSheet()
 styles.add(ParagraphStyle(name="MissionTitle",fontName="Helvetica-Bold",fontSize=25,leading=29,textColor=colors.HexColor("#183d44"),spaceAfter=15))
 styles.add(ParagraphStyle(name="MissionBody",fontName="Helvetica",fontSize=10,leading=15,spaceAfter=9,textColor=colors.HexColor("#273d43")))
@@ -24,7 +25,7 @@ def inline(text):
     value=re.sub(r"\*\*(.+?)\*\*",r"<b>\1</b>",value)
     value=re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)",r"<i>\1</i>",value)
     value=re.sub(r"`([^`]+)`",r'<font name="Courier">\1</font>',value)
-    value=re.sub(r"\[(E[a-f0-9]{10})\]",r'<a href="#source-\1" color="#147384">[\1]</a>',value)
+    value=re.sub(r"\[(E[a-f0-9]{10})\]",lambda match:'<a href="#source-'+match[1]+'" color="#147384">['+source_numbers.get(match[1],match[1])+']</a>',value)
     return value
 def p(text,small=False): return Paragraph(inline(text),styles["MissionSmall" if small else "MissionBody"])
 def table(rows,widths=None):
@@ -75,8 +76,8 @@ for feature in dossier["layers"]["places"]["features"]:
 story.append(table(rows,[49*mm,65*mm,30*mm,30*mm]))
 story += [PageBreak(),Paragraph("Evidence register",styles["Heading1"]),p("References link the narrative to the source record, dataset or deterministic query receipt. The accompanying evidence.json retains full statements, record identifiers, source links and hashes.")]
 for citation in data["citations"]:
-    title='<a name="source-'+citation["id"]+'"/>'+html.escape(citation["id"]+" | "+citation["title"])
-    entry=[Paragraph(title,styles["Heading3"])]
+    title='<a name="source-'+citation["id"]+'"/>'+html.escape('['+source_numbers[citation["id"]]+'] '+citation["title"])
+    entry=[Paragraph(title,styles["Heading3"]),p('Source ID: '+citation["id"],True)]
     statement=citation["statement"]
     if citation["kind"]=="query" and statement.startswith("{"): statement="Bounded community/resource query result. The complete source rows, query identifiers and evidence revision are retained in evidence.json; synthetic/expired status is preserved."
     entry.append(p(statement,True))
