@@ -1,5 +1,5 @@
 {
-  "acquiredAt": "2026-10-25T06:14:57.394Z",
+  "acquiredAt": "2026-10-25T15:00:37.305Z",
   "baselineCommit": "341de32",
   "lockedPackages": [
     {
@@ -70,6 +70,28 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "@types/debug",
+      "version": "4.1.13",
+      "license": "MIT",
+      "filename": "types-debug-4.1.13.tgz",
+      "integrity": "sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==",
+      "tarball": "https://registry.npmjs.org/@types/debug/-/debug-4.1.13.tgz",
+      "sha256": "19bb8d72e15e4fd407fb1d416aba3c42dde61fc9d50cdfdd313b85d351e56388",
+      "bytes": 2180,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@types/estree-jsx",
+      "version": "1.0.5",
+      "license": "MIT",
+      "filename": "types-estree-jsx-1.0.5.tgz",
+      "integrity": "sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==",
+      "tarball": "https://registry.npmjs.org/@types/estree-jsx/-/estree-jsx-1.0.5.tgz",
+      "sha256": "51e4a90e34bab73ec7c2ab32d2a0f166e3a1675559d5e7200575317b7db8883f",
+      "bytes": 2149,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "@types/geojson",
       "version": "7946.0.16",
       "license": "MIT",
@@ -78,6 +100,17 @@
       "tarball": "https://registry.npmjs.org/@types/geojson/-/geojson-7946.0.16.tgz",
       "sha256": "5275058028351e9656972a31295f81b61637c641df6cc13766f48a5fdab1b39e",
       "bytes": 3385,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@types/hast",
+      "version": "3.0.5",
+      "license": "MIT",
+      "filename": "types-hast-3.0.5.tgz",
+      "integrity": "sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g==",
+      "tarball": "https://registry.npmjs.org/@types/hast/-/hast-3.0.5.tgz",
+      "sha256": "a9b9ae07cbef416c00a5f1d7149ca03c5e20e7f5addb67203b7849ac80f1f761",
+      "bytes": 7146,
       "licenseTextSource": "included in archive"
     },
     {
@@ -103,6 +136,61 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "@types/mdast",
+      "version": "4.0.4",
+      "license": "MIT",
+      "filename": "types-mdast-4.0.4.tgz",
+      "integrity": "sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==",
+      "tarball": "https://registry.npmjs.org/@types/mdast/-/mdast-4.0.4.tgz",
+      "sha256": "ca9d3f571a96c57b9412fa9ccc009a356990e5334ce2c56587218a2fa2d57ef3",
+      "bytes": 6109,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@types/ms",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "types-ms-2.1.0.tgz",
+      "integrity": "sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==",
+      "tarball": "https://registry.npmjs.org/@types/ms/-/ms-2.1.0.tgz",
+      "sha256": "a07f7b4d84e44bd8c55e44ee084f3529d5b3bbb2f212ef1749aced718bcb6c09",
+      "bytes": 1951,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@types/unist",
+      "version": "3.0.3",
+      "license": "MIT",
+      "filename": "types-unist-3.0.3.tgz",
+      "integrity": "sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==",
+      "tarball": "https://registry.npmjs.org/@types/unist/-/unist-3.0.3.tgz",
+      "sha256": "b50fd32f739207d1e8c96ef0b0c9dd003ef9cb0403c5b4eb71796b87332a2843",
+      "bytes": 2597,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@ungap/structured-clone",
+      "version": "1.4.0",
+      "license": "ISC",
+      "filename": "ungap-structured-clone-1.4.0.tgz",
+      "integrity": "sha512-1mEZtMKPM09vDmQt5y7YvmN2+DFTP7Tg0EWXdic8/C6VRnpb33e4ghisCIE3WZjsE2N8mf+QV1Zqh7ZFYLWInQ==",
+      "tarball": "https://registry.npmjs.org/@ungap/structured-clone/-/structured-clone-1.4.0.tgz",
+      "sha256": "f481575dc2f23f404e3eec77eb6726bdf9c7d130f1b43f214291e601acf50996",
+      "bytes": 7755,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "bail",
+      "version": "2.0.2",
+      "license": "MIT",
+      "filename": "bail-2.0.2.tgz",
+      "integrity": "sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==",
+      "tarball": "https://registry.npmjs.org/bail/-/bail-2.0.2.tgz",
+      "sha256": "11719f7e1f7a31432177dd0cd987e7c967a826426d281c39c0025b474056c88b",
+      "bytes": 2935,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "base64-js",
       "version": "1.5.1",
       "license": "MIT",
@@ -125,6 +213,127 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "ccount",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "ccount-2.0.1.tgz",
+      "integrity": "sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==",
+      "tarball": "https://registry.npmjs.org/ccount/-/ccount-2.0.1.tgz",
+      "sha256": "bdda8b4b3c7c3049bb118a9a01e3638033473b90c09f58eee1e9f2dda27984ca",
+      "bytes": 3163,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "character-entities",
+      "version": "2.0.2",
+      "license": "MIT",
+      "filename": "character-entities-2.0.2.tgz",
+      "integrity": "sha512-shx7oQ0Awen/BRIdkjkvz54PnEEI/EjwXDSIZp86/KKdbafHh1Df/RYGBhn4hbe2+uKC9FnT5UCEdyPz3ai9hQ==",
+      "tarball": "https://registry.npmjs.org/character-entities/-/character-entities-2.0.2.tgz",
+      "sha256": "0805c120e1147a250a87ed8752265b3bce7a76c44e9728dec1d11380e21fbc3d",
+      "bytes": 15047,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "character-entities-html4",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "character-entities-html4-2.1.0.tgz",
+      "integrity": "sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==",
+      "tarball": "https://registry.npmjs.org/character-entities-html4/-/character-entities-html4-2.1.0.tgz",
+      "sha256": "a1cdca963945f3fbb4ac4932d4b8e54ceb66aba5a9bfc7254fb87a1f17cd04e6",
+      "bytes": 4613,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "character-entities-legacy",
+      "version": "3.0.0",
+      "license": "MIT",
+      "filename": "character-entities-legacy-3.0.0.tgz",
+      "integrity": "sha512-RpPp0asT/6ufRm//AJVwpViZbGM/MkjQFxJccQRHmISF/22NBtsHqAWmL+/pmkPWoIUJdWyeVleTl1wydHATVQ==",
+      "tarball": "https://registry.npmjs.org/character-entities-legacy/-/character-entities-legacy-3.0.0.tgz",
+      "sha256": "f36404294f0713ab8e3a08f133195d3085d0367816fc6c74136babcf90fdc988",
+      "bytes": 3544,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "character-reference-invalid",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "character-reference-invalid-2.0.1.tgz",
+      "integrity": "sha512-iBZ4F4wRbyORVsu0jPV7gXkOsGYjGHPmAyv+HiHG8gi5PtC9KI2j1+v8/tlibRvjoWX027ypmG/n0HtO5t7unw==",
+      "tarball": "https://registry.npmjs.org/character-reference-invalid/-/character-reference-invalid-2.0.1.tgz",
+      "sha256": "1c7cf768d20811f2e6e72b441986814c0264c668a19c73dd38ca10d66f3ecf02",
+      "bytes": 3457,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "comma-separated-tokens",
+      "version": "2.0.3",
+      "license": "MIT",
+      "filename": "comma-separated-tokens-2.0.3.tgz",
+      "integrity": "sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==",
+      "tarball": "https://registry.npmjs.org/comma-separated-tokens/-/comma-separated-tokens-2.0.3.tgz",
+      "sha256": "88123eefbb07a6048efa112653c80f4a0ac2e993bd1388c00273e14de29ec886",
+      "bytes": 3822,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "decode-named-character-reference",
+      "version": "1.3.0",
+      "license": "MIT",
+      "filename": "decode-named-character-reference-1.3.0.tgz",
+      "integrity": "sha512-GtpQYB283KrPp6nRw50q3U9/VfOutZOe103qlN7BPP6Ad27xYnOIWv4lPzo8HCAL+mMZofJ9KEy30fq6MfaK6Q==",
+      "tarball": "https://registry.npmjs.org/decode-named-character-reference/-/decode-named-character-reference-1.3.0.tgz",
+      "sha256": "b4399b50188513b31e4642b25437c9c309776aa34b6acb3eb18a0ee792e16f38",
+      "bytes": 3813,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "devlop",
+      "version": "1.1.0",
+      "license": "MIT",
+      "filename": "devlop-1.1.0.tgz",
+      "integrity": "sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==",
+      "tarball": "https://registry.npmjs.org/devlop/-/devlop-1.1.0.tgz",
+      "sha256": "aed0b5ba97cc3aba851946766b1e4804e92a0d3b2051e047eed4e8bf508ecd5f",
+      "bytes": 6714,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "diff",
+      "version": "9.0.0",
+      "license": "BSD-3-Clause",
+      "filename": "diff-9.0.0.tgz",
+      "integrity": "sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw==",
+      "tarball": "https://registry.npmjs.org/diff/-/diff-9.0.0.tgz",
+      "sha256": "b898bf23c95594607576e25ddd4013f1d51ed0e862aaf0732815830c87b3b58f",
+      "bytes": 152500,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "escape-string-regexp",
+      "version": "5.0.0",
+      "license": "MIT",
+      "filename": "escape-string-regexp-5.0.0.tgz",
+      "integrity": "sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==",
+      "tarball": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz",
+      "sha256": "c8b662afe8aa2b852ecc27d766e584a502f8351fbbd890611f2509bf083d28e6",
+      "bytes": 1964,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "estree-util-is-identifier-name",
+      "version": "3.0.0",
+      "license": "MIT",
+      "filename": "estree-util-is-identifier-name-3.0.0.tgz",
+      "integrity": "sha512-hFtqIDZTIUZ9BXLb8y4pYGyk6+wekIivNVTcmvk8NoOh+VeRn5y6cEHzbURrWbfp1fIqdVipilzj+lfaadNZmg==",
+      "tarball": "https://registry.npmjs.org/estree-util-is-identifier-name/-/estree-util-is-identifier-name-3.0.0.tgz",
+      "sha256": "fa9ffe7f957ff44a54894dd01e96851824e2f008181921585d69947a60eb702b",
+      "bytes": 4082,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "eventemitter3",
       "version": "4.0.7",
       "license": "MIT",
@@ -136,6 +345,193 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "eventsource-parser",
+      "version": "4.1.2",
+      "license": "MIT",
+      "filename": "eventsource-parser-4.1.2.tgz",
+      "integrity": "sha512-N9b0EvATDJfZj+Szg3m8WwqseQhei/mtTd6V0rCciGbI/yG24o3yBk0YVyfOZZsLVMZHWs++Zk3Aqd2y2EztnQ==",
+      "tarball": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.2.tgz",
+      "sha256": "d882dc5022e0ac3984a6fb747d9893a731675a0a7d9de01de36e0aad0260c86c",
+      "bytes": 25181,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "extend",
+      "version": "3.0.2",
+      "license": "MIT",
+      "filename": "extend-3.0.2.tgz",
+      "integrity": "sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==",
+      "tarball": "https://registry.npmjs.org/extend/-/extend-3.0.2.tgz",
+      "sha256": "1d91d0b0faa50cba223fa937c7b5a4a662968b1d78b3e59dca5c917dd5cf72b2",
+      "bytes": 7258,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-from-parse5",
+      "version": "8.0.3",
+      "license": "MIT",
+      "filename": "hast-util-from-parse5-8.0.3.tgz",
+      "integrity": "sha512-3kxEVkEKt0zvcZ3hCRYI8rqrgwtlIOFMWkbclACvjlDw8Li9S2hk/d51OI0nr/gIpdMHNepwgOKqZ/sy0Clpyg==",
+      "tarball": "https://registry.npmjs.org/hast-util-from-parse5/-/hast-util-from-parse5-8.0.3.tgz",
+      "sha256": "085c56c1024d3b9cfd93d23cae61a20fca479e1d2a5a4cb8f6cc678c27bc306a",
+      "bytes": 8004,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-parse-selector",
+      "version": "4.0.0",
+      "license": "MIT",
+      "filename": "hast-util-parse-selector-4.0.0.tgz",
+      "integrity": "sha512-wkQCkSYoOGCRKERFWcxMVMOcYE2K1AaNLU8DXS9arxnLOUEWbOXKXiJUNzEpqZ3JOKpnha3jkFrumEjVliDe7A==",
+      "tarball": "https://registry.npmjs.org/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz",
+      "sha256": "df79b69d2c5a494758576fe4016f1082aecb7ae1cde7cb908ad539ba4d8d8884",
+      "bytes": 4475,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-raw",
+      "version": "9.1.0",
+      "license": "MIT",
+      "filename": "hast-util-raw-9.1.0.tgz",
+      "integrity": "sha512-Y8/SBAHkZGoNkpzqqfCldijcuUKh7/su31kEBp67cFY09Wy0mTRgtsLYsiIxMJxlu0f6AA5SUTbDR8K0rxnbUw==",
+      "tarball": "https://registry.npmjs.org/hast-util-raw/-/hast-util-raw-9.1.0.tgz",
+      "sha256": "66ceb754010844391f2506e903cfb05e5df643e5ab24e7fe0602095b51fa744b",
+      "bytes": 10943,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-sanitize",
+      "version": "5.0.2",
+      "license": "MIT",
+      "filename": "hast-util-sanitize-5.0.2.tgz",
+      "integrity": "sha512-3yTWghByc50aGS7JlGhk61SPenfE/p1oaFeNwkOOyrscaOkMGrcW9+Cy/QAIOBpZxP1yqDIzFMR0+Np0i0+usg==",
+      "tarball": "https://registry.npmjs.org/hast-util-sanitize/-/hast-util-sanitize-5.0.2.tgz",
+      "sha256": "517144c05a2fb9b6bd92a34f1ce2c78dc42cb6345bb2b59756b8d0563ad32d9e",
+      "bytes": 13292,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-to-jsx-runtime",
+      "version": "2.3.6",
+      "license": "MIT",
+      "filename": "hast-util-to-jsx-runtime-2.3.6.tgz",
+      "integrity": "sha512-zl6s8LwNyo1P9uw+XJGvZtdFF1GdAkOg8ujOw+4Pyb76874fLps4ueHXDhXWdk6YHQ6OgUtinliG7RsYvCbbBg==",
+      "tarball": "https://registry.npmjs.org/hast-util-to-jsx-runtime/-/hast-util-to-jsx-runtime-2.3.6.tgz",
+      "sha256": "83468f1886b62230982ce2eb51a81173291e598e4ab532c81a95ea4db5d05fdc",
+      "bytes": 14718,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-to-parse5",
+      "version": "8.0.1",
+      "license": "MIT",
+      "filename": "hast-util-to-parse5-8.0.1.tgz",
+      "integrity": "sha512-MlWT6Pjt4CG9lFCjiz4BH7l9wmrMkfkJYCxFwKQic8+RTZgWPuWxwAfjJElsXkex7DJjfSJsQIt931ilUgmwdA==",
+      "tarball": "https://registry.npmjs.org/hast-util-to-parse5/-/hast-util-to-parse5-8.0.1.tgz",
+      "sha256": "c1c99f978faf4016ee77ac601aab9e3ab52f718daa03982bb01ef28d6d15501e",
+      "bytes": 6716,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hast-util-whitespace",
+      "version": "3.0.0",
+      "license": "MIT",
+      "filename": "hast-util-whitespace-3.0.0.tgz",
+      "integrity": "sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==",
+      "tarball": "https://registry.npmjs.org/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz",
+      "sha256": "673f97f5bba3cac0184726f519a5750273e4434b839a769f4fbf09e4b4da2ceb",
+      "bytes": 4235,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "hastscript",
+      "version": "9.0.1",
+      "license": "MIT",
+      "filename": "hastscript-9.0.1.tgz",
+      "integrity": "sha512-g7df9rMFX/SPi34tyGCyUBREQoKkapwdY/T04Qn9TDWfHhAYt4/I0gMVirzK5wEzeUqIjEB+LXC/ypb7Aqno5w==",
+      "tarball": "https://registry.npmjs.org/hastscript/-/hastscript-9.0.1.tgz",
+      "sha256": "1712fdcc26cd393a8f54f07232fbadb6b084af651beb11d0ec8af67eec00e3f3",
+      "bytes": 12725,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "html-url-attributes",
+      "version": "3.0.1",
+      "license": "MIT",
+      "filename": "html-url-attributes-3.0.1.tgz",
+      "integrity": "sha512-ol6UPyBWqsrO6EJySPz2O7ZSr856WDrEzM5zMqp+FJJLGMW35cLYmmZnl0vztAZxRUoNZJFTCohfjuIJ8I4QBQ==",
+      "tarball": "https://registry.npmjs.org/html-url-attributes/-/html-url-attributes-3.0.1.tgz",
+      "sha256": "9a63a922924f6d31add785bccd0a53706c047e0c0b56dcbcdc836254ded18ed9",
+      "bytes": 3538,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "html-void-elements",
+      "version": "3.0.0",
+      "license": "MIT",
+      "filename": "html-void-elements-3.0.0.tgz",
+      "integrity": "sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==",
+      "tarball": "https://registry.npmjs.org/html-void-elements/-/html-void-elements-3.0.0.tgz",
+      "sha256": "301b6ef51a58d296bb3f837c4840211025a7e541f304d4a379e6062e45373530",
+      "bytes": 2954,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "inline-style-parser",
+      "version": "0.2.7",
+      "license": "MIT",
+      "filename": "inline-style-parser-0.2.7.tgz",
+      "integrity": "sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==",
+      "tarball": "https://registry.npmjs.org/inline-style-parser/-/inline-style-parser-0.2.7.tgz",
+      "sha256": "edc328b12a2fc88d990bd877e4cebed9823b8427d79a6a73d9c65591d3ccb6bc",
+      "bytes": 11488,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "is-alphabetical",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "is-alphabetical-2.0.1.tgz",
+      "integrity": "sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==",
+      "tarball": "https://registry.npmjs.org/is-alphabetical/-/is-alphabetical-2.0.1.tgz",
+      "sha256": "85dddfd165e6ac37b3229c3b1c181b92d1fdde68fd5a46acf8b14696c9729f81",
+      "bytes": 3085,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "is-alphanumerical",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "is-alphanumerical-2.0.1.tgz",
+      "integrity": "sha512-hmbYhX/9MUMF5uh7tOXyK/n0ZvWpad5caBA17GsC6vyuCqaWliRG5K1qS9inmUhEMaOBIW7/whAnSwveW/LtZw==",
+      "tarball": "https://registry.npmjs.org/is-alphanumerical/-/is-alphanumerical-2.0.1.tgz",
+      "sha256": "b6f98de1bfab7ed76025357018b57593bacd2d177985cd04bbd2a5059d3ea92b",
+      "bytes": 3050,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "is-decimal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "is-decimal-2.0.1.tgz",
+      "integrity": "sha512-AAB9hiomQs5DXWcRB1rqsxGUstbRroFOPPVAomNk/3XHR5JyEZChOyTWe2oayKnsSsr/kcGqF+z6yuH6HHpN0A==",
+      "tarball": "https://registry.npmjs.org/is-decimal/-/is-decimal-2.0.1.tgz",
+      "sha256": "62b6375ccb0869ca7c26ccb1e5049de4c4f272157894360b50cf8466fc4c1beb",
+      "bytes": 3020,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "is-hexadecimal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "is-hexadecimal-2.0.1.tgz",
+      "integrity": "sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg==",
+      "tarball": "https://registry.npmjs.org/is-hexadecimal/-/is-hexadecimal-2.0.1.tgz",
+      "sha256": "6234c672b1134b6ebc8b162eb119a4b1beebc6cd9217bdc66b2b9822570f8d81",
+      "bytes": 3097,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "is-network-error",
       "version": "1.3.2",
       "license": "MIT",
@@ -144,6 +540,17 @@
       "tarball": "https://registry.npmjs.org/is-network-error/-/is-network-error-1.3.2.tgz",
       "sha256": "2ff61ad2b1a78b09c66284f71fc4a9ad2010c34276e7e18fdf0320da56815f9c",
       "bytes": 2480,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "is-plain-obj",
+      "version": "4.1.0",
+      "license": "MIT",
+      "filename": "is-plain-obj-4.1.0.tgz",
+      "integrity": "sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==",
+      "tarball": "https://registry.npmjs.org/is-plain-obj/-/is-plain-obj-4.1.0.tgz",
+      "sha256": "c71d874f7ab7cd560329b080ce790f9768dea503337fe2e2719a18e28be621f7",
+      "bytes": 1961,
       "licenseTextSource": "included in archive"
     },
     {
@@ -181,6 +588,204 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "longest-streak",
+      "version": "3.1.0",
+      "license": "MIT",
+      "filename": "longest-streak-3.1.0.tgz",
+      "integrity": "sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==",
+      "tarball": "https://registry.npmjs.org/longest-streak/-/longest-streak-3.1.0.tgz",
+      "sha256": "384446c12b28a0f29cd68b22871cff7c1001fdca5c173930e4eeb4811de210f6",
+      "bytes": 3199,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "markdown-table",
+      "version": "3.0.4",
+      "license": "MIT",
+      "filename": "markdown-table-3.0.4.tgz",
+      "integrity": "sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==",
+      "tarball": "https://registry.npmjs.org/markdown-table/-/markdown-table-3.0.4.tgz",
+      "sha256": "14e8b7c711b0be872cba307c2561ed991b089aa2e4dc4a8de74692a6d51bce58",
+      "bytes": 7131,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "marked",
+      "version": "18.1.1",
+      "license": "MIT",
+      "filename": "marked-18.1.1.tgz",
+      "integrity": "sha512-zEGgrtUG8crk+TrMacJSVABU4DYDDkS8uqgU3ohrn/2fW9C2AEfUrO3m6IhpIpQpl7YcVpiXXC9cSMWDANT3dg==",
+      "tarball": "https://registry.npmjs.org/marked/-/marked-18.1.1.tgz",
+      "sha256": "c05b3cff890d35e1208805a01fd0501571d09a81e725de0559b10bdfae90adad",
+      "bytes": 131664,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-find-and-replace",
+      "version": "3.0.4",
+      "license": "MIT",
+      "filename": "mdast-util-find-and-replace-3.0.4.tgz",
+      "integrity": "sha512-z4B5c6jrnJ1ltOQemhWYPBSAo6y42Z8Gt2yEgfgNTMcLSU59B8bfj8Z8AnAlJrBGLnqkdAUZ7jdDEqQw3KuipQ==",
+      "tarball": "https://registry.npmjs.org/mdast-util-find-and-replace/-/mdast-util-find-and-replace-3.0.4.tgz",
+      "sha256": "f3c61be5ba922799ffb61a49461a43998237eb5d4172790c2a59630927505e50",
+      "bytes": 7480,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-from-markdown",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "mdast-util-from-markdown-2.1.0.tgz",
+      "integrity": "sha512-KRLgmPaP2H1ul2bpoJkOS+9pAcDAAj9Nu1mqLnh8NLeJG5tlvj42TH80PIGBpROWlRXLk0lDrWNuZCFy/tsB4A==",
+      "tarball": "https://registry.npmjs.org/mdast-util-from-markdown/-/mdast-util-from-markdown-2.1.0.tgz",
+      "sha256": "cd8c31a2d16c256c340322f19ad6673353ef2cd498ba0fca6dead0a310e90ced",
+      "bytes": 21204,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-gfm",
+      "version": "3.1.0",
+      "license": "MIT",
+      "filename": "mdast-util-gfm-3.1.0.tgz",
+      "integrity": "sha512-0ulfdQOM3ysHhCJ1p06l0b0VKlhU0wuQs3thxZQagjcjPrlFRqY215uZGHHJan9GEAXd9MbfPjFJz+qMkVR6zQ==",
+      "tarball": "https://registry.npmjs.org/mdast-util-gfm/-/mdast-util-gfm-3.1.0.tgz",
+      "sha256": "96204c6cdf253e43ee1431b88c7e46015a26d2b6d1d688a0153ce96eaecbe642",
+      "bytes": 6594,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-gfm-autolink-literal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "mdast-util-gfm-autolink-literal-2.0.1.tgz",
+      "integrity": "sha512-5HVP2MKaP6L+G6YaxPNjuL0BPrq9orG3TsrZ9YXbA3vDw/ACI4MEsnoDpn6ZNm7GnZgtAcONJyPhOP8tNJQavQ==",
+      "tarball": "https://registry.npmjs.org/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.0.1.tgz",
+      "sha256": "5860bd6db7eb6f6336c5ddd4c713900fb973a05cee8dd531cbcb8548a122c77c",
+      "bytes": 6696,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-gfm-footnote",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "mdast-util-gfm-footnote-2.1.0.tgz",
+      "integrity": "sha512-sqpDWlsHn7Ac9GNZQMeUzPQSMzR6Wv0WKRNvQRg0KqHh02fpTz69Qc1QSseNX29bhz1ROIyNyxExfawVKTm1GQ==",
+      "tarball": "https://registry.npmjs.org/mdast-util-gfm-footnote/-/mdast-util-gfm-footnote-2.1.0.tgz",
+      "sha256": "d4d26b4257e56dffa0499654e3e812bee7490c71422ddfc0972e1b30930f117b",
+      "bytes": 7145,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-gfm-strikethrough",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "mdast-util-gfm-strikethrough-2.0.1.tgz",
+      "integrity": "sha512-OuJHqvr455pwu2OaOrir7dbzqs4jlWKOtlu9L6GjcIjjQwNyw02VntQsr/Ek6/A13vgnXfUhBekWRUP1OkNivw==",
+      "tarball": "https://registry.npmjs.org/mdast-util-gfm-strikethrough/-/mdast-util-gfm-strikethrough-2.0.1.tgz",
+      "sha256": "624f42cf32ab405c198e77b889ec4c8269d93d6ed8f4d9a47356c78e5fb50a46",
+      "bytes": 5944,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-gfm-table",
+      "version": "2.0.0",
+      "license": "MIT",
+      "filename": "mdast-util-gfm-table-2.0.0.tgz",
+      "integrity": "sha512-78UEvebzz/rJIxLvE7ZtDd/vIQ0RHv+3Mh5DR96p7cS7HsBhYIICDBCu8csTNWNO6tBWfqXPWekRuj2FNOGOZg==",
+      "tarball": "https://registry.npmjs.org/mdast-util-gfm-table/-/mdast-util-gfm-table-2.0.0.tgz",
+      "sha256": "c1d7b61db521f2279c32f1051dc42c98e99ac33538ae9f859b2f3daafb34366e",
+      "bytes": 8749,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-gfm-task-list-item",
+      "version": "2.0.0",
+      "license": "MIT",
+      "filename": "mdast-util-gfm-task-list-item-2.0.0.tgz",
+      "integrity": "sha512-IrtvNvjxC1o06taBAVJznEnkiHxLFTzgonUdy8hzFVeDun0uTjxxrRGVaNFqkU1wJR3RBPEfsxmU6jDWPofrTQ==",
+      "tarball": "https://registry.npmjs.org/mdast-util-gfm-task-list-item/-/mdast-util-gfm-task-list-item-2.0.0.tgz",
+      "sha256": "3ca34f4601317823f202df4692310c5d37ca628b76cdda2bd59d32de2c0a5d01",
+      "bytes": 5740,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-mdx-expression",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "mdast-util-mdx-expression-2.0.1.tgz",
+      "integrity": "sha512-J6f+9hUp+ldTZqKRSg7Vw5V6MqjATc+3E4gf3CFNcuZNWD8XdyI6zQ8GqH7f8169MM6P7hMBRDVGnn7oHB9kXQ==",
+      "tarball": "https://registry.npmjs.org/mdast-util-mdx-expression/-/mdast-util-mdx-expression-2.0.1.tgz",
+      "sha256": "e63aaa9cf6caedaf03662caa66ac1d93943b9c6ff8b7484dcb0d1f03e8382d7b",
+      "bytes": 7115,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-mdx-jsx",
+      "version": "3.2.0",
+      "license": "MIT",
+      "filename": "mdast-util-mdx-jsx-3.2.0.tgz",
+      "integrity": "sha512-lj/z8v0r6ZtsN/cGNNtemmmfoLAFZnjMbNyLzBafjzikOM+glrjNHPlf6lQDOTccj9n5b0PPihEBbhneMyGs1Q==",
+      "tarball": "https://registry.npmjs.org/mdast-util-mdx-jsx/-/mdast-util-mdx-jsx-3.2.0.tgz",
+      "sha256": "0de1dcf89da947830305200fd7ab36069e248f9522398ed791b5a0c5e3aa8230",
+      "bytes": 13628,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-mdxjs-esm",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "mdast-util-mdxjs-esm-2.0.1.tgz",
+      "integrity": "sha512-EcmOpxsZ96CvlP03NghtH1EsLtr0n9Tm4lPUJUBccV9RwUOneqSycg19n5HGzCf+10LozMRSObtVr3ee1WoHtg==",
+      "tarball": "https://registry.npmjs.org/mdast-util-mdxjs-esm/-/mdast-util-mdxjs-esm-2.0.1.tgz",
+      "sha256": "f62f301b48a383c8b6ff03e2a7091cfa96925af18de733cd59c1dad124dc7606",
+      "bytes": 6288,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-phrasing",
+      "version": "4.1.0",
+      "license": "MIT",
+      "filename": "mdast-util-phrasing-4.1.0.tgz",
+      "integrity": "sha512-TqICwyvJJpBwvGAMZjj4J2n0X8QWp21b9l0o7eXyVJ25YNWYbJDVIyD1bZXE6WtV6RmKJVYmQAKWa0zWOABz2w==",
+      "tarball": "https://registry.npmjs.org/mdast-util-phrasing/-/mdast-util-phrasing-4.1.0.tgz",
+      "sha256": "001c22ccbb8f66b889e468ba33c86df25aaf9e2cea1ee1d827fb172431f09835",
+      "bytes": 4079,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-to-hast",
+      "version": "13.2.1",
+      "license": "MIT",
+      "filename": "mdast-util-to-hast-13.2.1.tgz",
+      "integrity": "sha512-cctsq2wp5vTsLIcaymblUriiTcZd0CwWtCbLvrOzYCDZoWyMNV8sZ7krj09FSnsiJi3WVsHLM4k6Dq/yaPyCXA==",
+      "tarball": "https://registry.npmjs.org/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz",
+      "sha256": "41f70e2f73a4ad9c67a401faa3143d16d6a1bda2c6bf9ae48073a2d4f5ebb1f4",
+      "bytes": 32754,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-to-markdown",
+      "version": "2.2.0",
+      "license": "MIT",
+      "filename": "mdast-util-to-markdown-2.2.0.tgz",
+      "integrity": "sha512-2Jn/ADrHFFyyniBMi0bncTbJqU78K3/TEYvzvwrWWzD9MYPUa/Gm4r3nOeKFQg/PDM5BsbDYdc8ackW4NTY6NA==",
+      "tarball": "https://registry.npmjs.org/mdast-util-to-markdown/-/mdast-util-to-markdown-2.2.0.tgz",
+      "sha256": "775386258ecfbf4efa5f6ead8ed633ae67c11c58826e191d931d7804f73814b0",
+      "bytes": 46969,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mdast-util-to-string",
+      "version": "4.0.0",
+      "license": "MIT",
+      "filename": "mdast-util-to-string-4.0.0.tgz",
+      "integrity": "sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==",
+      "tarball": "https://registry.npmjs.org/mdast-util-to-string/-/mdast-util-to-string-4.0.0.tgz",
+      "sha256": "bbfe70a5652305df7e8e484f674975c69bddbbad048ced52dc71835e64bba37a",
+      "bytes": 4551,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "mgrs",
       "version": "1.0.0",
       "license": "MIT",
@@ -189,6 +794,325 @@
       "tarball": "https://registry.npmjs.org/mgrs/-/mgrs-1.0.0.tgz",
       "sha256": "9df8b8b657f828fa8ef6729789865b96a121e148f6fc54128a7b695c6231b8dd",
       "bytes": 11427,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark",
+      "version": "4.0.3",
+      "license": "MIT",
+      "filename": "micromark-4.0.3.tgz",
+      "integrity": "sha512-oGYfQzHSG5dOMovQcJ3fyTmZlWAWpi0XA0sJwJs+i6OT88o1+Jtw/8z0CmdowSLxGhhFK89rQ/oXph/wN02PNw==",
+      "tarball": "https://registry.npmjs.org/micromark/-/micromark-4.0.3.tgz",
+      "sha256": "2f3f1e4dfc15279ffd246cb739200dd7ce823d047d9648938c3e3ee50be5ee02",
+      "bytes": 35783,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-core-commonmark",
+      "version": "2.0.4",
+      "license": "MIT",
+      "filename": "micromark-core-commonmark-2.0.4.tgz",
+      "integrity": "sha512-wxEeE8v8XVvOrxn1TZj74qYhAtTQsSqufHVS3uNVyT1MupXxhyaHk8/9xDNPh9BmL77QNDgWTkZ3RsYHB2ry7w==",
+      "tarball": "https://registry.npmjs.org/micromark-core-commonmark/-/micromark-core-commonmark-2.0.4.tgz",
+      "sha256": "84979e673035ced9448b39f2c6eabc9d6d543b53ec211d1be77fedf72564a5eb",
+      "bytes": 34930,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm",
+      "version": "3.0.0",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-3.0.0.tgz",
+      "integrity": "sha512-vsKArQsicm7t0z2GugkCKtZehqUm31oeGBV/KVSorWSy8ZlNAv7ytjFhvaryUiCUJYqs+NoE6AFhpQvBTM6Q4w==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm/-/micromark-extension-gfm-3.0.0.tgz",
+      "sha256": "35f3336120e336f7bf4737a93ca90b5549a353efc9496a31feec97215b756cf1",
+      "bytes": 5904,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm-autolink-literal",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-autolink-literal-2.1.0.tgz",
+      "integrity": "sha512-oOg7knzhicgQ3t4QCjCWgTmfNhvQbDDnJeVu9v81r7NltNCVmhPy1fJRX27pISafdjL+SVc4d3l48Gb6pbRypw==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm-autolink-literal/-/micromark-extension-gfm-autolink-literal-2.1.0.tgz",
+      "sha256": "c26bf2024d0741030b554cd784413776291ab4904c1ab45a55fb98e66e5cc3bf",
+      "bytes": 12933,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm-footnote",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-footnote-2.1.0.tgz",
+      "integrity": "sha512-/yPhxI1ntnDNsiHtzLKYnE3vf9JZ6cAisqVDauhp4CEHxlb4uoOTxOCJ+9s51bIB8U1N1FJ1RXOKTIlD5B/gqw==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm-footnote/-/micromark-extension-gfm-footnote-2.1.0.tgz",
+      "sha256": "a1b9858641efe4ddabf48062397663f9de3fdea1fb43b4c34faa9987eb6f2f8a",
+      "bytes": 16037,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm-strikethrough",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-strikethrough-2.1.0.tgz",
+      "integrity": "sha512-ADVjpOOkjz1hhkZLlBiYA9cR2Anf8F4HqZUO6e5eDcPQd0Txw5fxLzzxnEkSkfnD0wziSGiv7sYhk/ktvbf1uw==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm-strikethrough/-/micromark-extension-gfm-strikethrough-2.1.0.tgz",
+      "sha256": "e3d9e7b8ee5d45c4c49835d2172492a5bb34f304dc5efbb68294f69a16d1c762",
+      "bytes": 7094,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm-table",
+      "version": "2.1.2",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-table-2.1.2.tgz",
+      "integrity": "sha512-pRzm4kDTu0MjlmBkxmS9yYhw60nncfcEwu9NNdPFSQEFXS95ZKyIIyTSHu/o3ReBUrLKYEq+7YaXCRn/bPB4MA==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm-table/-/micromark-extension-gfm-table-2.1.2.tgz",
+      "sha256": "8398e26854cb955c07dfe6394203b9a491d4b77d0a23166102b7acd6030a63e1",
+      "bytes": 18136,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm-tagfilter",
+      "version": "2.0.0",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-tagfilter-2.0.0.tgz",
+      "integrity": "sha512-xHlTOmuCSotIA8TW1mDIM6X2O1SiX5P9IuDtqGonFhEK0qgRI4yeC6vMxEV2dgyr2TiD+2PQ10o+cOhdVAcwfg==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm-tagfilter/-/micromark-extension-gfm-tagfilter-2.0.0.tgz",
+      "sha256": "576e1be7c054b25c378e084482bc7fdd05c1a213b544866220b27fed82784128",
+      "bytes": 4513,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-extension-gfm-task-list-item",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "micromark-extension-gfm-task-list-item-2.1.0.tgz",
+      "integrity": "sha512-qIBZhqxqI6fjLDYFTBIa4eivDMnP+OZqsNwmQ3xNLE4Cxwc+zfQEfbs6tzAo2Hjq+bh6q5F+Z8/cksrLFYWQQw==",
+      "tarball": "https://registry.npmjs.org/micromark-extension-gfm-task-list-item/-/micromark-extension-gfm-task-list-item-2.1.0.tgz",
+      "sha256": "2af93a84aca7141d88f8967be748a2f84d5ac6dc7cdb14a62edcbbd8a27b11af",
+      "bytes": 6593,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-factory-destination",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-factory-destination-2.0.1.tgz",
+      "integrity": "sha512-Xe6rDdJlkmbFRExpTOmRj9N3MaWmbAgdpSrBQvCFqhezUn4AHqJHbaEnfbVYYiexVSs//tqOdY/DxhjdCiJnIA==",
+      "tarball": "https://registry.npmjs.org/micromark-factory-destination/-/micromark-factory-destination-2.0.1.tgz",
+      "sha256": "b4acd1721e4756a61f2482c3424344b8b01bdbf79180cf6e411ed491887bd8db",
+      "bytes": 5007,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-factory-label",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-factory-label-2.0.1.tgz",
+      "integrity": "sha512-VFMekyQExqIW7xIChcXn4ok29YE3rnuyveW3wZQWWqF4Nv9Wk5rgJ99KzPvHjkmPXF93FXIbBp6YdW3t71/7Vg==",
+      "tarball": "https://registry.npmjs.org/micromark-factory-label/-/micromark-factory-label-2.0.1.tgz",
+      "sha256": "c65fb436893844fb5be29814dc2528a596236423c4c7e5b1130cd49b5bae8c1d",
+      "bytes": 4844,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-factory-space",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "micromark-factory-space-2.1.0.tgz",
+      "integrity": "sha512-fS8hnLIjnjvdQIj39Geug8wWsR0HrYZ43KShKxNfwT7t2LOHo/LbWZEzEaSOjwtjdCsjoE6syHhonEzW0zv0+Q==",
+      "tarball": "https://registry.npmjs.org/micromark-factory-space/-/micromark-factory-space-2.1.0.tgz",
+      "sha256": "5218d07cfd00f867e94f4197c9aac409fb8ea17c26ab38a124f9dd79ba8b8a3d",
+      "bytes": 4498,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-factory-title",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-factory-title-2.0.1.tgz",
+      "integrity": "sha512-5bZ+3CjhAd9eChYTHsjy6TGxpOFSKgKKJPJxr293jTbfry2KDoWkhBb6TcPVB4NmzaPhMs1Frm9AZH7OD4Cjzw==",
+      "tarball": "https://registry.npmjs.org/micromark-factory-title/-/micromark-factory-title-2.0.1.tgz",
+      "sha256": "2e247f3d7ddef39cde036ee828a66ec410059b3963ce3e376160e48011f257b0",
+      "bytes": 4589,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-factory-whitespace",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-factory-whitespace-2.0.1.tgz",
+      "integrity": "sha512-Ob0nuZ3PKt/n0hORHyvoD9uZhr+Za8sFoP+OnMcnWK5lngSzALgQYKMr9RJVOWLqQYuyn6ulqGWSXdwf6F80lQ==",
+      "tarball": "https://registry.npmjs.org/micromark-factory-whitespace/-/micromark-factory-whitespace-2.0.1.tgz",
+      "sha256": "57dc50841f76fac5cf46e093b8325397079e10406febebb6c58a58e1528a4fec",
+      "bytes": 3898,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-character",
+      "version": "2.1.1",
+      "license": "MIT",
+      "filename": "micromark-util-character-2.1.1.tgz",
+      "integrity": "sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==",
+      "tarball": "https://registry.npmjs.org/micromark-util-character/-/micromark-util-character-2.1.1.tgz",
+      "sha256": "bacefea968d21cedf290ec319ec92e2bc20e4f7b02f62cb4ad1e7b07c5a45185",
+      "bytes": 6356,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-chunked",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-chunked-2.0.1.tgz",
+      "integrity": "sha512-QUNFEOPELfmvv+4xiNg2sRYeS/P84pTW0TCgP5zc9FpXetHY0ab7SxKyAQCNCc1eK0459uoLI1y5oO5Vc1dbhA==",
+      "tarball": "https://registry.npmjs.org/micromark-util-chunked/-/micromark-util-chunked-2.0.1.tgz",
+      "sha256": "a7b753059876eda10e9e14c024d1cf6eb3a2eb2021c79ef59fb483d72cda754a",
+      "bytes": 4441,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-classify-character",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-classify-character-2.0.1.tgz",
+      "integrity": "sha512-K0kHzM6afW/MbeWYWLjoHQv1sgg2Q9EccHEDzSkxiP/EaagNzCm7T/WMKZ3rjMbvIpvBiZgwR3dKMygtA4mG1Q==",
+      "tarball": "https://registry.npmjs.org/micromark-util-classify-character/-/micromark-util-classify-character-2.0.1.tgz",
+      "sha256": "ae1040e3100c019e183e474cb7f174eb436d856013169a0c8783a52519bacced",
+      "bytes": 3818,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-combine-extensions",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-combine-extensions-2.0.1.tgz",
+      "integrity": "sha512-OnAnH8Ujmy59JcyZw8JSbK9cGpdVY44NKgSM7E9Eh7DiLS2E9RNQf0dONaGDzEG9yjEl5hcqeIsj4hfRkLH/Bg==",
+      "tarball": "https://registry.npmjs.org/micromark-util-combine-extensions/-/micromark-util-combine-extensions-2.0.1.tgz",
+      "sha256": "717cb91921ff540a2c776317f31ad005c3c45ec0ae1c188f1b99de621521b4b5",
+      "bytes": 4225,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-decode-numeric-character-reference",
+      "version": "2.0.2",
+      "license": "MIT",
+      "filename": "micromark-util-decode-numeric-character-reference-2.0.2.tgz",
+      "integrity": "sha512-ccUbYk6CwVdkmCQMyr64dXz42EfHGkPQlBj5p7YVGzq8I7CtjXZJrubAYezf7Rp+bjPseiROqe7G6foFd+lEuw==",
+      "tarball": "https://registry.npmjs.org/micromark-util-decode-numeric-character-reference/-/micromark-util-decode-numeric-character-reference-2.0.2.tgz",
+      "sha256": "cd26a08f068727f3cc892e8f2549b85065362bd920506649386c791fe349db98",
+      "bytes": 3833,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-decode-string",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-decode-string-2.0.1.tgz",
+      "integrity": "sha512-nDV/77Fj6eH1ynwscYTOsbK7rR//Uj0bZXBwJZRfaLEJ1iGBR6kIfNmlNqaqJf649EP0F3NWNdeJi03elllNUQ==",
+      "tarball": "https://registry.npmjs.org/micromark-util-decode-string/-/micromark-util-decode-string-2.0.1.tgz",
+      "sha256": "09ab2cda2d2f4fec4e3b829042866fa3d619d4c48c895233495a4ac49f325059",
+      "bytes": 3799,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-edit-map",
+      "version": "1.0.0",
+      "license": "MIT",
+      "filename": "micromark-util-edit-map-1.0.0.tgz",
+      "integrity": "sha512-Pa2ljlsEL6sVwFaYeyrOLSYbQt73JvGbPOYFq+9AElXiSnfI5Q4465RRZ1sHv7lDjDOnGRDDaqPXqClqWK/q1Q==",
+      "tarball": "https://registry.npmjs.org/micromark-util-edit-map/-/micromark-util-edit-map-1.0.0.tgz",
+      "sha256": "da60526f11a9853fdc86c18ceaa8eb7b5058c2537433e66b6ba7cf9d24cac334",
+      "bytes": 5754,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-encode",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-encode-2.0.1.tgz",
+      "integrity": "sha512-c3cVx2y4KqUnwopcO9b/SCdo2O67LwJJ/UyqGfbigahfegL9myoEFoDYZgkT7f36T0bLrM9hZTAaAyH+PCAXjw==",
+      "tarball": "https://registry.npmjs.org/micromark-util-encode/-/micromark-util-encode-2.0.1.tgz",
+      "sha256": "c553824f256f5f99f8f8b172d25caa7b2270ece5a00774cd1dbbc8bf9cd9090a",
+      "bytes": 3310,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-html-tag-name",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-html-tag-name-2.0.1.tgz",
+      "integrity": "sha512-2cNEiYDhCWKI+Gs9T0Tiysk136SnR13hhO8yW6BGNyhOC4qYFnwF1nKfD3HFAIXA5c45RrIG1ub11GiXeYd1xA==",
+      "tarball": "https://registry.npmjs.org/micromark-util-html-tag-name/-/micromark-util-html-tag-name-2.0.1.tgz",
+      "sha256": "9d56df2779bb23785d208136430484ccedca4378bd36976c4793ace4c1cae077",
+      "bytes": 3717,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-normalize-identifier",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-normalize-identifier-2.0.1.tgz",
+      "integrity": "sha512-sxPqmo70LyARJs0w2UclACPUUEqltCkJ6PhKdMIDuJ3gSf/Q+/GIe3WKl0Ijb/GyH9lOpUkRAO2wp0GVkLvS9Q==",
+      "tarball": "https://registry.npmjs.org/micromark-util-normalize-identifier/-/micromark-util-normalize-identifier-2.0.1.tgz",
+      "sha256": "6687cbaaa6a420bad0e5ca2ea0dfaea409ba8dc9e13ca03059291da8b68ceb2d",
+      "bytes": 3788,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-resolve-all",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-resolve-all-2.0.1.tgz",
+      "integrity": "sha512-VdQyxFWFT2/FGJgwQnJYbe1jjQoNTS4RjglmSjTUlpUMa95Htx9NHeYW4rGDJzbjvCsl9eLjMQwGeElsqmzcHg==",
+      "tarball": "https://registry.npmjs.org/micromark-util-resolve-all/-/micromark-util-resolve-all-2.0.1.tgz",
+      "sha256": "f7c8f03bdbdb16113879dadabc7091aa4277a1c106f202e05af164a917964555",
+      "bytes": 4026,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-sanitize-uri",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-sanitize-uri-2.0.1.tgz",
+      "integrity": "sha512-9N9IomZ/YuGGZZmQec1MbgxtlgougxTodVwDzzEouPKo3qFWvymFHWcnDi2vzV1ff6kas9ucW+o3yzJK9YB1AQ==",
+      "tarball": "https://registry.npmjs.org/micromark-util-sanitize-uri/-/micromark-util-sanitize-uri-2.0.1.tgz",
+      "sha256": "8fcf4cf2900f807194fc89fb3e4dd5e5b28143cb44e55955a9f31d764264547e",
+      "bytes": 4866,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-subtokenize",
+      "version": "2.1.0",
+      "license": "MIT",
+      "filename": "micromark-util-subtokenize-2.1.0.tgz",
+      "integrity": "sha512-XQLu552iSctvnEcgXw6+Sx75GflAPNED1qx7eBJ+wydBb2KCbRZe+NwvIEEMM83uml1+2WSXpBAcp9IUCgCYWA==",
+      "tarball": "https://registry.npmjs.org/micromark-util-subtokenize/-/micromark-util-subtokenize-2.1.0.tgz",
+      "sha256": "10aca3d9ae4d1776f029fa6dbf5d9706291cbafc55ff39ba88141e65b7c59a8b",
+      "bytes": 9611,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-symbol",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "micromark-util-symbol-2.0.1.tgz",
+      "integrity": "sha512-vs5t8Apaud9N28kgCrRUdEed4UJ+wWNvicHLPxCa9ENlYuAY31M0ETy5y1vA33YoNPDFTghEbnh6efaE8h4x0Q==",
+      "tarball": "https://registry.npmjs.org/micromark-util-symbol/-/micromark-util-symbol-2.0.1.tgz",
+      "sha256": "d8d698fae34d4e5bcdc5caf552449dea8aa46709dc76caea815c931cbd61e222",
+      "bytes": 12184,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "micromark-util-types",
+      "version": "2.0.3",
+      "license": "MIT",
+      "filename": "micromark-util-types-2.0.3.tgz",
+      "integrity": "sha512-oxB2Ik03hI0gv+VNn9tnh1t1YEe9MDPptViAEgfdf3YQHsn0pzGTgCdlSCJXcwhqm8phaEuM7zeEu3QQzVBrPg==",
+      "tarball": "https://registry.npmjs.org/micromark-util-types/-/micromark-util-types-2.0.3.tgz",
+      "sha256": "766abb7b986c167f5d00feb235344b491241bb6299a04fe83f027e13239862f9",
+      "bytes": 11515,
       "licenseTextSource": "included in archive"
     },
     {
@@ -247,6 +1171,17 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "parse-entities",
+      "version": "4.0.2",
+      "license": "MIT",
+      "filename": "parse-entities-4.0.2.tgz",
+      "integrity": "sha512-GG2AQYWoLgL877gQIKeRPGO1xF9+eG1ujIb5soS5gPvLQ1y2o8FL90w2QWNdf9I361Mpp7726c+lj3U0qK1uGw==",
+      "tarball": "https://registry.npmjs.org/parse-entities/-/parse-entities-4.0.2.tgz",
+      "sha256": "2edcf2a9a2095627bad46b524ae17dff2c97ab4dd13fccc34e2dc407b2a87304",
+      "bytes": 8195,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "parsedbf",
       "version": "2.0.0",
       "license": "MIT",
@@ -255,6 +1190,17 @@
       "tarball": "https://registry.npmjs.org/parsedbf/-/parsedbf-2.0.0.tgz",
       "sha256": "ce84416fd2d18e04c8d3dff8e820024a0efcab174ba1c3a71a639cbe608a516c",
       "bytes": 7344,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "partial-json",
+      "version": "0.1.7",
+      "license": "MIT",
+      "filename": "partial-json-0.1.7.tgz",
+      "integrity": "sha512-Njv/59hHaokb/hRUjce3Hdv12wd60MtM9Z5Olmn+nehe0QDAsRtRbJPvJ0Z91TusF0SuZRIvnM+S4l6EIP8leA==",
+      "tarball": "https://registry.npmjs.org/partial-json/-/partial-json-0.1.7.tgz",
+      "sha256": "30eafeed6fdc25fb2ca24f34c37796d9f98f0bf5e156452b98a2c356762f6322",
+      "bytes": 6304,
       "licenseTextSource": "included in archive"
     },
     {
@@ -269,6 +1215,105 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "property-information",
+      "version": "7.2.0",
+      "license": "MIT",
+      "filename": "property-information-7.2.0.tgz",
+      "integrity": "sha512-IAtzIB6sUiWaJYrX9smp3V46pBGbBeLFRGdh25kg1334VcBlD8HzhPeNIWQH9zhGmo2itIe25EHt9dQP7G5hmg==",
+      "tarball": "https://registry.npmjs.org/property-information/-/property-information-7.2.0.tgz",
+      "sha256": "22ab7ee8774c8c3c90086f2fec7d2d4cca7c16ac795596ae16cf326c763606c7",
+      "bytes": 26537,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "rehype-harden",
+      "version": "1.1.8",
+      "license": "MIT",
+      "filename": "rehype-harden-1.1.8.tgz",
+      "integrity": "sha512-Qn7vR1xrf6fZCrkm9TDWi/AB4ylrHy+jqsNm1EHOAmbARYA6gsnVJBq/sdBh6kmT4NEZxH5vgIjrscefJAOXcw==",
+      "tarball": "https://registry.npmjs.org/rehype-harden/-/rehype-harden-1.1.8.tgz",
+      "sha256": "4c876f42f0d9e46fee53231a73edcb8d997534d4d4fc0cc2b67e7e3c4b361d9a",
+      "bytes": 11281,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "rehype-raw",
+      "version": "7.0.0",
+      "license": "MIT",
+      "filename": "rehype-raw-7.0.0.tgz",
+      "integrity": "sha512-/aE8hCfKlQeA8LmyeyQvQF3eBiLRGNlfBJEvWH7ivp9sBqs7TNqBL5X3v157rM4IFETqDnIOO+z5M/biZbo9Ww==",
+      "tarball": "https://registry.npmjs.org/rehype-raw/-/rehype-raw-7.0.0.tgz",
+      "sha256": "59f9d5a4ae9894bf1afb0397c686f71301c4504b209866fbf7a6c898b0742b12",
+      "bytes": 5099,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "rehype-sanitize",
+      "version": "6.0.0",
+      "license": "MIT",
+      "filename": "rehype-sanitize-6.0.0.tgz",
+      "integrity": "sha512-CsnhKNsyI8Tub6L4sm5ZFsme4puGfc6pYylvXo1AeqaGbjOYyzNv3qZPwvs0oMJ39eryyeOdmxwUIo94IpEhqg==",
+      "tarball": "https://registry.npmjs.org/rehype-sanitize/-/rehype-sanitize-6.0.0.tgz",
+      "sha256": "09fb2b59a6960f2c89cc12abe56c55cc9611bc7f575082dfacb11ffc406a66de",
+      "bytes": 7341,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "remark-gfm",
+      "version": "4.0.1",
+      "license": "MIT",
+      "filename": "remark-gfm-4.0.1.tgz",
+      "integrity": "sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==",
+      "tarball": "https://registry.npmjs.org/remark-gfm/-/remark-gfm-4.0.1.tgz",
+      "sha256": "a5c7441a02eb0c5f5b0a15b23f04c2a00b9faf698dc3dfb4e5c1a1d0991d4259",
+      "bytes": 7621,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "remark-parse",
+      "version": "11.0.0",
+      "license": "MIT",
+      "filename": "remark-parse-11.0.0.tgz",
+      "integrity": "sha512-FCxlKLNGknS5ba/1lmpYijMUzX2esxW5xQqjWxw2eHFfS2MSdaHVINFmhjo+qN1WhZhNimq0dZATN9pH0IDrpA==",
+      "tarball": "https://registry.npmjs.org/remark-parse/-/remark-parse-11.0.0.tgz",
+      "sha256": "381d16667f0d394ac045dad61cea875d680a49eae0cbe88a87b0259dc4b2dd33",
+      "bytes": 6458,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "remark-rehype",
+      "version": "11.1.2",
+      "license": "MIT",
+      "filename": "remark-rehype-11.1.2.tgz",
+      "integrity": "sha512-Dh7l57ianaEoIpzbp0PC9UKAdCSVklD8E5Rpw7ETfbTl3FqcOOgq5q2LVDhgGCkaBv7p24JXikPdvhhmHvKMsw==",
+      "tarball": "https://registry.npmjs.org/remark-rehype/-/remark-rehype-11.1.2.tgz",
+      "sha256": "7bb4ca02a6fe89bbfa5e56485bb5086e2cfa13bbbf7455cd29faac20a6eeaa82",
+      "bytes": 11729,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "remark-stringify",
+      "version": "11.0.0",
+      "license": "MIT",
+      "filename": "remark-stringify-11.0.0.tgz",
+      "integrity": "sha512-1OSmLd3awB/t8qdoEOMazZkNsfVTeY4fTsgzcQFdXNq8ToTN4ZGwrMnlda4K6smTFKD+GRV6O48i6Z4iKgPPpw==",
+      "tarball": "https://registry.npmjs.org/remark-stringify/-/remark-stringify-11.0.0.tgz",
+      "sha256": "b2190b6baf1b5e6e1b36f23c24c1658f2dab1a4315370435530cd8f78c390175",
+      "bytes": 6678,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "remend",
+      "version": "1.4.0",
+      "license": "Apache-2.0",
+      "filename": "remend-1.4.0.tgz",
+      "integrity": "sha512-mHiYhhwphs1IgIZmkToKLwJn0U99IjPXuutkA2acrNcG0vlEq2G4TGnd2eT0saIHwh2KjaCpvleHcsd5SAz96A==",
+      "tarball": "https://registry.npmjs.org/remend/-/remend-1.4.0.tgz",
+      "sha256": "b073ec076acd349d11ef830b6188c2a85a8d7b6d4b15759daef9b0ed523befe3",
+      "bytes": 10334,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "shpjs",
       "version": "6.2.0",
       "license": "MIT",
@@ -277,6 +1322,193 @@
       "tarball": "https://registry.npmjs.org/shpjs/-/shpjs-6.2.0.tgz",
       "sha256": "491b36767db9c365b609a6b4c876b5452f138abc2ebc2e88ec76df43022a5dc0",
       "bytes": 188210,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "space-separated-tokens",
+      "version": "2.0.2",
+      "license": "MIT",
+      "filename": "space-separated-tokens-2.0.2.tgz",
+      "integrity": "sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==",
+      "tarball": "https://registry.npmjs.org/space-separated-tokens/-/space-separated-tokens-2.0.2.tgz",
+      "sha256": "b386cce96593975cebbb054a8e287eb15c2e004cd6ef416f7a26b5c265930b67",
+      "bytes": 3219,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "streamdown",
+      "version": "2.7.1",
+      "license": "Apache-2.0",
+      "filename": "streamdown-2.7.1.tgz",
+      "integrity": "sha512-pIz4XOB+e7iyqSJABXC9PoyHifBZVQx/7U0Qo/vdOIERqGXfgEhJxkXENsuWMO8TGXkaQ5ewV9jnliK7q47T8w==",
+      "tarball": "https://registry.npmjs.org/streamdown/-/streamdown-2.7.1.tgz",
+      "sha256": "ff05b956c7ced86d77bc67c3170778a788a1aa562b697e2656e7a85362454bc4",
+      "bytes": 40931,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "stringify-entities",
+      "version": "4.0.4",
+      "license": "MIT",
+      "filename": "stringify-entities-4.0.4.tgz",
+      "integrity": "sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==",
+      "tarball": "https://registry.npmjs.org/stringify-entities/-/stringify-entities-4.0.4.tgz",
+      "sha256": "89052f611f0656a0e7d7c312f7b2e75e949678ce4eff37a6fc416fa2be4f4024",
+      "bytes": 7461,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "style-to-js",
+      "version": "1.1.21",
+      "license": "MIT",
+      "filename": "style-to-js-1.1.21.tgz",
+      "integrity": "sha512-RjQetxJrrUJLQPHbLku6U/ocGtzyjbJMP9lCNK7Ag0CNh690nSH8woqWH9u16nMjYBAok+i7JO1NP2pOy8IsPQ==",
+      "tarball": "https://registry.npmjs.org/style-to-js/-/style-to-js-1.1.21.tgz",
+      "sha256": "87f2f0c9c052c7840d789c2389f1d212f3c5ba77c58b7d08ce4485f59d34f024",
+      "bytes": 16359,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "style-to-object",
+      "version": "1.0.14",
+      "license": "MIT",
+      "filename": "style-to-object-1.0.14.tgz",
+      "integrity": "sha512-LIN7rULI0jBscWQYaSswptyderlarFkjQ+t79nzty8tcIAceVomEVlLzH5VP4Cmsv6MtKhs7qaAiwlcp+Mgaxw==",
+      "tarball": "https://registry.npmjs.org/style-to-object/-/style-to-object-1.0.14.tgz",
+      "sha256": "edfb15e0912047f3f78e683015d310dc35903f1623aada6a8e629ed9077bf45d",
+      "bytes": 11483,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "trim-lines",
+      "version": "3.0.1",
+      "license": "MIT",
+      "filename": "trim-lines-3.0.1.tgz",
+      "integrity": "sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==",
+      "tarball": "https://registry.npmjs.org/trim-lines/-/trim-lines-3.0.1.tgz",
+      "sha256": "5880f0ef03e792c4705dc0789f2999671d4796d1d10a0110df059f25c565d63d",
+      "bytes": 3243,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "trough",
+      "version": "2.2.0",
+      "license": "MIT",
+      "filename": "trough-2.2.0.tgz",
+      "integrity": "sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==",
+      "tarball": "https://registry.npmjs.org/trough/-/trough-2.2.0.tgz",
+      "sha256": "0a357f8de5e3a6f69fa3672daf31a19a87fc153b21085790c78fa4097263ab58",
+      "bytes": 6776,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "unified",
+      "version": "11.0.5",
+      "license": "MIT",
+      "filename": "unified-11.0.5.tgz",
+      "integrity": "sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==",
+      "tarball": "https://registry.npmjs.org/unified/-/unified-11.0.5.tgz",
+      "sha256": "bc6d6d9e336d7d775f3c369f0a29462523ae75254d4a6e4888b95eba44c4aa78",
+      "bytes": 30905,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "unist-util-is",
+      "version": "6.0.1",
+      "license": "MIT",
+      "filename": "unist-util-is-6.0.1.tgz",
+      "integrity": "sha512-LsiILbtBETkDz8I9p1dQ0uyRUWuaQzd/cuEeS1hoRSyW5E5XGmTzlwY1OrNzzakGowI9Dr/I8HVaw4hTtnxy8g==",
+      "tarball": "https://registry.npmjs.org/unist-util-is/-/unist-util-is-6.0.1.tgz",
+      "sha256": "6d406238b6e281d38d30c30f77287ce8d70f6d9c4503612f979333865aaafff5",
+      "bytes": 7628,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "unist-util-position",
+      "version": "5.0.0",
+      "license": "MIT",
+      "filename": "unist-util-position-5.0.0.tgz",
+      "integrity": "sha512-fucsC7HjXvkB5R3kTCO7kUjRdrS0BJt3M/FPxmHMBOm8JQi2BsHAHFsy27E0EolP8rp0NzXsJ+jNPyDWvOJZPA==",
+      "tarball": "https://registry.npmjs.org/unist-util-position/-/unist-util-position-5.0.0.tgz",
+      "sha256": "248cefc2080c0a78817b20e88da7324e7dee7175c5df8ac0e6d193d2d381c200",
+      "bytes": 4369,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "unist-util-stringify-position",
+      "version": "4.0.0",
+      "license": "MIT",
+      "filename": "unist-util-stringify-position-4.0.0.tgz",
+      "integrity": "sha512-0ASV06AAoKCDkS2+xw5RXJywruurpbC4JZSm7nr7MOt1ojAzvyyaO+UxZf18j8FCF6kmzCZKcAgN/yu2gm2XgQ==",
+      "tarball": "https://registry.npmjs.org/unist-util-stringify-position/-/unist-util-stringify-position-4.0.0.tgz",
+      "sha256": "8692d2396f091680fe342c344acc4594534a9a811b0a9cbcfae7d71c694168b4",
+      "bytes": 4353,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "unist-util-visit",
+      "version": "5.2.0",
+      "license": "MIT",
+      "filename": "unist-util-visit-5.2.0.tgz",
+      "integrity": "sha512-fpsYs/VVoZxfGY9/j3FQpZmN8wdLJaV1Pt38AaJNZu9uKIHcFU3halCdBveEq1HGKO1OEfJY65w1zvoFV1b3qQ==",
+      "tarball": "https://registry.npmjs.org/unist-util-visit/-/unist-util-visit-5.2.0.tgz",
+      "sha256": "d11174ce27d62827bd8e1f573756ff4e8b601d466041ddaa693755a37ac917fc",
+      "bytes": 8429,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "unist-util-visit-parents",
+      "version": "6.1.0",
+      "license": "MIT",
+      "filename": "unist-util-visit-parents-6.1.0.tgz",
+      "integrity": "sha512-vKXxz6O38sKDj1mtx/k2cWvkkFBuYGx6uGrlzBkVeWCRF/F8sdI0j3Wbkz/5rVNRRuVc8UrgRdbCxNhmYXgP3w==",
+      "tarball": "https://registry.npmjs.org/unist-util-visit-parents/-/unist-util-visit-parents-6.1.0.tgz",
+      "sha256": "8db8c8c35f8f786cc42e1c9b8934ef1cf32d1f38e8bc126e3ab71c91243d97f4",
+      "bytes": 13163,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "vfile",
+      "version": "6.0.3",
+      "license": "MIT",
+      "filename": "vfile-6.0.3.tgz",
+      "integrity": "sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==",
+      "tarball": "https://registry.npmjs.org/vfile/-/vfile-6.0.3.tgz",
+      "sha256": "a0dbad2fd8dcc9ae9f652dee6ba49a1db5db2843a8ec2ceb9190ccdba0e0df0c",
+      "bytes": 20729,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "vfile-location",
+      "version": "5.0.3",
+      "license": "MIT",
+      "filename": "vfile-location-5.0.3.tgz",
+      "integrity": "sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==",
+      "tarball": "https://registry.npmjs.org/vfile-location/-/vfile-location-5.0.3.tgz",
+      "sha256": "8b8cf426e26395482ca8c4485dc3f98e29628711c69b5f3dc2673ed00940ce58",
+      "bytes": 4889,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "vfile-message",
+      "version": "4.0.3",
+      "license": "MIT",
+      "filename": "vfile-message-4.0.3.tgz",
+      "integrity": "sha512-QTHzsGd1EhbZs4AsQ20JX1rC3cOlt/IWJruk893DfLRr57lcnOeMaWG4K0JrRta4mIJZKth2Au3mM3u03/JWKw==",
+      "tarball": "https://registry.npmjs.org/vfile-message/-/vfile-message-4.0.3.tgz",
+      "sha256": "9d6d94ee59296ef0516217a79e902ba417fe3d8816ab1d0527ddf353b455c2cb",
+      "bytes": 6370,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "web-namespaces",
+      "version": "2.0.1",
+      "license": "MIT",
+      "filename": "web-namespaces-2.0.1.tgz",
+      "integrity": "sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==",
+      "tarball": "https://registry.npmjs.org/web-namespaces/-/web-namespaces-2.0.1.tgz",
+      "sha256": "df250d9dc73331f79700486335f046bdebb09158d172754220cc546fb5149a84",
+      "bytes": 3038,
       "licenseTextSource": "included in archive"
     },
     {
@@ -302,6 +1534,17 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "zwitch",
+      "version": "2.0.4",
+      "license": "MIT",
+      "filename": "zwitch-2.0.4.tgz",
+      "integrity": "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==",
+      "tarball": "https://registry.npmjs.org/zwitch/-/zwitch-2.0.4.tgz",
+      "sha256": "2c162e000f5fb5a816987d6f8ad7aad295203f777a5992d514ae4660778a51a4",
+      "bytes": 4529,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "p-queue",
       "version": "9.3.5",
       "license": "MIT",
@@ -310,6 +1553,17 @@
       "tarball": "https://registry.npmjs.org/p-queue/-/p-queue-9.3.5.tgz",
       "sha256": "3c1131f74b4101bdf65e87119d3d440cf02d880b1339c46148cc4edb3bb3e026",
       "bytes": 21087,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@types/unist",
+      "version": "2.0.11",
+      "license": "MIT",
+      "filename": "types-unist-2.0.11.tgz",
+      "integrity": "sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==",
+      "tarball": "https://registry.npmjs.org/@types/unist/-/unist-2.0.11.tgz",
+      "sha256": "367d955567082f39480be382e2d649ff65ab7ab8377e240841bade2df4dd123a",
+      "bytes": 2551,
       "licenseTextSource": "included in archive"
     },
     {

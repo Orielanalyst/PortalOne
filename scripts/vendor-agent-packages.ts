@@ -15,7 +15,7 @@ let previous: any[] = [];
 try { previous = JSON.parse(readFileSync(resolve(folder, 'manifest.json'), 'utf8')).lockedPackages; } catch { /* first acquisition */ }
 const acquired = [];
 for (const [key, entry] of Object.entries(after.packages) as [string, any[]][]) {
-  if (JSON.stringify(before.packages[key]) === JSON.stringify(entry) && key !== 'zod') continue;
+  if (JSON.stringify(before.packages[key]) === JSON.stringify(entry) && !['zod', 'diff'].includes(key)) continue;
   const [name, version] = String(entry[0]).split(/@(?=[^@]+$)/);
   if (!name || !version) throw new Error('Unexpected locked package identity.');
   const integrity = entry.find(value => typeof value === 'string' && value.startsWith('sha512-'));
