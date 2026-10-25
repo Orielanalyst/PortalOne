@@ -19,17 +19,24 @@ export class CitationStream {
     let boundary=this.pending.length;
     if(!complete) {
       const bracket=this.pending.lastIndexOf('[');
-      if(bracket>=0 && /^\[(?:S\d*)?$/.test(this.pending.slice(bracket)))boundary=bracket;
+      if(bracket>=0 && /^\[(?:S[\dS\s,–-]*)?$/.test(this.pending.slice(bracket)))boundary=bracket;
     }
-    const text=this.pending.slice(0,boundary).replace(/\[(S\d+)\]/g,(_,handle:string)=>{
-      const id=this.sources[handle];if(!id){this.unknown=true;return '[source reference unresolved]';}return `[${id}]`;
+    const text=this.pending.slice(0,boundary).replace(/\[(S[\dS\s,–-]+)\]/g,(_,group:string)=>{
+      const handles:string[]=[];
+      for(const part of group.split(',')) {
+        const match=part.trim().match(/^S(\d+)(?:\s*[–-]\s*S?(\d+))?$/);
+        const first=Number(match?.[1]),last=Number(match?.[2] ?? match?.[1]);
+        if(!match || last<first || last-first>=Object.keys(this.sources).length){this.unknown=true;return '[source reference unresolved]';}
+        for(let index=first;index<=last;index++)handles.push(`S${index}`);
+      }
+      return handles.map(handle=>{const id=this.sources[handle];if(!id){this.unknown=true;return '[source reference unresolved]';}return `[${id}]`;}).join('');
     });
     this.pending=this.pending.slice(boundary);this.visible+=text;if(text)this.emit(text);
   }
   finish(providerContent:string) {
     if(providerContent!==this.raw)throw new Error('Provider stream and completed answer differ.');
     this.push('',true);
-    if(this.unknown || /\[E[a-f0-9]{10}\]/.test(providerContent) || /\[S\d*$/.test(providerContent) || /\[(source required|superseded source)\]/.test(providerContent))throw new Error('Use only the supplied short source handles; a source reference is unresolved.');
+    if(this.unknown || /\[E[a-f0-9]{10}\]/.test(providerContent) || providerContent.replace(/\[S[\dS\s,–-]+\]/g,'').includes('[S') || /\[(source required|superseded source)\]/.test(providerContent))throw new Error('Use only the supplied short source handles; a source reference is unresolved.');
     return this.visible;
   }
 }

@@ -18,6 +18,7 @@ const coordinate = (value: unknown): Position | null => {
   return coordinate(value[0]);
 };
 const collection = (features: Feature[]): FeatureCollection => ({ type: 'FeatureCollection', features });
+export const calendarDays = (text:string) => text.match(/\b\d{4}-\d{2}-\d{2}(?=T|\b)/g) ?? [];
 export function buildDossier(runId: string, objective: string, snapshot: KoboSnapshot, evidence: FederatedEvidence, map: CommunityMap,update?:MissionDossier['update']): MissionDossier {
   const citations: EvidenceCitation[] = [];
   function cite(kind: EvidenceCitation['kind'], key: string, title: string, statement: string, sourceUrl: string | null, observedAt: string | null = null) {
@@ -85,8 +86,8 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {
   if (markdown.length < 180 || /\b(TBD|lorem ipsum|insert here|placeholder)\b/i.test(markdown)) throw new Error('Document failed content quality checks.');
   if(/\b\d{1,3}\.\d{4,}\b/.test(markdown))throw new Error('Remove numerical geographic coordinates from narrative prose; the exact inventories are generated directly from source geometry.');
-  const supportedDates=new Set(citations.flatMap(citation=>citation.statement.match(/\b\d{4}-\d{2}-\d{2}\b/g) ?? []));
-  if((markdown.match(/\b\d{4}-\d{2}-\d{2}\b/g) ?? []).some(date=>!supportedDates.has(date)))throw new Error('Remove unsupported calendar dates; obtain missing deadlines from the operator.');
+  const supportedDates=new Set(citations.flatMap(citation=>calendarDays(citation.statement)));
+  if(calendarDays(markdown).some(date=>!supportedDates.has(date)))throw new Error('Remove unsupported calendar dates; obtain missing deadlines from the operator.');
   const known = new Set(citations.map(citation=>citation.id));
   const cited = [...markdown.matchAll(/\[(E[a-f0-9]{10})\]/g)].map(match=>match[1]!);
   const unknown=[...new Set(cited.filter(id=>!known.has(id)))];

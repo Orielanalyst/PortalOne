@@ -13,6 +13,13 @@ it('encodes previous drafts only against the current catalogue and rejects inven
   expect(stream.encode('Existing [E0123456789], old [E0000000000].')).toBe('Existing [S1], old [superseded source].');
   stream.push('Unresolved [S99].');expect(()=>stream.finish('Unresolved [S99].')).toThrow('unresolved');
 });
+it('resolves comma groups and bounded ranges without flashing partial citation syntax',()=>{
+  const deltas:string[]=[],stream=new CitationStream(citations,text=>deltas.push(text)),raw='Sourced [S1–S2] and [S1, S2].';
+  for(const character of raw)stream.push(character);
+  expect(stream.finish(raw)).toBe('Sourced [E0123456789][Eabcdef0123] and [E0123456789][Eabcdef0123].');
+  expect(deltas.every(delta=>!delta.includes('[S'))).toBe(true);
+  const invalid=new CitationStream(citations,()=>{});invalid.push('Unknown [S1–S999999].');expect(()=>invalid.finish('Unknown [S1–S999999].')).toThrow('unresolved');
+});
 it('refuses untranslated provider identifiers and a completion that differs from the actual stream',()=>{
   const stream=new CitationStream(citations,()=>{});stream.push('A statement [E0123456789].');
   expect(()=>stream.finish('A statement [E0123456789].')).toThrow('short source handles');
