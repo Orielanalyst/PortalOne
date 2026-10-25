@@ -1,0 +1,1474 @@
+{
+  "capturedAt": "2026-10-25T08:10:48.034Z",
+  "applicationSourceCommit": "46c62b18ac53de0da2259ab518208f03ed725404",
+  "note": "Actual Kobo, Zetaris and Nemotron transport over labelled demonstration observations and expired synthetic logistics. No field incident verified or dispatch authorized.",
+  "provision": {
+    "namespace": "community_v1",
+    "container": "portal-one-relief-db",
+    "source": "PORTALONE_COMMUNITY_V1",
+    "tables": [
+      "batches",
+      "reports",
+      "report_places",
+      "sites",
+      "logistics_scope"
+    ],
+    "operation": "Add immutable report metadata/grounding tables and limited roles; preserve synthetic v1 and all platform data.",
+    "verifiedAt": "2026-10-25T07:31:24.539Z",
+    "access": {
+      "writer_reads_stock": false,
+      "writer_updates_reports": false,
+      "reader_inserts_reports": false,
+      "site_count": 16,
+      "map_match": true
+    },
+    "sites": 16,
+    "privacy": "No report text, claimed reporter references or GPS copied to this source. Reader is SELECT-only; writer cannot read stock or update records."
+  },
+  "baseline": {
+    "run": {
+      "id": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+      "sessionId": "session-3b408c83-8ea0-4f38-8342-df405fb5c1e0",
+      "message": "Demonstration: investigate Bambili community evidence and registered logistics. Identify what must be verified before delivery planning.",
+      "cause": "operator",
+      "status": "complete",
+      "startedAt": "2026-10-25T08:07:50.341Z",
+      "finishedAt": "2026-10-25T08:09:05.758Z",
+      "result": {
+        "disposition": "hold",
+        "summary": "Retrieved 3 community reports and grounded 2 locations. Operational planning is on hold pending the listed evidence gaps.",
+        "gaps": [
+          "Multiple mapped places have this name; GPS or local clarification is required.",
+          "Community label matched; the exact incident location and affected road remain unknown.",
+          "Demonstration reports cannot corroborate a real incident.",
+          "Reporter identities and independent origins have not been verified.",
+          "Registered stock and fleet are explicitly synthetic, not a live NGO ledger.",
+          "The registered stock observation has expired; obtain a current warehouse confirmation.",
+          "The registered fleet observation has expired; obtain current vehicle availability.",
+          "Some community or incident locations remain ambiguous or unconfirmed.",
+          "Independent field origins, actual road-segment conditions, cargo requirements and delivery timing still require confirmation."
+        ],
+        "signalIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "placeIds": [
+          "places-node:2461015822",
+          "places-node:3966435269",
+          "places-node:2461015838",
+          "places-node:1744470346"
+        ],
+        "demoReports": 3,
+        "liveReports": 0,
+        "assessmentId": "assessment-28955095-fa26-404d-9595-769cf356e1bf"
+      }
+    },
+    "assessment": {
+      "id": "assessment-28955095-fa26-404d-9595-769cf356e1bf",
+      "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+      "status": "checked",
+      "evidence": {
+        "mode": "live-zetaris",
+        "sourceId": "e1e73dd04dfdf11e1cb14298cc6deeedff21a910afd172752e866c1fdeb7b636",
+        "inputRevision": "2ce654ea8129f797f8098e51018ce3eb4ce8010b3a720c9cf8ed681bc8f361b8",
+        "fetchedAt": "2026-10-25T08:08:29.762Z",
+        "revision": "3477e7da6d102fdbbe172a1744d814183b47432a64714aec1c03684b5d08fe58",
+        "reportCount": 3,
+        "demoCount": 3,
+        "liveCount": 0,
+        "forwardedCount": 0,
+        "rows": [
+          {
+            "placeId": "places-node:1744470346",
+            "name": "Bambili",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 0,
+            "unlocated": 0,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": 120,
+            "unitMassKg": 10,
+            "stockObservedAt": "2026-10-24T08:45:00Z",
+            "stockValidUntil": "2026-10-24T11:00:00Z",
+            "fleetCount": 2,
+            "availableVehicles": 2,
+            "fleetObservedAt": "2026-10-24T08:45:00Z",
+            "fleetValidUntil": "2026-10-24T11:00:00Z",
+            "logisticsSimulated": true,
+            "stockFresh": false,
+            "fleetFresh": false
+          },
+          {
+            "placeId": "places-node:2461015822",
+            "name": "Balewa",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 1,
+            "unlocated": 1,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": null,
+            "unitMassKg": null,
+            "stockObservedAt": null,
+            "stockValidUntil": null,
+            "fleetCount": null,
+            "availableVehicles": null,
+            "fleetObservedAt": null,
+            "fleetValidUntil": null,
+            "logisticsSimulated": false,
+            "stockFresh": false,
+            "fleetFresh": false
+          },
+          {
+            "placeId": "places-node:2461015838",
+            "name": "Bambui",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 0,
+            "unlocated": 0,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": null,
+            "unitMassKg": null,
+            "stockObservedAt": null,
+            "stockValidUntil": null,
+            "fleetCount": null,
+            "availableVehicles": null,
+            "fleetObservedAt": null,
+            "fleetValidUntil": null,
+            "logisticsSimulated": false,
+            "stockFresh": false,
+            "fleetFresh": false
+          },
+          {
+            "placeId": "places-node:3966435269",
+            "name": "Balewa",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 1,
+            "unlocated": 1,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": null,
+            "unitMassKg": null,
+            "stockObservedAt": null,
+            "stockValidUntil": null,
+            "fleetCount": null,
+            "availableVehicles": null,
+            "fleetObservedAt": null,
+            "fleetValidUntil": null,
+            "logisticsSimulated": false,
+            "stockFresh": false,
+            "fleetFresh": false
+          }
+        ],
+        "queries": [
+          {
+            "id": "query-587f4d41-ea6a-4568-9454-1c707ce3619d",
+            "name": "community-batch-summary",
+            "sql": "SELECT b.id,b.report_count,COUNT(r.signal_id) AS actual_count,\n      COUNT(CASE WHEN r.mode='demo' THEN 1 END) AS demo_count,COUNT(CASE WHEN r.mode='live' THEN 1 END) AS live_count,\n      COUNT(CASE WHEN r.relation='forwarded' THEN 1 END) AS forwarded_count\n      FROM PORTALONE_COMMUNITY_V1.batches b LEFT JOIN PORTALONE_COMMUNITY_V1.reports r ON r.batch_id=b.id\n      WHERE b.id='2ce654ea8129f797f8098e51018ce3eb4ce8010b3a720c9cf8ed681bc8f361b8' GROUP BY b.id,b.report_count LIMIT 2",
+            "asOf": "2026-10-25T08:08:17.456Z",
+            "fetchedAt": "2026-10-25T08:08:25.807Z",
+            "durationMs": 1279,
+            "rowCount": 1,
+            "resultHash": "381ace525a039bfcbe92a904bfd6e2efcb18d8290dec515dcdf2c5c57f57d6ae"
+          },
+          {
+            "id": "query-47cf9502-eecc-4289-83fa-bb41fba1e207",
+            "name": "community-logistics-join",
+            "sql": "SELECT c.place_id,COALESCE(s.name,'Unresolved community') AS place_name,s.map_revision AS site_map_revision,\n      c.reports,c.demo,c.live,c.ambiguous,c.unlocated,c.blockers,c.verified_origins,\n      i.available_units AS stock_units,i.unit_mass_kg,i.observed_at AS stock_observed_at,i.expires_at AS stock_valid_until,\n      v.fleet_count,v.available_vehicles,v.fleet_observed_at,v.fleet_valid_until,m.simulated AS logistics_simulated\n      FROM (SELECT p.place_id,COUNT(DISTINCT r.signal_id) AS reports,\n        COUNT(DISTINCT CASE WHEN r.mode='demo' THEN r.signal_id END) AS demo,\n        COUNT(DISTINCT CASE WHEN r.mode='live' THEN r.signal_id END) AS live,\n        COUNT(DISTINCT CASE WHEN r.ground_status='ambiguous' THEN r.signal_id END) AS ambiguous,\n        COUNT(DISTINCT CASE WHEN r.ground_status<>'named_place' THEN r.signal_id END) AS unlocated,\n        COUNT(DISTINCT CASE WHEN r.category='road_blockage' THEN r.signal_id END) AS blockers,\n        COUNT(DISTINCT CASE WHEN r.origin_verified=true THEN r.signal_id END) AS verified_origins\n        FROM PORTALONE_COMMUNITY_V1.reports r LEFT JOIN PORTALONE_COMMUNITY_V1.report_places p\n          ON p.batch_id=r.batch_id AND p.signal_id=r.signal_id\n        WHERE r.batch_id='2ce654ea8129f797f8098e51018ce3eb4ce8010b3a720c9cf8ed681bc8f361b8' GROUP BY p.place_id) c\n      LEFT JOIN PORTALONE_COMMUNITY_V1.sites s ON s.place_id=c.place_id\n      LEFT JOIN PORTALONE_COMMUNITY_V1.logistics_scope m ON m.place_id=c.place_id\n      LEFT JOIN PORTALONE_LOGISTICS_V1.inventory i ON i.depot_id=m.depot_id AND i.sku='sim-relief-kit' AND i.simulated=true\n      LEFT JOIN (SELECT depot_id,COUNT(*) AS fleet_count,COUNT(CASE WHEN available=true THEN 1 END) AS available_vehicles,\n        MAX(observed_at) AS fleet_observed_at,MIN(expires_at) AS fleet_valid_until FROM PORTALONE_LOGISTICS_V1.vehicles WHERE simulated=true GROUP BY depot_id) v ON v.depot_id=m.depot_id\n      ORDER BY c.place_id LIMIT 49",
+            "asOf": "2026-10-25T08:08:17.456Z",
+            "fetchedAt": "2026-10-25T08:08:29.746Z",
+            "durationMs": 3939,
+            "rowCount": 4,
+            "resultHash": "8264e5985c38fa63fa6705c7f9cc0e3d3661dae49fac37d600fe207b0a8e73cf"
+          }
+        ]
+      },
+      "advice": {
+        "placeId": "places-node:1744470346",
+        "nextAction": "verify_location",
+        "rationale": "Bambili has synthetic stock/fleet with expired validity; must ground location via OSM and confirm current warehouse/vehicle status before any planning."
+      },
+      "createdAt": "2026-10-25T08:08:36.872Z",
+      "reason": null,
+      "checks": [
+        {
+          "id": "check-9fc99a18-836f-437f-890c-0f64c5a1d74f",
+          "matched": true,
+          "evidence": {
+            "mode": "live-zetaris",
+            "sourceId": "e1e73dd04dfdf11e1cb14298cc6deeedff21a910afd172752e866c1fdeb7b636",
+            "inputRevision": "2ce654ea8129f797f8098e51018ce3eb4ce8010b3a720c9cf8ed681bc8f361b8",
+            "fetchedAt": "2026-10-25T08:08:57.319Z",
+            "revision": "3477e7da6d102fdbbe172a1744d814183b47432a64714aec1c03684b5d08fe58",
+            "reportCount": 3,
+            "demoCount": 3,
+            "liveCount": 0,
+            "forwardedCount": 0,
+            "rows": [
+              {
+                "placeId": "places-node:1744470346",
+                "name": "Bambili",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 0,
+                "unlocated": 0,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": 120,
+                "unitMassKg": 10,
+                "stockObservedAt": "2026-10-24T08:45:00Z",
+                "stockValidUntil": "2026-10-24T11:00:00Z",
+                "fleetCount": 2,
+                "availableVehicles": 2,
+                "fleetObservedAt": "2026-10-24T08:45:00Z",
+                "fleetValidUntil": "2026-10-24T11:00:00Z",
+                "logisticsSimulated": true,
+                "stockFresh": false,
+                "fleetFresh": false
+              },
+              {
+                "placeId": "places-node:2461015822",
+                "name": "Balewa",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 1,
+                "unlocated": 1,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": null,
+                "unitMassKg": null,
+                "stockObservedAt": null,
+                "stockValidUntil": null,
+                "fleetCount": null,
+                "availableVehicles": null,
+                "fleetObservedAt": null,
+                "fleetValidUntil": null,
+                "logisticsSimulated": false,
+                "stockFresh": false,
+                "fleetFresh": false
+              },
+              {
+                "placeId": "places-node:2461015838",
+                "name": "Bambui",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 0,
+                "unlocated": 0,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": null,
+                "unitMassKg": null,
+                "stockObservedAt": null,
+                "stockValidUntil": null,
+                "fleetCount": null,
+                "availableVehicles": null,
+                "fleetObservedAt": null,
+                "fleetValidUntil": null,
+                "logisticsSimulated": false,
+                "stockFresh": false,
+                "fleetFresh": false
+              },
+              {
+                "placeId": "places-node:3966435269",
+                "name": "Balewa",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 1,
+                "unlocated": 1,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": null,
+                "unitMassKg": null,
+                "stockObservedAt": null,
+                "stockValidUntil": null,
+                "fleetCount": null,
+                "availableVehicles": null,
+                "fleetObservedAt": null,
+                "fleetValidUntil": null,
+                "logisticsSimulated": false,
+                "stockFresh": false,
+                "fleetFresh": false
+              }
+            ],
+            "queries": [
+              {
+                "id": "query-5069d124-62d2-42ab-86da-dfef8e7c2250",
+                "name": "community-batch-summary",
+                "sql": "SELECT b.id,b.report_count,COUNT(r.signal_id) AS actual_count,\n      COUNT(CASE WHEN r.mode='demo' THEN 1 END) AS demo_count,COUNT(CASE WHEN r.mode='live' THEN 1 END) AS live_count,\n      COUNT(CASE WHEN r.relation='forwarded' THEN 1 END) AS forwarded_count\n      FROM PORTALONE_COMMUNITY_V1.batches b LEFT JOIN PORTALONE_COMMUNITY_V1.reports r ON r.batch_id=b.id\n      WHERE b.id='2ce654ea8129f797f8098e51018ce3eb4ce8010b3a720c9cf8ed681bc8f361b8' GROUP BY b.id,b.report_count LIMIT 2",
+                "asOf": "2026-10-25T08:08:49.603Z",
+                "fetchedAt": "2026-10-25T08:08:52.994Z",
+                "durationMs": 1624,
+                "rowCount": 1,
+                "resultHash": "381ace525a039bfcbe92a904bfd6e2efcb18d8290dec515dcdf2c5c57f57d6ae"
+              },
+              {
+                "id": "query-253894b4-f69b-4e40-a653-92907406736e",
+                "name": "community-logistics-join",
+                "sql": "SELECT c.place_id,COALESCE(s.name,'Unresolved community') AS place_name,s.map_revision AS site_map_revision,\n      c.reports,c.demo,c.live,c.ambiguous,c.unlocated,c.blockers,c.verified_origins,\n      i.available_units AS stock_units,i.unit_mass_kg,i.observed_at AS stock_observed_at,i.expires_at AS stock_valid_until,\n      v.fleet_count,v.available_vehicles,v.fleet_observed_at,v.fleet_valid_until,m.simulated AS logistics_simulated\n      FROM (SELECT p.place_id,COUNT(DISTINCT r.signal_id) AS reports,\n        COUNT(DISTINCT CASE WHEN r.mode='demo' THEN r.signal_id END) AS demo,\n        COUNT(DISTINCT CASE WHEN r.mode='live' THEN r.signal_id END) AS live,\n        COUNT(DISTINCT CASE WHEN r.ground_status='ambiguous' THEN r.signal_id END) AS ambiguous,\n        COUNT(DISTINCT CASE WHEN r.ground_status<>'named_place' THEN r.signal_id END) AS unlocated,\n        COUNT(DISTINCT CASE WHEN r.category='road_blockage' THEN r.signal_id END) AS blockers,\n        COUNT(DISTINCT CASE WHEN r.origin_verified=true THEN r.signal_id END) AS verified_origins\n        FROM PORTALONE_COMMUNITY_V1.reports r LEFT JOIN PORTALONE_COMMUNITY_V1.report_places p\n          ON p.batch_id=r.batch_id AND p.signal_id=r.signal_id\n        WHERE r.batch_id='2ce654ea8129f797f8098e51018ce3eb4ce8010b3a720c9cf8ed681bc8f361b8' GROUP BY p.place_id) c\n      LEFT JOIN PORTALONE_COMMUNITY_V1.sites s ON s.place_id=c.place_id\n      LEFT JOIN PORTALONE_COMMUNITY_V1.logistics_scope m ON m.place_id=c.place_id\n      LEFT JOIN PORTALONE_LOGISTICS_V1.inventory i ON i.depot_id=m.depot_id AND i.sku='sim-relief-kit' AND i.simulated=true\n      LEFT JOIN (SELECT depot_id,COUNT(*) AS fleet_count,COUNT(CASE WHEN available=true THEN 1 END) AS available_vehicles,\n        MAX(observed_at) AS fleet_observed_at,MIN(expires_at) AS fleet_valid_until FROM PORTALONE_LOGISTICS_V1.vehicles WHERE simulated=true GROUP BY depot_id) v ON v.depot_id=m.depot_id\n      ORDER BY c.place_id LIMIT 49",
+                "asOf": "2026-10-25T08:08:49.603Z",
+                "fetchedAt": "2026-10-25T08:08:57.318Z",
+                "durationMs": 4324,
+                "rowCount": 4,
+                "resultHash": "8264e5985c38fa63fa6705c7f9cc0e3d3661dae49fac37d600fe207b0a8e73cf"
+              }
+            ]
+          },
+          "at": "2026-10-25T08:08:57.332Z"
+        }
+      ]
+    },
+    "events": [
+      {
+        "seq": 112,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "started",
+        "detail": "Investigate community signals, ground places, then run an independent readiness check.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:07:50.349Z"
+      },
+      {
+        "seq": 113,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":534,\"completion_tokens\":31,\"total_tokens\":565},\"durationMs\":7089}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:07:57.481Z"
+      },
+      {
+        "seq": 114,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Fetch actual KoboToolbox project data for Bambili to establish baseline community signals and mapped context.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:07:57.485Z"
+      },
+      {
+        "seq": 115,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-64bf7536-2bd5-4a4b-873b-5b8b8f4fb06e",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "recon",
+        "kind": "task_started",
+        "detail": "recon.collect",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:07:57.500Z"
+      },
+      {
+        "seq": 116,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-64bf7536-2bd5-4a4b-873b-5b8b8f4fb06e",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "recon",
+        "kind": "evidence_gap",
+        "detail": "Kobo returned 3 records (3 demonstration); 0 new or edited versions.",
+        "evidenceIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:07:58.596Z"
+      },
+      {
+        "seq": 117,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":690,\"completion_tokens\":29,\"total_tokens\":719},\"durationMs\":8233}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:06.835Z"
+      },
+      {
+        "seq": 118,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Resolve Bambili place labels against OSM to ground location and identify missing provenance fields.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:06.838Z"
+      },
+      {
+        "seq": 119,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-61132d94-be7a-44a5-85ef-c3b604c40220",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "mapping",
+        "kind": "task_started",
+        "detail": "mapping.ground",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:06.849Z"
+      },
+      {
+        "seq": 120,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-61132d94-be7a-44a5-85ef-c3b604c40220",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "mapping",
+        "kind": "evidence_gap",
+        "detail": "2 community labels matched; road-level location remains unconfirmed.",
+        "evidenceIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:08:06.863Z"
+      },
+      {
+        "seq": 121,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":904,\"completion_tokens\":24,\"total_tokens\":928},\"durationMs\":10566}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:17.435Z"
+      },
+      {
+        "seq": 122,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Verify missing location and provenance fields before operational readiness check.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:17.438Z"
+      },
+      {
+        "seq": 123,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-335ff65b-0890-460f-8ce9-c89647e93b01",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "recon",
+        "kind": "task_started",
+        "detail": "Recheck the source for the missing fields: Multiple mapped places have this name; GPS or local clarification is required. Community label matched; the exact incident location and affected road remain unknown. Demonstration reports cannot corroborate a real incident. Reporter identities and independent origins have not been verified.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:17.448Z"
+      },
+      {
+        "seq": 124,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-335ff65b-0890-460f-8ce9-c89647e93b01",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "recon",
+        "kind": "evidence_gap",
+        "detail": "Kobo returned 3 records (3 demonstration); 0 new or edited versions.",
+        "evidenceIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:08:18.504Z"
+      },
+      {
+        "seq": 125,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":1087,\"completion_tokens\":27,\"total_tokens\":1114},\"durationMs\":5626}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:24.136Z"
+      },
+      {
+        "seq": 126,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Assess compact federated evidence and stock/fleet before operational planning.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:24.141Z"
+      },
+      {
+        "seq": 127,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-152f91fe-0e53-4fe3-910d-a01ffb54f996",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "logistics",
+        "kind": "task_started",
+        "detail": "logistics.assess",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:24.150Z"
+      },
+      {
+        "seq": 128,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-152f91fe-0e53-4fe3-910d-a01ffb54f996",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "logistics",
+        "kind": "query",
+        "detail": "community-batch-summary: 1 bounded rows in 1279 ms.",
+        "evidenceIds": [
+          "query-587f4d41-ea6a-4568-9454-1c707ce3619d"
+        ],
+        "at": "2026-10-25T08:08:29.764Z"
+      },
+      {
+        "seq": 129,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-152f91fe-0e53-4fe3-910d-a01ffb54f996",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "logistics",
+        "kind": "query",
+        "detail": "community-logistics-join: 4 bounded rows in 3939 ms.",
+        "evidenceIds": [
+          "query-47cf9502-eecc-4289-83fa-bb41fba1e207"
+        ],
+        "at": "2026-10-25T08:08:29.768Z"
+      },
+      {
+        "seq": 130,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-152f91fe-0e53-4fe3-910d-a01ffb54f996",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "logistics",
+        "kind": "federated_evidence",
+        "detail": "live-zetaris: 3 reports, 4 community candidates; revision 3477e7da6d10.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:29.771Z"
+      },
+      {
+        "seq": 131,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-152f91fe-0e53-4fe3-910d-a01ffb54f996",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "logistics",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/deep\",\"reasoningRequested\":false,\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"providerHeader\":null,\"modelHeader\":null,\"usage\":{\"prompt_tokens\":1228,\"completion_tokens\":58,\"total_tokens\":1286},\"durationMs\":7086}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:36.868Z"
+      },
+      {
+        "seq": 132,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-152f91fe-0e53-4fe3-910d-a01ffb54f996",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "logistics",
+        "kind": "evidence_gap",
+        "detail": "Bambili has synthetic stock/fleet with expired validity; must ground location via OSM and confirm current warehouse/vehicle status before any planning.",
+        "evidenceIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:08:36.878Z"
+      },
+      {
+        "seq": 133,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":1322,\"completion_tokens\":27,\"total_tokens\":1349},\"durationMs\":5157}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:42.042Z"
+      },
+      {
+        "seq": 134,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegation_rejected",
+        "detail": "Rejected task logistics.assess: required evidence gate. Select exactly one of [\"checker.check\"].",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:42.045Z"
+      },
+      {
+        "seq": 135,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":1349,\"completion_tokens\":22,\"total_tokens\":1371},\"durationMs\":7535}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:49.586Z"
+      },
+      {
+        "seq": 136,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Run independent operational readiness check on current evidence and gaps.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:49.591Z"
+      },
+      {
+        "seq": 137,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-e92cfdf2-f9c4-4296-8776-4392da960e86",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "checker",
+        "kind": "task_started",
+        "detail": "checker.check",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:49.600Z"
+      },
+      {
+        "seq": 138,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-e92cfdf2-f9c4-4296-8776-4392da960e86",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "checker",
+        "kind": "query",
+        "detail": "community-batch-summary: 1 bounded rows in 1624 ms.",
+        "evidenceIds": [
+          "query-5069d124-62d2-42ab-86da-dfef8e7c2250"
+        ],
+        "at": "2026-10-25T08:08:57.320Z"
+      },
+      {
+        "seq": 139,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-e92cfdf2-f9c4-4296-8776-4392da960e86",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "checker",
+        "kind": "query",
+        "detail": "community-logistics-join: 4 bounded rows in 4324 ms.",
+        "evidenceIds": [
+          "query-253894b4-f69b-4e40-a653-92907406736e"
+        ],
+        "at": "2026-10-25T08:08:57.323Z"
+      },
+      {
+        "seq": 140,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-e92cfdf2-f9c4-4296-8776-4392da960e86",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "checker",
+        "kind": "federated_evidence",
+        "detail": "live-zetaris: 3 reports, 4 community candidates; revision 3477e7da6d10.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:08:57.327Z"
+      },
+      {
+        "seq": 141,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-e92cfdf2-f9c4-4296-8776-4392da960e86",
+        "parentTaskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "actor": "checker",
+        "kind": "evidence_gap",
+        "detail": "Hold. Independent federation check completed; current field and logistics evidence does not support dispatch.",
+        "evidenceIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:08:57.343Z"
+      },
+      {
+        "seq": 142,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":1584,\"completion_tokens\":20,\"total_tokens\":1604},\"durationMs\":8387}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:05.739Z"
+      },
+      {
+        "seq": 143,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "synthesis",
+        "detail": "All evidence reviewed; gaps remain; no dispatch authorized.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:05.743Z"
+      },
+      {
+        "seq": 144,
+        "runId": "mission-29e840d7-9f88-4f13-b42c-4dd7b785b82f",
+        "taskId": "task-711894e4-6c07-42a5-8a34-f62051df2eef",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "hold",
+        "detail": "Retrieved 3 community reports and grounded 2 locations. Operational planning is on hold pending the listed evidence gaps.",
+        "evidenceIds": [
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:09:05.750Z"
+      }
+    ]
+  },
+  "changed": {
+    "run": {
+      "id": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+      "sessionId": "session-3b408c83-8ea0-4f38-8342-df405fb5c1e0",
+      "message": "Demonstration: investigate Bambili community evidence and registered logistics. Identify what must be verified before delivery planning.",
+      "cause": "source_change",
+      "status": "complete",
+      "startedAt": "2026-10-25T08:09:29.957Z",
+      "finishedAt": "2026-10-25T08:10:47.320Z",
+      "result": {
+        "disposition": "hold",
+        "summary": "Retrieved 4 community reports and grounded 3 locations. Operational planning is on hold pending the listed evidence gaps.",
+        "gaps": [
+          "Community label matched; the exact incident location and affected road remain unknown.",
+          "Multiple mapped places have this name; GPS or local clarification is required.",
+          "Demonstration reports cannot corroborate a real incident.",
+          "Reporter identities and independent origins have not been verified.",
+          "Registered stock and fleet are explicitly synthetic, not a live NGO ledger.",
+          "The registered stock observation has expired; obtain a current warehouse confirmation.",
+          "The registered fleet observation has expired; obtain current vehicle availability.",
+          "Some community or incident locations remain ambiguous or unconfirmed.",
+          "Independent field origins, actual road-segment conditions, cargo requirements and delivery timing still require confirmation."
+        ],
+        "signalIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "placeIds": [
+          "places-node:1744470346",
+          "places-node:2461015822",
+          "places-node:3966435269",
+          "places-node:2461015838"
+        ],
+        "demoReports": 4,
+        "liveReports": 0,
+        "assessmentId": "assessment-82544bf6-2a0b-4a90-b990-ca75ad13f4d7"
+      }
+    },
+    "assessment": {
+      "id": "assessment-82544bf6-2a0b-4a90-b990-ca75ad13f4d7",
+      "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+      "status": "checked",
+      "evidence": {
+        "mode": "live-zetaris",
+        "sourceId": "e1e73dd04dfdf11e1cb14298cc6deeedff21a910afd172752e866c1fdeb7b636",
+        "inputRevision": "cf67a1d2fea7835648da8f4d1bd79297c1c16d3c426055f03c0dc4d7f8b75f07",
+        "fetchedAt": "2026-10-25T08:10:12.901Z",
+        "revision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "reportCount": 4,
+        "demoCount": 4,
+        "liveCount": 0,
+        "forwardedCount": 1,
+        "rows": [
+          {
+            "placeId": "places-node:1744470346",
+            "name": "Bambili",
+            "reports": 2,
+            "demo": 2,
+            "live": 0,
+            "ambiguous": 0,
+            "unlocated": 0,
+            "blockers": 1,
+            "verifiedOrigins": 0,
+            "stockUnits": 120,
+            "unitMassKg": 10,
+            "stockObservedAt": "2026-10-24T08:45:00Z",
+            "stockValidUntil": "2026-10-24T11:00:00Z",
+            "fleetCount": 2,
+            "availableVehicles": 2,
+            "fleetObservedAt": "2026-10-24T08:45:00Z",
+            "fleetValidUntil": "2026-10-24T11:00:00Z",
+            "logisticsSimulated": true,
+            "stockFresh": false,
+            "fleetFresh": false
+          },
+          {
+            "placeId": "places-node:2461015822",
+            "name": "Balewa",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 1,
+            "unlocated": 1,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": null,
+            "unitMassKg": null,
+            "stockObservedAt": null,
+            "stockValidUntil": null,
+            "fleetCount": null,
+            "availableVehicles": null,
+            "fleetObservedAt": null,
+            "fleetValidUntil": null,
+            "logisticsSimulated": false,
+            "stockFresh": false,
+            "fleetFresh": false
+          },
+          {
+            "placeId": "places-node:2461015838",
+            "name": "Bambui",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 0,
+            "unlocated": 0,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": null,
+            "unitMassKg": null,
+            "stockObservedAt": null,
+            "stockValidUntil": null,
+            "fleetCount": null,
+            "availableVehicles": null,
+            "fleetObservedAt": null,
+            "fleetValidUntil": null,
+            "logisticsSimulated": false,
+            "stockFresh": false,
+            "fleetFresh": false
+          },
+          {
+            "placeId": "places-node:3966435269",
+            "name": "Balewa",
+            "reports": 1,
+            "demo": 1,
+            "live": 0,
+            "ambiguous": 1,
+            "unlocated": 1,
+            "blockers": 0,
+            "verifiedOrigins": 0,
+            "stockUnits": null,
+            "unitMassKg": null,
+            "stockObservedAt": null,
+            "stockValidUntil": null,
+            "fleetCount": null,
+            "availableVehicles": null,
+            "fleetObservedAt": null,
+            "fleetValidUntil": null,
+            "logisticsSimulated": false,
+            "stockFresh": false,
+            "fleetFresh": false
+          }
+        ],
+        "queries": [
+          {
+            "id": "query-7b2ce44b-21a1-4923-8c3c-a521f2417930",
+            "name": "community-batch-summary",
+            "sql": "SELECT b.id,b.report_count,COUNT(r.signal_id) AS actual_count,\n      COUNT(CASE WHEN r.mode='demo' THEN 1 END) AS demo_count,COUNT(CASE WHEN r.mode='live' THEN 1 END) AS live_count,\n      COUNT(CASE WHEN r.relation='forwarded' THEN 1 END) AS forwarded_count\n      FROM PORTALONE_COMMUNITY_V1.batches b LEFT JOIN PORTALONE_COMMUNITY_V1.reports r ON r.batch_id=b.id\n      WHERE b.id='cf67a1d2fea7835648da8f4d1bd79297c1c16d3c426055f03c0dc4d7f8b75f07' GROUP BY b.id,b.report_count LIMIT 2",
+            "asOf": "2026-10-25T08:10:00.822Z",
+            "fetchedAt": "2026-10-25T08:10:10.165Z",
+            "durationMs": 608,
+            "rowCount": 1,
+            "resultHash": "1b04bed4da055f4552849bd6c086ea656177f9fe4e06ae4f0bb88d6058e5468a"
+          },
+          {
+            "id": "query-a01656a8-336f-4f7c-a64e-ffe159d1d72b",
+            "name": "community-logistics-join",
+            "sql": "SELECT c.place_id,COALESCE(s.name,'Unresolved community') AS place_name,s.map_revision AS site_map_revision,\n      c.reports,c.demo,c.live,c.ambiguous,c.unlocated,c.blockers,c.verified_origins,\n      i.available_units AS stock_units,i.unit_mass_kg,i.observed_at AS stock_observed_at,i.expires_at AS stock_valid_until,\n      v.fleet_count,v.available_vehicles,v.fleet_observed_at,v.fleet_valid_until,m.simulated AS logistics_simulated\n      FROM (SELECT p.place_id,COUNT(DISTINCT r.signal_id) AS reports,\n        COUNT(DISTINCT CASE WHEN r.mode='demo' THEN r.signal_id END) AS demo,\n        COUNT(DISTINCT CASE WHEN r.mode='live' THEN r.signal_id END) AS live,\n        COUNT(DISTINCT CASE WHEN r.ground_status='ambiguous' THEN r.signal_id END) AS ambiguous,\n        COUNT(DISTINCT CASE WHEN r.ground_status<>'named_place' THEN r.signal_id END) AS unlocated,\n        COUNT(DISTINCT CASE WHEN r.category='road_blockage' THEN r.signal_id END) AS blockers,\n        COUNT(DISTINCT CASE WHEN r.origin_verified=true THEN r.signal_id END) AS verified_origins\n        FROM PORTALONE_COMMUNITY_V1.reports r LEFT JOIN PORTALONE_COMMUNITY_V1.report_places p\n          ON p.batch_id=r.batch_id AND p.signal_id=r.signal_id\n        WHERE r.batch_id='cf67a1d2fea7835648da8f4d1bd79297c1c16d3c426055f03c0dc4d7f8b75f07' GROUP BY p.place_id) c\n      LEFT JOIN PORTALONE_COMMUNITY_V1.sites s ON s.place_id=c.place_id\n      LEFT JOIN PORTALONE_COMMUNITY_V1.logistics_scope m ON m.place_id=c.place_id\n      LEFT JOIN PORTALONE_LOGISTICS_V1.inventory i ON i.depot_id=m.depot_id AND i.sku='sim-relief-kit' AND i.simulated=true\n      LEFT JOIN (SELECT depot_id,COUNT(*) AS fleet_count,COUNT(CASE WHEN available=true THEN 1 END) AS available_vehicles,\n        MAX(observed_at) AS fleet_observed_at,MIN(expires_at) AS fleet_valid_until FROM PORTALONE_LOGISTICS_V1.vehicles WHERE simulated=true GROUP BY depot_id) v ON v.depot_id=m.depot_id\n      ORDER BY c.place_id LIMIT 49",
+            "asOf": "2026-10-25T08:10:00.822Z",
+            "fetchedAt": "2026-10-25T08:10:12.900Z",
+            "durationMs": 2735,
+            "rowCount": 4,
+            "resultHash": "e74f3c785a6c2ff65bae52b202ca6f021d3158fe6eaf5f65c44759f8e70505b7"
+          }
+        ]
+      },
+      "advice": {
+        "placeId": "places-node:1744470346",
+        "nextAction": "verify_location",
+        "rationale": "Bambili has synthetic stock/fleet with expired validity; must ground location via OSM and confirm current warehouse/vehicle status before any planning."
+      },
+      "createdAt": "2026-10-25T08:10:19.045Z",
+      "reason": null,
+      "checks": [
+        {
+          "id": "check-4af16138-ce41-44d0-8059-0ed51732b90a",
+          "matched": true,
+          "evidence": {
+            "mode": "live-zetaris",
+            "sourceId": "e1e73dd04dfdf11e1cb14298cc6deeedff21a910afd172752e866c1fdeb7b636",
+            "inputRevision": "cf67a1d2fea7835648da8f4d1bd79297c1c16d3c426055f03c0dc4d7f8b75f07",
+            "fetchedAt": "2026-10-25T08:10:40.148Z",
+            "revision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+            "reportCount": 4,
+            "demoCount": 4,
+            "liveCount": 0,
+            "forwardedCount": 1,
+            "rows": [
+              {
+                "placeId": "places-node:1744470346",
+                "name": "Bambili",
+                "reports": 2,
+                "demo": 2,
+                "live": 0,
+                "ambiguous": 0,
+                "unlocated": 0,
+                "blockers": 1,
+                "verifiedOrigins": 0,
+                "stockUnits": 120,
+                "unitMassKg": 10,
+                "stockObservedAt": "2026-10-24T08:45:00Z",
+                "stockValidUntil": "2026-10-24T11:00:00Z",
+                "fleetCount": 2,
+                "availableVehicles": 2,
+                "fleetObservedAt": "2026-10-24T08:45:00Z",
+                "fleetValidUntil": "2026-10-24T11:00:00Z",
+                "logisticsSimulated": true,
+                "stockFresh": false,
+                "fleetFresh": false
+              },
+              {
+                "placeId": "places-node:2461015822",
+                "name": "Balewa",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 1,
+                "unlocated": 1,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": null,
+                "unitMassKg": null,
+                "stockObservedAt": null,
+                "stockValidUntil": null,
+                "fleetCount": null,
+                "availableVehicles": null,
+                "fleetObservedAt": null,
+                "fleetValidUntil": null,
+                "logisticsSimulated": false,
+                "stockFresh": false,
+                "fleetFresh": false
+              },
+              {
+                "placeId": "places-node:2461015838",
+                "name": "Bambui",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 0,
+                "unlocated": 0,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": null,
+                "unitMassKg": null,
+                "stockObservedAt": null,
+                "stockValidUntil": null,
+                "fleetCount": null,
+                "availableVehicles": null,
+                "fleetObservedAt": null,
+                "fleetValidUntil": null,
+                "logisticsSimulated": false,
+                "stockFresh": false,
+                "fleetFresh": false
+              },
+              {
+                "placeId": "places-node:3966435269",
+                "name": "Balewa",
+                "reports": 1,
+                "demo": 1,
+                "live": 0,
+                "ambiguous": 1,
+                "unlocated": 1,
+                "blockers": 0,
+                "verifiedOrigins": 0,
+                "stockUnits": null,
+                "unitMassKg": null,
+                "stockObservedAt": null,
+                "stockValidUntil": null,
+                "fleetCount": null,
+                "availableVehicles": null,
+                "fleetObservedAt": null,
+                "fleetValidUntil": null,
+                "logisticsSimulated": false,
+                "stockFresh": false,
+                "fleetFresh": false
+              }
+            ],
+            "queries": [
+              {
+                "id": "query-aa77b246-cfaa-47b9-a400-e37781ccbfb1",
+                "name": "community-batch-summary",
+                "sql": "SELECT b.id,b.report_count,COUNT(r.signal_id) AS actual_count,\n      COUNT(CASE WHEN r.mode='demo' THEN 1 END) AS demo_count,COUNT(CASE WHEN r.mode='live' THEN 1 END) AS live_count,\n      COUNT(CASE WHEN r.relation='forwarded' THEN 1 END) AS forwarded_count\n      FROM PORTALONE_COMMUNITY_V1.batches b LEFT JOIN PORTALONE_COMMUNITY_V1.reports r ON r.batch_id=b.id\n      WHERE b.id='cf67a1d2fea7835648da8f4d1bd79297c1c16d3c426055f03c0dc4d7f8b75f07' GROUP BY b.id,b.report_count LIMIT 2",
+                "asOf": "2026-10-25T08:10:35.474Z",
+                "fetchedAt": "2026-10-25T08:10:37.343Z",
+                "durationMs": 578,
+                "rowCount": 1,
+                "resultHash": "1b04bed4da055f4552849bd6c086ea656177f9fe4e06ae4f0bb88d6058e5468a"
+              },
+              {
+                "id": "query-2b2fde5c-5e1d-4d1d-be1c-792750264d90",
+                "name": "community-logistics-join",
+                "sql": "SELECT c.place_id,COALESCE(s.name,'Unresolved community') AS place_name,s.map_revision AS site_map_revision,\n      c.reports,c.demo,c.live,c.ambiguous,c.unlocated,c.blockers,c.verified_origins,\n      i.available_units AS stock_units,i.unit_mass_kg,i.observed_at AS stock_observed_at,i.expires_at AS stock_valid_until,\n      v.fleet_count,v.available_vehicles,v.fleet_observed_at,v.fleet_valid_until,m.simulated AS logistics_simulated\n      FROM (SELECT p.place_id,COUNT(DISTINCT r.signal_id) AS reports,\n        COUNT(DISTINCT CASE WHEN r.mode='demo' THEN r.signal_id END) AS demo,\n        COUNT(DISTINCT CASE WHEN r.mode='live' THEN r.signal_id END) AS live,\n        COUNT(DISTINCT CASE WHEN r.ground_status='ambiguous' THEN r.signal_id END) AS ambiguous,\n        COUNT(DISTINCT CASE WHEN r.ground_status<>'named_place' THEN r.signal_id END) AS unlocated,\n        COUNT(DISTINCT CASE WHEN r.category='road_blockage' THEN r.signal_id END) AS blockers,\n        COUNT(DISTINCT CASE WHEN r.origin_verified=true THEN r.signal_id END) AS verified_origins\n        FROM PORTALONE_COMMUNITY_V1.reports r LEFT JOIN PORTALONE_COMMUNITY_V1.report_places p\n          ON p.batch_id=r.batch_id AND p.signal_id=r.signal_id\n        WHERE r.batch_id='cf67a1d2fea7835648da8f4d1bd79297c1c16d3c426055f03c0dc4d7f8b75f07' GROUP BY p.place_id) c\n      LEFT JOIN PORTALONE_COMMUNITY_V1.sites s ON s.place_id=c.place_id\n      LEFT JOIN PORTALONE_COMMUNITY_V1.logistics_scope m ON m.place_id=c.place_id\n      LEFT JOIN PORTALONE_LOGISTICS_V1.inventory i ON i.depot_id=m.depot_id AND i.sku='sim-relief-kit' AND i.simulated=true\n      LEFT JOIN (SELECT depot_id,COUNT(*) AS fleet_count,COUNT(CASE WHEN available=true THEN 1 END) AS available_vehicles,\n        MAX(observed_at) AS fleet_observed_at,MIN(expires_at) AS fleet_valid_until FROM PORTALONE_LOGISTICS_V1.vehicles WHERE simulated=true GROUP BY depot_id) v ON v.depot_id=m.depot_id\n      ORDER BY c.place_id LIMIT 49",
+                "asOf": "2026-10-25T08:10:35.474Z",
+                "fetchedAt": "2026-10-25T08:10:40.147Z",
+                "durationMs": 2804,
+                "rowCount": 4,
+                "resultHash": "e74f3c785a6c2ff65bae52b202ca6f021d3158fe6eaf5f65c44759f8e70505b7"
+              }
+            ]
+          },
+          "at": "2026-10-25T08:10:40.162Z"
+        }
+      ]
+    },
+    "events": [
+      {
+        "seq": 146,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "started",
+        "detail": "Investigate community signals, ground places, then run an independent readiness check.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:29.967Z"
+      },
+      {
+        "seq": 147,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "intake",
+        "kind": "source_change",
+        "detail": "1 new or edited report versions triggered this investigation.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1"
+        ],
+        "at": "2026-10-25T08:09:29.973Z"
+      },
+      {
+        "seq": 148,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":538,\"completion_tokens\":31,\"total_tokens\":569},\"durationMs\":14424}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:44.408Z"
+      },
+      {
+        "seq": 149,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Fetch actual KoboToolbox project data for Bambili to establish baseline community signals and mapped context.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:44.413Z"
+      },
+      {
+        "seq": 150,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-6b92e8b5-f526-4db2-8f3b-71b070db8e88",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "recon",
+        "kind": "task_started",
+        "detail": "recon.collect",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:44.430Z"
+      },
+      {
+        "seq": 151,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-6b92e8b5-f526-4db2-8f3b-71b070db8e88",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "recon",
+        "kind": "evidence_gap",
+        "detail": "Kobo returned 4 records (4 demonstration); 0 new or edited versions.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:09:45.372Z"
+      },
+      {
+        "seq": 152,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":719,\"completion_tokens\":29,\"total_tokens\":748},\"durationMs\":9298}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:54.677Z"
+      },
+      {
+        "seq": 153,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Resolve Bambili place labels against OSM to ground location and identify missing provenance fields.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:54.681Z"
+      },
+      {
+        "seq": 154,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-12527864-d3ca-478d-95ef-743fc3b75f9e",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "mapping",
+        "kind": "task_started",
+        "detail": "mapping.ground",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:09:54.691Z"
+      },
+      {
+        "seq": 155,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-12527864-d3ca-478d-95ef-743fc3b75f9e",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "mapping",
+        "kind": "evidence_gap",
+        "detail": "3 community labels matched; road-level location remains unconfirmed.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:09:54.704Z"
+      },
+      {
+        "seq": 156,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3.5-lightning-30b-a3b\",\"usage\":{\"prompt_tokens\":963,\"completion_tokens\":28,\"total_tokens\":991},\"durationMs\":6080}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:00.793Z"
+      },
+      {
+        "seq": 157,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Confirm exact missing location and provenance fields for all 4 records before operational planning",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:00.799Z"
+      },
+      {
+        "seq": 158,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-1e8bc2e9-8014-4171-a8ad-5ac549db8170",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "recon",
+        "kind": "task_started",
+        "detail": "Recheck the source for the missing fields: Community label matched; the exact incident location and affected road remain unknown. Multiple mapped places have this name; GPS or local clarification is required. Demonstration reports cannot corroborate a real incident. Reporter identities and independent origins have not been verified.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:00.810Z"
+      },
+      {
+        "seq": 159,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-1e8bc2e9-8014-4171-a8ad-5ac549db8170",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "recon",
+        "kind": "evidence_gap",
+        "detail": "Kobo returned 4 records (4 demonstration); 0 new or edited versions.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:10:01.766Z"
+      },
+      {
+        "seq": 160,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":1183,\"completion_tokens\":27,\"total_tokens\":1210},\"durationMs\":7458}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:09.230Z"
+      },
+      {
+        "seq": 161,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Assess compact federated evidence and stock/fleet before operational planning.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:09.233Z"
+      },
+      {
+        "seq": 162,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-2147f4b6-2185-410b-8e10-66221fcee14c",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "logistics",
+        "kind": "task_started",
+        "detail": "logistics.assess",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:09.241Z"
+      },
+      {
+        "seq": 163,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-2147f4b6-2185-410b-8e10-66221fcee14c",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "logistics",
+        "kind": "query",
+        "detail": "community-batch-summary: 1 bounded rows in 608 ms.",
+        "evidenceIds": [
+          "query-7b2ce44b-21a1-4923-8c3c-a521f2417930"
+        ],
+        "at": "2026-10-25T08:10:12.901Z"
+      },
+      {
+        "seq": 164,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-2147f4b6-2185-410b-8e10-66221fcee14c",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "logistics",
+        "kind": "query",
+        "detail": "community-logistics-join: 4 bounded rows in 2735 ms.",
+        "evidenceIds": [
+          "query-a01656a8-336f-4f7c-a64e-ffe159d1d72b"
+        ],
+        "at": "2026-10-25T08:10:12.905Z"
+      },
+      {
+        "seq": 165,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-2147f4b6-2185-410b-8e10-66221fcee14c",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "logistics",
+        "kind": "federated_evidence",
+        "detail": "live-zetaris: 4 reports, 4 community candidates; revision eb7369156c10.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:12.908Z"
+      },
+      {
+        "seq": 166,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-2147f4b6-2185-410b-8e10-66221fcee14c",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "logistics",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/deep\",\"reasoningRequested\":false,\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"providerHeader\":null,\"modelHeader\":null,\"usage\":{\"prompt_tokens\":1260,\"completion_tokens\":58,\"total_tokens\":1318},\"durationMs\":6129}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:19.041Z"
+      },
+      {
+        "seq": 167,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-2147f4b6-2185-410b-8e10-66221fcee14c",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "logistics",
+        "kind": "evidence_gap",
+        "detail": "Bambili has synthetic stock/fleet with expired validity; must ground location via OSM and confirm current warehouse/vehicle status before any planning.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:10:19.050Z"
+      },
+      {
+        "seq": 168,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":1440,\"completion_tokens\":22,\"total_tokens\":1462},\"durationMs\":16400}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:35.456Z"
+      },
+      {
+        "seq": 169,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "delegated",
+        "detail": "Run independent operational readiness check on current evidence and gaps.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:35.463Z"
+      },
+      {
+        "seq": 170,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-85a8e68b-82b2-48e4-89f5-28fba6ae0b77",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "checker",
+        "kind": "task_started",
+        "detail": "checker.check",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:35.471Z"
+      },
+      {
+        "seq": 171,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-85a8e68b-82b2-48e4-89f5-28fba6ae0b77",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "checker",
+        "kind": "query",
+        "detail": "community-batch-summary: 1 bounded rows in 578 ms.",
+        "evidenceIds": [
+          "query-aa77b246-cfaa-47b9-a400-e37781ccbfb1"
+        ],
+        "at": "2026-10-25T08:10:40.149Z"
+      },
+      {
+        "seq": 172,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-85a8e68b-82b2-48e4-89f5-28fba6ae0b77",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "checker",
+        "kind": "query",
+        "detail": "community-logistics-join: 4 bounded rows in 2804 ms.",
+        "evidenceIds": [
+          "query-2b2fde5c-5e1d-4d1d-be1c-792750264d90"
+        ],
+        "at": "2026-10-25T08:10:40.153Z"
+      },
+      {
+        "seq": 173,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-85a8e68b-82b2-48e4-89f5-28fba6ae0b77",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "checker",
+        "kind": "federated_evidence",
+        "detail": "live-zetaris: 4 reports, 4 community candidates; revision eb7369156c10.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:40.156Z"
+      },
+      {
+        "seq": 174,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-85a8e68b-82b2-48e4-89f5-28fba6ae0b77",
+        "parentTaskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "actor": "checker",
+        "kind": "evidence_gap",
+        "detail": "Hold. Independent federation check completed; current field and logistics evidence does not support dispatch.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:10:40.171Z"
+      },
+      {
+        "seq": 175,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": null,
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "model_receipt",
+        "detail": "{\"requestedMode\":\"meterless/fast\",\"responseModel\":\"nvidia/nemotron-3-ultra-550b-a55b\",\"usage\":{\"prompt_tokens\":1737,\"completion_tokens\":20,\"total_tokens\":1757},\"durationMs\":7119}",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:47.305Z"
+      },
+      {
+        "seq": 176,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "synthesis",
+        "detail": "All evidence reviewed; gaps remain; no dispatch authorized.",
+        "evidenceIds": [],
+        "at": "2026-10-25T08:10:47.308Z"
+      },
+      {
+        "seq": 177,
+        "runId": "mission-77680152-3b5f-4016-b276-462ce2baeae6",
+        "taskId": "task-71d4f877-3dd9-425c-8e32-9b9a751505c1",
+        "parentTaskId": null,
+        "actor": "coordinator",
+        "kind": "hold",
+        "detail": "Retrieved 4 community reports and grounded 3 locations. Operational planning is on hold pending the listed evidence gaps.",
+        "evidenceIds": [
+          "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+          "signal-c231394e187b5398d27deecbf5fe62c1",
+          "signal-54296ec0bddddc7ee692a1afd6bee32e",
+          "signal-06c9a41ec48efa4ae9440353c29e8d45"
+        ],
+        "at": "2026-10-25T08:10:47.314Z"
+      }
+    ]
+  },
+  "priorAssessment": {
+    "id": "assessment-28955095-fa26-404d-9595-769cf356e1bf",
+    "status": "invalidated",
+    "reason": "Federated community evidence or logistics changed; fresh review required."
+  },
+  "checks": {
+    "automaticTrigger": true,
+    "previousAssessmentInvalidated": true,
+    "freshIndependentQuery": true,
+    "forwardedNotIndependent": true,
+    "reportVisibleInZetaris": true,
+    "actualFieldIncidentsVerified": false,
+    "dispatchAuthorized": false
+  },
+  "sourceFiles": [
+    {
+      "file": "src/lib/server/community-evidence.ts",
+      "sha256": "908e6019ac252911ab7cbe16a1f4127fe9a23b33af22b5d098511d4e40c35f84"
+    },
+    {
+      "file": "src/lib/server/mission-logistics.ts",
+      "sha256": "f9d8f0ec7aa8c5ca8c50a1adbbaaf97d3d7fba65f18fa1e8369455e1dc026a9b"
+    },
+    {
+      "file": "src/lib/server/mission-coordinator.ts",
+      "sha256": "200245e282ae5ee733c6c7a167ed2e8bdac4855a274da61560a011cdc4f543cc"
+    },
+    {
+      "file": "src/lib/server/mission-journal.ts",
+      "sha256": "300b36de639414d873ff819c7627ba03756dd253fe4829394079a3a19c6e25ba"
+    },
+    {
+      "file": "src/lib/server/mission-runtime.ts",
+      "sha256": "f2ddc6df330c1f75ce89c1d517a826542c8b165fdc58145ef9eee0400ff9d7b3"
+    },
+    {
+      "file": "scripts/demo-live-change.ts",
+      "sha256": "2f78b57f9949b7470c7f07fa6b0c72c5b2ac35673101e80b3093eb540f07f094"
+    },
+    {
+      "file": "scripts/provision-community-data.ts",
+      "sha256": "fb6368fdf10b4f976c0d613528c1d9a23d5aae384e8a6e94a75eea410abc8bd9"
+    }
+  ]
+}

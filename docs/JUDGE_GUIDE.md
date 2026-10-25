@@ -8,8 +8,9 @@ investigation are separate from the earlier synthetic delivery-planning CLI.
 **25 October direction:** [Live vision and delivery boundary](LIVE_VISION.md)
 records the gap between this baseline and ReliefIntel's intended live signal,
 spatial grounding and automatic re-evaluation workflow. Those layers are required
-work. The first intake/mapping slice is now implemented; dynamic Zetaris federation
-and affected-delivery-plan re-evaluation remain required. Access probes alone do
+work. Live report metadata now feeds Zetaris and the planning preflight; changed
+context invalidates earlier assessments and starts fresh independent review.
+Executable delivery-route binding remains required. Access probes alone do
 not constitute a product connector.
 
 ## What exists and what is next
@@ -29,8 +30,9 @@ not constitute a product connector.
 | Initial live-source feasibility | [25 October access receipt](evidence/live-source-feasibility-2026-10-25.json) | initial probes: HDX metadata succeeds, Firecrawl returns 403, Overpass times out; subsequent Kobo/map implementation is recorded below |
 | Community intake, coordinator and workspace | [Live investigation](LIVE_INTAKE.md), [dated live receipt](evidence/community-investigation-2026-10-25.json) | actual private Kobo submission/read, persisted versions, parent/child tasks, targeted follow-up and independent hold; demonstration reports only |
 | Community geography | [Map manifest](../data/community-map-v1/manifest.json) | actual OSM/HOT data: 5,111 road features, 16 places and seven facilities; ODbL attribution and hashes retained |
+| Dynamic community/logistics federation | [Planning preflight](FEDERATED_PLANNING.md), [live-change receipt](evidence/federated-live-change-2026-10-25.json) | actual report submission automatically invalidates the earlier assessment and starts fresh review; exact-batch joins and separate checker queries; logistics synthetic/expired |
 | Final delivery UI, demo and slides | [Execution plan](EXECUTION_PLAN.md) | live delivery integration, operator approval and submission materials remain |
-| Hosted CI | [Actions run](https://github.com/Orielanalyst/PortalOne/actions/runs/39986817817) | startup blocked by account billing/spending limit |
+| Hosted CI | [Latest inspected run before this push](https://github.com/Orielanalyst/PortalOne/actions/runs/40172156090) | startup failure before jobs run; earlier account billing error documented; this run does not expose a new exact cause |
 
 ## Review the work boundary
 

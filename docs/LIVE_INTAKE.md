@@ -4,7 +4,9 @@ The local interface now connects actual Kobo API intake, durable report versions
 Nemotron delegation through Nightshift, attributed community geography and an
 independent readiness check. It is the first investigation slice, not the completed
 live delivery planner. All submitted test observations are explicitly demonstration
-records; no actual field incident has been verified.
+records; no actual field incident has been verified. The subsequent
+[federated planning preflight](FEDERATED_PLANNING.md) connects this intake to
+Zetaris, an isolated planning worker and independently checked assessment revisions.
 
 ## Run locally
 
@@ -23,7 +25,9 @@ METERLESS_BASE_URL=http://127.0.0.1:8088/v1
 ```
 
 The NVIDIA key stays in Nightshift. The application reads its local runtime token
-without printing either key. Start Nightshift, then `bun run dev --host 127.0.0.1`
+without printing either key. Live mode also needs the running local Zetaris/relief
+database and [community source provisioning](FEDERATED_PLANNING.md#reproduce).
+Start Nightshift, then `bun run dev --host 127.0.0.1`
 and open the printed local URL. Send a mission to the single coordinator. Activity,
 Map, Evidence and Brief inspect the same investigation. Users never launch workers.
 
@@ -58,8 +62,8 @@ and the actual server's `/api/v2/schema/?format=json`. Credentials never enter U
 ## What the coordinator actually does
 
 The model selects registered specialist tasks within evidence gates. It can check
-readiness early, but final synthesis requires collection, mapping, the targeted
-gap follow-up and a fresh independent check. Nested LangGraph workers receive
+readiness early, but final synthesis requires collection, mapping, targeted
+gap follow-up, a federated planning assessment and a fresh independent check. Nested LangGraph workers receive
 source/mapping task context; raw reports and the full conversation are not
 broadcast. Source retrieval and geometry are deterministic tool workers, not
 additional autonomous model personas. No DeepAgents harness is claimed installed.
@@ -73,9 +77,10 @@ remain private. The checker reloads Kobo independently and cannot approve travel
 The model receives bounded finding summaries, counts and a few example evidence
 IDs, not report text or raw tables. Model receipts record routing mode, actual
 response model, timing and tokens. Private reasoning and provider error payloads
-are excluded. Five specialist delegations, 128 output tokens per call, 45 seconds
-per call and a four-minute default run deadline bound this slice. Contract failure,
-timeout or an attempted gate bypass ends in hold.
+are excluded. The extended slice allows eight specialist delegations, two planning
+attempts, two delegation corrections, twelve reserved SELECT slots, 128 output
+tokens per call, 45 seconds per call and a five-minute run deadline. Contract failure,
+timeout or repeated invalid delegation ends in hold.
 
 SQLite commits raw input and immutable normalized versions together. Repeated
 reads add no new version. Edits update the current head while preserving old
@@ -93,8 +98,10 @@ new or edited versions automatically start a bounded investigation in the same
 session. Unchanged polls make no model calls. Source failure is visible and cached
 reports cannot clear a hold. Stop disables future polls; it does not cancel a run
 already in progress. This is an in-process demonstration scheduler, not Inngest or
-a durable month-long collection service. Missed/deleted reports, expiry-driven
-plan invalidation and persisted scheduled jobs remain separate required work.
+a durable month-long collection service. The extended federation poll detects
+changed/removed records, logistics drift and logistics freshness boundaries;
+it invalidates planning assessments and allows at most six automatic reviews per
+watch. Report-expiry policy, affected-route invalidation and durable jobs remain.
 
 Completed observations, tasks, public events and briefs survive a restart.
 Incomplete runs become interrupted; monitoring pauses and a new investigation is
@@ -122,11 +129,12 @@ font or geocoding service is required. See the [map attribution and provenance](
 
 ## Remaining integration
 
-This investigation does not yet feed live signals into Zetaris or the existing
-delivery planner. The latter remains a separate verified CLI over synthetic stock,
-fleet and route candidates. Text extraction, sourced road-segment matching, public
-news collection, mission/logistics version binding, human approval and automatic
-affected-plan invalidation remain required. New investigations currently take a
+Report metadata now feeds Zetaris and the planning preflight. The existing route
+optimizer remains a separate CLI over synthetic stock, fleet and route candidates.
+Text extraction, sourced road-segment matching, public news, full executable-plan
+version binding, human approval and affected-route invalidation remain required.
+Planning-assessment invalidation and independent query receipts are implemented.
+New investigations currently take a
 fresh mission message; multi-turn conversational mission memory is not implemented.
 Local loopback checks protect the operator API; public hosting requires real
 authentication and reporter access control before deployment.

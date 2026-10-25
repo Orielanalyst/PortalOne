@@ -1,0 +1,63 @@
+{
+  "applicationSourceCommit": "46c62b18ac53de0da2259ab518208f03ed725404",
+  "errors": [],
+  "writes": [],
+  "viewports": [
+    {
+      "tab": "Brief",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "tab": "Brief",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "tab": "Brief",
+      "width": 736,
+      "overflow": false
+    },
+    {
+      "tab": "Brief",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "tab": "Brief",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "tab": "Map",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "tab": "Map",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "tab": "Map",
+      "width": 736,
+      "overflow": false
+    },
+    {
+      "tab": "Map",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "tab": "Map",
+      "width": 320,
+      "overflow": false
+    }
+  ],
+  "queryLabels": [
+    "Planning · community-batch-summary",
+    "Planning · community-logistics-join",
+    "Independent check · community-batch-summary",
+    "Independent check · community-logistics-join"
+  ]
+}

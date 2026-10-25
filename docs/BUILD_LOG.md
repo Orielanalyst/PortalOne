@@ -254,3 +254,50 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
   changed or ended. Two controlled delayed-source regressions prove no extra
   investigation or report ingestion occurs after stop/expiry. This follow-up
   changes the runtime after the preserved `ce8cff0` live capture.
+
+### 25 October — community federation and automatic assessment revision
+
+- Reused the installed `psql` client inside the existing pinned Postgres container;
+  no new service, port or package. Added only `community_v1` and its Zetaris source.
+  The writer cannot read stock or update reports; the reader cannot insert. All
+  16 map sites match the registered revision. An initial source-description
+  semicolon was rejected by Zetaris; the corrected registration passed.
+- Projected immutable report metadata and map candidates without raw report text,
+  reporter references or GPS. Exact-batch counts and complete community groups are
+  checked on return. Actual grouped Zetaris results matched independent calculation;
+  ambiguous Balewa candidates share a report rather than inflate global totals.
+- Added isolated Nemotron planning advice over compact joins, followed by fresh
+  Kobo and Zetaris reads. Each assessment and independent check keeps its own query
+  IDs/results. The model can identify the next verification action; executable
+  route planning remains the earlier separate CLI. Synthetic expired logistics,
+  unknown road conditions and unverified origins preserve the operational hold.
+- Early model runs attempted to skip planning and correctly held. Explicit allowed
+  task feedback and at most two visible correction rounds enabled completion.
+  Changed checker evidence routes back to planning within the two-attempt budget;
+  repeated drift, contract failure and exhausted budgets hold.
+- The live rehearsal executed committed application `46c62b1`. Actual Kobo intake
+  changed from three to four labelled demonstrations, including a forwarded
+  obstruction example. The monitor made it query-visible, invalidated the previous
+  assessment and triggered a same-session fresh review without manually launching
+  another agent. All five change assertions passed; verified origins remained zero
+  and no dispatch was authorized. Its own watch stopped afterward. See
+  [the public receipt](evidence/federated-live-change-2026-10-25.json).
+- The Brief shows compact joined context, expired rehearsal resources, superseded
+  history and separate planning/checker queries. Read-only Edge/Playwright checks
+  passed Brief and Map at 1440/1024/736/390/320 pixels, with zero page errors,
+  writes or horizontal overflow. Visual inspection confirmed desktop/mobile
+  layouts. An ambiguous historical-run selector in the QA helper was corrected;
+  application code was unchanged. See [UI check results](evidence/federated-ui-2026-10-25.json).
+- Ten new focused integration cases passed, covering privacy, ambiguity, immutable
+  invalidation, checker drift/revision, stale/partial results, model corrections,
+  resource freshness and dependency failure. The pre-push hook enforces full tests,
+  typecheck, eight engine conformance cases, 30 archive checks, both HTTP-disabled
+  replays and production build before publication. Hosted CI is reported separately;
+  the prior inspected run failed at startup before jobs.
+- Commits separate source federation (`5c79c19`), agent/checker (`7a58348`), interface
+  (`d1374d5`), live proof tooling (`915796e`), independent audit persistence
+  (`74e37a9`) and logistics wording (`46c62b1`). Raw brainstorming/event documents
+  retain their recorded hashes and remain untracked; credentials/journals stay ignored.
+- Remaining: executable mission/route binding, public news and text extraction,
+  real resource ledgers and field origins, road-segment evidence, version-bound
+  human review and durable scheduling. Invalidation is project/corridor scoped.

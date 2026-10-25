@@ -1,11 +1,14 @@
-# Environment and core readiness — 2026-10-24
+# Environment and core readiness — updated 2026-10-25
 
 Current checkpoint: real local Zetaris queries join synthetic Postgres logistics
 with file-based routes/reports. The LangGraph CLI passes live Nightshift missions
 and a separate offline replay. See `evidence/relief-data-2026-10-24.json`,
 `evidence/relief-provision-2026-10-24.json` and `evidence/relief-agent-live-2026-10-24.json`.
-The browser scaffold is not connected to this core; approval and run recovery
-remain open. The earlier platform audit table below is preserved as history.
+The subsequent browser investigation connects live Kobo metadata to a separate
+Zetaris planning preflight, with model-backed next-step advice and a fresh checker.
+Its [live-change proof](evidence/federated-live-change-2026-10-25.json) records
+automatic invalidation and re-review. Executable route binding, approval and graph
+resumption remain open. The earlier platform audit table is preserved as history.
 
 Earlier power gate on 24 October: after the user saved their NVIDIA key directly in Nightshift,
 the live completion probe returned exactly `PORTALONE_OK`. The response model
@@ -219,3 +222,20 @@ real model-backed submission, activity/evidence/brief navigation, attributed map
 rendering, rejected cross-origin writes, and five widths from 320 to 1440 pixels.
 The new HTTP-disabled mission replay and 30-archive integrity check are in the
 pre-push/CI gates. Hosted CI status is reported separately from these local checks.
+
+## 25 October — federated planning preflight
+
+Follow [FEDERATED_PLANNING.md](FEDERATED_PLANNING.md) to provision the additive
+`community_v1` schema, register `PORTALONE_COMMUNITY_V1` and check actual Kobo
+metadata against independent calculations. The existing pinned Postgres image and
+its installed `psql` client are reused; no new service, dependency or port is added.
+Source writer/reader privileges and all 16 mapped places passed the local smoke.
+
+Actual Zetaris batch/grouped queries matched the independent fixture calculation.
+The live-change rehearsal used application commit `46c62b1`: three reports became
+four, the previous assessment became invalidated and a fresh automatic review
+completed with distinct independent-check query IDs. All four reports are explicit
+demonstrations, including one forwarded report; verified origins remain zero.
+Stock/fleet still reflect expired synthetic v1 data. Monitoring was stopped after
+the rehearsal. Browser Brief/Map checks pass at five widths from 320 to 1440 pixels,
+with no script errors or page overflow. Full local gates remain in pre-push.

@@ -92,3 +92,12 @@ exclude keys, raw private reports, reporter identities and exact reporter GPS.
 The implementation disclosure and current boundaries are in AI_USAGE.md and
 LIVE_INTAKE.md. No existing published history, track or repository visibility was
 changed by this implementation.
+
+The subsequent community federation reuses the PostgreSQL client already inside
+the pinned, previously provisioned official Postgres image. No additional package,
+container, source archive or TCP port was acquired. The additive metadata schema,
+bounded SQL, planning/checker contracts and invalidation integration are new work
+with Codex assistance. The public live-change receipt records exact source hashes
+and the executed application commit; it contains no raw private report text, GPS
+or reporter references. The joined logistics retain their original synthetic v1
+provenance and dates. No live warehouse or fleet observation is claimed.

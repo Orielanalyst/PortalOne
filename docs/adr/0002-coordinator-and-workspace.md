@@ -2,8 +2,8 @@
 
 Date: 2026-10-25
 
-Status: accepted; first bounded investigation runtime verified locally. Full
-delivery-planning coordination remains required.
+Status: accepted; bounded investigation and federated planning preflight verified
+locally. Executable delivery-planning coordination remains required.
 
 ## Decision
 
@@ -64,10 +64,15 @@ events and results. Restart preserves completed work, marks partial work interru
 and pauses monitoring; it does not resume in-flight graph steps. The source and
 geometry workers are deterministic tools, not separate autonomous model personas.
 
-The connected browser shows these actual events and OSM geography. Bounded
-monitoring starts a new investigation after a new/edited Kobo record. Gate-bypass,
-timeout, dependency failure, duplicate/version, ambiguity, history/reopen and early
-checker tests pass. The independent checker currently holds because real delivery
-logistics and road evidence are not connected. No concurrent worker execution,
-multi-turn mission memory or integration of the earlier planning CLI is claimed.
-See [LIVE_INTAKE.md](../LIVE_INTAKE.md) for reproduction and remaining gates.
+The connected browser shows these actual events and OSM geography. The isolated
+planning worker now uses Nemotron over compact community/logistics joins from
+Zetaris. Its contract proposes a next verification action, not a route. A separate
+checker reads Kobo and Zetaris again and stores its own receipts. Evidence drift
+invalidates earlier assessments and returns work to planning within the budget.
+Bounded monitoring also checks removals, resource changes and freshness boundaries.
+The live-change receipt proves one automatic same-session re-review after a new
+demonstration report. Dependency scope is the entire dedicated project/corridor.
+Synthetic expired logistics, unverified origins and missing road evidence retain
+the operational hold. No concurrent worker execution, multi-turn mission memory
+or integration of the earlier executable route CLI is claimed. See
+[FEDERATED_PLANNING.md](../FEDERATED_PLANNING.md) for proof and remaining gates.

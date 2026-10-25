@@ -18,14 +18,16 @@ plans. The live demonstration rejects an overweight draft, revises, replans afte
 a contradictory report and holds an impossible deadline. An explicit offline
 enumeration replay uses the same validator.
 
-25 October: the browser now connects private Kobo intake, a Nemotron coordinator,
-isolated source/mapping workers, targeted evidence follow-up and a fresh independent
-check. It shows actual action traces and attributed OSM geography. New report
-versions automatically trigger another bounded investigation. All cloud transport
-tests remain demonstration records. Live signals are not yet connected to Zetaris
-or the delivery planner; approval actions remain a build gate. See
-[live investigation setup and limits](docs/LIVE_INTAKE.md).
-GitHub Actions is blocked at startup by an account billing/spending limit.
+25 October: the browser connects private Kobo intake, a Nemotron coordinator,
+isolated source/mapping/planning workers and independently checked Zetaris queries.
+A new demonstration report became query-visible, invalidated the earlier assessment
+and automatically triggered a fresh review. The workspace shows actual traces,
+attributed OSM geography and separate planning/checker query receipts. See
+[the live proof and planning limits](docs/FEDERATED_PLANNING.md).
+The connected planning worker identifies the next verification action; executable
+route planning remains a separate CLI. Logistics are synthetic and expired, all
+cloud transport tests are demonstration records, and approval remains a build gate.
+GitHub Actions has failed at startup before jobs run; local passes are separate.
 
 Start with [the judge guide](docs/JUDGE_GUIDE.md), [current execution plan](docs/EXECUTION_PLAN.md)
 and [verified environment status](docs/ENVIRONMENT.md).
@@ -76,8 +78,9 @@ stress-test fixture, not a claimed AI output or human approval.
 Copy `.env.example` to `.env` and fill in the server-side configuration. `.env`
 is ignored and credentials must never use a `VITE_` prefix. See `docs/ENVIRONMENT.md`
 for the tested local Zetaris UI origin and the repeatable connection check.
-The server data adapter and CLI are implemented. The current browser scaffold
-does not consume the new core yet.
+The browser consumes live intake, federation and planning assessments. Reproduction
+requires the local sponsor services and community source provisioning documented in
+[FEDERATED_PLANNING.md](docs/FEDERATED_PLANNING.md).
 
 ## Layout
 

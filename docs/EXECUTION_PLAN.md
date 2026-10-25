@@ -46,8 +46,9 @@ Rules and declaration boundaries are in `PROVENANCE.md`.
 | Constraints | Exhaustive comparison of four predefined route/vehicle candidates | Deterministic mass, payload, fuel, drive type, freshness, corroboration, deadline and earliest-eligible objective; no general route optimizer needed |
 | Data | Synthetic v1 pack, isolated Postgres and JSON files | Manifest hashes; counts and joined results independently matched; read-only source query role verified |
 | Live signal intake | Private Kobo API plus SQLite | Real submission/read, immutable versions and duplicate handling verified; text extraction and public news still required |
+| Dynamic federation | Existing Postgres client and Zetaris | Immutable community projection, restricted roles and exact-batch joins verified; live change invalidates assessments and triggers fresh review |
 | Spatial grounding | Attributed OSM/HOT extract and Leaflet 1.9.4 | Real roads/places/facilities rendered; exact community matching and ambiguity preserved; road-segment matching remains |
-| UI | React conversation/workspace with real run events | First investigation slice verified; delivery-planning integration and approval UI remain |
+| UI | React conversation/workspace with real run events | Investigation/map, federated preflight and superseded-state receipts verified; executable delivery planning and approval remain |
 
 Use available skills and connectors where they fit. There is no installed Zetaris
 connector in this chat; official source helpers supply the diagnostic capability.
@@ -108,8 +109,8 @@ completion times. Each gate requires its acceptance evidence before marking done
 | G2 Scenario + data | 25 Oct morning | Small licensed/synthetic pack, source manifest, repeatable registration and joined relief evidence through Zetaris | verified locally on 24 Oct; provisioning and cross-source receipts linked in judge guide |
 | G3 Agent core | 25 Oct | Validator rejects a candidate, planner revises, impossible case holds; bounded run and event trace | verified locally on 24 Oct; live Nightshift/Zetaris trace plus explicit offline replay |
 | G3a Live intake + grounding | 25 Oct next | Newly received report, durable provenance/cursor, duplicate handling, structured extraction and sourced place/segment candidates; external source access proof | partial: real Kobo transport, versioned intake, attributed map and community grounding pass; text extraction, public news and segment candidates remain |
-| G3b Dynamic federation | 26 Oct morning | Incoming claim becomes query-visible in Zetaris and automatically invalidates affected plans; checker requests evidence/revision/hold | required, not implemented; existing CLI manually advances a simulated snapshot |
-| G4 Changed evidence + review | 26 Oct | Duplicate, contradiction, expiry and new-event cases; full dependency invalidation; version-bound operator review and recovery | partial: new Kobo versions automatically trigger investigations; road-assumption tests/manual CLI invalidation pass; full mission/logistics binding, approval, durable scheduling and graph resumption remain |
+| G3b Dynamic federation | 26 Oct morning | Incoming claim becomes query-visible in Zetaris and automatically invalidates affected plans; checker requests evidence/revision/hold | implemented for project-scoped planning assessments: real joins, drift invalidation and fresh preflight; executable route-plan dependencies remain |
+| G4 Changed evidence + review | 26 Oct | Duplicate, contradiction, expiry and new-event cases; full dependency invalidation; version-bound operator review and recovery | partial: new/removed reports, logistics drift and freshness can invalidate assessments; checker-driven preflight revision works; full executable-plan binding, approval, durable scheduling and graph resumption remain |
 | G5 Interface + rehearsal | 26 Oct | New interface consumes real events; three scenarios run; offline state explicit; video rehearsal | partial: real investigation events/map and explicit offline browser path work; full delivery scenarios and video remain |
 | G6 Submission package | 27 Oct by 21:00 | Video, slides, public runnable repo, declarations and sponsor evidence checked | not started |
 
@@ -143,7 +144,7 @@ Dependency status: Zetaris images and JDBC driver are already local; vendor
 platform checks and pinned Python HTTP helpers pass. World Model is pinned,
 vendored and smoke-tested. Nightshift authentication/discovery and a real Nemotron
 completion pass. Relief federation and the bounded LangGraph core pass live
-synthetic scenarios. Twenty-one adopted package archives are retained with
+synthetic scenarios. Thirty adopted package archives are retained with
 integrity and license evidence. Routing modes can choose different models later;
 each call records its returned identity. A full 50-row page fails closed because
 it might omit another origin. LangGraph runs are not yet resumable after process

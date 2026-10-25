@@ -13,7 +13,9 @@ Live sponsor calls and live observations are separate claims: we have verified
 the former over synthetic data. The first live Kobo transport and community-map
 investigation slice is now verified; all submitted observations are labelled
 demonstration reports. See [current proof and limits](LIVE_INTAKE.md). Actual field
-coverage, public news and live delivery-plan integration remain required.
+coverage, public news and executable delivery-plan integration remain required.
+The [federated planning preflight](FEDERATED_PLANNING.md) now joins live report
+metadata with registered logistics and versions independently checked assessments.
 
 This corrects the 24 October plan's decision to defer signal capture and spatial
 grounding. Keep one mission and the Bamenda–Bambili corridor, but implement every
@@ -49,12 +51,12 @@ An empty search is an evidence gap, not a clear road.
 | Signal interpretation | Existing inputs already contain structured road claims | Nemotron through Nightshift extracts category, quoted support, place mentions and observation time from incoming text; unknown fields remain unknown |
 | Deduplication and evidence reconciliation | Immutable observation IDs, origin-aware road assessments, forwarded-copy handling | Content fingerprint before inference; bounded paraphrase/event matching without losing original reports or counting forwards as independent witnesses |
 | Spatial grounding | Attributed real OSM/HOT extract, exact normalized community matching and ambiguous-name handling | Sourced local aliases and road-segment candidates remain; place matches do not establish incident locations |
-| Data federation | Real Zetaris joins over static synthetic files and Postgres | Live incident/grounding records in a separate source table joined through Zetaris with logistics and mapped segments; query-visible updates proven |
-| Planner and logistics tools | Nemotron selects among four predefined candidates; independent mass, fuel, stock, drive and time checks | Real mapped corridor alternatives, explicit operating policy and deterministic feasibility tools; OR-Tools is an acquisition candidate if convoy allocation needs it, not an installed solver |
+| Data federation | Real exact-batch/grouped Zetaris queries join live community metadata, mapped place candidates and rehearsal logistics | Actual warehouse/fleet sources and incident-to-road matching remain; raw private report content stays out of the federated source |
+| Planner and logistics tools | Model-backed preflight consumes compact federation; separate finite CLI validates four synthetic route/vehicle candidates | Connect executable mapped routes, mission requirements, operating policy and deterministic feasibility tools; no general route optimizer is claimed installed |
 | Adversarial checker | Fresh independent source reads and exact constraint violations | Independently check active incidents and policy/geographic exclusions; request targeted evidence when an assumption lacks support |
-| Drift detection and replanning | CLI explicitly loads a later simulated snapshot and calls plan review | Ingestion/expiry events automatically find dependent plans, mark them stale and trigger a bounded fresh planning run |
+| Drift detection and replanning | Watched context changes invalidate project-scoped planning assessments and trigger a bounded new review; checker feedback can revise a changing assessment | Precise affected-road/convoy dependencies, report-expiry policy and durable scheduling remain |
 | Operator review and directive | CLI stops at operator-review disposition | Approval bound to mission, logistics, evidence and plan versions; decision invalidated after relevant drift; resumable/restart-safe work |
-| Product interface | Conversation/workspace consumes actual investigation events, intake, map, gaps and model receipts | Integrate live delivery logistics, plan validation and version-bound operator decisions |
+| Product interface | Conversation/workspace shows actual events, map, federated stock/fleet, separate planning/check receipts and superseded assessments | Executable delivery plan validation and version-bound operator decisions remain |
 | Operational policy and contingencies | Generic delivery deadline and fixed reserve; no sourced curfew/lockdown policy | Versioned, effective-dated policy and explicit abort/hold triggers; safe-harbour alternatives require their own evidence |
 | Demand, cargo and fleet allocation | One SKU, one quantity and one selected vehicle | Needs/urgency, cold-chain and multi-vehicle allocation remain in the product vision; first live slice uses one declared cargo class and makes these unsupported cases explicit |
 
