@@ -14,6 +14,7 @@ entrants accountable for it; this file is our chosen detailed disclosure format.
 | 2026-10-24 | Nightshift + NVIDIA Nemotron | Live planner/replanner | Generated JSON proposals and brief public rationales. Recorded Ultra and 3.5 Lightning IDs; independent code rejected weight, slower eligible choice and deadline violations. No model approval or dispatch authority. |
 | 2026-10-24 | Zetaris | Live data layer | Real joins over isolated Postgres and synthetic JSON files; counts and decoded snapshots matched independent fixture calculations. |
 | 2026-10-25 | Codex | Vision alignment and live-source feasibility | Re-read the full brainstorming/event documents and attached architecture; incorporated the user's API comparison; restored intake, spatial grounding and automatic re-evaluation to required scope. Reviewed primary API/access documentation and ran bounded credential-free public-source probes. This planning work adds no product connector or UI. |
+| 2026-10-25 | Codex | Coordinator architecture and UI exploration | Under the user's direction, recorded a single conversational coordinator with specialist delegation and a conversation/workspace UI. Created an isolated interactive concept and checked it with bundled Playwright; no application UI, live map, intake pipeline or coordinator runtime is claimed implemented. |
 
 ## How output is controlled
 

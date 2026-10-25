@@ -179,3 +179,23 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
   resolve, the four-result JSON receipt parses, both raw-document hashes match
   their earlier values and `git diff --check` passes. Runtime tests are not new
   evidence for this documentation-only change.
+
+### 25 October — coordinator and interface direction
+
+- The user specified one conversational coordinator that delegates to specialist
+  agents and a clean conversation-left/workspace-right interface. ADR 0002 records
+  this as accepted product direction; the current fixed CLI is not claimed to
+  implement supervisor/subagent orchestration.
+- Created an isolated in-conversation UI concept with labelled sample records,
+  inspectable action summaries, workspace tabs, a local message preview and a
+  simulated incoming-report state. It has no agent selector, live model call or
+  connected basemap. Application UI/source code remains unchanged.
+- The bundled Playwright 1.62.1 runtime checked six interactions in a temporary
+  headless Edge session. A preview message action initially failed inside the
+  sandboxed frame; explicit local button handling fixed it. All interactions then
+  passed, with no script errors or horizontal overflow at 1024/736/360/320 pixels.
+- One bounded GET request for an OSM road extract timed out; no map geometry was
+  invented or displayed as retrieved geography. The concept exposes an unavailable
+  map state. This does not change the live-source readiness results.
+- Read-only runtime smoke checks also confirmed built-in SQLite availability in
+  Node 24.15.0 and Bun 1.4.4. No intake storage or endpoint was implemented.

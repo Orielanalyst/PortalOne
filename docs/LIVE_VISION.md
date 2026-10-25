@@ -60,6 +60,13 @@ agents. Collection, hashing, arithmetic, geometry, expiry and audit are code/too
 responsibilities. Model calls interpret text and plan bounded investigations;
 they do not establish truth, invent coordinates or authorize dispatch.
 
+**User-facing coordination:** one mission coordinator handles the conversation
+and dynamically delegates to specialists; users do not manually select agents.
+The left conversation and right contextual workspace expose delegated work and
+its results. This accepted direction, its boundaries and implementation gate are
+recorded in [ADR 0002](adr/0002-coordinator-and-workspace.md). The existing fixed
+CLI workflow is not yet this supervisor/subagent runtime.
+
 ### Source decisions
 
 | Source | Role and first adoption gate | Current boundary |
