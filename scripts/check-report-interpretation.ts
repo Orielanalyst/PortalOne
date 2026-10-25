@@ -17,13 +17,13 @@ try {
   for(const id of ['negation-example','french-example']) {
     const example=examples.find(item=>item.id===id)!;let progress=0;
     const answer=await interpreter.extract(example,AbortSignal.timeout(60_000),()=>progress++);
+    results.push({exampleId:id,textSha256:textHash(example.text),value:answer.value,receipt:answer.receipt});
     validateQuotedClaims(answer.value,example.text);
     assert(progress>1,'Expected an actual incremental provider stream.');
     assert(answer.value.claims.some(claim=>claim.category==='road_blockage' && claim.assertion==='denied'),'The fictional denial must survive extraction.');
     assert(answer.value.claims.some(claim=>claim.category==='service_status' && claim.assertion==='uncertain'),'Unknown operating status/capacity must remain uncertain.');
     assert(answer.value.claims.every(claim=>claim.assertion!=='reported'),'Synthetic content cannot become an actual reported observation.');
     assert.deepEqual([answer.receipt.upstream?.fromCache,answer.receipt.upstream?.qualityBuffered,answer.receipt.upstream?.reasoningScaffold,answer.receipt.upstream?.phaseCount],[false,false,false,1]);
-    results.push({exampleId:id,textSha256:textHash(example.text),value:answer.value,receipt:answer.receipt});
     console.log(JSON.stringify({exampleId:id,checked:true,claims:answer.value.claims.map(claim=>({category:claim.category,assertion:claim.assertion})),deltas:answer.receipt.deltas}));
   }
   writeFileSync(target,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:Bun.spawnSync(['git','rev-parse','HEAD']).stdout.toString().trim(),
