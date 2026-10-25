@@ -10,7 +10,7 @@ import {runCommitteeMission} from './committee-mission';
 import type {CommitteeWriter,CommitteeExporter} from './committee-mission';
 const map=new CommunityMap();
 const writer:CommitteeWriter={async stream(prompt,mode,options){
-  const id=prompt.match(/"id":"(E[a-f0-9]{10})"/)![1];
+  const id=prompt.match(/"source":"(S\d+)"/)![1];
   const action=prompt.includes('Why this mission requires a fresh review')?'Recheck the changed evidence before committee review.':'Confirm the evidence before committee review.';
   const paragraph=`${action} Field and resource confirmations remain required before an operational decision. [${id}]`;
   const verdict=prompt.includes('Start with ## Evaluation')?`**Verdict: ${prompt.includes('Evaluation of plan v1')?'REVISE':'ACCEPT_WITH_GAPS'}** [${id}]\n\n`:'';

@@ -15,6 +15,35 @@ it('exposes an unsupported area as a coverage gap before any source, model or ex
     expect(result.gaps[0]).toContain('Requested area: Douala');expect(readSource).not.toHaveBeenCalled();expect(stream).not.toHaveBeenCalled();expect(exporter).not.toHaveBeenCalled();
   }finally{journal.close();}
 });
+it('stops after one unsuccessful repair of a document and retains the retrieved report counts',async()=>{
+  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;
+  const writer:CommitteeWriter={async stream(_prompt,mode,options){
+    calls++;const content='## Findings\n\n'+('A claim with an unavailable source. [S999]\n\n').repeat(5);options.onDelta(content);
+    return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
+  }};
+  try {
+    const run=journal.startRun('Prepare a Bambili committee draft','test'),exported=vi.fn();
+    const result=await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter:exported});
+    expect(calls).toBe(2);expect(exported).not.toHaveBeenCalled();expect(result.demoReports).toBe(source.count);expect(result.signalIds).toHaveLength(source.count);
+    expect(journal.events(run.id).filter(event=>event.kind==='publication_repair')).toHaveLength(1);
+  }finally{journal.close();}
+});
+it('permits a separate evaluator correction after an investigator repair without bypassing either gate',async()=>{
+  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();
+  const writer:CommitteeWriter={async stream(prompt,mode,options){
+    const sourceId=prompt.match(/"source":"(S\d+)"/)![1],review=prompt.includes('Start with ## Evaluation');
+    const reject=!prompt.includes('PUBLICATION CORRECTION') && (review || prompt.includes('Write four brief sections'));
+    const text=`A conditional review requires current field confirmation before operational decisions. [${reject?'S999':sourceId}]`;
+    const content=`## Review\n\n${review?`**Verdict: ACCEPT_WITH_GAPS** [${sourceId}]\n\n`:''}${text}\n\n${text}\n\n${text}`;options.onDelta(content);
+    return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
+  }};
+  try {
+    const run=journal.startRun('Prepare a Bambili committee draft','test');let exported=false;
+    await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter:async({validateEvidence})=>{await validateEvidence();exported=true;}});
+    expect(exported).toBe(true);expect(journal.events(run.id).filter(event=>event.kind==='publication_repair')).toHaveLength(2);
+    expect(journal.documents(run.id).filter(document=>document.kind==='critique').map(document=>document.status)).toEqual(['failed','published']);
+  }finally{journal.close();}
+});
 it('keeps unknown facility capacity, unlocated blockages and unsurveyed zones explicit',async()=>{
   const source=await replayCommunitySource.snapshot();const evidence=await new FixtureCommunityEvidence(map).load(source,AbortSignal.timeout(1000));
   const dossier=buildDossier('test','Map health facilities',source,evidence,map);
@@ -36,7 +65,7 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
 it('publishes v1 before evaluation, revises with an actual diff and reports only after independent review',async()=>{
   const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let reviews=0;
   const writer:CommitteeWriter={async stream(prompt,mode,options){
-    const id=prompt.match(/"id":"(E[a-f0-9]{10})"/)![1];
+    const id=prompt.match(/"source":"(S\d+)"/)![1];
     const repeated=`The committee should verify current field and resource evidence before any operational decision. [${id}]`;
     const review=prompt.includes('Start with ## Evaluation');
     const content=review?`## Evaluation\n\n**Verdict: ${++reviews===1?'REVISE':'ACCEPT_WITH_GAPS'}** [${id}]\n\n${repeated}\n\n${repeated}`
@@ -60,7 +89,7 @@ it.each(['unknown_reference','output_limit'])('preserves %s and permits one visi
   const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;const modes:string[]=[],prompts:string[]=[];
   const writer:CommitteeWriter={async stream(prompt,mode,options){
     modes.push(mode);prompts.push(prompt);
-    const id=prompt.match(/"id":"(E[a-f0-9]{10})"/)![1];
+    const id=prompt.match(/"source":"(S\d+)"/)![1];
     const paragraph=`The committee must confirm current field evidence before any operational decision. [${id}]`;
     let content=`## Draft\n\n${paragraph}\n\n${paragraph}\n\n${paragraph}`;
     if(++calls===1) {
