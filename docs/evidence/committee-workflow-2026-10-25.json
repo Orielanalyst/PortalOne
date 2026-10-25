@@ -1,0 +1,2032 @@
+{
+  "capturedAt": "2026-10-25T15:58:47.214Z",
+  "applicationSourceCommit": "e555846e5fe4411a2bbdd9a2eba7ea832b12d3b6",
+  "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+  "browserErrors": [],
+  "checks": {
+    "greetingDidNotStartWork": true,
+    "nativeDeltasBeforePublication": true,
+    "planV1VisibleBeforeEvaluation": true,
+    "revisedPlanAndActualDiff": true,
+    "nativeQgisPackReady": true,
+    "dispatchAuthorized": false,
+    "pdfDownloadValid": true,
+    "sourceLinksResolve": true,
+    "browserErrors": 0
+  },
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "width": 736,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "overflow": false
+    }
+  ],
+  "greeting": {
+    "id": "turn-9aa91064-e36c-408a-8118-db4358944b99",
+    "sessionId": "session-1b354ace-242e-4d45-8e04-db9956d5ef9a",
+    "message": "Hello",
+    "reply": "Hello! We last worked on the Bamenda-Bambili corridor health-facility mapping, but the committee pack was left incomplete. What would you like to do next — resume that work, ground-truth a specific community along the corridor, or explore a different area?",
+    "mode": "live-model",
+    "status": "replied",
+    "action": "reply",
+    "runId": null,
+    "createdAt": "2026-10-25T15:59:01.645Z",
+    "receipt": {
+      "requestedMode": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "usage": {
+        "prompt_tokens": 1903,
+        "completion_tokens": 68,
+        "total_tokens": 1971
+      },
+      "durationMs": 3923,
+      "deltas": 2,
+      "firstDeltaMs": 3881,
+      "upstream": {
+        "receiptId": "rcpt_req_c9zcpmjg",
+        "fromCache": false,
+        "qualityBuffered": false,
+        "reasoningScaffold": false,
+        "phaseCount": 1
+      }
+    }
+  },
+  "documents": [
+    {
+      "id": "document-bffee317-90bb-4ee3-8c91-2b7a7f1e77a6",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "actor": "expert",
+      "kind": "findings",
+      "title": "Mission Expert · evidence findings",
+      "version": 1,
+      "status": "failed",
+      "markdown": "# Mission scope\n\nMap hospitals and health facilities, assess road access and capacity evidence, and produce a committee proposal and GIS pack for evaluator review and revisions for the Bamenda–Bambili corridor. The acquired OpenStreetMap/HOT extract (community-map-v1) covers the corridor bounds [10.1, 5.9, 10.3, 6.1] EPSG:4326 and contains 5,111 road-related features, 16 named settlement candidates and 7 health features; coverage, current road passability and facility operation are unverified [E5393b16f3d]. The intervention_zones polygon layer is intentionally empty; no surveyed intervention boundaries or approved delivery zones were supplied [Eed74370b77]. Unknown requested areas outside the acquired corridor are coverage gaps. The mission objective is documented under request E577d71ac5c [E577d71ac5c].\n\n# Findings\n\nSeven health features are mapped in the corridor, all with coordinate basis noted as not a verified entrance and no capacity, operating hours, services or current availability provided [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9]:\n- School's Hospital (hospital) [E551163564a]\n- Doctor Azang (doctor) [Ec0c6314836]\n- St Louis Clinic (clinic) [E20c1a4200b]\n- Unnamed health feature way/685675038 (yes) [Ee76d9d3147]\n- Bamenda Regional Hospital (hospital) [E3c858731c6]\n- Mezam Clinic (dentist) [E4359e3d965]\n- Bamenda Polyclinic (hospital) [E62810be1d9]\n\nSixteen settlement reference points are mapped; none locates an incident or defines an intervention boundary [Eb75c454ba2][Eba738e5db8][E1f47d2f678][Ecce97a3c99][E11e20e8c10][E1a349f1f49][E10e0b9a622][Ed7211b43f1][E0f04c086ff][E40a61a6afc][E29fcfd4f45][E00b963decd][E77e75cc459][E717752d0c4][E0c4bc0ad3a][E1e28383352]. Duplicate settlement names exist: Balewa appears at two coordinate pairs requiring local clarification [E11e20e8c10][E0f04c086ff].\n\nCurrent road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable by this map [E5393b16f3d][Eed74370b77]. The reported road blockage for Bambili has no usable incident coordinate and is excluded from the blockage point layer [E0c4ddd1199][Eed74370b77].\n\n# Evidence limits\n\nMapped health features are not an exhaustive hospital inventory; capacity, operating hours, services and current availability require direct confirmation from facility or health authority [Eed74370b77]. Current road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable [E5393b16f3d][Eed74370b77]. No surveyed intervention boundaries or approved delivery zones were supplied; the intervention_zones polygon layer is intentionally empty [Eed74370b77]. Cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision must be supplied before executable delivery planning [Eed74370b77]. Demonstration reports cannot corroborate an actual incident [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77]. Registered stock and fleet are synthetic; their values do not establish actual NGO resources [Eed74370b77]. Registered resource observations have expired and require a current warehouse/fleet confirmation [Eed74370b77]. Duplicate settlement names retain multiple coordinate candidates; local clarification is required [Eed74370b77]. A reported road blockage for Bambili has no usable incident coordinate; it is excluded from the blockage point layer [Eed74370b77].\n\n# Questions for planning\n\n- Has direct confirmation been obtained for facility capacity, operating hours, services and current availability at each of the seven mapped health features?\n- Has road passability been ground-truthed for each corridor segment, and have any blockages been confirmed with usable coordinates?\n- Has the duplicate Balewa coordinate been resolved through local stakeholder clarification to a single authoritative location?\n- Have surveyed intervention boundaries and approved delivery zones been defined with authorized operator decision and stakeholder agreement?\n- Has current warehouse stock and fleet availability been confirmed, noting that existing observations expired 2026-10-24 11:00 UTC?\n- Have cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision been obtained to enable executable delivery planning?",
+      "createdAt": "2026-10-25T15:59:17.921Z",
+      "updatedAt": "2026-10-25T15:59:27.977Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "usage": {
+            "prompt_tokens": 8013,
+            "completion_tokens": 1314,
+            "total_tokens": 9327
+          },
+          "durationMs": 9961,
+          "firstDeltaMs": 1659,
+          "deltas": 1291,
+          "upstream": {
+            "receiptId": "rcpt_req_2okb3a8s",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "publicationError": "Factual document blocks 6 have no evidence reference."
+      }
+    },
+    {
+      "id": "document-5b429ce9-5763-4618-8b1e-802af9dbb60d",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "actor": "expert",
+      "kind": "findings",
+      "title": "Mission Expert · evidence findings · source-check correction",
+      "version": 1,
+      "status": "published",
+      "markdown": "# Mission scope\n\nMap hospitals and health facilities, assess road access and capacity evidence, and produce a committee proposal and GIS pack for evaluator review and revisions for the Bamenda–Bambili corridor. The acquired OpenStreetMap/HOT extract (community-map-v1) covers the corridor bounds [10.1, 5.9, 10.3, 6.1] EPSG:4326 and contains 5,111 road-related features, 16 named settlement candidates and 7 health features; coverage, current road passability and facility operation are unverified [E5393b16f3d]. The intervention_zones polygon layer is intentionally empty; no surveyed intervention boundaries or approved delivery zones were supplied [Eed74370b77]. Unknown requested areas outside the acquired corridor are coverage gaps. The mission objective is documented under request E577d71ac5c [E577d71ac5c].\n\n# Findings\n\nSeven health features are mapped in the corridor, all with coordinate basis noted as not a verified entrance and no capacity, operating hours, services or current availability provided [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9]:\n- School's Hospital (hospital) [E551163564a]\n- Doctor Azang (doctor) [Ec0c6314836]\n- St Louis Clinic (clinic) [E20c1a4200b]\n- Unnamed health feature way/685675038 (yes) [Ee76d9d3147]\n- Bamenda Regional Hospital (hospital) [E3c858731c6]\n- Mezam Clinic (dentist) [E4359e3d965]\n- Bamenda Polyclinic (hospital) [E62810be1d9]\n\nSixteen settlement reference points are mapped; none locates an incident or defines an intervention boundary [Eb75c454ba2][Eba738e5db8][E1f47d2f678][Ecce97a3c99][E11e20e8c10][E1a349f1f49][E10e0b9a622][Ed7211b43f1][E0f04c086ff][E40a61a6afc][E29fcfd4f45][E00b963decd][E77e75cc459][E717752d0c4][E0c4bc0ad3a][E1e28383352]. Duplicate settlement names exist: Balewa appears at two coordinate pairs requiring local clarification [E11e20e8c10][E0f04c086ff].\n\nCurrent road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable by this map [E5393b16f3d][Eed74370b77]. The reported road blockage for Bambili has no usable incident coordinate and is excluded from the blockage point layer [E0c4ddd1199][Eed74370b77].\n\n# Evidence limits\n\nMapped health features are not an exhaustive hospital inventory; capacity, operating hours, services and current availability require direct confirmation from facility or health authority [Eed74370b77]. Current road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable [E5393b16f3d][Eed74370b77]. No surveyed intervention boundaries or approved delivery zones were supplied; the intervention_zones polygon layer is intentionally empty [Eed74370b77]. Cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision must be supplied before executable delivery planning [Eed74370b77]. Demonstration reports cannot corroborate an actual incident [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77]. Registered stock and fleet are synthetic; their values do not establish actual NGO resources [Eed74370b77]. Registered resource observations have expired and require a current warehouse/fleet confirmation [Eed74370b77]. Duplicate settlement names retain multiple coordinate candidates; local clarification is required [Eed74370b77]. A reported road blockage for Bambili has no usable incident coordinate; it is excluded from the blockage point layer [Eed74370b77].\n\n# Questions for planning\n\n- Has direct confirmation been obtained for facility capacity, operating hours, services and current availability at each of the seven mapped health features [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9]?\n- Has road passability been ground-truthed for each corridor segment, and have any blockages been confirmed with usable coordinates [E5393b16f3d][Eed74370b77]?\n- Has the duplicate Balewa coordinate been resolved through local stakeholder clarification to a single authoritative location [E11e20e8c10][E0f04c086ff][Eed74370b77]?\n- Have surveyed intervention boundaries and approved delivery zones been defined with authorized operator decision and stakeholder agreement [Eed74370b77]?\n- Has current warehouse stock and fleet availability been confirmed, noting that existing observations expired 2026-10-24 11:00 UTC [Eed74370b77]?\n- Have cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision been obtained to enable executable delivery planning [Eed74370b77]?",
+      "createdAt": "2026-10-25T15:59:28.120Z",
+      "updatedAt": "2026-10-25T15:59:44.675Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "usage": {
+            "prompt_tokens": 9411,
+            "completion_tokens": 1492,
+            "total_tokens": 10903
+          },
+          "durationMs": 16459,
+          "firstDeltaMs": 1200,
+          "deltas": 1454,
+          "upstream": {
+            "receiptId": "rcpt_req_dl17g9s2",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "citations": [
+          "E5393b16f3d",
+          "Eed74370b77",
+          "E577d71ac5c",
+          "E551163564a",
+          "Ec0c6314836",
+          "E20c1a4200b",
+          "Ee76d9d3147",
+          "E3c858731c6",
+          "E4359e3d965",
+          "E62810be1d9",
+          "Eb75c454ba2",
+          "Eba738e5db8",
+          "E1f47d2f678",
+          "Ecce97a3c99",
+          "E11e20e8c10",
+          "E1a349f1f49",
+          "E10e0b9a622",
+          "Ed7211b43f1",
+          "E0f04c086ff",
+          "E40a61a6afc",
+          "E29fcfd4f45",
+          "E00b963decd",
+          "E77e75cc459",
+          "E717752d0c4",
+          "E0c4bc0ad3a",
+          "E1e28383352",
+          "E0c4ddd1199",
+          "E06e9de224d",
+          "E21d75f8985",
+          "Ec5461d631e"
+        ]
+      }
+    },
+    {
+      "id": "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-f9ccb399-417a-43b4-82da-9567b5c251c3",
+      "actor": "planner",
+      "kind": "plan",
+      "title": "Plan v1 · initial committee draft",
+      "version": 1,
+      "status": "published",
+      "markdown": "## Objective\nMap hospitals and health facilities, assess road access and capacity evidence, and produce a committee proposal and GIS pack for evaluator review and revisions for the Bamenda–Bambili corridor [E577d71ac5c].\n\n## Intervention areas\nThe acquired OpenStreetMap/HOT extract (community-map-v1) covers bounds [10.1, 5.9, 10.3, 6.1] EPSG:4326 and contains 5,111 road-related features, 16 named settlement candidates and 7 health features; coverage, current road passability and facility operation are unverified [E5393b16f3d]. Sixteen settlement reference points are mapped; none locates an incident or defines an intervention boundary [Eb75c454ba2][Eba738e5db8][E1f47d2f678][Ecce97a3c99][E11e20e8c10][E1a349f1f49][E10e0b9a622][Ed7211b43f1][E0f04c086ff][E40a61a6afc][E29fcfd4f45][E00b963decd][E77e75cc459][E717752d0c4][E0c4bc0ad3a][E1e28383352]. Duplicate settlement names exist: Balewa appears at two coordinate pairs requiring local clarification [E11e20e8c10][E0f04c086ff]. The intervention_zones polygon layer is intentionally empty; no surveyed intervention boundaries or approved delivery zones were supplied [Eed74370b77]. Unknown requested areas outside the acquired corridor are coverage gaps.\n\n## Actions\n| # | Action | Accountable | Trigger / Gate | Evidence |\n|---|--------|-------------|----------------|----------|\n| 1 | Verify facility capacity, operating hours, services and current availability for each of the seven mapped health features | Health-sector lead | Direct confirmation from facility or health authority | [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77] |\n| 2 | Ground-truth road passability for each corridor segment and confirm any blockages with coordinates | Logistics/engineering lead | Field assessment or trusted local report with usable coordinates | [E5393b16f3d][Eed74370b77] |\n| 3 | Resolve duplicate Balewa coordinates through local clarification | Community liaison | Local stakeholder input confirming single authoritative location | [E11e20e8c10][E0f04c086ff][Eed74370b77] |\n| 4 | Define surveyed intervention boundaries and approved delivery zones | Operations lead | Authorized operator decision and stakeholder agreement | [Eed74370b77] |\n| 5 | Confirm current warehouse stock and fleet availability (existing observations expired 2026-10-24 11:00 UTC) | Logistics lead | Current warehouse/fleet confirmation | [Eee9e4d9449][Eed74370b77] |\n| 6 | Obtain cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision | Operations lead | Operator authorization | [Eed74370b77] |\n| 7 | Treat all demonstration reports as unverified; do not use for operational decisions | All leads | Evidence review gate | [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77] |\n| 8 | Produce GIS pack with facility inventory, road network, settlement references, empty intervention_zones layer and gap annotations | GIS analyst | Operations lead confirms Actions 1–4 complete | [E5393b16f3d][Eed74370b77] |\n\n## Access and health facilities\nSeven health features are mapped, all with coordinate basis noted as not a verified entrance and no capacity, operating hours, services or current availability provided [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77]:\n- School's Hospital (hospital) [E551163564a]\n- Doctor Azang (doctor) [Ec0c6314836]\n- St Louis Clinic (clinic) [E20c1a4200b]\n- Unnamed health feature way/685675038 (yes) [Ee76d9d3147]\n- Bamenda Regional Hospital (hospital) [E3c858731c6]\n- Mezam Clinic (dentist) [E4359e3d965]\n- Bamenda Polyclinic (hospital) [E62810be1d9]\n\nCurrent road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable by this map [E5393b16f3d][Eed74370b77]. The reported road blockage for Bambili has no usable incident coordinate and is excluded from the blockage point layer [E0c4ddd1199][Eed74370b77].\n\n## Risks\n- Facility capacity, operating hours, services and current availability remain unconfirmed; mapped health features are not an exhaustive hospital inventory [Eed74370b77].\n- Road passability and incident locations are unverified; no road is certified open or impassable [Eed74370b77].\n- No surveyed intervention boundaries or approved delivery zones exist; intervention_zones layer is empty [Eed74370b77].\n- Cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision are absent [Eed74370b77].\n- Demonstration reports cannot corroborate actual incidents; all four reports are unverified [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n- Registered stock (120 units × 10 kg at Bambili) and fleet (2 vehicles) are synthetic and expired as of 2026-10-24 11:00 UTC; they do not establish actual NGO resources [Eee9e4d9449][Eed74370b77].\n- Duplicate Balewa coordinates require local clarification before use [E11e20e8c10][E0f04c086ff][Eed74370b77].\n\n## Decision gates\n- Operational dispatch remains HOLD until Actions 1–6 are satisfied and an authorized operator decision is recorded [Eed74370b77].\n- GIS pack delivery is gated on completion of Actions 1–4 [Eed74370b77].\n- Any use of demonstration reports for operational decisions is prohibited [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].",
+      "createdAt": "2026-10-25T15:59:45.281Z",
+      "updatedAt": "2026-10-25T16:00:39.283Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 8033,
+            "completion_tokens": 1857,
+            "total_tokens": 9890
+          },
+          "durationMs": 53744,
+          "firstDeltaMs": 3171,
+          "deltas": 471,
+          "upstream": {
+            "receiptId": "rcpt_req_giwcsqc2",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "citations": [
+          "E577d71ac5c",
+          "E5393b16f3d",
+          "Eb75c454ba2",
+          "Eba738e5db8",
+          "E1f47d2f678",
+          "Ecce97a3c99",
+          "E11e20e8c10",
+          "E1a349f1f49",
+          "E10e0b9a622",
+          "Ed7211b43f1",
+          "E0f04c086ff",
+          "E40a61a6afc",
+          "E29fcfd4f45",
+          "E00b963decd",
+          "E77e75cc459",
+          "E717752d0c4",
+          "E0c4bc0ad3a",
+          "E1e28383352",
+          "Eed74370b77",
+          "E551163564a",
+          "Ec0c6314836",
+          "E20c1a4200b",
+          "Ee76d9d3147",
+          "E3c858731c6",
+          "E4359e3d965",
+          "E62810be1d9",
+          "Eee9e4d9449",
+          "E06e9de224d",
+          "E21d75f8985",
+          "Ec5461d631e",
+          "E0c4ddd1199"
+        ]
+      }
+    },
+    {
+      "id": "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "actor": "evaluator",
+      "kind": "critique",
+      "title": "Evaluation of plan v1",
+      "version": 1,
+      "status": "published",
+      "markdown": "## Evaluation of plan v1\n\n**Verdict: REVISE** [Eed74370b77]\n\n## Evidence checks\n\n1. **Action 8 gate misalignment**: The GIS pack delivery gate requires Actions 1–4 complete, yet the plan’s objective is to produce a committee proposal and GIS pack *for evaluator review and revisions* [E577d71ac5c]. Requiring field-verified facility capacity, road passability, Balewa resolution, and surveyed boundaries before any GIS export conflates a conditional evidence pack with an operational delivery map. The evidence-only GIS pack (with empty intervention_zones and blockage layers) should be deliverable now; operational use remains HOLD [Eed74370b77].\n\n2. **Missing sequencing and dependencies**: Actions 1–6 are listed in parallel with no explicit order. Action 4 (define boundaries) logically depends on Action 3 (resolve Balewa) and Action 2 (road passability) to anchor zones to verified geography. Action 6 (operator decision) gates Actions 4 and 5 but sits at the end. No critical path or parallel-track structure is shown [Eed74370b77].\n\n3. **Role assignments lack specificity**: “Health-sector lead,” “Logistics/engineering lead,” “Community liaison,” and “Operations lead” are functional labels, not proposed named roles or organizations. The plan does not indicate which entity (e.g., Ministry of Health district office, NGO logistics unit, local authority) would fulfill each, weakening accountability for the verification gates [Eed74370b77].\n\n## Required changes\n\n1. **Decouple GIS pack export from field verification gates**: Allow immediate export of the evidence-only GIS pack (facility inventory, road network, settlement references, empty intervention_zones layer, gap annotations) for evaluator review; keep operational dispatch HOLD until Actions 1–6 are satisfied [E577d71ac5c][Eed74370b77].\n\n2. **Add a sequenced action table with dependencies**: Show critical path (e.g., 3 → 2 → 4 → 6) and parallel tracks (e.g., 1 and 5 can run concurrently). Explicitly note which actions unblock the GIS pack vs. operational dispatch [Eed74370b77].\n\n3. **Propose concrete role candidates**: Replace generic labels with proposed responsible entities (e.g., “Mezam Health District” for facility verification, “Bamenda Logistics Cluster” for road/warehouse, “Bambili Council” for boundary agreement, “Community Health Workers” for Balewa clarification) as assignments to be confirmed [Eed74370b77].",
+      "createdAt": "2026-10-25T16:00:49.008Z",
+      "updatedAt": "2026-10-25T16:02:22.020Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 10107,
+            "completion_tokens": 596,
+            "total_tokens": 10703
+          },
+          "durationMs": 92969,
+          "firstDeltaMs": 32510,
+          "deltas": 211,
+          "upstream": {
+            "receiptId": "rcpt_req_4eu2h0hw",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "citations": [
+          "Eed74370b77",
+          "E577d71ac5c"
+        ]
+      }
+    },
+    {
+      "id": "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-625c4baa-f23e-4fa2-b77c-3bb9932fd7de",
+      "actor": "planner",
+      "kind": "plan",
+      "title": "Plan v2 · revised committee draft",
+      "version": 2,
+      "status": "published",
+      "markdown": "## Objective\nMap hospitals and health facilities, assess road access and capacity evidence, and produce a committee proposal and GIS pack for evaluator review and revisions for the Bamenda–Bambili corridor [E577d71ac5c].\n\n## Intervention areas\nThe acquired OpenStreetMap/HOT extract (community-map-v1) covers bounds [10.1, 5.9, 10.3, 6.1] EPSG:4326 and contains 5,111 road-related features, 16 named settlement candidates and 7 health features; coverage, current road passability and facility operation are unverified [E5393b16f3d]. Sixteen settlement reference points are mapped; none locates an incident or defines an intervention boundary [Eb75c454ba2][Eba738e5db8][E1f47d2f678][Ecce97a3c99][E11e20e8c10][E1a349f1f49][E10e0b9a622][Ed7211b43f1][E0f04c086ff][E40a61a6afc][E29fcfd4f45][E00b963decd][E77e75cc459][E717752d0c4][E0c4bc0ad3a][E1e28383352]. Duplicate settlement names exist: Balewa appears at two coordinate pairs requiring local clarification [E11e20e8c10][E0f04c086ff]. The intervention_zones polygon layer is intentionally empty; no surveyed intervention boundaries or approved delivery zones were supplied [Eed74370b77]. Unknown requested areas outside the acquired corridor are coverage gaps.\n\n## Actions\n| # | Action | Proposed accountable entity | Trigger / Gate | Depends on | Unlocks | Evidence |\n|---|--------|-----------------------------|----------------|------------|---------|----------|\n| 1 | Verify facility capacity, operating hours, services and current availability for each of the seven mapped health features | Mezam Health District (Ministry of Health) | Direct confirmation from facility or health authority | — | Operational dispatch; GIS pack facility attributes | [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77] |\n| 2 | Ground-truth road passability for each corridor segment and confirm any blockages with coordinates | Bamenda Logistics Cluster (NGO logistics unit) | Field assessment or trusted local report with usable coordinates | 3 | Operational dispatch; GIS pack road status layer | [E5393b16f3d][Eed74370b77] |\n| 3 | Resolve duplicate Balewa coordinates through local clarification | Bambili Council / Community Health Workers | Local stakeholder input confirming single authoritative location | — | Action 2; Action 4 | [E11e20e8c10][E0f04c086ff][Eed74370b77] |\n| 4 | Define surveyed intervention boundaries and approved delivery zones | Operations lead (authorized operator) | Authorized operator decision and stakeholder agreement | 2, 3 | Operational dispatch; GIS pack intervention_zones layer | [Eed74370b77] |\n| 5 | Confirm current warehouse stock and fleet availability (existing observations expired 2026-10-24 11:00 UTC) | Bamenda Logistics Cluster (NGO logistics unit) | Current warehouse/fleet confirmation | — | Operational dispatch | [Eee9e4d9449][Eed74370b77] |\n| 6 | Obtain cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision | Operations lead (authorized operator) | Operator authorization | 4, 5 | Operational dispatch | [Eed74370b77] |\n| 7 | Treat all demonstration reports as unverified; do not use for operational decisions | All leads | Evidence review gate | — | — | [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77] |\n| 8 | Produce evidence-only GIS pack (facility inventory, road network, settlement references, empty intervention_zones layer, gap annotations) | GIS analyst | Immediate — no field verification required | — | Evaluator review and revisions | [E5393b16f3d][E577d71ac5c][Eed74370b77] |\n\n**Sequencing summary**: Critical path — 3 → 2 → 4 → 6. Parallel tracks — 1 and 5 can run concurrently with the critical path. Action 8 is decoupled and deliverable now for evaluator review; operational dispatch remains HOLD until Actions 1–6 are satisfied [Eed74370b77].\n\n## Access and health facilities\nSeven health features are mapped, all with coordinate basis noted as not a verified entrance and no capacity, operating hours, services or current availability provided [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77]:\n- School's Hospital (hospital) [E551163564a]\n- Doctor Azang (doctor) [Ec0c6314836]\n- St Louis Clinic (clinic) [E20c1a4200b]\n- Unnamed health feature way/685675038 (yes) [Ee76d9d3147]\n- Bamenda Regional Hospital (hospital) [E3c858731c6]\n- Mezam Clinic (dentist) [E4359e3d965]\n- Bamenda Polyclinic (hospital) [E62810be1d9]\n\nCurrent road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable by this map [E5393b16f3d][Eed74370b77]. The reported road blockage for Bambili has no usable incident coordinate and is excluded from the blockage point layer [E0c4ddd1199][Eed74370b77].\n\n## Risks\n- Facility capacity, operating hours, services and current availability remain unconfirmed; mapped health features are not an exhaustive hospital inventory [Eed74370b77].\n- Road passability and incident locations are unverified; no road is certified open or impassable [Eed74370b77].\n- No surveyed intervention boundaries or approved delivery zones exist; intervention_zones layer is empty [Eed74370b77].\n- Cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision are absent [Eed74370b77].\n- Demonstration reports cannot corroborate actual incidents; all four reports are unverified [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n- Registered stock (120 units × 10 kg at Bambili) and fleet (2 vehicles) are synthetic and expired as of 2026-10-24 11:00 UTC; they do not establish actual NGO resources [Eee9e4d9449][Eed74370b77].\n- Duplicate Balewa coordinates require local clarification before use [E11e20e8c10][E0f04c086ff][Eed74370b77].\n\n## Decision gates\n- Operational dispatch remains HOLD until Actions 1–6 are satisfied and an authorized operator decision is recorded [Eed74370b77].\n- Evidence-only GIS pack (Action 8) is deliverable immediately for evaluator review; operational-use GIS pack requires Actions 1–4 complete [E577d71ac5c][Eed74370b77].\n- Any use of demonstration reports for operational decisions is prohibited [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n\n## What changed and why\n- **Decoupled GIS pack export from field verification gates**: Action 8 now produces an evidence-only GIS pack immediately for evaluator review, per the objective [E577d71ac5c]; operational dispatch stays HOLD until Actions 1–6 are satisfied [Eed74370b77].\n- **Added explicit sequencing and dependencies**: Critical path 3 → 2 → 4 → 6 with parallel tracks (1, 5) shown in the action table; each action lists what it unlocks (GIS pack vs. operational dispatch) [Eed74370b77].\n- **Proposed concrete role candidates**: Generic labels replaced with proposed responsible entities (Mezam Health District, Bamenda Logistics Cluster, Bambili Council/Community Health Workers, Operations lead as authorized operator) as assignments to be confirmed [Eed74370b77].\n- **Updated Action 5 evidence citation**: Corrected to reference the independently queryable community/resource context showing expired synthetic stock/fleet [Eee9e4d9449][Eed74370b77].",
+      "createdAt": "2026-10-25T16:02:22.664Z",
+      "updatedAt": "2026-10-25T16:03:23.130Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 9689,
+            "completion_tokens": 2341,
+            "total_tokens": 12030
+          },
+          "durationMs": 60167,
+          "firstDeltaMs": 3509,
+          "deltas": 608,
+          "upstream": {
+            "receiptId": "rcpt_req_f36ja641",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "citations": [
+          "E577d71ac5c",
+          "E5393b16f3d",
+          "Eb75c454ba2",
+          "Eba738e5db8",
+          "E1f47d2f678",
+          "Ecce97a3c99",
+          "E11e20e8c10",
+          "E1a349f1f49",
+          "E10e0b9a622",
+          "Ed7211b43f1",
+          "E0f04c086ff",
+          "E40a61a6afc",
+          "E29fcfd4f45",
+          "E00b963decd",
+          "E77e75cc459",
+          "E717752d0c4",
+          "E0c4bc0ad3a",
+          "E1e28383352",
+          "Eed74370b77",
+          "E551163564a",
+          "Ec0c6314836",
+          "E20c1a4200b",
+          "Ee76d9d3147",
+          "E3c858731c6",
+          "E4359e3d965",
+          "E62810be1d9",
+          "Eee9e4d9449",
+          "E06e9de224d",
+          "E21d75f8985",
+          "Ec5461d631e",
+          "E0c4ddd1199"
+        ]
+      }
+    },
+    {
+      "id": "document-4e84875d-b4c1-479b-a0a8-1208ce33ffb3",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-625c4baa-f23e-4fa2-b77c-3bb9932fd7de",
+      "actor": "planner",
+      "kind": "diff",
+      "title": "Changes: v1 → v2",
+      "version": 2,
+      "status": "published",
+      "markdown": "```diff\n===================================================================\n--- plan-v1.md\tpublished draft\n+++ plan-v2.md\trevised after evaluation\n@@ -4,19 +4,21 @@\n ## Intervention areas\n The acquired OpenStreetMap/HOT extract (community-map-v1) covers bounds [10.1, 5.9, 10.3, 6.1] EPSG:4326 and contains 5,111 road-related features, 16 named settlement candidates and 7 health features; coverage, current road passability and facility operation are unverified [E5393b16f3d]. Sixteen settlement reference points are mapped; none locates an incident or defines an intervention boundary [Eb75c454ba2][Eba738e5db8][E1f47d2f678][Ecce97a3c99][E11e20e8c10][E1a349f1f49][E10e0b9a622][Ed7211b43f1][E0f04c086ff][E40a61a6afc][E29fcfd4f45][E00b963decd][E77e75cc459][E717752d0c4][E0c4bc0ad3a][E1e28383352]. Duplicate settlement names exist: Balewa appears at two coordinate pairs requiring local clarification [E11e20e8c10][E0f04c086ff]. The intervention_zones polygon layer is intentionally empty; no surveyed intervention boundaries or approved delivery zones were supplied [Eed74370b77]. Unknown requested areas outside the acquired corridor are coverage gaps.\n \n ## Actions\n-| # | Action | Accountable | Trigger / Gate | Evidence |\n-|---|--------|-------------|----------------|----------|\n-| 1 | Verify facility capacity, operating hours, services and current availability for each of the seven mapped health features | Health-sector lead | Direct confirmation from facility or health authority | [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77] |\n-| 2 | Ground-truth road passability for each corridor segment and confirm any blockages with coordinates | Logistics/engineering lead | Field assessment or trusted local report with usable coordinates | [E5393b16f3d][Eed74370b77] |\n-| 3 | Resolve duplicate Balewa coordinates through local clarification | Community liaison | Local stakeholder input confirming single authoritative location | [E11e20e8c10][E0f04c086ff][Eed74370b77] |\n-| 4 | Define surveyed intervention boundaries and approved delivery zones | Operations lead | Authorized operator decision and stakeholder agreement | [Eed74370b77] |\n-| 5 | Confirm current warehouse stock and fleet availability (existing observations expired 2026-10-24 11:00 UTC) | Logistics lead | Current warehouse/fleet confirmation | [Eee9e4d9449][Eed74370b77] |\n-| 6 | Obtain cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision | Operations lead | Operator authorization | [Eed74370b77] |\n-| 7 | Treat all demonstration reports as unverified; do not use for operational decisions | All leads | Evidence review gate | [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77] |\n-| 8 | Produce GIS pack with facility inventory, road network, settlement references, empty intervention_zones layer and gap annotations | GIS analyst | Operations lead confirms Actions 1–4 complete | [E5393b16f3d][Eed74370b77] |\n+| # | Action | Proposed accountable entity | Trigger / Gate | Depends on | Unlocks | Evidence |\n+|---|--------|-----------------------------|----------------|------------|---------|----------|\n+| 1 | Verify facility capacity, operating hours, services and current availability for each of the seven mapped health features | Mezam Health District (Ministry of Health) | Direct confirmation from facility or health authority | — | Operational dispatch; GIS pack facility attributes | [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77] |\n+| 2 | Ground-truth road passability for each corridor segment and confirm any blockages with coordinates | Bamenda Logistics Cluster (NGO logistics unit) | Field assessment or trusted local report with usable coordinates | 3 | Operational dispatch; GIS pack road status layer | [E5393b16f3d][Eed74370b77] |\n+| 3 | Resolve duplicate Balewa coordinates through local clarification | Bambili Council / Community Health Workers | Local stakeholder input confirming single authoritative location | — | Action 2; Action 4 | [E11e20e8c10][E0f04c086ff][Eed74370b77] |\n+| 4 | Define surveyed intervention boundaries and approved delivery zones | Operations lead (authorized operator) | Authorized operator decision and stakeholder agreement | 2, 3 | Operational dispatch; GIS pack intervention_zones layer | [Eed74370b77] |\n+| 5 | Confirm current warehouse stock and fleet availability (existing observations expired 2026-10-24 11:00 UTC) | Bamenda Logistics Cluster (NGO logistics unit) | Current warehouse/fleet confirmation | — | Operational dispatch | [Eee9e4d9449][Eed74370b77] |\n+| 6 | Obtain cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision | Operations lead (authorized operator) | Operator authorization | 4, 5 | Operational dispatch | [Eed74370b77] |\n+| 7 | Treat all demonstration reports as unverified; do not use for operational decisions | All leads | Evidence review gate | — | — | [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77] |\n+| 8 | Produce evidence-only GIS pack (facility inventory, road network, settlement references, empty intervention_zones layer, gap annotations) | GIS analyst | Immediate — no field verification required | — | Evaluator review and revisions | [E5393b16f3d][E577d71ac5c][Eed74370b77] |\n \n+**Sequencing summary**: Critical path — 3 → 2 → 4 → 6. Parallel tracks — 1 and 5 can run concurrently with the critical path. Action 8 is decoupled and deliverable now for evaluator review; operational dispatch remains HOLD until Actions 1–6 are satisfied [Eed74370b77].\n+\n ## Access and health facilities\n Seven health features are mapped, all with coordinate basis noted as not a verified entrance and no capacity, operating hours, services or current availability provided [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77]:\n - School's Hospital (hospital) [E551163564a]\n - Doctor Azang (doctor) [Ec0c6314836]\n@@ -38,6 +40,12 @@\n - Duplicate Balewa coordinates require local clarification before use [E11e20e8c10][E0f04c086ff][Eed74370b77].\n \n ## Decision gates\n - Operational dispatch remains HOLD until Actions 1–6 are satisfied and an authorized operator decision is recorded [Eed74370b77].\n-- GIS pack delivery is gated on completion of Actions 1–4 [Eed74370b77].\n-- Any use of demonstration reports for operational decisions is prohibited [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n\\ No newline at end of file\n+- Evidence-only GIS pack (Action 8) is deliverable immediately for evaluator review; operational-use GIS pack requires Actions 1–4 complete [E577d71ac5c][Eed74370b77].\n+- Any use of demonstration reports for operational decisions is prohibited [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n+\n+## What changed and why\n+- **Decoupled GIS pack export from field verification gates**: Action 8 now produces an evidence-only GIS pack immediately for evaluator review, per the objective [E577d71ac5c]; operational dispatch stays HOLD until Actions 1–6 are satisfied [Eed74370b77].\n+- **Added explicit sequencing and dependencies**: Critical path 3 → 2 → 4 → 6 with parallel tracks (1, 5) shown in the action table; each action lists what it unlocks (GIS pack vs. operational dispatch) [Eed74370b77].\n+- **Proposed concrete role candidates**: Generic labels replaced with proposed responsible entities (Mezam Health District, Bamenda Logistics Cluster, Bambili Council/Community Health Workers, Operations lead as authorized operator) as assignments to be confirmed [Eed74370b77].\n+- **Updated Action 5 evidence citation**: Corrected to reference the independently queryable community/resource context showing expired synthetic stock/fleet [Eee9e4d9449][Eed74370b77].\n\\ No newline at end of file\n\n```",
+      "createdAt": "2026-10-25T16:03:23.368Z",
+      "updatedAt": "2026-10-25T16:03:23.559Z",
+      "metadata": {
+        "fromDocumentId": "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672",
+        "toDocumentId": "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82"
+      }
+    },
+    {
+      "id": "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "actor": "evaluator",
+      "kind": "critique",
+      "title": "Evaluation of plan v2",
+      "version": 2,
+      "status": "published",
+      "markdown": "## Evaluation of plan v2\n\n**Verdict: ACCEPT_WITH_GAPS** [Eed74370b77]\n\n## Evidence checks\n\n1. **Scope and uncertainty honesty**: The plan correctly confines itself to the acquired corridor [E5393b16f3d], declares all seven health features as unverified entrances with no capacity data [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9], and states road passability and incident locations are unverified [E5393b16f3d]. No invented capacities, coordinates, or clearance claims appear.\n\n2. **Action ownership and gates**: Each action proposes a responsible entity (Mezam Health District, Bamenda Logistics Cluster, Bambili Council/Community Health Workers, Operations lead) with explicit triggers/gates and dependencies [Eed74370b77]. The critical path 3 → 2 → 4 → 6 and parallel tracks (1, 5) are logically sequenced; Action 8 is decoupled for immediate evidence-only GIS pack delivery [E577d71ac5c][Eed74370b77].\n\n3. **Hold conditions and data treatment**: Operational dispatch remains HOLD until Actions 1–6 are satisfied [Eed74370b77]. Demonstration reports are explicitly barred from operational use [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199]. Expired synthetic stock/fleet are flagged and not treated as current resources [Eee9e4d9449][Eed74370b77].\n\n## Required changes\n\n1. **Clarify Action 3 gate output**: The trigger \"Local stakeholder input confirming single authoritative location\" should specify the deliverable (e.g., a single coordinate pair with source attribution) so Action 2 and 4 dependencies are objectively verifiable [E11e20e8c10][E0f04c086ff][Eed74370b77].\n\n2. **Define \"authorized operator decision\" for Action 4 and 6**: The plan references this decision as a gate but does not describe its form (written authorization, committee minutes, digital record). Add a one-line definition to make the gate auditable [Eed74370b77].\n\n3. **Note GIS pack layer status in Action 8**: Explicitly state that the exported pack will contain empty blockage point and intervention_zones layers, matching the current evidence state [E5393b16f3d][E0c4ddd1199][Eed74370b77].",
+      "createdAt": "2026-10-25T16:03:28.076Z",
+      "updatedAt": "2026-10-25T16:03:41.515Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 10449,
+            "completion_tokens": 674,
+            "total_tokens": 11123
+          },
+          "durationMs": 13370,
+          "firstDeltaMs": 3389,
+          "deltas": 208,
+          "upstream": {
+            "receiptId": "rcpt_req_lxcccrg9",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "citations": [
+          "Eed74370b77",
+          "E5393b16f3d",
+          "E551163564a",
+          "Ec0c6314836",
+          "E20c1a4200b",
+          "Ee76d9d3147",
+          "E3c858731c6",
+          "E4359e3d965",
+          "E62810be1d9",
+          "E577d71ac5c",
+          "E06e9de224d",
+          "E21d75f8985",
+          "Ec5461d631e",
+          "E0c4ddd1199",
+          "Eee9e4d9449",
+          "E11e20e8c10",
+          "E0f04c086ff"
+        ]
+      }
+    },
+    {
+      "id": "document-191bb61a-2668-4a2c-977e-907830f20707",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "actor": "reporter",
+      "kind": "report",
+      "title": "Committee report · evidence and recommended next steps",
+      "version": 2,
+      "status": "published",
+      "markdown": "## Situation summary\nThe acquired OpenStreetMap/HOT extract (community-map-v1) covers the Bamenda–Bambili corridor at bounds [10.1, 5.9, 10.3, 6.1] EPSG:4326 and contains 5,111 road-related features, 16 named settlement candidates and 7 health features; coverage, current road passability and facility operation are unverified [E5393b16f3d]. Sixteen settlement reference points are mapped; none locates an incident or defines an intervention boundary [Eb75c454ba2][Eba738e5db8][E1f47d2f678][Ecce97a3c99][E11e20e8c10][E1a349f1f49][E10e0b9a622][Ed7211b43f1][E0f04c086ff][E40a61a6afc][E29fcfd4f45][E00b963decd][E77e75cc459][E717752d0c4][E0c4bc0ad3a][E1e28383352]. Duplicate settlement names exist: Balewa appears at two coordinate pairs requiring local clarification [E11e20e8c10][E0f04c086ff]. The intervention_zones polygon layer is intentionally empty; no surveyed intervention boundaries or approved delivery zones were supplied [Eed74370b77]. Unknown requested areas outside the acquired corridor are coverage gaps. The mission objective is to map hospitals and health facilities, assess road access and capacity evidence, and produce a committee proposal and GIS pack for evaluator review and revisions [E577d71ac5c].\n\n## Findings\nSeven health features are mapped, all with coordinate basis noted as not a verified entrance and no capacity, operating hours, services or current availability provided [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77]: School's Hospital (hospital) [E551163564a], Doctor Azang (doctor) [Ec0c6314836], St Louis Clinic (clinic) [E20c1a4200b], Unnamed health feature way/685675038 (yes) [Ee76d9d3147], Bamenda Regional Hospital (hospital) [E3c858731c6], Mezam Clinic (dentist) [E4359e3d965], Bamenda Polyclinic (hospital) [E62810be1d9]. Current road passability, exact incident locations and affected road segments are unverified; no road is certified open or impassable by this map [E5393b16f3d][Eed74370b77]. The reported road blockage for Bambili has no usable incident coordinate and is excluded from the blockage point layer [E0c4ddd1199][Eed74370b77]. Four demonstration reports exist (Bambili other, Bambui other, Balewa other, Bambili road blockage); all are unverified and cannot corroborate actual incidents [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77]. Registered stock (120 units × 10 kg at Bambili) and fleet (2 vehicles) are synthetic and expired as of 2026-10-24 11:00 UTC; they do not establish actual NGO resources [Eee9e4d9449][Eed74370b77].\n\n## Recommended interventions\n| # | Action | Proposed accountable entity | Trigger / Gate | Depends on | Unlocks | Evidence |\n|---|--------|-----------------------------|----------------|------------|---------|----------|\n| 1 | Verify facility capacity, operating hours, services and current availability for each of the seven mapped health features | Mezam Health District (Ministry of Health) | Direct confirmation from facility or health authority | — | Operational dispatch; GIS pack facility attributes | [E551163564a][Ec0c6314836][E20c1a4200b][Ee76d9d3147][E3c858731c6][E4359e3d965][E62810be1d9][Eed74370b77] |\n| 2 | Ground-truth road passability for each corridor segment and confirm any blockages with coordinates | Bamenda Logistics Cluster (NGO logistics unit) | Field assessment or trusted local report with usable coordinates | 3 | Operational dispatch; GIS pack road status layer | [E5393b16f3d][Eed74370b77] |\n| 3 | Resolve duplicate Balewa coordinates through local clarification | Bambili Council / Community Health Workers | Local stakeholder input delivering a single coordinate pair with source attribution | — | Action 2; Action 4 | [E11e20e8c10][E0f04c086ff][Eed74370b77] |\n| 4 | Define surveyed intervention boundaries and approved delivery zones | Operations lead (authorized operator) | Written authorization, committee minutes or digital record of authorized operator decision and stakeholder agreement | 2, 3 | Operational dispatch; GIS pack intervention_zones layer | [Eed74370b77] |\n| 5 | Confirm current warehouse stock and fleet availability (existing observations expired 2026-10-24 11:00 UTC) | Bamenda Logistics Cluster (NGO logistics unit) | Current warehouse/fleet confirmation | — | Operational dispatch | [Eee9e4d9449][Eed74370b77] |\n| 6 | Obtain cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision | Operations lead (authorized operator) | Written authorization, committee minutes or digital record of authorized operator decision | 4, 5 | Operational dispatch | [Eed74370b77] |\n| 7 | Treat all demonstration reports as unverified; do not use for operational decisions | All leads | Evidence review gate | — | — | [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77] |\n| 8 | Produce evidence-only GIS pack (facility inventory, road network, settlement references, empty blockage point and intervention_zones layers, gap annotations) | GIS analyst | Immediate — no field verification required | — | Evaluator review and revisions | [E5393b16f3d][E577d71ac5c][Eed74370b77] |\n\n**Sequencing**: Critical path — 3 → 2 → 4 → 6. Parallel tracks — 1 and 5 can run concurrently with the critical path. Action 8 is decoupled and deliverable now for evaluator review; operational dispatch remains HOLD until Actions 1–6 are satisfied [Eed74370b77].\n\n## Risks\n- Facility capacity, operating hours, services and current availability remain unconfirmed; mapped health features are not an exhaustive hospital inventory [Eed74370b77].\n- Road passability and incident locations are unverified; no road is certified open or impassable [Eed74370b77].\n- No surveyed intervention boundaries or approved delivery zones exist; intervention_zones layer is empty [Eed74370b77].\n- Cargo quantities, beneficiary requirements, dispatch resources, deadlines and authorized operator decision are absent [Eed74370b77].\n- Demonstration reports cannot corroborate actual incidents; all four reports are unverified [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n- Registered stock and fleet are synthetic and expired; they do not establish actual NGO resources [Eee9e4d9449][Eed74370b77].\n- Duplicate Balewa coordinates require local clarification before use [E11e20e8c10][E0f04c086ff][Eed74370b77].\n\n## Next steps\n- Operational dispatch remains HOLD until Actions 1–6 are satisfied and an authorized operator decision (written authorization, committee minutes or digital record) is recorded [Eed74370b77].\n- Evidence-only GIS pack (Action 8) is deliverable immediately for evaluator review; operational-use GIS pack requires Actions 1–4 complete [E577d71ac5c][Eed74370b77].\n- Any use of demonstration reports for operational decisions is prohibited [E06e9de224d][E21d75f8985][Ec5461d631e][E0c4ddd1199][Eed74370b77].\n- Evaluator to review this draft and confirm or adjust proposed accountable entities, gate definitions and sequencing before committee endorsement.\n\n## Evidence trail\n[E577d71ac5c] [E5393b16f3d] [E551163564a] [Ec0c6314836] [E20c1a4200b] [Ee76d9d3147] [E3c858731c6] [E4359e3d965] [E62810be1d9] [Eb75c454ba2] [Eba738e5db8] [E1f47d2f678] [Ecce97a3c99] [E11e20e8c10] [E1a349f1f49] [E10e0b9a622] [Ed7211b43f1] [E0f04c086ff] [E40a61a6afc] [E29fcfd4f45] [E00b963decd] [E77e75cc459] [E717752d0c4] [E0c4bc0ad3a] [E1e28383352] [Eee9e4d9449] [Eed74370b77] [E06e9de224d] [E21d75f8985] [Ec5461d631e] [E0c4ddd1199]",
+      "createdAt": "2026-10-25T16:03:41.913Z",
+      "updatedAt": "2026-10-25T16:05:09.828Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 10386,
+            "completion_tokens": 2662,
+            "total_tokens": 13048
+          },
+          "durationMs": 87770,
+          "firstDeltaMs": 2409,
+          "deltas": 679,
+          "upstream": {
+            "receiptId": "rcpt_req_pf6i3cw0",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        },
+        "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+        "citations": [
+          "E5393b16f3d",
+          "Eb75c454ba2",
+          "Eba738e5db8",
+          "E1f47d2f678",
+          "Ecce97a3c99",
+          "E11e20e8c10",
+          "E1a349f1f49",
+          "E10e0b9a622",
+          "Ed7211b43f1",
+          "E0f04c086ff",
+          "E40a61a6afc",
+          "E29fcfd4f45",
+          "E00b963decd",
+          "E77e75cc459",
+          "E717752d0c4",
+          "E0c4bc0ad3a",
+          "E1e28383352",
+          "Eed74370b77",
+          "E577d71ac5c",
+          "E551163564a",
+          "Ec0c6314836",
+          "E20c1a4200b",
+          "Ee76d9d3147",
+          "E3c858731c6",
+          "E4359e3d965",
+          "E62810be1d9",
+          "E0c4ddd1199",
+          "E06e9de224d",
+          "E21d75f8985",
+          "Ec5461d631e",
+          "Eee9e4d9449"
+        ]
+      }
+    },
+    {
+      "id": "document-857f8ee5-b8f6-4107-be4b-c6409f321b01",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "turnId": null,
+      "taskId": null,
+      "actor": "coordinator",
+      "kind": "summary",
+      "title": "Mission Coordinator · findings and next steps",
+      "version": 1,
+      "status": "published",
+      "markdown": "The committee draft and geodata were published from four reports, but required field, resource and mission confirmations remain open. Facility capacity, operating hours and current availability need direct verification, and no road is certified open or impassable. Demonstration reports cannot corroborate an actual incident, and registered stock and fleet are synthetic with expired observations. Duplicate settlement names require local clarification. Which community should we prioritize to ground-truth facility access and restart the committee pack?",
+      "createdAt": "2026-10-25T16:06:15.686Z",
+      "updatedAt": "2026-10-25T16:06:18.814Z",
+      "metadata": {
+        "receipt": {
+          "requestedMode": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "usage": {
+            "prompt_tokens": 1013,
+            "completion_tokens": 99,
+            "total_tokens": 1112
+          },
+          "durationMs": 3026,
+          "deltas": 2,
+          "firstDeltaMs": 2949,
+          "upstream": {
+            "receiptId": "rcpt_req_wlnnimua",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "seq": 372,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "started",
+      "detail": "Mission Coordinator: establish the evidence, commission a draft plan, evaluate it and produce a committee pack.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:08.198Z"
+    },
+    {
+      "seq": 373,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Coordinator → Mission Expert: Investigate community reports, locate mapped communities and health facilities, and register the source of each finding.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:08.313Z"
+    },
+    {
+      "seq": 374,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "task_started",
+      "detail": "Mission Expert: Investigate community reports, locate mapped communities and health facilities, and register the source of each finding.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:08.335Z"
+    },
+    {
+      "seq": 375,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "tool_started",
+      "detail": "Kobo: retrieving the current private project snapshot.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:08.356Z"
+    },
+    {
+      "seq": 376,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "tool_completed",
+      "detail": "Kobo returned 4 records.",
+      "evidenceIds": [
+        "signal-06c9a41ec48efa4ae9440353c29e8d45",
+        "signal-54296ec0bddddc7ee692a1afd6bee32e",
+        "signal-c231394e187b5398d27deecbf5fe62c1",
+        "signal-aa2b0db56ad1f220b5264f56c93b9fd1"
+      ],
+      "at": "2026-10-25T15:59:09.479Z"
+    },
+    {
+      "seq": 377,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "tool_started",
+      "detail": "Zetaris: verify the exact report batch and join the bounded community/resource context.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:09.539Z"
+    },
+    {
+      "seq": 378,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "query",
+      "detail": "community-batch-summary: 1 rows returned in 1795 ms.",
+      "evidenceIds": [
+        "query-8c1066af-6def-4689-b7bb-37e83cd8ee5a"
+      ],
+      "at": "2026-10-25T15:59:17.578Z"
+    },
+    {
+      "seq": 379,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "query",
+      "detail": "community-logistics-join: 4 rows returned in 5473 ms.",
+      "evidenceIds": [
+        "query-ae1d934e-771b-4c82-b789-f7e9018e7319"
+      ],
+      "at": "2026-10-25T15:59:17.634Z"
+    },
+    {
+      "seq": 380,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "tool_completed",
+      "detail": "Map source inspected: 7 health features; 5100 road line features. Capacity and current operating status are unknown.",
+      "evidenceIds": [
+        "E5393b16f3d",
+        "E551163564a",
+        "Ec0c6314836",
+        "E20c1a4200b",
+        "Ee76d9d3147",
+        "E3c858731c6",
+        "E4359e3d965",
+        "E62810be1d9"
+      ],
+      "at": "2026-10-25T15:59:17.882Z"
+    },
+    {
+      "seq": 381,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "model_started",
+      "detail": "Mission Expert · evidence findings: generating a cited public document.",
+      "evidenceIds": [
+        "document-bffee317-90bb-4ee3-8c91-2b7a7f1e77a6"
+      ],
+      "at": "2026-10-25T15:59:17.960Z"
+    },
+    {
+      "seq": 382,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "document_validation_failed",
+      "detail": "Mission Expert · evidence findings did not pass citation/content checks. The rejected draft and model receipt remain inspectable.",
+      "evidenceIds": [
+        "document-bffee317-90bb-4ee3-8c91-2b7a7f1e77a6"
+      ],
+      "at": "2026-10-25T15:59:28.031Z"
+    },
+    {
+      "seq": 383,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "coordinator",
+      "kind": "publication_repair",
+      "detail": "Mission Coordinator → Mission Expert: correct the rejected document against its source checks. One publication repair is permitted; the independent evaluation still follows.",
+      "evidenceIds": [
+        "document-bffee317-90bb-4ee3-8c91-2b7a7f1e77a6"
+      ],
+      "at": "2026-10-25T15:59:28.077Z"
+    },
+    {
+      "seq": 384,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "model_started",
+      "detail": "Mission Expert · evidence findings: generating a cited public document.",
+      "evidenceIds": [
+        "document-5b429ce9-5763-4618-8b1e-802af9dbb60d"
+      ],
+      "at": "2026-10-25T15:59:28.169Z"
+    },
+    {
+      "seq": 385,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-bac43680-51f2-47fa-82de-134fec060dcd",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "expert",
+      "kind": "artifact_published",
+      "detail": "Mission Expert · evidence findings is published and ready to open.",
+      "evidenceIds": [
+        "document-5b429ce9-5763-4618-8b1e-802af9dbb60d"
+      ],
+      "at": "2026-10-25T15:59:44.802Z"
+    },
+    {
+      "seq": 386,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Expert has published the findings. Mission Coordinator is commissioning plan v1.",
+      "evidenceIds": [
+        "document-5b429ce9-5763-4618-8b1e-802af9dbb60d"
+      ],
+      "at": "2026-10-25T15:59:44.965Z"
+    },
+    {
+      "seq": 387,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Coordinator → Planning Agent: Produce plan v1 using the cited findings. Publish it before evaluation so the user can review it.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:45.084Z"
+    },
+    {
+      "seq": 388,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-f9ccb399-417a-43b4-82da-9567b5c251c3",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "planner",
+      "kind": "task_started",
+      "detail": "Planning Agent: Produce plan v1 using the cited findings. Publish it before evaluation so the user can review it.",
+      "evidenceIds": [],
+      "at": "2026-10-25T15:59:45.206Z"
+    },
+    {
+      "seq": 389,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-f9ccb399-417a-43b4-82da-9567b5c251c3",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "planner",
+      "kind": "model_started",
+      "detail": "Plan v1 · initial committee draft: generating a cited public document.",
+      "evidenceIds": [
+        "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672"
+      ],
+      "at": "2026-10-25T15:59:45.373Z"
+    },
+    {
+      "seq": 390,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-f9ccb399-417a-43b4-82da-9567b5c251c3",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "planner",
+      "kind": "artifact_published",
+      "detail": "Plan v1 · initial committee draft is published and ready to open.",
+      "evidenceIds": [
+        "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672"
+      ],
+      "at": "2026-10-25T16:00:39.350Z"
+    },
+    {
+      "seq": 391,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "plan_ready",
+      "detail": "Planning Agent’s plan v1 is complete and available for review. Mission Coordinator is handing it to the Evaluator Agent.",
+      "evidenceIds": [
+        "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672"
+      ],
+      "at": "2026-10-25T16:00:39.457Z"
+    },
+    {
+      "seq": 392,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Coordinator → Evaluator Agent: Independently check the sources and critique plan v1.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:00:39.589Z"
+    },
+    {
+      "seq": 393,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "task_started",
+      "detail": "Evaluator Agent: Independently check the sources and critique plan v1.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:00:39.681Z"
+    },
+    {
+      "seq": 394,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "tool_started",
+      "detail": "Zetaris: verify the exact report batch and join the bounded community/resource context.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:00:40.916Z"
+    },
+    {
+      "seq": 395,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "query",
+      "detail": "community-batch-summary: 1 rows returned in 1464 ms.",
+      "evidenceIds": [
+        "query-e13493c8-9c6a-4f44-ac03-cb17ee8fe6f3"
+      ],
+      "at": "2026-10-25T16:00:48.937Z"
+    },
+    {
+      "seq": 396,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "query",
+      "detail": "community-logistics-join: 4 rows returned in 4558 ms.",
+      "evidenceIds": [
+        "query-c85ddd32-d42a-4395-a413-29be0664bd2c"
+      ],
+      "at": "2026-10-25T16:00:48.959Z"
+    },
+    {
+      "seq": 397,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "independent_check",
+      "detail": "Fresh Kobo and Zetaris reads match the plan evidence revision. Operational evidence gaps still apply.",
+      "evidenceIds": [
+        "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672"
+      ],
+      "at": "2026-10-25T16:00:48.985Z"
+    },
+    {
+      "seq": 398,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "model_started",
+      "detail": "Evaluation of plan v1: generating a cited public document.",
+      "evidenceIds": [
+        "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c"
+      ],
+      "at": "2026-10-25T16:00:49.033Z"
+    },
+    {
+      "seq": 399,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-a794dc0b-d61c-4d74-83c2-8f11dc6df35b",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "artifact_published",
+      "detail": "Evaluation of plan v1 is published and ready to open.",
+      "evidenceIds": [
+        "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c"
+      ],
+      "at": "2026-10-25T16:02:22.096Z"
+    },
+    {
+      "seq": 400,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "evaluation_ready",
+      "detail": "Evaluator Agent requests changes to plan v1. The critique is open for review.",
+      "evidenceIds": [
+        "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c",
+        "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672"
+      ],
+      "at": "2026-10-25T16:02:22.174Z"
+    },
+    {
+      "seq": 401,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Coordinator → Planning Agent: Revise plan v1 against the evaluator’s critique and current evidence. Show what changed and why.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:02:22.307Z"
+    },
+    {
+      "seq": 402,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-625c4baa-f23e-4fa2-b77c-3bb9932fd7de",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "planner",
+      "kind": "task_started",
+      "detail": "Planning Agent: Revise plan v1 against the evaluator’s critique and current evidence. Show what changed and why.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:02:22.441Z"
+    },
+    {
+      "seq": 403,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-625c4baa-f23e-4fa2-b77c-3bb9932fd7de",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "planner",
+      "kind": "model_started",
+      "detail": "Plan v2 · revised committee draft: generating a cited public document.",
+      "evidenceIds": [
+        "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82"
+      ],
+      "at": "2026-10-25T16:02:22.845Z"
+    },
+    {
+      "seq": 404,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-625c4baa-f23e-4fa2-b77c-3bb9932fd7de",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "planner",
+      "kind": "artifact_published",
+      "detail": "Plan v2 · revised committee draft is published and ready to open.",
+      "evidenceIds": [
+        "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82"
+      ],
+      "at": "2026-10-25T16:03:23.255Z"
+    },
+    {
+      "seq": 405,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "revision_ready",
+      "detail": "Planning Agent’s plan v2 is published with its actual text diff. Evaluator Agent will check the revision.",
+      "evidenceIds": [
+        "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82",
+        "document-4e84875d-b4c1-479b-a0a8-1208ce33ffb3"
+      ],
+      "at": "2026-10-25T16:03:23.658Z"
+    },
+    {
+      "seq": 406,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Coordinator → Evaluator Agent: Independently check the sources and critique plan v2.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:03:23.781Z"
+    },
+    {
+      "seq": 407,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "task_started",
+      "detail": "Evaluator Agent: Independently check the sources and critique plan v2.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:03:23.877Z"
+    },
+    {
+      "seq": 408,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "tool_started",
+      "detail": "Zetaris: verify the exact report batch and join the bounded community/resource context.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:03:24.903Z"
+    },
+    {
+      "seq": 409,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "query",
+      "detail": "community-batch-summary: 1 rows returned in 663 ms.",
+      "evidenceIds": [
+        "query-0a64a3be-4199-4f3e-aa40-f07935eb0db3"
+      ],
+      "at": "2026-10-25T16:03:27.961Z"
+    },
+    {
+      "seq": 410,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "query",
+      "detail": "community-logistics-join: 4 rows returned in 1743 ms.",
+      "evidenceIds": [
+        "query-ae53b0ab-a9db-4f77-8e08-09b2f95aadef"
+      ],
+      "at": "2026-10-25T16:03:27.999Z"
+    },
+    {
+      "seq": 411,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "independent_check",
+      "detail": "Fresh Kobo and Zetaris reads match the plan evidence revision. Operational evidence gaps still apply.",
+      "evidenceIds": [
+        "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82"
+      ],
+      "at": "2026-10-25T16:03:28.039Z"
+    },
+    {
+      "seq": 412,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "model_started",
+      "detail": "Evaluation of plan v2: generating a cited public document.",
+      "evidenceIds": [
+        "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c"
+      ],
+      "at": "2026-10-25T16:03:28.111Z"
+    },
+    {
+      "seq": 413,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-e5c9abb2-7dab-43a6-8c51-056927af3ee2",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "evaluator",
+      "kind": "artifact_published",
+      "detail": "Evaluation of plan v2 is published and ready to open.",
+      "evidenceIds": [
+        "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c"
+      ],
+      "at": "2026-10-25T16:03:41.597Z"
+    },
+    {
+      "seq": 414,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "evaluation_ready",
+      "detail": "Evaluator Agent accepts plan v2 as a committee draft with explicit evidence gaps; dispatch remains on hold.",
+      "evidenceIds": [
+        "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c",
+        "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82"
+      ],
+      "at": "2026-10-25T16:03:41.685Z"
+    },
+    {
+      "seq": 415,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "handoff",
+      "detail": "Mission Coordinator → Mission Coordinator · report preparation: Assemble the committee narrative, native map, source register and QGIS layers.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:03:41.771Z"
+    },
+    {
+      "seq": 416,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "reporter",
+      "kind": "task_started",
+      "detail": "Mission Coordinator · report preparation: Assemble the committee narrative, native map, source register and QGIS layers.",
+      "evidenceIds": [],
+      "at": "2026-10-25T16:03:41.852Z"
+    },
+    {
+      "seq": 417,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "reporter",
+      "kind": "model_started",
+      "detail": "Committee report · evidence and recommended next steps: generating a cited public document.",
+      "evidenceIds": [
+        "document-191bb61a-2668-4a2c-977e-907830f20707"
+      ],
+      "at": "2026-10-25T16:03:41.985Z"
+    },
+    {
+      "seq": 418,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "reporter",
+      "kind": "artifact_published",
+      "detail": "Committee report · evidence and recommended next steps is published and ready to open.",
+      "evidenceIds": [
+        "document-191bb61a-2668-4a2c-977e-907830f20707"
+      ],
+      "at": "2026-10-25T16:05:09.934Z"
+    },
+    {
+      "seq": 419,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "reporter",
+      "kind": "export_progress",
+      "detail": "QGIS: writing the GeoPackage and styled project, reopening every layer and checking feature counts, CRS and geometry.",
+      "evidenceIds": [
+        "document-191bb61a-2668-4a2c-977e-907830f20707"
+      ],
+      "at": "2026-10-25T16:05:12.204Z"
+    },
+    {
+      "seq": 420,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "reporter",
+      "kind": "export_progress",
+      "detail": "QGIS validation passed. Rendering the committee PDF with the native map, facility/coordinate inventories and cited evidence register.",
+      "evidenceIds": [
+        "document-191bb61a-2668-4a2c-977e-907830f20707"
+      ],
+      "at": "2026-10-25T16:06:05.008Z"
+    },
+    {
+      "seq": 421,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-dcdd4029-a4ec-4c72-bb31-1249b2392e5d",
+      "parentTaskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "actor": "reporter",
+      "kind": "export_progress",
+      "detail": "Packing the PDF, map, editable QGIS project, GeoPackage, GeoJSON, source register and versioned drafts with checksums.",
+      "evidenceIds": [
+        "document-191bb61a-2668-4a2c-977e-907830f20707"
+      ],
+      "at": "2026-10-25T16:06:11.557Z"
+    },
+    {
+      "seq": 422,
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "taskId": "task-1ed1e0d6-18c4-4fa7-8963-8ff779574ccd",
+      "parentTaskId": null,
+      "actor": "coordinator",
+      "kind": "report_ready",
+      "detail": "Committee report and geodata pack are ready to download. Evidence gaps and the operational hold are retained.",
+      "evidenceIds": [
+        "document-191bb61a-2668-4a2c-977e-907830f20707"
+      ],
+      "at": "2026-10-25T16:06:15.531Z"
+    }
+  ],
+  "citations": [
+    {
+      "id": "E00b963decd",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bayele",
+      "statement": "Bayele: mapped village at longitude 10.1694713, latitude 5.9735678. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/3966435270",
+      "observedAt": null,
+      "recordId": "places-node:3966435270",
+      "sha256": "8b7b932cda0ac95c708bbc742f732b50e1470f15cedd64e0c3ca252ab2bf0311"
+    },
+    {
+      "id": "E06e9de224d",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "report",
+      "title": "Bambili · other",
+      "statement": "Demonstration other report for Bambili; relationship direct; observed 2026-10-25T06:30:28.332Z. Community label matched; the exact incident location and affected road remain unknown. Origin is unverified.",
+      "sourceUrl": null,
+      "observedAt": "2026-10-25T06:30:28.332Z",
+      "recordId": "signal-06c9a41ec48efa4ae9440353c29e8d45",
+      "sha256": "d8257cba64408c2c54c206f95f8665118ea897031a2e06fdc80ff9a58be7f51f"
+    },
+    {
+      "id": "E0c4bc0ad3a",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Nsongwa",
+      "statement": "Nsongwa: mapped village at longitude 10.1245098, latitude 5.9292011. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461016995",
+      "observedAt": null,
+      "recordId": "places-node:2461016995",
+      "sha256": "dcba39d1b571baa531a9ff1706aebd09c0316e36fe131b839980f59d863c28a8"
+    },
+    {
+      "id": "E0c4ddd1199",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "report",
+      "title": "Bambili · road blockage",
+      "statement": "Demonstration road blockage report for Bambili; relationship forwarded; observed 2026-10-25T08:09:06.468Z. Community label matched; the exact incident location and affected road remain unknown. Origin is unverified.",
+      "sourceUrl": null,
+      "observedAt": "2026-10-25T08:09:06.468Z",
+      "recordId": "signal-aa2b0db56ad1f220b5264f56c93b9fd1",
+      "sha256": "b017d74a8ae67a87b223d885846a6f18d53859f293d12e99c4356afa96120cfe"
+    },
+    {
+      "id": "E0f04c086ff",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Balewa",
+      "statement": "Balewa: mapped village at longitude 10.1838121, latitude 5.9997297. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/3966435269",
+      "observedAt": null,
+      "recordId": "places-node:3966435269",
+      "sha256": "312d9caa88e27916c9bc746d6837042e817a611bdb40021d14a8cb5356fa4abe"
+    },
+    {
+      "id": "E10e0b9a622",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Mankon",
+      "statement": "Mankon: mapped village at longitude 10.1038897, latitude 6.0056298. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461016522",
+      "observedAt": null,
+      "recordId": "places-node:2461016522",
+      "sha256": "e0e4db253cc299a349007414c63c64d58c0775a24a7bd7081eb75f764ba6db39"
+    },
+    {
+      "id": "E11e20e8c10",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Balewa",
+      "statement": "Balewa: mapped village at longitude 10.1974985, latitude 6.0165864. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461015822",
+      "observedAt": null,
+      "recordId": "places-node:2461015822",
+      "sha256": "9be61e752d0493c3eb30664be77d8caec710674e9f72a921ffe5586db2167abb"
+    },
+    {
+      "id": "E1a349f1f49",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bambui",
+      "statement": "Bambui: mapped village at longitude 10.2315906, latitude 6.014621. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461015838",
+      "observedAt": null,
+      "recordId": "places-node:2461015838",
+      "sha256": "32cb54eaaf431f47dc8051821673de2581684fcfe17b4098b31fb5398c6bdf05"
+    },
+    {
+      "id": "E1e28383352",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Mboutou",
+      "statement": "Mboutou: mapped village at longitude 10.1311734, latitude 5.9031932. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461016639",
+      "observedAt": null,
+      "recordId": "places-node:2461016639",
+      "sha256": "64b460d0259083debc5dcb61acd1f576eccd6dc413f5a19e6be98958fff10d3e"
+    },
+    {
+      "id": "E1f47d2f678",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bafunge",
+      "statement": "Bafunge: mapped village at longitude 10.2473019, latitude 6.0581954. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461015805",
+      "observedAt": null,
+      "recordId": "places-node:2461015805",
+      "sha256": "5c40d6a585c3548ea039c6d6ed1ba833394194a63c31fed2be8ebce2a3c7f7b0"
+    },
+    {
+      "id": "E20c1a4200b",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "St Louis Clinic",
+      "statement": "St Louis Clinic; source classification clinic; reference longitude 10.1794409, latitude 5.9811709; coordinate basis mapped_point_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/node/4725674089",
+      "observedAt": null,
+      "recordId": "facilities-node:4725674089",
+      "sha256": "4b84d967456c0c3b04e944e0500474d5808726d93dd1b7f8468632eb0b8ab709"
+    },
+    {
+      "id": "E21d75f8985",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "report",
+      "title": "Bambui · other",
+      "statement": "Demonstration other report for Bambui; relationship direct; observed 2026-10-25T06:49:22.452Z. Community label matched; the exact incident location and affected road remain unknown. Origin is unverified.",
+      "sourceUrl": null,
+      "observedAt": "2026-10-25T06:49:22.452Z",
+      "recordId": "signal-54296ec0bddddc7ee692a1afd6bee32e",
+      "sha256": "6edff788b08e35fed5521533173f7a1e9b445b3fe9f48b3e86f05b27a8158af0"
+    },
+    {
+      "id": "E29fcfd4f45",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bafreng",
+      "statement": "Bafreng: mapped village at longitude 10.1831113, latitude 5.9736063. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461015804",
+      "observedAt": null,
+      "recordId": "places-node:2461015804",
+      "sha256": "17c1d4310abcd29806e998c36db4c5693a1f3234620a2633d9b0f0ed4e16247c"
+    },
+    {
+      "id": "E3c858731c6",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "Bamenda Regional Hospital",
+      "statement": "Bamenda Regional Hospital; source classification hospital; reference longitude 10.1431576, latitude 5.9568214; coordinate basis source_boundary_vertex_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/way/403273769",
+      "observedAt": null,
+      "recordId": "facilities-way:403273769",
+      "sha256": "5ae134c225e003ef470b7f9b6d3eda55410b331ba9a911502ec00b3925362915"
+    },
+    {
+      "id": "E40a61a6afc",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Ntasen",
+      "statement": "Ntasen: mapped village at longitude 10.1618982, latitude 5.9932541. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/4494583917",
+      "observedAt": null,
+      "recordId": "places-node:4494583917",
+      "sha256": "8aec8349edcfa9dfcf2e33784b4a9d203dfd63d4228ad3b99002980700fdcdb8"
+    },
+    {
+      "id": "E4359e3d965",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "Mezam Clinic",
+      "statement": "Mezam Clinic; source classification dentist; reference longitude 10.1451702, latitude 5.948886; coordinate basis mapped_point_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/node/1340257742",
+      "observedAt": null,
+      "recordId": "facilities-node:1340257742",
+      "sha256": "2b6c7f0721622a068a7f6ef4e3d6974a68565adf6d715e676bcde5d3522f2a57"
+    },
+    {
+      "id": "E5393b16f3d",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "map",
+      "title": "Acquired map extent and coverage",
+      "statement": "OpenStreetMap/HOT extract community-map-v1: 5111 road-related features, 16 named settlement candidates and 7 health features. Bounds [10.1,5.9,10.3,6.1] in EPSG:4326. Coverage, current road passability and facility operation are unverified.",
+      "sourceUrl": "https://data.humdata.org/dataset/hotosm_cmr_health_facilities",
+      "observedAt": null,
+      "recordId": "community-map-v1",
+      "sha256": "72a1ac61b3e6ebaf4f41a7a22cb34189c28b8022c2b79d524a1760bfb7c614dc"
+    },
+    {
+      "id": "E551163564a",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "School's Hospital",
+      "statement": "School's Hospital; source classification hospital; reference longitude 10.2563897, latitude 6.0116737; coordinate basis mapped_point_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/node/13755425664",
+      "observedAt": null,
+      "recordId": "facilities-node:13755425664",
+      "sha256": "6197c090fec6d2915275bb660a2cbbfc3d90a898df6b15dfc13c7888d8757725"
+    },
+    {
+      "id": "E577d71ac5c",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "mission",
+      "title": "Operator mission objective",
+      "statement": "map hospitals and health facilities, assess road access and capacity evidence, and produce a committee proposal and GIS pack for evaluator review and revisions\nArea: Bamenda-Bambili corridor",
+      "sourceUrl": null,
+      "observedAt": null,
+      "recordId": "operator",
+      "sha256": "7e401e401c0fd298e9780b88d22303fafc94c455f8d87a79d283bfc8993462c7"
+    },
+    {
+      "id": "E62810be1d9",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "Bamenda Polyclinic",
+      "statement": "Bamenda Polyclinic; source classification hospital; reference longitude 10.1393738, latitude 5.9459746; coordinate basis source_boundary_vertex_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/way/786152738",
+      "observedAt": null,
+      "recordId": "facilities-way:786152738",
+      "sha256": "bb3d40f57ff7bd75cc068c88d7b9ff1388661833cf9c3a4f118d95c9e27f1e36"
+    },
+    {
+      "id": "E717752d0c4",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Kemkom",
+      "statement": "Kemkom: mapped village at longitude 10.2754595, latitude 5.9532949. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/3118113555",
+      "observedAt": null,
+      "recordId": "places-node:3118113555",
+      "sha256": "5b1db7fdf9ba4923b21624eacebdbb0b12245b776f6b2c918bdf33f6b81e760e"
+    },
+    {
+      "id": "E77e75cc459",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bamenda",
+      "statement": "Bamenda: mapped city at longitude 10.1516505, latitude 5.9614117. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/247717281",
+      "observedAt": null,
+      "recordId": "places-node:247717281",
+      "sha256": "fc4b17b572a79e9e581257437adaab47d3d92411edd0f5829f0ca7eb65d42bcc"
+    },
+    {
+      "id": "Eb75c454ba2",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bafut",
+      "statement": "Bafut: mapped village at longitude 10.1139543, latitude 6.0907165. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/4511152136",
+      "observedAt": null,
+      "recordId": "places-node:4511152136",
+      "sha256": "a72f8e7362eaac91fa6b63d4e7b04a56f317ce956e939cf0fd9a67ad58f9c93c"
+    },
+    {
+      "id": "Eba738e5db8",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Akossia",
+      "statement": "Akossia: mapped village at longitude 10.1995651, latitude 6.0662336. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461015730",
+      "observedAt": null,
+      "recordId": "places-node:2461015730",
+      "sha256": "2d5a0cc3f28f091fdd46ac833b3fb3345d3fbdcffec00025898eccd1b70459ba"
+    },
+    {
+      "id": "Ec0c6314836",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "Doctor Azang",
+      "statement": "Doctor Azang; source classification doctor; reference longitude 10.135345, latitude 5.9836417; coordinate basis mapped_point_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/node/4780959821",
+      "observedAt": null,
+      "recordId": "facilities-node:4780959821",
+      "sha256": "d77af7e420a4b8f936f5d3d0ebb9c1771f9b5453f875bf3a85c0830552c4087d"
+    },
+    {
+      "id": "Ec5461d631e",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "report",
+      "title": "Balewa · other",
+      "statement": "Demonstration other report for Balewa; relationship direct; observed 2026-10-25T07:05:33.888Z. Multiple mapped places have this name; GPS or local clarification is required. Origin is unverified.",
+      "sourceUrl": null,
+      "observedAt": "2026-10-25T07:05:33.888Z",
+      "recordId": "signal-c231394e187b5398d27deecbf5fe62c1",
+      "sha256": "5c914e29c35491ee7d99cf73345ce95beeafee467fddef2fcca282353071c10c"
+    },
+    {
+      "id": "Ecce97a3c99",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Foya",
+      "statement": "Foya: mapped village at longitude 10.1976535, latitude 6.0398433. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/2461016285",
+      "observedAt": null,
+      "recordId": "places-node:2461016285",
+      "sha256": "5cc0186cf9edfd35b74647fba9df8f737de357ef154d6e7520cae3e0b51cce75"
+    },
+    {
+      "id": "Ed7211b43f1",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "community",
+      "title": "Bambili",
+      "statement": "Bambili: mapped village at longitude 10.2573289, latitude 6.0043318. A settlement reference point does not locate an incident or define an intervention boundary.",
+      "sourceUrl": "https://www.openstreetmap.org/node/1744470346",
+      "observedAt": null,
+      "recordId": "places-node:1744470346",
+      "sha256": "9c5f97ec5c59a6de15df53258604dd4063c4293edd5960033c81fa81e6d38267"
+    },
+    {
+      "id": "Ee76d9d3147",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "facility",
+      "title": "Unnamed health feature way/685675038",
+      "statement": "Unnamed health feature way/685675038; source classification yes; reference longitude 10.1779329, latitude 5.9628119; coordinate basis source_boundary_vertex_not_verified_entrance; capacity and operating status are not provided by this source.",
+      "sourceUrl": "https://www.openstreetmap.org/way/685675038",
+      "observedAt": null,
+      "recordId": "facilities-way:685675038",
+      "sha256": "3ab6f76dda01a4c149a1cbe14fbca808286338a9cce42103d121eb3f07aa8552"
+    },
+    {
+      "id": "Eed74370b77",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "query",
+      "title": "Required evidence gaps",
+      "statement": "Facility capacity, operating hours, services and current availability require direct confirmation; mapped health features are not an exhaustive hospital inventory. Current road passability, exact incident locations and affected road segments are unverified. No road is certified open or impassable by this map. No surveyed intervention boundaries or approved delivery zones were supplied; the intervention_zones polygon layer is intentionally empty. Cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision must be supplied before executable delivery planning. Demonstration reports cannot corroborate an actual incident. Registered stock and fleet are synthetic; their values do not establish actual NGO resources. Registered resource observations have expired and require a current warehouse/fleet confirmation. Duplicate settlement names retain multiple coordinate candidates; local clarification is required. signal-aa2b0db56ad1f220b5264f56c93b9fd1: reported road blockage has no usable incident coordinate; it is excluded from the blockage point layer.",
+      "sourceUrl": null,
+      "observedAt": "2026-10-25T15:59:17.577Z",
+      "recordId": "gaps-eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+      "sha256": "70af78097e2eb1d39a3ef9c81ff52746c316af975bcd5d1899287e3bd6e4a484"
+    },
+    {
+      "id": "Eee9e4d9449",
+      "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+      "kind": "query",
+      "title": "Independently queryable community/resource context",
+      "statement": "{\"reports\":4,\"demonstration\":4,\"liveLabelled\":0,\"forwarded\":1,\"communities\":[{\"placeId\":\"places-node:1744470346\",\"name\":\"Bambili\",\"reports\":2,\"demo\":2,\"live\":0,\"ambiguous\":0,\"unlocated\":0,\"blockers\":1,\"verifiedOrigins\":0,\"stockUnits\":120,\"unitMassKg\":10,\"stockObservedAt\":\"2026-10-24T08:45:00Z\",\"stockValidUntil\":\"2026-10-24T11:00:00Z\",\"fleetCount\":2,\"availableVehicles\":2,\"fleetObservedAt\":\"2026-10-24T08:45:00Z\",\"fleetValidUntil\":\"2026-10-24T11:00:00Z\",\"logisticsSimulated\":true,\"stockFresh\":false,\"fleetFresh\":false},{\"placeId\":\"places-node:2461015822\",\"name\":\"Balewa\",\"reports\":1,\"demo\":1,\"live\":0,\"ambiguous\":1,\"unlocated\":1,\"blockers\":0,\"verifiedOrigins\":0,\"stockUnits\":null,\"unitMassKg\":null,\"stockObservedAt\":null,\"stockValidUntil\":null,\"fleetCount\":null,\"availableVehicles\":null,\"fleetObservedAt\":null,\"fleetValidUntil\":null,\"logisticsSimulated\":false,\"stockFresh\":false,\"fleetFresh\":false},{\"placeId\":\"places-node:2461015838\",\"name\":\"Bambui\",\"reports\":1,\"demo\":1,\"live\":0,\"ambiguous\":0,\"unlocated\":0,\"blockers\":0,\"verifiedOrigins\":0,\"stockUnits\":null,\"unitMassKg\":null,\"stockObservedAt\":null,\"stockValidUntil\":null,\"fleetCount\":null,\"availableVehicles\":null,\"fleetObservedAt\":null,\"fleetValidUntil\":null,\"logisticsSimulated\":false,\"stockFresh\":false,\"fleetFresh\":false},{\"placeId\":\"places-node:3966435269\",\"name\":\"Balewa\",\"reports\":1,\"demo\":1,\"live\":0,\"ambiguous\":1,\"unlocated\":1,\"blockers\":0,\"verifiedOrigins\":0,\"stockUnits\":null,\"unitMassKg\":null,\"stockObservedAt\":null,\"stockValidUntil\":null,\"fleetCount\":null,\"availableVehicles\":null,\"fleetObservedAt\":null,\"fleetValidUntil\":null,\"logisticsSimulated\":false,\"stockFresh\":false,\"fleetFresh\":false}],\"queries\":[{\"id\":\"query-8c1066af-6def-4689-b7bb-37e83cd8ee5a\",\"name\":\"community-batch-summary\",\"rows\":1},{\"id\":\"query-ae1d934e-771b-4c82-b789-f7e9018e7319\",\"name\":\"community-logistics-join\",\"rows\":4}]}",
+      "sourceUrl": null,
+      "observedAt": "2026-10-25T15:59:17.577Z",
+      "recordId": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+      "sha256": "3658db46ad234deb07fbb1bbf922f06c12c756cc71c77ef192bca26f9b99b76a"
+    }
+  ],
+  "bundle": {
+    "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+    "status": "ready",
+    "revision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+    "files": [
+      {
+        "name": "drafts/critique-v1-b1c6802c.md",
+        "sha256": "9bf8beb8c6353c851f2031f546b0e58d01c6a7b81afd770699983d75f5b34d0f",
+        "bytes": 2447
+      },
+      {
+        "name": "drafts/critique-v2-5317843c.md",
+        "sha256": "ca6ad248cf5f356c6db9d2ffa31d92161d761bc31c7c3a3da42cfd8b806bdf3b",
+        "bytes": 2135
+      },
+      {
+        "name": "drafts/diff-v2-ce33ffb3.md",
+        "sha256": "56b54ec13e6f88924043e33ad1e40706dc1a02c8f84f1edaa6d4352d13062e6f",
+        "bytes": 7959
+      },
+      {
+        "name": "drafts/findings-v1-f9dbb60d.md",
+        "sha256": "b2d0d7b6c680c5ddcb976e2cb1ac9343ca446b507cac95d8cf2f507f8377e54b",
+        "bytes": 4604
+      },
+      {
+        "name": "drafts/plan-v1-a2228672.md",
+        "sha256": "8b10fde0d59e3f289cf74791be49c785facb9db189870be94bb222067e80ffd3",
+        "bytes": 5399
+      },
+      {
+        "name": "drafts/plan-v2-dbecaf82.md",
+        "sha256": "62f9566d8c0d0f267bf615bda97d61ba39358431ab441e88be8f6334641a6d8c",
+        "bytes": 7308
+      },
+      {
+        "name": "drafts/report-v2-30f20707.md",
+        "sha256": "00d7381d11d5075ca7071cd1abcadee34838b5716abd427ff610416cc194241d",
+        "bytes": 7508
+      },
+      {
+        "name": "evidence.json",
+        "sha256": "9dcd101f572b72a437d9b532ff12c3369afab9f2edf630fe6e087eea3c190e42",
+        "bytes": 20459
+      },
+      {
+        "name": "geojson/blockages.geojson",
+        "sha256": "ed778c73ea51338d6576fb5992b189f2b94d9f3d5e199f46c1af520d6b0b3e6c",
+        "bytes": 42
+      },
+      {
+        "name": "geojson/facilities.geojson",
+        "sha256": "8d46c18684cfe311380b160bab4f60002b335105bbadf3c5d5f271a77eaf6be3",
+        "bytes": 2919
+      },
+      {
+        "name": "geojson/facility_footprints.geojson",
+        "sha256": "b3f6823c707c3fe355a65a53d278d62bb807b6e05818166d63dc82a0f016683c",
+        "bytes": 1890
+      },
+      {
+        "name": "geojson/intervention_candidates.geojson",
+        "sha256": "3b0da53fb4c46a5ea9fd786b4e2fcaf3098fb999a39df8a201c26d1dcf0560ae",
+        "bytes": 1011
+      },
+      {
+        "name": "geojson/intervention_zones.geojson",
+        "sha256": "ed778c73ea51338d6576fb5992b189f2b94d9f3d5e199f46c1af520d6b0b3e6c",
+        "bytes": 42
+      },
+      {
+        "name": "geojson/places.geojson",
+        "sha256": "a1538db17773da70b2fe30fac8c3559ce8c5ca873761629088dd1c21fd29bd51",
+        "bytes": 3914
+      },
+      {
+        "name": "geojson/roads.geojson",
+        "sha256": "a54b89d57c4675a06b84ce249ac54ff368a5a21b6a6c083ab3763b80bd878edd",
+        "bytes": 3618207
+      },
+      {
+        "name": "manifest.json",
+        "sha256": "4e430d15af326da1de0dc7396923300468e1991c42b694dee94213189509afee",
+        "bytes": 6414
+      },
+      {
+        "name": "map.pdf",
+        "sha256": "6354ce353e887235909707f59bf0c061b2bbe21b449dd7deb32c10ab64f1f47c",
+        "bytes": 897452
+      },
+      {
+        "name": "map.png",
+        "sha256": "1aca747b44df7d4a36c6d5979e2a7a913bcc7525a6db85d5ce25826eb8d07841",
+        "bytes": 1058463
+      },
+      {
+        "name": "mission.gpkg",
+        "sha256": "65f43c619feb62d5f697b49595d5d350bb9dde0d3ab3e765564539a8a55e7d00",
+        "bytes": 2428928
+      },
+      {
+        "name": "mission.qgz",
+        "sha256": "719422f33b6e004871bcda9b82dde4cca0ab99bd87c992dc822054209a6584cc",
+        "bytes": 15672
+      },
+      {
+        "name": "pdf-validation.json",
+        "sha256": "39a17843c7070f6775328e0fd09a19544ad739a6059c0c92850f9f43d0c3a0ef",
+        "bytes": 97
+      },
+      {
+        "name": "qgis-validation.json",
+        "sha256": "7da70147966a153f87a9ec73eae7acc16dd20340be71a2d2e19a6c4d119d2b03",
+        "bytes": 1139
+      },
+      {
+        "name": "README.txt",
+        "sha256": "f97704ff580a3d318141061121d0193beac09e442c62210bf283062f330baa39",
+        "bytes": 610
+      },
+      {
+        "name": "report.md",
+        "sha256": "00d7381d11d5075ca7071cd1abcadee34838b5716abd427ff610416cc194241d",
+        "bytes": 7508
+      },
+      {
+        "name": "report.pdf",
+        "sha256": "96900bed237aa6574b5449b1cfa6ac641b3573897b807c7e3d41c03060f0c8c4",
+        "bytes": 896924
+      },
+      {
+        "name": "styles/blockages.qml",
+        "sha256": "43929c2fec300c1a34f854a87b3efd361e24f32cac23959afafae98931a6c10d",
+        "bytes": 14665
+      },
+      {
+        "name": "styles/facilities.qml",
+        "sha256": "0077ea652c23787290a1209def4f0e2c0b3d70241728f9f44d0338d4b573663b",
+        "bytes": 17761
+      },
+      {
+        "name": "styles/facility_footprints.qml",
+        "sha256": "ce283f51bb4ad8776b5e398f9e2bfd25f2170e3a0bc79efa1442724631935d45",
+        "bytes": 15812
+      },
+      {
+        "name": "styles/intervention_candidates.qml",
+        "sha256": "7f6e36ff2f46dadf07929b3d22f239f658be0b8583f6cea2a36fc53ec376700c",
+        "bytes": 15518
+      },
+      {
+        "name": "styles/intervention_zones.qml",
+        "sha256": "df544f2062e158897cade8e6998a0d72ac475282131af601f56210c8691c692e",
+        "bytes": 14099
+      },
+      {
+        "name": "styles/places.qml",
+        "sha256": "a07ca0aa7d2208e020f45cb65ffe7dc15ea63d3fd6724c7b2ce4f88120f00265",
+        "bytes": 27453
+      },
+      {
+        "name": "styles/roads.qml",
+        "sha256": "58d69af2acda0d696bad557652a92002cc34e7e97be2c6e412774d69c1f8817a",
+        "bytes": 20132
+      },
+      {
+        "name": "committee-pack.zip",
+        "sha256": "b2749bfe55d3c6e03f9a66be68cb8a48d274a8ec3c6449648ffd75324f943450",
+        "bytes": 4340776
+      }
+    ],
+    "note": "Committee review draft. Native QGIS layers/project reopened successfully; required field and mission confirmations remain open.",
+    "createdAt": "2026-10-25T16:06:15.464Z"
+  },
+  "streaming": {
+    "deltaCount": 4927,
+    "perDocument": [
+      {
+        "id": "document-bffee317-90bb-4ee3-8c91-2b7a7f1e77a6",
+        "kind": "findings",
+        "version": 1,
+        "firstDelta": {
+          "id": "document-bffee317-90bb-4ee3-8c91-2b7a7f1e77a6",
+          "at": 1792943959672,
+          "length": 2,
+          "offset": 0,
+          "kind": "findings",
+          "status": "streaming"
+        },
+        "firstRendered": {
+          "at": 1792943959891,
+          "length": 36
+        }
+      },
+      {
+        "id": "document-5b429ce9-5763-4618-8b1e-802af9dbb60d",
+        "kind": "findings",
+        "version": 1,
+        "firstDelta": {
+          "id": "document-5b429ce9-5763-4618-8b1e-802af9dbb60d",
+          "at": 1792943969413,
+          "length": 2,
+          "offset": 0,
+          "kind": "findings",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-5b429ce9-5763-4618-8b1e-802af9dbb60d",
+          "at": 1792943985598,
+          "kind": "findings"
+        },
+        "firstRendered": {
+          "at": 1792943969947,
+          "length": 271
+        }
+      },
+      {
+        "id": "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672",
+        "kind": "plan",
+        "version": 1,
+        "firstDelta": {
+          "id": "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672",
+          "at": 1792943988719,
+          "length": 13,
+          "offset": 0,
+          "kind": "plan",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-683ea7a5-1bb5-45fe-acf8-e92aa2228672",
+          "at": 1792944040179,
+          "kind": "plan"
+        },
+        "firstRendered": {
+          "at": 1792943989994,
+          "length": 347
+        }
+      },
+      {
+        "id": "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c",
+        "kind": "critique",
+        "version": 1,
+        "firstDelta": {
+          "id": "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c",
+          "at": 1792944081568,
+          "length": 10,
+          "offset": 0,
+          "kind": "critique",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-eb6a1da3-702c-441b-9638-b7d9b1c6802c",
+          "at": 1792944143192,
+          "kind": "critique"
+        },
+        "firstRendered": {
+          "at": 1792944081915,
+          "length": 7
+        }
+      },
+      {
+        "id": "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82",
+        "kind": "plan",
+        "version": 2,
+        "firstDelta": {
+          "id": "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82",
+          "at": 1792944146472,
+          "length": 13,
+          "offset": 0,
+          "kind": "plan",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-6f429ab2-fc74-45e6-8c5a-f705dbecaf82",
+          "at": 1792944203952,
+          "kind": "plan"
+        },
+        "firstRendered": {
+          "at": 1792944146745,
+          "length": 9
+        }
+      },
+      {
+        "id": "document-4e84875d-b4c1-479b-a0a8-1208ce33ffb3",
+        "kind": "diff",
+        "version": 2,
+        "firstDelta": {
+          "id": "document-4e84875d-b4c1-479b-a0a8-1208ce33ffb3",
+          "at": 1792944203978,
+          "length": 7917,
+          "offset": 0,
+          "kind": "diff",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-4e84875d-b4c1-479b-a0a8-1208ce33ffb3",
+          "at": 1792944203985,
+          "kind": "diff"
+        }
+      },
+      {
+        "id": "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c",
+        "kind": "critique",
+        "version": 2,
+        "firstDelta": {
+          "id": "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c",
+          "at": 1792944211539,
+          "length": 10,
+          "offset": 0,
+          "kind": "critique",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-efd7fe00-d32a-4fe3-a4d7-2eee5317843c",
+          "at": 1792944222255,
+          "kind": "critique"
+        },
+        "firstRendered": {
+          "at": 1792944211672,
+          "length": 7
+        }
+      },
+      {
+        "id": "document-191bb61a-2668-4a2c-977e-907830f20707",
+        "kind": "report",
+        "version": 2,
+        "firstDelta": {
+          "id": "document-191bb61a-2668-4a2c-977e-907830f20707",
+          "at": 1792944224471,
+          "length": 8,
+          "offset": 0,
+          "kind": "report",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-191bb61a-2668-4a2c-977e-907830f20707",
+          "at": 1792944312468,
+          "kind": "report"
+        },
+        "firstRendered": {
+          "at": 1792944225090,
+          "length": 5
+        }
+      },
+      {
+        "id": "document-857f8ee5-b8f6-4107-be4b-c6409f321b01",
+        "kind": "summary",
+        "version": 1,
+        "firstDelta": {
+          "id": "document-857f8ee5-b8f6-4107-be4b-c6409f321b01",
+          "at": 1792944378738,
+          "length": 543,
+          "offset": 0,
+          "kind": "summary",
+          "status": "streaming"
+        },
+        "publication": {
+          "id": "document-857f8ee5-b8f6-4107-be4b-c6409f321b01",
+          "at": 1792944379238,
+          "kind": "summary"
+        }
+      }
+    ]
+  },
+  "sourceFiles": [
+    {
+      "file": "src/lib/server/meterless.ts",
+      "sha256": "465c2d9d09c153989c86902ce92f6c4eea24b74e5000bdd5f39729a10782176f"
+    },
+    {
+      "file": "src/lib/server/mission-journal.ts",
+      "sha256": "7a9c7b898a16e9b8fee915789618fbac80e1d27567958967b0a03b737c8efba7"
+    },
+    {
+      "file": "src/lib/server/mission-runtime.ts",
+      "sha256": "67b10016d809d6c27e8251411c141ec3488494bf0bffb0b59f4a12f4950a36db"
+    },
+    {
+      "file": "src/lib/server/committee-mission.ts",
+      "sha256": "5e25aef12b0dc73198b124df429868a72f8f88c4732c1e34d040edcf1875b632"
+    },
+    {
+      "file": "src/lib/server/mission-dossier.ts",
+      "sha256": "bc3f7d859ebe96cd1af66fd37c81d4b03056154859f46115420d1c85e79f5709"
+    },
+    {
+      "file": "src/lib/server/committee-export.ts",
+      "sha256": "a561b2e4669d6d5f9cb8d0406564f5ffdd0941add3c9a869be169b23d238e31f"
+    },
+    {
+      "file": "scripts/export-qgis.py",
+      "sha256": "be359336fea0d499262a311b9e77024747be58095f294277b77a0e59414b33ff"
+    },
+    {
+      "file": "scripts/render-committee-pdf.py",
+      "sha256": "95810b4ea62bd20bd1c5d707333aceb950efed9654024d6e4a3c86768701cbdc"
+    },
+    {
+      "file": "src/routes/api.mission.stream.ts",
+      "sha256": "90aacbe9a2205f866c414b2f02d3962b443ac0f8c7f31e5a9264d3f9b7bdfe81"
+    },
+    {
+      "file": "src/components/mission-markdown.tsx",
+      "sha256": "7753a064f35e02dcb9dd5029775df6a76d9214138461f14119b24ba1ed085cc5"
+    },
+    {
+      "file": "src/routes/index.tsx",
+      "sha256": "760d33fd8111125fc81c96b2621d25eba75acd705b7852741554d88bd13acc4f"
+    }
+  ],
+  "unchangedCoreFiles": [
+    {
+      "file": "src/lib/server/meterless.ts",
+      "sha256": "465c2d9d09c153989c86902ce92f6c4eea24b74e5000bdd5f39729a10782176f",
+      "unchangedSinceLiveCapture": true
+    },
+    {
+      "file": "src/lib/server/mission-journal.ts",
+      "sha256": "7a9c7b898a16e9b8fee915789618fbac80e1d27567958967b0a03b737c8efba7",
+      "unchangedSinceLiveCapture": true
+    },
+    {
+      "file": "src/lib/server/mission-runtime.ts",
+      "sha256": "67b10016d809d6c27e8251411c141ec3488494bf0bffb0b59f4a12f4950a36db",
+      "unchangedSinceLiveCapture": true
+    },
+    {
+      "file": "src/lib/server/committee-mission.ts",
+      "sha256": "5e25aef12b0dc73198b124df429868a72f8f88c4732c1e34d040edcf1875b632",
+      "unchangedSinceLiveCapture": true
+    },
+    {
+      "file": "src/lib/server/mission-dossier.ts",
+      "sha256": "bc3f7d859ebe96cd1af66fd37c81d4b03056154859f46115420d1c85e79f5709",
+      "unchangedSinceLiveCapture": true
+    },
+    {
+      "file": "src/lib/server/committee-export.ts",
+      "sha256": "a561b2e4669d6d5f9cb8d0406564f5ffdd0941add3c9a869be169b23d238e31f",
+      "unchangedSinceLiveCapture": true
+    },
+    {
+      "file": "src/routes/api.mission.stream.ts",
+      "sha256": "90aacbe9a2205f866c414b2f02d3962b443ac0f8c7f31e5a9264d3f9b7bdfe81",
+      "unchangedSinceLiveCapture": true
+    }
+  ],
+  "layoutEdition": {
+    "edition": 4,
+    "sourceRunId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+    "sourceCommit": "93d44d85d47d788d79028e0f17f3f89008ed4e63",
+    "narrativeChanged": false,
+    "geodataChanged": false,
+    "originalPdfSha256": "96900bed237aa6574b5449b1cfa6ac641b3573897b807c7e3d41c03060f0c8c4",
+    "pdf": {
+      "pages": 13,
+      "textCharacters": 22481,
+      "placeholders": false,
+      "mapIncluded": true
+    }
+  },
+  "finalArtifacts": [
+    {
+      "path": "docs/evidence/committee-demo-2026-10-25/report.pdf",
+      "sha256": "5ec2c5b9716c433ab42ee1165910f652e83717214faa32d6907e6e62751721f8"
+    },
+    {
+      "path": "docs/evidence/committee-demo-2026-10-25/committee-pack.zip",
+      "sha256": "55c8e351618230938af0d6e32199a4213f26e483c8837736f8218c4d4086ddd4"
+    },
+    {
+      "path": "docs/evidence/committee-demo-2026-10-25/manifest.json",
+      "sha256": "c81245e23079e28befb7f24b89b61fe3d577a6946995a3a88e1d2cff634c6e26"
+    },
+    {
+      "path": "docs/evidence/committee-demo-2026-10-25/pdf-validation.json",
+      "sha256": "8b7b5f437ef30ad1850250453d4e5f3f9c9a413f15bcb20458b9c70efff9ca27"
+    }
+  ],
+  "followupChecks": {
+    "summaryProbe": {
+      "checkedAt": "2026-10-25T16:24:51.564Z",
+      "mode": "controlled model check with labelled public context; not a new mission",
+      "reply": "The committee draft and geodata were published from four demonstration reports, but live-labelled incidents are zero. Required field, resource and mission confirmations remain open, and capacity, passability and exact incident locations are unverified. Review the published pack to identify the next missing input before any field-verification follow-up. Which community should we prioritize to ground-truth facility access?",
+      "receipt": {
+        "requestedMode": "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "usage": {
+          "prompt_tokens": 836,
+          "completion_tokens": 81,
+          "total_tokens": 917
+        },
+        "durationMs": 4125,
+        "deltas": 2,
+        "firstDeltaMs": 2873,
+        "upstream": {
+          "receiptId": "rcpt_req_afthtcps",
+          "fromCache": false,
+          "qualityBuffered": false,
+          "reasoningScaffold": false,
+          "phaseCount": 1
+        }
+      },
+      "charactersStreamed": 424
+    },
+    "note": "Later layout, tab-opening, handoff-height and coordinator-summary wording changes have separate source-bound checks; the core graph/transport/export adapter files above match the live capture."
+  },
+  "limitations": [
+    "Four demonstration reports; zero verified field incidents/origins.",
+    "OSM/HOT snapshot 7 October 2026; corridor inventory is not exhaustive.",
+    "No facility capacity/current operation or road passability confirmed.",
+    "No located blockage or surveyed intervention boundary; corresponding layers remain empty.",
+    "Resources remain synthetic/expired. Proposed counterparties require identity and participation confirmation.",
+    "No domain-expert operational sign-off, dispatch authorization or public repository release."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-10-25T16:31:13.594Z",
+  "pages": 13,
+  "method": "Poppler 100 dpi, all pages visually inspected. Ten final pages are pixel-identical to the inspected edition 3; final changed pages 3, 4 and 13 were individually inspected.",
+  "checks": {
+    "readableActionBlocks": true,
+    "linkedCompactCitations": true,
+    "headingsStayWithContent": true,
+    "fullFacilityAndCommunityInventories": true,
+    "sourceEntriesNotSplit": true,
+    "mapLegendScaleAttributionVisible": true,
+    "noOverlapOrPlaceholderContent": true
+  },
+  "renderComparisons": [
+    {
+      "page": 1,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 2,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 3,
+      "identicalToInspectedEdition3": false
+    },
+    {
+      "page": 4,
+      "identicalToInspectedEdition3": false
+    },
+    {
+      "page": 5,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 6,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 7,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 8,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 9,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 10,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 11,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 12,
+      "identicalToInspectedEdition3": true
+    },
+    {
+      "page": 13,
+      "identicalToInspectedEdition3": false
+    }
+  ]
+}

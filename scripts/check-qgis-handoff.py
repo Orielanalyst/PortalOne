@@ -1,0 +1,22 @@
+import json, os
+from pathlib import Path
+from qgis.core import QgsApplication, QgsProject, Qgis
+app=QgsApplication([],False); app.initQgis()
+root=Path('/handoff'); project=QgsProject.instance()
+if not project.read(str(root/'mission.qgz')): raise RuntimeError('Relocated QGIS project could not open')
+expected=json.loads((root/'qgis-validation.json').read_text())
+checks=[]
+for layer in project.mapLayers().values():
+    name=layer.source().split('layername=')[-1]
+    expected_layer=next(row for row in expected['layers'] if row['layer']==name)
+    if not layer.isValid() or layer.featureCount()!=expected_layer['count'] or layer.crs().authid()!='EPSG:4326': raise RuntimeError('Relocated layer failed: '+name)
+    if not layer.source().startswith('/handoff/'): raise RuntimeError('Layer refers outside relocated pack: '+name)
+    if not layer.renderer(): raise RuntimeError('Missing native renderer: '+name)
+    invalid=sum(1 for feature in layer.getFeatures() if feature.hasGeometry() and not feature.geometry().isGeosValid())
+    if invalid: raise RuntimeError('Invalid relocated geometry: '+name)
+    checks.append({'layer':name,'features':layer.featureCount(),'crs':layer.crs().authid(),'valid':True,'invalidGeometries':invalid,'styleLoaded':True,'pathWithinExtractedPack':True})
+if len(checks)!=7: raise RuntimeError('Expected seven evidence layers')
+result={'qgis':Qgis.QGIS_VERSION,'freshProcess':True,'openedFromZipAtNewMount':True,'displayCrs':project.crs().authid(),'layers':checks,'networkEnabled':False}
+(root/'handoff-validation.json').write_text(json.dumps(result,indent=2))
+print(json.dumps(result),flush=True)
+os._exit(0)

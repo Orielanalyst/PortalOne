@@ -1,0 +1,146 @@
+{
+  "checkedAt": "2026-10-25T18:21:34.671394+00:00",
+  "layout": {
+    "mode": "explicit UI fixture; no model or source calls",
+    "checkedAt": "2026-10-25T18:20:23.713Z",
+    "checks": {
+      "partialTableHeaderWithoutRawPipes": true,
+      "handoffAndCompletionPositionRetained": true,
+      "mobileRevisionToolbarHeightRetained": true,
+      "incompleteEmphasis": true,
+      "incompleteCodeFence": true,
+      "gfmListsAndTable": true,
+      "completedBlockDomIdentityRetained": true,
+      "completedHeadingPositionRetained": true,
+      "readerScrollRetained": true,
+      "newVersionDoesNotReplaceCurrentDraft": true,
+      "mobileNoOverflow": true
+    },
+    "measurements": [
+      {
+        "label": "incomplete bold",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "incomplete italic",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "lists",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "partial table",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "incomplete fence",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "reader scroll retained",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "new revision did not switch draft",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "named handoff did not move draft",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      },
+      {
+        "label": "completion did not move draft",
+        "completedHeadingX": 603.59375,
+        "completedHeadingY": 558.78125
+      }
+    ],
+    "browserErrors": [],
+    "applicationSourceCommit": "78eb86ec57cea73577019215d2377b97ca01ae95"
+  },
+  "completedRun": {
+    "checkedAt": "2026-10-25T18:20:29.320Z",
+    "mode": "read-only completed live run; no model/source mutations",
+    "errors": [],
+    "viewports": [
+      {
+        "width": 1440,
+        "overflow": false
+      },
+      {
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "width": 736,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "overflow": false
+      }
+    ],
+    "applicationSourceCommit": "78eb86ec57cea73577019215d2377b97ca01ae95",
+    "runId": "mission-547c088f-8004-46cc-a5c2-64b99fa40681",
+    "checks": {
+      "reportOpensAtTop": true,
+      "downloadVisibleOnOpening": true,
+      "latestEditionLinked": true,
+      "pdfAndZipDownloadedWithMatchingHashes": true,
+      "noNewRunOrEvent": true,
+      "monitorStopped": true,
+      "zeroPageErrors": true
+    },
+    "sourceFiles": [
+      {
+        "file": "src/routes/index.tsx",
+        "sha256": "052733a6e1628c23d0e67fb8c622a2e282bea9aaf8cbabdf8b339ac5ecb75660"
+      },
+      {
+        "file": "src/components/mission-artifacts.tsx",
+        "sha256": "8b09fd25670b0081de8764cd76203318f702e1b16c5a75934115e4edb4a33725"
+      },
+      {
+        "file": "src/components/mission-markdown.tsx",
+        "sha256": "7753a064f35e02dcb9dd5029775df6a76d9214138461f14119b24ba1ed085cc5"
+      },
+      {
+        "file": "src/mission.css",
+        "sha256": "bd4f832b5bf6a97d33653e4730510d39ef82a169dedd237f2f4cf06535939b47"
+      },
+      {
+        "file": "scripts/render-committee-pdf.py",
+        "sha256": "d7d8ffcba2f8beca648e53cea4567f82e0c82967014a7260c4dfa4e1c1ac3722"
+      }
+    ]
+  },
+  "archive": {
+    "mode": "read-only local final export; no provider or field-source calls",
+    "filesVerifiedAgainstManifest": 31,
+    "checks": {
+      "allManifestHashesMatch": true,
+      "noPrivateInputOrEnv": true,
+      "safeUniqueArchivePaths": true,
+      "canonicalPdfMatchesPublicCopy": true,
+      "embeddedManifestMatchesPublicCopy": true
+    }
+  },
+  "limitations": [
+    "The layout check is an explicit UI fixture, not live model evidence.",
+    "The completed-run check reads the preserved live run; it starts no agents.",
+    "Native model streaming is established by the separate committee workflow receipt.",
+    "Completed blocks and reader positions remain stable; the growing line may wrap normally."
+  ]
+}
