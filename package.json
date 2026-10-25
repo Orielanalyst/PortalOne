@@ -19,7 +19,12 @@
     "demo:relief-agent": "bun scripts/demo-relief-agent.ts",
     "check:offline-replay": "bun scripts/check-offline-replay.ts",
     "check:vendor": "bun scripts/check-vendor-packages.ts",
-    "build:relief-replay": "bun build scripts/demo-relief-agent.ts --target=bun --outfile=.runtime/relief-replay.mjs"
+    "build:relief-replay": "bun build scripts/demo-relief-agent.ts --target=bun --outfile=.runtime/relief-replay.mjs",
+    "prepare:community-map": "bun scripts/prepare-community-map.ts",
+    "setup:kobo": "bun scripts/setup-kobo.ts",
+    "check:kobo": "bun scripts/check-kobo.ts",
+    "demo:mission-coordinator": "bun scripts/demo-mission-coordinator.ts",
+    "check:mission-replay": "bun scripts/check-mission-replay.ts"
   },
   "dependencies": {
     "@langchain/core": "1.3.0",
