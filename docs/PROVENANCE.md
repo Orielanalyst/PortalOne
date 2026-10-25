@@ -101,3 +101,10 @@ with Codex assistance. The public live-change receipt records exact source hashe
 and the executed application commit; it contains no raw private report text, GPS
 or reporter references. The joined logistics retain their original synthetic v1
 provenance and dates. No live warehouse or fleet observation is claimed.
+
+
+## 25 October — committee streaming and report provenance
+
+The committee graph, document/source journal, server/UI integration, QGIS scripts and report formatter are new work with Codex assistance. Streamdown/SSE/partial-JSON/diff/marked and report wheels are pinned with license/hash records. The cached official QGIS image is external runtime software; its exact digest and licenses are recorded in vendor/report-wheels/README.md. Installed proprietary Nightshift source was inspected for routing/stream behavior but was not copied or redistributed.
+
+The public committee receipt contains only the controlled demonstration request, normalized public source facts, model/tool receipts and artifact hashes. The PDF/ZIP includes attributed OSM geography and demonstration metadata, without raw Kobo report text, reporter identities, credentials or private input.json. Layout editions preserve the original model narrative/geodata and original export bytes; their source commits differ from the original e555846 live capture and are stated separately. A fresh native QGIS process validates the relocated final pack. Source data remain demonstrations and synthetic expired resources; this is not a field-approved intervention plan.

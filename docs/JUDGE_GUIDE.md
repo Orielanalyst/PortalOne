@@ -1,5 +1,14 @@
 # Judge guide
 
+**Latest checkpoint:** [live committee workflow](COMMITTEE_WORKFLOW.md),
+[recorded run](evidence/committee-workflow-2026-10-25.json),
+[13-page review PDF](evidence/committee-demo-2026-10-25/report.pdf) and
+[complete native GIS pack](evidence/committee-demo-2026-10-25/committee-pack.zip).
+The run publishes v1 before evaluation, makes a reviewed v2 with an actual diff,
+and exports seven validated QGIS layers. Actual content deltas and source/model
+receipts are retained; demonstration data and operational holds remain explicit.
+PDF layout editions preserve the model narrative and original exports.
+
 **As of 2026-10-25: live community investigation and a connected browser workspace
 are verified locally.** See [setup, proof and limits](LIVE_INTAKE.md). Real Kobo
 transport, Nemotron delegation, mapped communities and automatic new-report

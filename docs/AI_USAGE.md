@@ -20,6 +20,25 @@ entrants accountable for it; this file is our chosen detailed disclosure format.
 
 ## How output is controlled
 
+25 October committee increment: Codex acquired Streamdown, SSE/partial-JSON/diff
+components and the PDF runtime, implemented native streaming, document/source
+storage, the bounded committee graph, GIS/PDF export and browser checks. Nemotron
+Lightning wrote investigation/dialogue output; Ultra wrote plans, independent
+critiques and the final narrative. Roles use separate model calls and fresh
+evaluator source queries; source validation, geometry, diffs, hashes and export
+are code. The accepted run needed one visible source-check correction, followed
+by plan v1, critique, v2, acceptance with gaps and export. Formatting editions
+changed presentation and generated appendices without changing that narrative
+or geodata. Named proposed counterparties remain unverified suggestions.
+
+Failed rehearsals exposed citation omissions, incorrect uncertainty wording,
+model output limits and Nightshift's generic quality/scaffold behavior. These
+failures are preserved locally and fixed forward; only the later native run is
+claimed as the streaming proof. Codex inspected installed runtime source to
+identify that behavior; no proprietary source was copied into the repository.
+Full native-model receipts distinguish generation from cache replay. Source
+documents, identities and provider credentials stay in their existing boundaries.
+
 25 October implementation: Codex acquired/pinned Leaflet and map parsers, prepared
 the attributed OSM extract, created the private Kobo form after the human saved
 their token, and implemented intake, SQLite persistence, the supervisor/tool-worker
@@ -31,7 +50,8 @@ claimed field incidents. No reporter messages, provider terms, account billing,
 public sharing or dispatch approval were automated.
 
 - The human sets scope, architecture and acceptance criteria.
-- Every AI-written change is typechecked, tested and reviewed before commit.
+- AI-written work receives typechecks, tests, inspection and the mandatory
+  pre-push gates. Intermediate failures and forward fixes remain in history.
 - The safety evaluator is deterministic and unit-tested. The model cannot approve
   a plan; it can only propose one.
 - Secrets are never pasted into prompts or committed. API keys live in `.env`

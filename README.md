@@ -11,6 +11,14 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
+25 October, latest: the browser now streams cited findings, publishes plan v1
+before evaluation, shows the actual revision diff and produces a downloadable
+committee PDF plus native QGIS/GeoPackage/GeoJSON pack. The live rehearsal observed
+4,927 incremental updates. See [workflow, evidence and limits](docs/COMMITTEE_WORKFLOW.md)
+and the [review draft PDF](docs/evidence/committee-demo-2026-10-25/report.pdf).
+This is the acquired Bamenda–Bambili demonstration corridor; field conditions,
+capacities and real resources still require confirmation.
+
 Core CLI verified, 24 October. Real Zetaris queries join isolated Postgres logistics
 and JSON route/report fixtures. LangGraph runs a bounded planner–validator loop
 through Nightshift/Nemotron. World Model tracks evidence and invalidates affected

@@ -1,5 +1,14 @@
 # Environment and core readiness — updated 2026-10-25
 
+Latest addition: [committee workflow and report setup](COMMITTEE_WORKFLOW.md).
+The web path uses verified native Nemotron streaming through Nightshift with
+explicit model selection, persisted documents/citations and EventSource. Report
+export uses four locally retained Python wheels and the pinned cached QGIS image.
+The actual ZIP was reopened at a different path by QGIS 3.44.15; all seven layers
+passed counts, CRS, style and geometry checks. The thirteen-page layout edition
+was visually inspected. This supersedes earlier statements that report export or
+the committee interface is still planned; field data/approval gates remain open.
+
 Current checkpoint: real local Zetaris queries join synthetic Postgres logistics
 with file-based routes/reports. The LangGraph CLI passes live Nightshift missions
 and a separate offline replay. See `evidence/relief-data-2026-10-24.json`,

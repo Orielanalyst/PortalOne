@@ -1,5 +1,12 @@
 # Execution plan — revised 2026-10-25
 
+Latest G5 increment: [live committee workflow](COMMITTEE_WORKFLOW.md) now supplies
+native streamed findings/plans/critiques, publication before review, actual diffs
+and PDF/native GIS handoff. The live receipt and separate final layout/UI checks
+bind each result to its executed source. G3a/G4 remain partial for actual field
+evidence, executable mission binding, human approval and durable resumption;
+G6 submission/public access/video remain open.
+
 PortalOne / ReliefIntel helps an aid coordinator decide whether to dispatch,
 hold, or request verification for one delivery in the Bamenda–Bambili corridor.
 Locations are scenario context; road ratings, threats, safe locations and timings
