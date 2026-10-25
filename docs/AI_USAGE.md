@@ -1,5 +1,13 @@
 # AI usage
 
+26 October: Codex added the bounded report-text interpreter, source-span checks,
+private-narrative hold, cache/journal bindings and committee/map integration.
+Native Lightning calls read only exact published synthetic examples; English and
+French probes check negation/unknown status. Unsupported/private text remains
+local because automatic approval review rejected its unapproved transmission.
+Ultra now handles coordinator intent after a saved native misclassification.
+See [scope, checks and authorization boundary](REPORT_INTERPRETATION.md).
+
 This is our transparency log. The reviewed rules allow generated code and make
 entrants accountable for it; this file is our chosen detailed disclosure format.
 

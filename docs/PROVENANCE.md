@@ -1,5 +1,14 @@
 # Provenance
 
+26 October text interpretation reuses existing MIT-licensed Zod/streaming dependencies,
+SQLite and the configured Nightshift/Nemotron service. New code and synthetic English/
+French examples were authored during this build. The provider sees only repository
+example text matched exactly to a demonstration record; unknown/live-labelled raw
+narratives are held locally after automatic approval review rejected their unapproved
+transmission. Native calls generated category/assertion readings, not verified facts.
+See [transmission boundary](REPORT_INTERPRETATION.md) and
+[dated proof](evidence/report-interpretation-2026-10-26.json).
+
 This note distinguishes the existing prototype, the current repository baseline,
 third-party components and subsequent hackathon work. Dates are recorded facts
 from local history, not independent proof of originality or an eligibility ruling.

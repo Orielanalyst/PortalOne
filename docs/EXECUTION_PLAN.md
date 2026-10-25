@@ -1,5 +1,12 @@
 # Execution plan — revised 2026-10-25
 
+26 October: [report interpretation](REPORT_INTERPRETATION.md) feeds checked
+quotations/assertions to committee evidence and excludes unsupported access markers
+from export. Native example/committee proofs pass, including English/French negation.
+Private narrative transmission remains an approval gate after automatic review
+rejected it. G3a stays partial: this example-only increment does not complete private
+free-text intake, public news or road matching.
+
 Latest: [mission updates](MISSION_UPDATES.md) proves the new committee workflow
 automatically replacing a published snapshot after actual Kobo/Zetaris drift,
 with real World Model dependencies, a cross-mission diff, historical download

@@ -1,5 +1,16 @@
 # Judge guide
 
+**26 October text-reading increment:** [scope and authorization boundary](REPORT_INTERPRETATION.md),
+[native proof](evidence/report-interpretation-2026-10-26.json),
+[PDF](evidence/report-interpretation-demo-2026-10-26/report.pdf), and
+[GIS pack](evidence/report-interpretation-demo-2026-10-26/committee-pack.zip).
+Seven synthetic records used three new native reads and four cache reuses, followed
+by 2,042 document updates through v1, evaluation, revision and export. Four empty
+readings remain not understood; three assert no observation. Separate native
+English/French probes verify negative road claims and uncertain health status.
+Other/private narratives stay local pending authorization; this is not claimed as
+unrestricted live text extraction.
+
 **Latest live update:** [workflow](MISSION_UPDATES.md),
 [source-bound receipt](evidence/mission-update-2026-10-25.json),
 [15-page PDF](evidence/mission-update-demo-2026-10-25/report.pdf), and

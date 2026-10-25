@@ -11,6 +11,16 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
+26 October: committee investigations now read eligible report text, retain checked
+source quotes and reuse unchanged readings. Native English/French probes preserve
+negation and unknown status. The new committee run streamed 2,042 updates through
+a reviewed plan and PDF/GIS export. Only exact published synthetic examples are
+eligible; other narratives remain local pending authorization. Four current empty
+readings remain not understood and three assert no observation. See
+[scope and limits](docs/REPORT_INTERPRETATION.md),
+[live proof](docs/evidence/report-interpretation-2026-10-26.json) and
+[the new PDF](docs/evidence/report-interpretation-demo-2026-10-26/report.pdf).
+
 Latest, 25 October: an actual new Kobo demonstration triggered a replacement
 committee review through Zetaris, Meterless World Model and native Nemotron
 streaming. The older plan became superseded, its original PDF bytes stayed
