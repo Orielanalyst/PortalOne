@@ -1,5 +1,5 @@
 {
-  "acquiredAt": "2026-10-24T22:40:48.637Z",
+  "acquiredAt": "2026-10-25T06:14:57.394Z",
   "baselineCommit": "341de32",
   "lockedPackages": [
     {
@@ -70,6 +70,17 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "@types/geojson",
+      "version": "7946.0.16",
+      "license": "MIT",
+      "filename": "types-geojson-7946.0.16.tgz",
+      "integrity": "sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==",
+      "tarball": "https://registry.npmjs.org/@types/geojson/-/geojson-7946.0.16.tgz",
+      "sha256": "5275058028351e9656972a31295f81b61637c641df6cc13766f48a5fdab1b39e",
+      "bytes": 3385,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "@types/json-schema",
       "version": "7.0.15",
       "license": "MIT",
@@ -81,6 +92,17 @@
       "licenseTextSource": "included in archive"
     },
     {
+      "name": "@types/leaflet",
+      "version": "1.9.22",
+      "license": "MIT",
+      "filename": "types-leaflet-1.9.22.tgz",
+      "integrity": "sha512-h3lhECYEKDasG7LFHu+GiHqAvsgLuQvlJvVZzJDGONo3sEL+wUOqSFLnwkZlK0qVxnxbuGFW8iBlJNYs5wgndA==",
+      "tarball": "https://registry.npmjs.org/@types/leaflet/-/leaflet-1.9.22.tgz",
+      "sha256": "b3a06933625bf9a47cff48b85604b676249ab18b7a192a23e650398a49a7a5ab",
+      "bytes": 18186,
+      "licenseTextSource": "included in archive"
+    },
+    {
       "name": "base64-js",
       "version": "1.5.1",
       "license": "MIT",
@@ -89,6 +111,17 @@
       "tarball": "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz",
       "sha256": "b1b7a945b52685269083425216d6597e33d97bf21699d656e92fdb3eb5210a85",
       "bytes": 4109,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "but-unzip",
+      "version": "0.1.10",
+      "license": "Apache-2.0",
+      "filename": "but-unzip-0.1.10.tgz",
+      "integrity": "sha512-hLfQ9WlUimmv/okzsRl6AYG3Ew5HNWhWgUslSR93FsDdeL0MAoQvmC/BJfs35lqEAO5t/QD7Y4vCFcPJtijt3A==",
+      "tarball": "https://registry.npmjs.org/but-unzip/-/but-unzip-0.1.10.tgz",
+      "sha256": "e8499fed8cd4fa47edd27563038250cca698950476d45cdf134806c0f772fe6a",
+      "bytes": 14952,
       "licenseTextSource": "included in archive"
     },
     {
@@ -134,6 +167,28 @@
       "tarball": "https://registry.npmjs.org/langsmith/-/langsmith-0.11.1.tgz",
       "sha256": "20c8a0fdfc92b350428d18c8c2eafad3e2f481d0d178488d1e7b94ad47bd6a79",
       "bytes": 1750529,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "leaflet",
+      "version": "1.9.4",
+      "license": "BSD-2-Clause",
+      "filename": "leaflet-1.9.4.tgz",
+      "integrity": "sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==",
+      "tarball": "https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz",
+      "sha256": "84c65a256e50657896f54c33bd857b6849ebe94c817803be818bf32a3dde0b77",
+      "bytes": 869361,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "mgrs",
+      "version": "1.0.0",
+      "license": "MIT",
+      "filename": "mgrs-1.0.0.tgz",
+      "integrity": "sha512-awNbTOqCxK1DBGjalK3xqWIstBZgN6fxsMSiXLs9/spqWkF2pAhb2rrYCFSsr1/tT7PhcDGjZndG8SWYn0byYA==",
+      "tarball": "https://registry.npmjs.org/mgrs/-/mgrs-1.0.0.tgz",
+      "sha256": "9df8b8b657f828fa8ef6729789865b96a121e148f6fc54128a7b695c6231b8dd",
+      "bytes": 11427,
       "licenseTextSource": "included in archive"
     },
     {
@@ -189,6 +244,50 @@
       "tarball": "https://registry.npmjs.org/p-timeout/-/p-timeout-3.2.0.tgz",
       "sha256": "226b0886e0a837928501e3f5f96c5ec2f4c97aa2e287719b50d5341678da1c67",
       "bytes": 2768,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "parsedbf",
+      "version": "2.0.0",
+      "license": "MIT",
+      "filename": "parsedbf-2.0.0.tgz",
+      "integrity": "sha512-WNjKn/cwgGBkXqQLif+2VMEahcRHkBRU0/RfBWZ7Vj7snRNNW63yW1mVuuHRDyXTRxuGCzAHHBcr/Fn+U/bXjQ==",
+      "tarball": "https://registry.npmjs.org/parsedbf/-/parsedbf-2.0.0.tgz",
+      "sha256": "ce84416fd2d18e04c8d3dff8e820024a0efcab174ba1c3a71a639cbe608a516c",
+      "bytes": 7344,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "proj4",
+      "version": "2.22.0",
+      "license": "MIT",
+      "filename": "proj4-2.22.0.tgz",
+      "integrity": "sha512-MVvH09QrYm3A235rcX39WDiCKanrBiblu28l0KYIn/B2DofmYhvP/LLS43kE66jNDfx/P1l/nah3JmsAq8UgbQ==",
+      "tarball": "https://registry.npmjs.org/proj4/-/proj4-2.22.0.tgz",
+      "sha256": "7192ce47111f28ae8c47a39b583ea419202fbc216fe6303117cb1567b42e52d7",
+      "bytes": 210385,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "shpjs",
+      "version": "6.2.0",
+      "license": "MIT",
+      "filename": "shpjs-6.2.0.tgz",
+      "integrity": "sha512-8cR/RKYHQepmVyBMtzZQ+1bnSbWrtLXS6aoEJmpUlOSHtSUddterebVxYmIWq2g9kOEX9jm2kjHiikyPX7cNQA==",
+      "tarball": "https://registry.npmjs.org/shpjs/-/shpjs-6.2.0.tgz",
+      "sha256": "491b36767db9c365b609a6b4c876b5452f138abc2ebc2e88ec76df43022a5dc0",
+      "bytes": 188210,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "wkt-parser",
+      "version": "1.6.0",
+      "license": "MIT",
+      "filename": "wkt-parser-1.6.0.tgz",
+      "integrity": "sha512-O2WMUagkdOKkgcfqZBUauysHVeifCwcs+zUd2QG7UIzVljLwK9g5xHUfL/TkQFwmQ3eF7oHFKGnMcb/kZdvbaw==",
+      "tarball": "https://registry.npmjs.org/wkt-parser/-/wkt-parser-1.6.0.tgz",
+      "sha256": "e99469a86ac2f88de6fd8ff74818806132b090caea1069c0500c59f0b1343ed1",
+      "bytes": 30181,
       "licenseTextSource": "included in archive"
     },
     {
