@@ -1,0 +1,328 @@
+{
+  "capturedAt": "2026-10-25T13:33:29.792Z",
+  "applicationSourceCommit": "7c3dfc6dba6adaf845166c0eea8f9a8a16acf353",
+  "turns": [
+    {
+      "id": "turn-1553129f-a3cc-4a90-b724-664bc38e2514",
+      "sessionId": "session-1b354ace-242e-4d45-8e04-db9956d5ef9a",
+      "message": "Hello",
+      "reply": "Hello! I'm ready to help with evidence gathering and logistics planning. What area or mission would you like to focus on today?",
+      "mode": "live-model",
+      "status": "replied",
+      "action": "reply",
+      "runId": null,
+      "createdAt": "2026-10-25T13:33:33.513Z",
+      "receipt": {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 715,
+          "completion_tokens": 39,
+          "total_tokens": 754
+        },
+        "durationMs": 9466
+      }
+    },
+    {
+      "id": "turn-dc1645d2-1f9e-496e-94e3-5e14fa512b47",
+      "sessionId": "session-1b354ace-242e-4d45-8e04-db9956d5ef9a",
+      "message": "Demonstration only: I want to prepare relief support, but I haven’t decided where yet.",
+      "reply": "No problem — we can explore options together. Do you have a region or type of crisis in mind, or would you like a quick overview of what the demo dataset covers?",
+      "mode": "live-model",
+      "status": "replied",
+      "action": "reply",
+      "runId": null,
+      "createdAt": "2026-10-25T13:33:44.317Z",
+      "receipt": {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 781,
+          "completion_tokens": 48,
+          "total_tokens": 829
+        },
+        "durationMs": 15698
+      }
+    },
+    {
+      "id": "turn-a9c61fc0-de53-4bb9-a315-6cacbdc7f7d6",
+      "sessionId": "session-1b354ace-242e-4d45-8e04-db9956d5ef9a",
+      "message": "The area is Bambili. What can you check before we plan?",
+      "reply": "For Bambili I can pull Kobo reports, check OSM community mapping, and run model-backed verification on needs and access. What specific objective should the evidence focus on — e.g., shelter gaps, water points, road access, or a general needs overview?",
+      "mode": "live-model",
+      "status": "replied",
+      "action": "reply",
+      "runId": null,
+      "createdAt": "2026-10-25T13:34:01.425Z",
+      "receipt": {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 856,
+          "completion_tokens": 66,
+          "total_tokens": 922
+        },
+        "durationMs": 11554
+      }
+    },
+    {
+      "id": "turn-4d771a45-203b-45c4-ae4e-81fc41b7f838",
+      "sessionId": "session-1b354ace-242e-4d45-8e04-db9956d5ef9a",
+      "message": "Please investigate the community reports around Bambili now. This is a demonstration; do not enable a watch.",
+      "reply": "Starting an evidence investigation for Bambili with a general needs overview, pulling Kobo reports, OSM community mapping, and model-backed verification.",
+      "mode": "live-model",
+      "status": "replied",
+      "action": "investigate",
+      "runId": "mission-f9db980b-5256-4af4-af9c-38a15d6a9267",
+      "createdAt": "2026-10-25T13:34:13.455Z",
+      "receipt": {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 973,
+          "completion_tokens": 54,
+          "total_tokens": 1027
+        },
+        "durationMs": 9292
+      }
+    },
+    {
+      "id": "turn-0497a074-496f-4fca-a443-3339c090a4f1",
+      "sessionId": "session-1b354ace-242e-4d45-8e04-db9956d5ef9a",
+      "message": "Why can’t we go ahead yet, and what do you need from me?",
+      "reply": "The last investigation found four demo reports for Bambili, Balewa, and Bambui, but planning is on hold because the exact incident location, road segment, and reporter identities are unverified, and the synthetic stock/fleet records have expired. Which community should we prioritize for ground-truthing, or what additional information can you provide to move forward?",
+      "mode": "live-model",
+      "status": "replied",
+      "action": "reply",
+      "runId": null,
+      "createdAt": "2026-10-25T13:36:19.773Z",
+      "receipt": {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "usage": {
+          "prompt_tokens": 3067,
+          "completion_tokens": 342,
+          "total_tokens": 3409
+        },
+        "durationMs": 19422
+      }
+    }
+  ],
+  "checks": {
+    "greetingClarificationAndQuestionDidNotStartWorkers": true,
+    "explicitRequestStartedLiveInvestigation": true,
+    "modelBackedConclusion": true,
+    "followupUsedFindingsWithoutStartingAnotherRun": true,
+    "dialogueSurvivesReload": true,
+    "browserErrors": 0,
+    "actualFieldIncidentsVerified": false,
+    "dispatchAuthorized": false
+  },
+  "browserErrors": [],
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "width": 736,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "overflow": false
+    }
+  ],
+  "runId": "mission-f9db980b-5256-4af4-af9c-38a15d6a9267",
+  "summary": {
+    "runId": "mission-f9db980b-5256-4af4-af9c-38a15d6a9267",
+    "status": "complete",
+    "reply": "We found four demonstration reports for Bambili, Balewa, and Bambui, but no live incident data, and the registered stock and fleet records are synthetic and expired. Operational planning is on hold because the exact incident location and road segment are unknown, reporter identities are unverified, and current warehouse and vehicle availability must be confirmed. Which community should we prioritize for ground-truthing the incident location and securing a live logistics update?",
+    "receipt": {
+      "requestedMode": "meterless/fast",
+      "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+      "usage": {
+        "prompt_tokens": 658,
+        "completion_tokens": 94,
+        "total_tokens": 752
+      },
+      "durationMs": 8254
+    }
+  },
+  "investigation": {
+    "runId": "mission-f9db980b-5256-4af4-af9c-38a15d6a9267",
+    "status": "complete",
+    "disposition": "hold",
+    "reports": 4,
+    "demonstration": 4,
+    "liveLabelled": 0,
+    "assessmentId": "assessment-8839985b-999b-46af-84ea-f6a73cf1abf0",
+    "evidenceRevision": "eb7369156c103285e5e04c819b799b7432d04d300551783f9754b111ec32c340",
+    "tasks": [
+      {
+        "actor": "recon",
+        "taskId": "task-d54bc882-7804-4519-a028-527769ea91dd",
+        "parentTaskId": "task-800ba0e5-b72d-4b7b-adeb-30bec51f8cd5"
+      },
+      {
+        "actor": "mapping",
+        "taskId": "task-e6b84b10-b4a3-4099-bb17-821cc0a67e26",
+        "parentTaskId": "task-800ba0e5-b72d-4b7b-adeb-30bec51f8cd5"
+      },
+      {
+        "actor": "recon",
+        "taskId": "task-7d47d4e1-ac00-4f66-bfcd-89bb4a8fc5ec",
+        "parentTaskId": "task-800ba0e5-b72d-4b7b-adeb-30bec51f8cd5"
+      },
+      {
+        "actor": "logistics",
+        "taskId": "task-e083b3c0-840a-4b72-914e-e20dfc49baa9",
+        "parentTaskId": "task-800ba0e5-b72d-4b7b-adeb-30bec51f8cd5"
+      },
+      {
+        "actor": "checker",
+        "taskId": "task-f458b8af-c158-4e11-b407-762602d38c36",
+        "parentTaskId": "task-800ba0e5-b72d-4b7b-adeb-30bec51f8cd5"
+      }
+    ],
+    "models": [
+      {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "usage": {
+          "prompt_tokens": 523,
+          "completion_tokens": 31,
+          "total_tokens": 554
+        },
+        "durationMs": 21959
+      },
+      {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "usage": {
+          "prompt_tokens": 700,
+          "completion_tokens": 29,
+          "total_tokens": 729
+        },
+        "durationMs": 7757
+      },
+      {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 946,
+          "completion_tokens": 23,
+          "total_tokens": 969
+        },
+        "durationMs": 7840
+      },
+      {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 1163,
+          "completion_tokens": 27,
+          "total_tokens": 1190
+        },
+        "durationMs": 9731
+      },
+      {
+        "requestedMode": "meterless/deep",
+        "reasoningRequested": false,
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "providerHeader": null,
+        "modelHeader": null,
+        "usage": {
+          "prompt_tokens": 1244,
+          "completion_tokens": 58,
+          "total_tokens": 1302
+        },
+        "durationMs": 8060
+      },
+      {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 1421,
+          "completion_tokens": 22,
+          "total_tokens": 1443
+        },
+        "durationMs": 7518
+      },
+      {
+        "requestedMode": "meterless/fast",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 1720,
+          "completion_tokens": 20,
+          "total_tokens": 1740
+        },
+        "durationMs": 20868
+      }
+    ],
+    "queries": [
+      {
+        "id": "query-98561684-a5f9-4d6e-a165-570cfdfbaae4",
+        "name": "community-batch-summary",
+        "rowCount": 1,
+        "durationMs": 4712
+      },
+      {
+        "id": "query-0c0ad6fe-7c49-4188-a711-6c1202c61be8",
+        "name": "community-logistics-join",
+        "rowCount": 4,
+        "durationMs": 9384
+      },
+      {
+        "id": "query-0383e6b1-f532-40f0-84d0-9c0154411b2c",
+        "name": "community-batch-summary",
+        "rowCount": 1,
+        "durationMs": 1466
+      },
+      {
+        "id": "query-b9e4069a-fd1b-44c0-b0f0-9b95a23f2bb3",
+        "name": "community-logistics-join",
+        "rowCount": 4,
+        "durationMs": 4659
+      }
+    ]
+  },
+  "sourceFiles": [
+    {
+      "file": "src/lib/server/mission-conversation.ts",
+      "sha256": "fb2075b5bda376d70671756c5b2307ff9fdeef11bec27afae4cd2361a40cf2dd"
+    },
+    {
+      "file": "src/lib/server/mission-runtime.ts",
+      "sha256": "d8772ccfb5f952d5b05bd81806b3ffed6c89352813dd59f5107fc02ffe3b994c"
+    },
+    {
+      "file": "src/lib/server/mission-journal.ts",
+      "sha256": "eb2d2b87882c0f824b9508c18bf99d982e1181beedb9eafb923f302df14dff94"
+    },
+    {
+      "file": "src/lib/server/meterless.ts",
+      "sha256": "9c6d899c0f4d149898db9af7ecd231f0a1f192546adbd69bec402714c1af7c00"
+    },
+    {
+      "file": "src/routes/api.mission.ts",
+      "sha256": "cdf149238ff19f938535958c0f280f18641c99df4f8a05942365be51415b2801"
+    },
+    {
+      "file": "src/routes/index.tsx",
+      "sha256": "bcae950807592e23072d7c6d50d0e7cfea3f399fa8b82b409f80bbef94c05d61"
+    },
+    {
+      "file": "src/mission.css",
+      "sha256": "71600a024a9c9289412858d71f96b292cf1fc0b9afd2de6355d5e5c4933d1ca0"
+    }
+  ]
+}

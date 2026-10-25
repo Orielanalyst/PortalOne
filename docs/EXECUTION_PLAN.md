@@ -48,7 +48,7 @@ Rules and declaration boundaries are in `PROVENANCE.md`.
 | Live signal intake | Private Kobo API plus SQLite | Real submission/read, immutable versions and duplicate handling verified; text extraction and public news still required |
 | Dynamic federation | Existing Postgres client and Zetaris | Immutable community projection, restricted roles and exact-batch joins verified; live change invalidates assessments and triggers fresh review |
 | Spatial grounding | Attributed OSM/HOT extract and Leaflet 1.9.4 | Real roads/places/facilities rendered; exact community matching and ambiguity preserved; road-segment matching remains |
-| UI | React conversation/workspace with real run events | Investigation/map, federated preflight and superseded-state receipts verified; executable delivery planning and approval remain |
+| UI | React conversation/workspace with real run events | Live conversation clarifies before delegation and discusses findings; investigation/map, preflight and superseded-state receipts verified; executable delivery planning and approval remain |
 
 Use available skills and connectors where they fit. There is no installed Zetaris
 connector in this chat; official source helpers supply the diagnostic capability.

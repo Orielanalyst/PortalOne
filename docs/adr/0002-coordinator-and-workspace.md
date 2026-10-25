@@ -73,6 +73,9 @@ Bounded monitoring also checks removals, resource changes and freshness boundari
 The live-change receipt proves one automatic same-session re-review after a new
 demonstration report. Dependency scope is the entire dedicated project/corridor.
 Synthetic expired logistics, unverified origins and missing road evidence retain
-the operational hold. No concurrent worker execution, multi-turn mission memory
-or integration of the earlier executable route CLI is claimed. See
+the operational hold. The conversation layer now keeps recent dialogue, clarifies
+before delegation and generates a findings-grounded wrap-up. See
+[CONVERSATIONAL_COORDINATOR.md](../CONVERSATIONAL_COORDINATOR.md). No concurrent
+worker execution, formal versioned mission requirements or integration of the
+earlier executable route CLI is claimed. See
 [FEDERATED_PLANNING.md](../FEDERATED_PLANNING.md) for proof and remaining gates.

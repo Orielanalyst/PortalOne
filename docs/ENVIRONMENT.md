@@ -239,3 +239,12 @@ demonstrations, including one forwarded report; verified origins remain zero.
 Stock/fleet still reflect expired synthetic v1 data. Monitoring was stopped after
 the rehearsal. Browser Brief/Map checks pass at five widths from 320 to 1440 pixels,
 with no script errors or page overflow. Full local gates remain in pre-push.
+
+The subsequent [conversation correction](CONVERSATIONAL_COORDINATOR.md) was
+verified against live Nightshift at application commit `7c3dfc6`. Three initial
+conversation-only messages produced model replies without data reads or worker
+starts. An explicit investigation then completed actual federation/checking, a
+model-backed summary and a grounded follow-up reply. Conversation adds no service
+or dependency; its SQLite tables share the existing local journal. Monitoring is
+stopped after the rehearsal. Returned model identities and query references are
+in the dated conversation receipt.

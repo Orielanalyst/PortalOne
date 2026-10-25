@@ -30,6 +30,8 @@ database and [community source provisioning](FEDERATED_PLANNING.md#reproduce).
 Start Nightshift, then `bun run dev --host 127.0.0.1`
 and open the printed local URL. Send a mission to the single coordinator. Activity,
 Map, Evidence and Brief inspect the same investigation. Users never launch workers.
+The [conversational entry point](CONVERSATIONAL_COORDINATOR.md) now replies to
+greetings, clarifies the mission and answers follow-up questions before delegating.
 
 For an account/project not yet prepared:
 
@@ -134,7 +136,8 @@ optimizer remains a separate CLI over synthetic stock, fleet and route candidate
 Text extraction, sourced road-segment matching, public news, full executable-plan
 version binding, human approval and affected-route invalidation remain required.
 Planning-assessment invalidation and independent query receipts are implemented.
-New investigations currently take a
-fresh mission message; multi-turn conversational mission memory is not implemented.
+Recent conversational context and checked findings now carry into follow-up replies.
+Formal structured mission memory, including versioned cargo/deadline requirements,
+remains open; the conversation model receives only six recent exchanges.
 Local loopback checks protect the operator API; public hosting requires real
 authentication and reporter access control before deployment.

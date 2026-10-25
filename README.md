@@ -24,6 +24,8 @@ A new demonstration report became query-visible, invalidated the earlier assessm
 and automatically triggered a fresh review. The workspace shows actual traces,
 attributed OSM geography and separate planning/checker query receipts. See
 [the live proof and planning limits](docs/FEDERATED_PLANNING.md).
+The [conversational coordinator](docs/CONVERSATIONAL_COORDINATOR.md) responds to
+greetings, clarifies context before delegation and discusses recorded findings.
 The connected planning worker identifies the next verification action; executable
 route planning remains a separate CLI. Logistics are synthetic and expired, all
 cloud transport tests are demonstration records, and approval remains a build gate.

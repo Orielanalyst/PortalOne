@@ -301,3 +301,43 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
 - Remaining: executable mission/route binding, public news and text extraction,
   real resource ledgers and field origins, road-segment evidence, version-bound
   human review and durable scheduling. Invalidation is project/corridor scoped.
+
+### 25 October — correct the coordinator's conversational entry point
+
+- The human tested “Hello” and correctly found that the browser directly launched
+  the investigation graph. Its public receipts showed actual Nemotron calls, but
+  there was no conversational intake. The earlier description overstated the chat
+  experience. Preserved that run and stopped its accidentally enabled watch.
+- Reused the installed Nightshift adapter, Zod and SQLite to add a model-backed
+  dialogue step before delegation. Greetings/questions receive replies; missing
+  context leads to clarification. An investigation handoff supplies an area and
+  objective to the existing graph. No new package, service or credentials.
+- Persisted messages, replies, model receipts and linked runs. The model uses six
+  recent exchanges and structured findings/blockers rather than private raw Kobo
+  records. A separate bounded model call produces a conversational wrap-up; its
+  narrative cannot alter the checked result or hold. Follow-up questions can use
+  those findings without querying sources again. Offline conversation is explicit.
+- Seven focused conversation regressions pass: no greeting-triggered workers,
+  clarification memory/handoff, grounded wrap-up/follow-up, model/contract failure,
+  concurrent-reply exclusion, restart history and explicit offline behavior.
+  The restart test initially lacked an injected federation fixture; correcting
+  the test kept it independent of configured sponsor credentials. Added one token
+  budget guard regression; existing investigation calls retain 128 output tokens.
+- Live browser rehearsal ran committed application `7c3dfc6` through the actual
+  UI. “Hello”, a missing-area message and a capabilities question each produced
+  real model replies with no new runs, source checks or watch. Only the explicit
+  investigation request started workers. Actual Kobo/Zetaris planning and separate
+  checker queries completed; Nemotron generated a wrap-up and an evidence-grounded
+  follow-up answer. The follow-up started no extra run or source read.
+- Actual returned identities included Nemotron 3 Ultra and 3.5 Lightning. The
+  [public conversation receipt](evidence/coordinator-conversation-2026-10-25.json)
+  retains only our demonstration dialogue, source hashes, worker/query references
+  and model receipts. No new Kobo submission, field incident or dispatch occurred.
+- Reload retained the dialogue. Browser checks passed at 1440/1024/736/390/320
+  pixels with zero page errors or horizontal overflow. Existing four demonstration
+  reports, expired synthetic logistics and all deterministic holds remain visible.
+  Monitoring is stopped. Full typecheck/tests/build, eight engine checks, 30 archive
+  checks and both HTTP-disabled replays remain required by the pre-push hook.
+- Separate commits: conversation/backend `7fbac6e`, regressions `e10aaff`, UI
+  `7c3dfc6`. Raw source documents remain untracked and unchanged. Formal versioned
+  mission requirements, executable routing and approval remain open.
