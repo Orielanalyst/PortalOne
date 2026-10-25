@@ -7,9 +7,11 @@ const client = configuredKobo();
 mkdirSync('.runtime/kobo', { recursive: true });
 const place = process.argv.includes('--demo-place=Balewa') ? 'Balewa' : process.argv.includes('--demo-place=Bambui') ? 'Bambui' : 'Bambili';
 const missionUpdateDemo=process.argv.includes('--demo-case=mission-update');
+const demoTag=process.argv.find(argument=>argument.startsWith('--demo-tag='))?.slice('--demo-tag='.length) ?? '';
+if(demoTag && !/^[a-z0-9-]{1,32}$/.test(demoTag))throw new Error('Invalid demonstration tag.');
 const blockageDemo = process.argv.includes('--demo-case=road-blockage') || missionUpdateDemo;
 if (blockageDemo && place !== 'Bambili') throw new Error('The blockage demonstration is scoped to Bambili only.');
-const proofPath = missionUpdateDemo ? '.runtime/kobo/transport-test-mission-update.json' : blockageDemo ? '.runtime/kobo/transport-test-road-blockage.json' : place === 'Bambili' ? '.runtime/kobo/transport-test.json' : `.runtime/kobo/transport-test-${place.toLowerCase()}.json`;
+const proofPath = missionUpdateDemo ? `.runtime/kobo/transport-test-mission-update${demoTag?'-'+demoTag:''}.json` : blockageDemo ? '.runtime/kobo/transport-test-road-blockage.json' : place === 'Bambili' ? '.runtime/kobo/transport-test.json' : `.runtime/kobo/transport-test-${place.toLowerCase()}.json`;
 if (process.argv.includes('--submit-demo')) {
   // Persist the UUID before the write, so an uncertain network result can be retried without a fresh incident.
   const fixture = existsSync(proofPath) ? JSON.parse(readFileSync(proofPath, 'utf8')) : {

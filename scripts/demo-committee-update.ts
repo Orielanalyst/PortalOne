@@ -5,7 +5,9 @@ import {createParser} from 'eventsource-parser';
 import {configuredKobo} from '../src/lib/server/kobo';
 import type {MissionView} from '../src/lib/server/mission-runtime';
 
-const origin='http://127.0.0.1:8080',folder='.runtime/committee-update';
+const tag=process.argv.find(argument=>argument.startsWith('--tag='))?.slice('--tag='.length) ?? '';
+if(tag && !/^[a-z0-9-]{1,32}$/.test(tag))throw new Error('Invalid rehearsal tag.');
+const origin='http://127.0.0.1:8080',folder=`.runtime/committee-update${tag?'/'+tag:''}`;
 if(!process.argv.includes('--apply')) {
   console.log(JSON.stringify({operation:'Run two watched committee reviews, submit one idempotent labelled demonstration, verify World Model invalidation, historical downloads and a fresh native PDF/GIS pack.',
     writes:'One clearly labelled demonstration in the configured Kobo project; local run/artifact receipts. No field incident or dispatch asserted.',
@@ -32,7 +34,7 @@ const commit=Bun.spawnSync(['git','rev-parse','HEAD'],{stdout:'pipe'}).stdout.to
 assert.equal(initial.applicationSourceCommit,commit,'Restart the app after committing before binding live proof.');
 assert.equal(Bun.spawnSync(['git','status','--porcelain','--','src','scripts','package.json','data'],{stdout:'pipe'}).stdout.toString().trim(),'','Commit source changes before capture.');
 const source=await configuredKobo().snapshot();assert(source.records.every(record=>record.signal.mode==='demo'),'Use a demonstration-only project.');
-const demoPath='.runtime/kobo/transport-test-mission-update.json';
+const demoPath=`.runtime/kobo/transport-test-mission-update${tag?'-'+tag:''}.json`;
 if(existsSync(demoPath)) {
   const saved=JSON.parse(readFileSync(demoPath,'utf8'));
   assert(!source.records.some(record=>(record.raw as Record<string,unknown>)['_uuid']===saved.uuid),'This demonstration already exists; preserve its original proof.');
@@ -78,7 +80,7 @@ try {
     const until=Date.now()+90_000;while(!existsSync(`${folder}/browser-ready.json`) && Date.now()<until)await Bun.sleep(500);
     assert(existsSync(`${folder}/browser-ready.json`),'Browser did not pin the baseline report within its bounded wait.');
   }
-  const submit=Bun.spawn(['bun','scripts/check-kobo.ts','--submit-demo','--demo-case=mission-update'],{stdout:'pipe',stderr:'pipe'});
+  const submit=Bun.spawn(['bun','scripts/check-kobo.ts','--submit-demo','--demo-case=mission-update',...(tag?[`--demo-tag=${tag}`]:[])],{stdout:'pipe',stderr:'pipe'});
   assert.equal(await submit.exited,0,'Labelled Kobo demonstration failed; inspect local intake diagnostics.');
   console.log(JSON.stringify({phase:'demonstration_submitted',note:'Waiting for the application watch; no second mission is manually launched.'}));
   const after=await waitFor(view=>view.selected?.id!==firstId && view.currency?.previousRunId===firstId && view.selected?.status==='complete' && view.activeRunId===null);
@@ -92,7 +94,7 @@ try {
   const pdf=await download(nextId,'report.pdf'),zip=await download(nextId,'committee-pack.zip');assert.equal(pdf.response.status,200);assert.equal(zip.response.status,200);
   for(const [name,file] of [['report.pdf',pdf],['committee-pack.zip',zip]] as const)assert.equal(hash(file.bytes),after.reportBundle!.files.find(item=>item.name===name)!.sha256);
   const manifest=JSON.parse(new TextDecoder().decode((await download(nextId,'manifest.json')).bytes));assert.equal(manifest.previousRunId,firstId);assert.equal(manifest.publicationCheck.revision,after.reportBundle!.revision);
-  assert.equal(manifest.qgis.layers.find((layer:{layer:string})=>layer.layer==='blockages').count,1);
+  assert.equal(manifest.qgis.layers.find((layer:{layer:string})=>layer.layer==='blockages').count,firstManifest.qgis.layers.find((layer:{layer:string})=>layer.layer==='blockages').count+1);
   for(const id of [firstId,nextId]) {assert(streams[id]!.beforePublication>50);assert(streams[id]!.v1BeforeEvaluation);}
   const files=['src/lib/server/mission-world.ts','src/lib/server/mission-journal.ts','src/lib/server/mission-runtime.ts','src/lib/server/committee-mission.ts','src/lib/server/committee-export.ts','src/lib/server/mission-dossier.ts','src/components/mission-artifacts.tsx','src/routes/api.mission.download.ts','src/routes/index.tsx','scripts/render-committee-pdf.py','scripts/check-kobo.ts','scripts/demo-committee-update.ts'];
   const receipt={capturedAt:new Date().toISOString(),applicationSourceCommit:commit,request,
