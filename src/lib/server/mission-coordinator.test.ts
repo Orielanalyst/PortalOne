@@ -9,6 +9,7 @@ import { CommunityMap } from './community-map';
 import { runMission } from './mission-coordinator';
 import type { MissionDispatcher } from './mission-coordinator';
 import { MissionRuntime } from './mission-runtime';
+import { FixtureCommunityEvidence } from './community-evidence';
 
 const at = '2026-10-25T06:00:00Z';
 const raw = (extra = {}) => ({ _id: 1, _uuid: 'demo-uuid', report_mode: 'demo', observed_at: at, place_name: 'Bambili', category: 'other',
@@ -44,7 +45,7 @@ it('lets the supervisor check early but requires a fresh final check after the t
       return dispatcher.choose(context, AbortSignal.timeout(1000));
     } } });
     expect(result.disposition).toBe('hold');
-    expect(journal.events(run.id).filter(e => e.kind === 'task_started').map(e => e.actor)).toEqual(['recon', 'checker', 'mapping', 'recon', 'checker']);
+    expect(journal.events(run.id).filter(e => e.kind === 'task_started').map(e => e.actor)).toEqual(['recon', 'checker', 'mapping', 'recon', 'logistics', 'checker']);
   } finally { journal.close(); }
 });
 it('terminates on deadline even when a dependency ignores cancellation, without late evidence writes', async () => {
@@ -81,7 +82,7 @@ it('delegates isolated specialist tasks and sends a targeted follow-up on the re
     expect(result).toMatchObject({ disposition: 'hold', demoReports: 1, liveReports: 0 });
     expect(result.placeIds).toContain('places-node:1744470346'); expect(readSource).toHaveBeenCalledTimes(3);
     const tasks = journal.events(run.id).filter(e => e.kind === 'task_started');
-    expect(tasks.map(t => t.actor)).toEqual(['recon', 'mapping', 'recon', 'checker']);
+    expect(tasks.map(t => t.actor)).toEqual(['recon', 'mapping', 'recon', 'logistics', 'checker']);
     expect(tasks[2]?.detail).toContain('exact incident location');
     expect(new Set(tasks.map(t => t.parentTaskId)).size).toBe(1);
     expect(journal.run(run.id)?.status).toBe('complete');
@@ -124,7 +125,7 @@ it.each(['stopped', 'expired'])('does not start another investigation when an in
     if (++calls <= 3) return snapshot();
     return new Promise<KoboSnapshot>(resolve => { completePoll = resolve; });
   } };
-  const runtime = new MissionRuntime({ journal, source, dispatcher, pollIntervalMs: 5 });
+  const runtime = new MissionRuntime({ journal, source, dispatcher, pollIntervalMs: 5, evidence: new FixtureCommunityEvidence(map) });
   try {
     runtime.start('Investigate Bambili', 30);
     await vi.waitFor(() => expect(completePoll).toBeDefined(), { timeout: 2000, interval: 10 });

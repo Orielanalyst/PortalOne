@@ -24,7 +24,9 @@
     "setup:kobo": "bun scripts/setup-kobo.ts",
     "check:kobo": "bun scripts/check-kobo.ts",
     "demo:mission-coordinator": "bun scripts/demo-mission-coordinator.ts",
-    "check:mission-replay": "bun scripts/check-mission-replay.ts"
+    "check:mission-replay": "bun scripts/check-mission-replay.ts",
+    "provision:community-data": "bun scripts/provision-community-data.ts",
+    "check:community-data": "bun scripts/check-community-data.ts"
   },
   "dependencies": {
     "@langchain/core": "1.3.0",

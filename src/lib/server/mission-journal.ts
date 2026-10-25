@@ -3,11 +3,15 @@ import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import type { CommunitySignal, KoboSnapshot } from './kobo';
+import type { FederatedEvidence } from './community-evidence';
+import type { LogisticsAdvice } from './mission-logistics';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
 export type MissionResult = { disposition: 'hold'; summary: string; gaps: string[]; signalIds: string[];
-  placeIds: string[]; demoReports: number; liveReports: number };
+  placeIds: string[]; demoReports: number; liveReports: number; assessmentId?: string };
+export type PlanningAssessment = { id: string; runId: string; status: 'draft' | 'checked' | 'invalidated';
+  evidence: FederatedEvidence; advice: LogisticsAdvice; createdAt: string; reason: string | null };
 export type JournalRun = { id: string; sessionId: string; message: string; cause: string; status: 'running' | 'complete' | 'interrupted';
   startedAt: string; finishedAt: string | null; result: MissionResult | null };
 export class MissionJournal {
@@ -27,6 +31,10 @@ export class MissionJournal {
       CREATE TABLE IF NOT EXISTS tasks(id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(id), parent_id TEXT,
         agent TEXT NOT NULL, goal TEXT NOT NULL, status TEXT NOT NULL, result TEXT);
       CREATE INDEX IF NOT EXISTS events_run ON events(run_id, seq);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS assessments(id TEXT PRIMARY KEY,run_id TEXT NOT NULL REFERENCES runs(id),
+      source_id TEXT NOT NULL,input_revision TEXT NOT NULL,revision TEXT NOT NULL,status TEXT NOT NULL,
+      evidence TEXT NOT NULL,advice TEXT NOT NULL,created_at TEXT NOT NULL,reason TEXT);
+      CREATE INDEX IF NOT EXISTS assessments_source ON assessments(source_id,status);`);
   }
   close() { this.db.close(); }
   ingest(snapshot: KoboSnapshot) {
@@ -81,7 +89,36 @@ export class MissionJournal {
     this.event(runId, agent, eventKind, goal, [], id, parentId); return id;
   }
   finishTask(id: string, result: unknown) { this.db.prepare("UPDATE tasks SET status='complete',result=? WHERE id=?").run(JSON.stringify(result), id); }
+  observeEvidence(evidence: FederatedEvidence) {
+    const affected = this.db.prepare("SELECT id,run_id FROM assessments WHERE source_id=? AND revision<>? AND status<>'invalidated'").all(evidence.sourceId, evidence.revision);
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      for (const row of affected) {
+        this.db.prepare("UPDATE assessments SET status='invalidated',reason=? WHERE id=?").run('Federated community evidence or logistics changed; fresh review required.', row['id'] as string);
+        this.event(row['run_id'] as string, 'checker', 'assessment_invalidated', 'This planning assessment is superseded by changed federated evidence. Fresh review is required.', [row['id'] as string]);
+      }
+      this.db.exec('COMMIT'); return affected.map(row => row['id'] as string);
+    } catch (error) { this.db.exec('ROLLBACK'); throw error; }
+  }
+  recordAssessment(runId: string, evidence: FederatedEvidence, advice: LogisticsAdvice) {
+    this.observeEvidence(evidence);
+    const id = `assessment-${randomUUID()}`;
+    this.db.prepare('INSERT INTO assessments VALUES(?,?,?,?,?,?,?,?,?,?)').run(id, runId, evidence.sourceId, evidence.inputRevision,
+      evidence.revision, 'draft', JSON.stringify(evidence), JSON.stringify(advice), new Date().toISOString(), null);
+    return id;
+  }
+  checkAssessment(id: string, evidence: FederatedEvidence) {
+    this.observeEvidence(evidence);
+    const updated = this.db.prepare("UPDATE assessments SET status='checked' WHERE id=? AND revision=? AND status='draft'").run(id, evidence.revision);
+    return Number(updated.changes) === 1;
+  }
+  assessments(runId: string): PlanningAssessment[] {
+    return this.db.prepare('SELECT * FROM assessments WHERE run_id=? ORDER BY created_at,id').all(runId).map(row => ({
+      id: row['id'] as string, runId, status: row['status'] as PlanningAssessment['status'], evidence: JSON.parse(row['evidence'] as string),
+      advice: JSON.parse(row['advice'] as string), createdAt: row['created_at'] as string, reason: row['reason'] as string | null }));
+  }
   failOpenChildren(runId: string) {
+    this.db.prepare("UPDATE assessments SET status='invalidated',reason='Investigation failed before independent review.' WHERE run_id=? AND status='draft'").run(runId);
     const tasks = this.db.prepare("SELECT id,parent_id,agent FROM tasks WHERE run_id=? AND parent_id IS NOT NULL AND status='running'").all(runId);
     for (const task of tasks) {
       this.db.prepare("UPDATE tasks SET status='failed' WHERE id=?").run(task['id'] as string);
@@ -93,6 +130,7 @@ export class MissionJournal {
       .run(new Date().toISOString(), JSON.stringify(result), runId);
   }
   interrupt(runId: string) {
+    this.db.prepare("UPDATE assessments SET status='invalidated',reason='Investigation interrupted; fresh review required.' WHERE run_id=? AND status='draft'").run(runId);
     this.db.prepare("UPDATE runs SET status='interrupted',finished_at=? WHERE id=? AND status='running'").run(new Date().toISOString(), runId);
     this.db.prepare("UPDATE tasks SET status='interrupted' WHERE run_id=? AND status='running'").run(runId);
   }
