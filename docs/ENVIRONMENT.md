@@ -214,7 +214,7 @@ and ten raw synthetic observations. The first cold query took about 10 seconds;
 subsequent queries took 0.9–1.6 seconds. The source is still synthetic; this check
 does not connect the new Kobo signals to Zetaris.
 
-The community suite adds 11 cases to the earlier 40. Local browser checks cover
+The community suite adds 13 cases to the earlier 40. Local browser checks cover
 real model-backed submission, activity/evidence/brief navigation, attributed map
 rendering, rejected cross-origin writes, and five widths from 320 to 1440 pixels.
 The new HTTP-disabled mission replay and 30-archive integrity check are in the

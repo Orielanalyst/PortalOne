@@ -237,7 +237,7 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
   Reused the existing Zetaris driver/database; live federation again matched four
   candidates, eight initial/nine updated origins and ten raw synthetic reports.
   No source database, metastore or prior history was replaced.
-- Local suite: 51 tests, typecheck, 30 archive checks, HTTP-disabled community
+- Local suite: 53 tests, typecheck, 30 archive checks, HTTP-disabled community
   replay and production build. The push gate also retains World Model conformance
   and the earlier offline relief replay. CI now pins Node 24.15.0 for SQLite;
   hosted results are reported separately.
@@ -249,3 +249,8 @@ Evidence and next gates: `JUDGE_GUIDE.md`, `ENVIRONMENT.md`, `EXECUTION_PLAN.md`
 - Remaining: live signals into Zetaris/delivery planning, text extraction/public
   news, road-segment evidence, full mission/logistics binding and human review.
   G3a/G5 are partial; the full live-delivery vision is not marked complete.
+- Final review found an in-flight polling race at watch stop/expiry. The source
+  read now shares the watch deadline and its result is discarded if the watch
+  changed or ended. Two controlled delayed-source regressions prove no extra
+  investigation or report ingestion occurs after stop/expiry. This follow-up
+  changes the runtime after the preserved `ce8cff0` live capture.
