@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { MissionView } from '../lib/server/mission-runtime';
 import type { MissionDocument } from '../lib/mission-artifacts';
 import { MissionMarkdown } from './mission-markdown';
@@ -22,9 +22,11 @@ export function DocumentView({document}:{document:MissionDocument}) {
 }
 export function PlanArtifacts({view}:{view:MissionView}) {
   const documents=view.documents.filter(document=>document.runId===view.selected?.id && ['plan','critique','diff'].includes(document.kind));
-  const [selected,setSelected]=useState<string|null>(null);
-  const document=documents.find(document=>document.id===selected) ?? documents.filter(document=>document.kind==='plan').at(-1);
-  return <div className="plan-artifacts"><div className="artifact-switcher">{documents.map(item=><button key={item.id} onClick={()=>setSelected(item.id)} aria-pressed={document?.id===item.id}>{item.kind==='plan'?`Plan v${item.version}`:item.kind==='critique'?`Review v${item.version}`:`Diff → v${item.version}`}</button>)}</div>
+  const runId=view.selected?.id ?? null;
+  const [selection,setSelection]=useState<{runId:string|null;id:string}|null>(null);
+  const document=documents.find(document=>selection?.runId===runId && document.id===selection.id) ?? documents.filter(document=>document.kind==='plan').at(-1);
+  useEffect(()=>{if(document && (selection?.runId!==runId || selection.id!==document.id))setSelection({runId,id:document.id});},[document?.id,runId,selection]);
+  return <div className="plan-artifacts"><div className="artifact-switcher">{documents.map(item=><button key={item.id} onClick={()=>setSelection({runId,id:item.id})} aria-pressed={document?.id===item.id}>{item.kind==='plan'?`Plan v${item.version}`:item.kind==='critique'?`Review v${item.version}`:`Diff → v${item.version}`}{item.status==='failed'?' · rejected':''}</button>)}</div>
     {document?<DocumentView document={document}/>:<p className="artifact-empty">The Planning Agent will publish the initial draft here before evaluation.</p>}
   </div>;
 }
