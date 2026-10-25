@@ -63,6 +63,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   const gaps = [...new Set([
     'Facility capacity, operating hours, services and current availability require direct confirmation; mapped health features are not an exhaustive hospital inventory.',
     'Current road passability, exact incident locations and affected road segments are unverified. No road is certified open or impassable by this map.',
+    `Location handling: ${blockages.length} reported access observations have submitted coordinate references and are retained in the reported-access layer; ${missing.length} other access reports lack usable coordinates and are excluded. Retained points remain unverified, may be demonstrations and do not establish actual incident locations. Do not generalize the unlocated reports to every access observation.`,
     'No surveyed intervention boundaries or approved delivery zones were supplied; the intervention_zones polygon layer is intentionally empty.',
     'Cargo quantities, beneficiary requirements, dispatch resources, deadlines and an authorized operator decision must be supplied before executable delivery planning.',
     ...(evidence.demoCount ? ['Demonstration reports cannot corroborate an actual incident.'] : []),

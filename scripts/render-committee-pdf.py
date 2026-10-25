@@ -48,7 +48,8 @@ def tokens(items):
                     values=[cell["text"] for cell in row]
                     block=[Paragraph(inline("Action "+values[0]+" | "+values[1]),styles["Heading3"])]
                     block += [p("**"+label+":** "+value,True) for label,value in zip(headers[2:],values[2:])]
-                    story.append(KeepTogether(block)); story.append(Spacer(1,3*mm))
+                    for index,flowable in enumerate(block): flowable.keepWithNext=index<len(block)-1
+                    story.extend(block); story.append(Spacer(1,3*mm))
             else: story.append(table([headers]+[[cell["text"] for cell in row] for row in item["rows"]],[width/len(headers)]*len(headers)))
         elif kind=="blockquote": tokens(item["tokens"])
         elif kind=="code": story.append(Preformatted(item["text"],styles["Code"],maxLineLength=90))
@@ -87,6 +88,15 @@ for feature in dossier["layers"]["places"]["features"]:
     prop=feature["properties"]; xy=feature["geometry"]["coordinates"]
     rows.append([prop.get("name","Unnamed source feature"),str(prop.get("id",feature.get("id"))),str(xy[1]),str(xy[0])])
 story.append(table(rows,[49*mm,65*mm,30*mm,30*mm]))
+story += [PageBreak(),Paragraph("Located access observations",styles["Heading1"]),p("Each row is a reported/unverified observation, not an independently confirmed incident. Demonstration rows are test observations. Coordinates use the submitted reference rounded to approximately 100 metres; no road-segment match or clearance is implied.")]
+access=dossier["layers"]["blockages"]["features"]
+if access:
+    rows=[["Reported access observation / source","Latitude","Longitude","Mode / status"]]
+    for feature in access:
+        prop=feature["properties"]; xy=feature["geometry"]["coordinates"]
+        rows.append([prop["name"]+" ["+prop["evidence_id"]+"]",str(xy[1]),str(xy[0]),("DEMONSTRATION; " if prop.get("mode")=="demo" else "Live-labelled; ")+"unverified"])
+    story.append(table(rows,[72*mm,27*mm,27*mm,48*mm]))
+else: story.append(p("No located access observation was accepted for this snapshot. Unlocated claims remain in the evidence register. An empty layer does not establish an all-clear."))
 story += [PageBreak(),Paragraph("Evidence register",styles["Heading1"]),p("References link the narrative to the source record, dataset or deterministic query receipt. The accompanying evidence.json retains full statements, record identifiers, source links and hashes.")]
 for citation in data["citations"]:
     title='<a name="source-'+citation["id"]+'"/>'+html.escape('['+source_numbers[citation["id"]]+'] '+citation["title"])
