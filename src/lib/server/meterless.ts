@@ -98,7 +98,7 @@ export class MeterlessClient {
       usage: body.usage, durationMs: Math.round(performance.now() - started) };
   }
   /** Native provider SSE; reasoning fields are never forwarded. */
-  async stream(prompt: string, model: string, options: { signal?: AbortSignal; maxTokens?: number; timeoutMs?: number; onDelta: (text: string) => void }): Promise<StreamAnswer> {
+  async stream(prompt: string, model: string, options: { signal?: AbortSignal; maxTokens?: number; timeoutMs?: number; jsonMode?:boolean; onDelta: (text: string) => void }): Promise<StreamAnswer> {
     const maxTokens = options.maxTokens ?? 1024;
     const pinned=(Object.values(NEMOTRON_STREAM_MODELS) as string[]).includes(model);
     if ((!pinned && !model.startsWith('meterless/')) || !Number.isInteger(maxTokens) || maxTokens < 1 || maxTokens > 4096) throw new Error('Invalid streaming request.');
@@ -106,7 +106,7 @@ export class MeterlessClient {
     const started = performance.now();
     const response = await this.request(`${this.baseUrl}/chat/completions`, { method: 'POST', headers: {...this.headers(true),'meterless-trace':'true'}, signal,
       body: JSON.stringify({ model, messages: [{ role:'system',content:`This is a fresh public-document generation, request ${randomUUID()}. Follow the user's output contract. Return only the requested answer, with no private scratchpad or reasoning transcript.` },{ role: 'user', content: prompt }], max_tokens: maxTokens, temperature: 0,
-        stream: true, stream_options: { include_usage: true }, chat_template_kwargs: { enable_thinking: false } }) });
+        stream: true, stream_options: { include_usage: true }, chat_template_kwargs: { enable_thinking: false },...(options.jsonMode?{response_format:{type:'json_object'}}:{}) }) });
     if (!response.ok || !response.body || !response.headers.get('content-type')?.includes('text/event-stream')) throw new Error('Provider streaming is unavailable.');
     let content = '', pending = '', done = false, finish: string | null = null, responseModel: string | null = null;
     let usage: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number } | undefined;

@@ -37,6 +37,7 @@ it('replies to a greeting through the model adapter without reading data, delega
     expect(callbacks).toHaveBeenCalledWith(expect.objectContaining({ responseModel: NEMOTRON_STREAM_MODELS.fast }));
     const body = JSON.parse(String((request.mock.calls[0] as unknown as [string, RequestInit])[1].body));
     expect(body.max_tokens).toBe(512); expect(body.messages[0].content).not.toContain('private-test-token');
+    expect(body.response_format).toEqual({type:'json_object'});
     expect(source.snapshot).not.toHaveBeenCalled(); expect(dispatcher.choose).not.toHaveBeenCalled();
     expect(runtime.state().runs).toHaveLength(0); expect(runtime.state().monitorUntil).toBeNull();
   } finally { runtime.stopMonitor(); journal.close(); }
