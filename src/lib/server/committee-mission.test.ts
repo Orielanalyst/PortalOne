@@ -31,7 +31,7 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown(content+'\n\n## Questions\n\n- What current field confirmation is available?\n- Who will confirm facility capacity?',dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown('**Verdict: REVISE**\n\n'+content,dossier.citations)).toEqual([id]);
-  for(const bad of [content+'\n\nAn unsupported claim.',content.replace(id,'E0000000000'),content+'\n\nTBD',content+`\n\n## Another section\nAn uncited claim.`,content+`\n\nA location at 10.1974985. [${id}]`]) expect(()=>validateCitedMarkdown(bad,dossier.citations)).toThrow();
+  for(const bad of [content+'\n\nAn unsupported claim.',content.replace(id,'E0000000000'),content+'\n\nTBD',content+`\n\n## Another section\nAn uncited claim.`,content+`\n\nA location at 10.1974985. [${id}]`,content+`\n\nSet an invented reporting deadline of 2026-11-07. [${id}]`]) expect(()=>validateCitedMarkdown(bad,dossier.citations)).toThrow();
 });
 it('publishes v1 before evaluation, revises with an actual diff and reports only after independent review',async()=>{
   const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let reviews=0;
@@ -57,12 +57,13 @@ it('publishes v1 before evaluation, revises with an actual diff and reports only
   }finally{journal.close();}
 });
 it('preserves a rejected draft and permits one visible source-check repair before independent review',async()=>{
-  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;
+  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;const modes:string[]=[],prompts:string[]=[];
   const writer:CommitteeWriter={async stream(prompt,mode,options){
+    modes.push(mode);prompts.push(prompt);
     const id=prompt.match(/"id":"(E[a-f0-9]{10})"/)![1];
     const paragraph=`The committee must confirm current field evidence before any operational decision. [${id}]`;
     let content=`## Draft\n\n${paragraph}\n\n${paragraph}\n\n${paragraph}`;
-    if(++calls===1)content+='\n\nThis unsupported factual block must prevent publication.';
+    if(++calls===1)content+='\n\nThis unknown source must prevent publication. [E0000000000]';
     if(prompt.includes('Start with ## Evaluation'))content=`## Evaluation\n\n**Verdict: ACCEPT_WITH_GAPS** [${id}]\n\n${content}`;
     options.onDelta(content);
     return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
@@ -75,5 +76,6 @@ it('preserves a rejected draft and permits one visible source-check repair befor
     expect(journal.documents(run.id)[0]?.metadata['receipt']).toMatchObject({responseModel:'explicit-test-fixture'});
     expect(journal.events(run.id).filter(event=>event.kind==='publication_repair')).toHaveLength(1);
     expect(journal.events(run.id).some(event=>event.kind==='independent_check')).toBe(true);
+    expect(modes[1]).toBe('nvidia/nemotron-3-ultra-550b-a55b');expect(prompts[1]).not.toContain('E0000000000');
   }finally{journal.close();}
 });
