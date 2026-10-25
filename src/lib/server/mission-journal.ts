@@ -6,6 +6,7 @@ import type { CommunitySignal, KoboSnapshot } from './kobo';
 import type { FederatedEvidence } from './community-evidence';
 import type { LogisticsAdvice } from './mission-logistics';
 import type { ConversationReceipt } from './mission-conversation';
+import type { EvidenceCitation, MissionDocument, ReportBundle, JournalChange } from '../mission-artifacts';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
@@ -22,6 +23,9 @@ export type ConversationTurn = { id: string; sessionId: string; message: string;
 export type ConversationSummary = { runId: string; status: 'pending' | 'complete' | 'failed'; reply: string | null; receipt: ConversationReceipt | null };
 export class MissionJournal {
   private readonly db: DatabaseSync;
+  private readonly listeners = new Set<(change: JournalChange) => void>();
+  subscribe(listener: (change: JournalChange) => void) { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; }
+  changed(change: JournalChange = { type: 'state' }) { for (const listener of this.listeners) { try { listener(change); } catch { /* a disconnected viewer cannot fail a mission */ } } }
   constructor(path: string) {
     if (path !== ':memory:') mkdirSync(dirname(path), { recursive: true });
     this.db = new DatabaseSync(path);
@@ -48,6 +52,11 @@ export class MissionJournal {
       created_at TEXT NOT NULL,receipt TEXT);`);
     this.db.exec(`CREATE TABLE IF NOT EXISTS conversation_summaries(run_id TEXT PRIMARY KEY REFERENCES runs(id),
       status TEXT NOT NULL,reply TEXT,receipt TEXT);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS documents(id TEXT PRIMARY KEY,run_id TEXT REFERENCES runs(id),turn_id TEXT,
+      task_id TEXT,actor TEXT NOT NULL,kind TEXT NOT NULL,title TEXT NOT NULL,version INTEGER NOT NULL,
+      status TEXT NOT NULL,markdown TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,metadata TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS citations(run_id TEXT NOT NULL REFERENCES runs(id),id TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(run_id,id));
+      CREATE TABLE IF NOT EXISTS report_bundles(run_id TEXT PRIMARY KEY REFERENCES runs(id),value TEXT NOT NULL);`);
   }
   close() { this.db.close(); }
   beginConversation(message: string, mode: ConversationTurn['mode']) {
@@ -55,6 +64,7 @@ export class MissionJournal {
     const id = `turn-${randomUUID()}`, sessionId = previous?.sessionId ?? `session-${randomUUID()}`;
     this.db.prepare('INSERT INTO conversation_turns VALUES(?,?,?,?,?,?,?,?,?,?)')
       .run(id, sessionId, message, null, mode, 'pending', null, null, new Date().toISOString(), null);
+    this.changed();
     return this.conversation().find(turn => turn.id === id)!;
   }
   conversationReceipt(id: string, receipt: ConversationReceipt) {
@@ -63,11 +73,54 @@ export class MissionJournal {
   finishConversation(id: string, reply: string, action: ConversationTurn['action'], runId: string | null = null, failed = false) {
     this.db.prepare("UPDATE conversation_turns SET reply=?,action=?,run_id=?,status=? WHERE id=? AND status='pending'")
       .run(reply, action, runId, failed ? 'failed' : 'replied', id);
+    this.changed();
   }
   interruptConversations() {
     this.db.prepare("UPDATE conversation_turns SET status='failed',reply='The application restarted before the coordinator reply completed. Check the investigation history before trying again.' WHERE status='pending'").run();
     this.db.prepare("UPDATE conversation_summaries SET status='failed',reply='The application restarted before the conversational summary completed. The structured investigation result remains available.' WHERE status='pending'").run();
+    this.db.prepare("UPDATE documents SET status='failed' WHERE status='streaming'").run();
   }
+  beginDocument(input: Pick<MissionDocument, 'actor' | 'kind' | 'title'> & Partial<Pick<MissionDocument, 'runId' | 'turnId' | 'taskId' | 'version' | 'metadata'>>) {
+    const id = `document-${randomUUID()}`, at = new Date().toISOString();
+    this.db.prepare('INSERT INTO documents VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)').run(id,input.runId ?? null,input.turnId ?? null,input.taskId ?? null,
+      input.actor,input.kind,input.title,input.version ?? 1,'streaming','',at,at,JSON.stringify(input.metadata ?? {}));
+    this.changed(); return id;
+  }
+  appendDocument(id: string, delta: string) {
+    if (!delta) return;
+    const row = this.db.prepare("SELECT markdown FROM documents WHERE id=? AND status='streaming'").get(id);
+    if (!row) throw new Error('Document is no longer streaming.');
+    const offset = (row['markdown'] as string).length;
+    if (offset + delta.length > 100_000) throw new Error('Document size budget exceeded.');
+    const at = new Date().toISOString();
+    this.db.prepare('UPDATE documents SET markdown=markdown||?,updated_at=? WHERE id=?').run(delta,at,id);
+    this.changed({ type: 'delta', documentId: id, offset, delta, updatedAt: at });
+  }
+  finishDocument(id: string, status: 'published' | 'failed', metadata: Record<string, unknown> = {}) {
+    this.db.prepare("UPDATE documents SET status=?,metadata=?,updated_at=? WHERE id=? AND status='streaming'")
+      .run(status,JSON.stringify(metadata),new Date().toISOString(),id); this.changed();
+  }
+  documents(runId?: string): MissionDocument[] {
+    return this.db.prepare(runId ? 'SELECT * FROM documents WHERE run_id=? OR run_id IS NULL ORDER BY rowid DESC LIMIT 100'
+      : 'SELECT * FROM documents ORDER BY rowid DESC LIMIT 100').all(...(runId ? [runId] : [])).reverse().map(row => ({
+      id: row['id'] as string,runId: row['run_id'] as string | null,turnId: row['turn_id'] as string | null,taskId: row['task_id'] as string | null,
+      actor: row['actor'] as string,kind: row['kind'] as MissionDocument['kind'],title: row['title'] as string,version: row['version'] as number,
+      status: row['status'] as MissionDocument['status'],markdown: row['markdown'] as string,createdAt: row['created_at'] as string,
+      updatedAt: row['updated_at'] as string,metadata: JSON.parse(row['metadata'] as string),
+    }));
+  }
+  saveCitations(values: EvidenceCitation[]) {
+    const insert = this.db.prepare('INSERT OR IGNORE INTO citations VALUES(?,?,?)');
+    for (const value of values) insert.run(value.runId,value.id,JSON.stringify(value));
+    this.changed();
+  }
+  citations(runId: string): EvidenceCitation[] {
+    return this.db.prepare('SELECT value FROM citations WHERE run_id=? ORDER BY id').all(runId).map(row => JSON.parse(row['value'] as string));
+  }
+  saveBundle(bundle: ReportBundle) {
+    this.db.prepare('INSERT INTO report_bundles VALUES(?,?) ON CONFLICT(run_id) DO UPDATE SET value=excluded.value').run(bundle.runId,JSON.stringify(bundle)); this.changed();
+  }
+  bundle(runId: string): ReportBundle | null { const row = this.db.prepare('SELECT value FROM report_bundles WHERE run_id=?').get(runId); return row ? JSON.parse(row['value'] as string) : null; }
   beginConversationSummary(runId: string) {
     this.db.prepare("INSERT INTO conversation_summaries VALUES(?,'pending',NULL,NULL)").run(runId);
   }
@@ -128,6 +181,7 @@ export class MissionJournal {
   event(runId: string, actor: string, kind: string, detail: string, evidenceIds: string[] = [], taskId: string | null = null, parentTaskId: string | null = null) {
     this.db.prepare('INSERT INTO events(run_id,task_id,parent_task_id,actor,kind,detail,evidence_ids,at) VALUES(?,?,?,?,?,?,?,?)')
       .run(runId, taskId, parentTaskId, actor, kind, detail, JSON.stringify(evidenceIds), new Date().toISOString());
+    this.changed();
   }
   events(runId: string): MissionEvent[] {
     return this.db.prepare('SELECT * FROM events WHERE run_id=? ORDER BY seq').all(runId).map(row => ({
@@ -187,6 +241,7 @@ export class MissionJournal {
   finish(runId: string, result: MissionResult) {
     this.db.prepare("UPDATE runs SET status='complete',finished_at=?,result=? WHERE id=? AND status='running'")
       .run(new Date().toISOString(), JSON.stringify(result), runId);
+    this.changed();
   }
   interrupt(runId: string) {
     this.db.prepare("UPDATE assessments SET status='invalidated',reason='Investigation interrupted; fresh review required.' WHERE run_id=? AND status='draft'").run(runId);

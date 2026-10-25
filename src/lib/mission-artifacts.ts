@@ -1,0 +1,9 @@
+export type EvidenceCitation = { id: string; runId: string; kind: 'mission' | 'map' | 'facility' | 'report' | 'community' | 'query';
+  title: string; statement: string; sourceUrl: string | null; recordId: string; observedAt: string | null; sha256: string | null };
+export type MissionDocument = { id: string; runId: string | null; turnId: string | null; taskId: string | null; actor: string;
+  kind: 'reply' | 'summary' | 'findings' | 'plan' | 'critique' | 'report' | 'diff'; title: string; version: number;
+  status: 'streaming' | 'published' | 'failed'; markdown: string; createdAt: string; updatedAt: string;
+  metadata: Record<string, unknown> };
+export type ReportBundle = { runId: string; status: 'building' | 'ready' | 'failed'; revision: string;
+  files: { name: string; sha256: string; bytes: number }[]; note: string; createdAt: string };
+export type JournalChange = { type: 'state' } | { type: 'delta'; documentId: string; offset: number; delta: string; updatedAt: string };
