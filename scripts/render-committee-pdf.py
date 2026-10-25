@@ -17,9 +17,10 @@ styles.add(ParagraphStyle(name="MissionBody",fontName="Helvetica",fontSize=10,le
 styles.add(ParagraphStyle(name="MissionSmall",parent=styles["MissionBody"],fontSize=8,leading=11,spaceAfter=5,wordWrap="CJK"))
 styles["Heading2"].textColor=colors.HexColor("#167c8a"); styles["Heading2"].spaceBefore=15; styles["Heading2"].spaceAfter=8
 styles["Heading3"].spaceBefore=10
+styles["Heading3"].fontName="Helvetica-Bold"; styles["Heading3"].fontSize=11; styles["Heading3"].leading=14
 width=174*mm; story=[]
 def inline(text):
-    value=html.escape(str(text))
+    value=html.escape(str(text).replace("→"," then "))
     value=re.sub(r"\*\*(.+?)\*\*",r"<b>\1</b>",value)
     value=re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)",r"<i>\1</i>",value)
     value=re.sub(r"`([^`]+)`",r'<font name="Courier">\1</font>',value)
@@ -38,7 +39,15 @@ def tokens(items):
             for index,entry in enumerate(item["items"]):
                 prefix=str(index+1)+". " if item.get("ordered") else "• "
                 story.append(p(prefix+entry["text"]))
-        elif kind=="table": story.append(table([[cell["text"] for cell in item["header"]]]+[[cell["text"] for cell in row] for row in item["rows"]],[width/len(item["header"])]*len(item["header"])))
+        elif kind=="table":
+            headers=[cell["text"] for cell in item["header"]]
+            if len(headers)>=6:
+                for row in item["rows"]:
+                    values=[cell["text"] for cell in row]
+                    block=[Paragraph(inline("Action "+values[0]+" | "+values[1]),styles["Heading3"])]
+                    block += [p("**"+label+":** "+value,True) for label,value in zip(headers[2:],values[2:])]
+                    story.append(KeepTogether(block)); story.append(Spacer(1,3*mm))
+            else: story.append(table([headers]+[[cell["text"] for cell in row] for row in item["rows"]],[width/len(headers)]*len(headers)))
         elif kind=="blockquote": tokens(item["tokens"])
         elif kind=="code": story.append(Preformatted(item["text"],styles["Code"],maxLineLength=90))
 
@@ -46,6 +55,7 @@ captured=datetime.fromisoformat(dossier["capturedAt"].replace("Z","+00:00")).ast
 story += [p("RELIEFINTEL | MISSION COMMITTEE",True),Paragraph("Evidence and intervention proposal",styles["MissionTitle"]),
     p("**Committee review draft | Operational hold**"),p("Prepared "+captured.strftime("%d %B %Y, %H:%M WAT")),p(dossier["objective"]),
     p("This pack records the current evidence, recommended verification and intervention priorities, and the conditions that must be satisfied before an operational decision. Demonstration reports and synthetic resources do not establish actual field conditions."),
+    p("Proposed roles and named counterparties in the draft are suggestions requiring committee confirmation. Their presence, participation and appointment have not been verified; confirm an actual responsible person before assigning work."),
     p("Evidence revision: "+dossier["revision"],True),Spacer(1,5*mm)]
 tokens(data["tokens"])
 story += [PageBreak(),Paragraph("Mapped evidence and coverage",styles["Heading1"]),p("Native QGIS rendering. The scale bar applies to this reproduced map; the full-resolution map PDF and editable QGIS project are included in the pack."),Image(str(root/"map.png"),width=width,height=width*210/297)]
@@ -54,9 +64,10 @@ story.append(KeepTogether([Paragraph("Required evidence gaps",styles["Heading2"]
 story += [PageBreak(),Paragraph("Health facility reference inventory",styles["Heading1"]),p("Coordinates are WGS84 (EPSG:4326). Polygon-derived coordinates are an existing boundary vertex, not a centroid, entrance or ambulance access point. Capacity and operation remain unverified.")]
 rows=[["Mapped health feature / source","Type","Latitude","Longitude","Capacity"]]
 for feature in dossier["layers"]["facilities"]["features"]:
-    prop=feature["properties"]; rows.append([prop["name"]+" ["+prop["evidence_id"]+"]",prop["type"],str(prop["latitude"]),str(prop["longitude"]),"Not reported"])
+    prop=feature["properties"]; basis="Boundary reference" if prop["coordinate_basis"].startswith("source_boundary") else "Mapped point"
+    rows.append([prop["name"]+" ["+prop["evidence_id"]+"] "+basis,"Health feature; source tag yes" if prop["type"]=="yes" else prop["type"],str(prop["latitude"]),str(prop["longitude"]),"Not reported"])
 story.append(table(rows,[66*mm,24*mm,27*mm,27*mm,30*mm]))
-story += [Spacer(1,6*mm),Paragraph("Named community coordinate references",styles["Heading2"]),p("Duplicate names remain separate source features. These coordinates locate mapped communities, not incidents or beneficiary boundaries.")]
+story += [PageBreak(),Paragraph("Named community coordinate references",styles["Heading1"]),p("Duplicate names remain separate source features. These coordinates locate mapped communities, not incidents or beneficiary boundaries.")]
 rows=[["Community","OSM feature reference","Latitude","Longitude"]]
 for feature in dossier["layers"]["places"]["features"]:
     prop=feature["properties"]; xy=feature["geometry"]["coordinates"]
@@ -65,12 +76,13 @@ story.append(table(rows,[49*mm,65*mm,30*mm,30*mm]))
 story += [PageBreak(),Paragraph("Evidence register",styles["Heading1"]),p("References link the narrative to the source record, dataset or deterministic query receipt. The accompanying evidence.json retains full statements, record identifiers, source links and hashes.")]
 for citation in data["citations"]:
     title='<a name="source-'+citation["id"]+'"/>'+html.escape(citation["id"]+" | "+citation["title"])
-    story.append(Paragraph(title,styles["Heading3"]))
+    entry=[Paragraph(title,styles["Heading3"])]
     statement=citation["statement"]
     if citation["kind"]=="query" and statement.startswith("{"): statement="Bounded community/resource query result. The complete source rows, query identifiers and evidence revision are retained in evidence.json; synthetic/expired status is preserved."
-    story.append(p(statement,True))
-    if citation.get("sourceUrl"): story.append(Paragraph('<link href="'+html.escape(citation["sourceUrl"],quote=True)+'" color="#147384">Open original source</link> | '+html.escape(citation["recordId"]),styles["MissionSmall"]))
-    else: story.append(p("Traceable record: "+citation["recordId"],True))
+    entry.append(p(statement,True))
+    if citation.get("sourceUrl"): entry.append(Paragraph('<link href="'+html.escape(citation["sourceUrl"],quote=True)+'" color="#147384">Open original source</link> | '+html.escape(citation["recordId"]),styles["MissionSmall"]))
+    else: entry.append(p("Traceable record: "+citation["recordId"],True))
+    story.append(KeepTogether(entry))
 story += [Paragraph("GIS handoff and symbology",styles["Heading2"]),p("Open mission.qgz to load the styled GeoPackage. Individual GeoJSON layers are also included. Roads are gray; health features teal crosses; reported access constraints red; intervention zones amber; community verification candidates amber points. Empty blockage/zone layers represent missing located evidence, not an all-clear. Source layers use EPSG:4326 and the map display uses EPSG:32632."),p(dossier["attribution"]+" | ODbL 1.0. HOT and OSM are the same underlying source, not independent corroboration."),p("End of committee draft. No dispatch authorization is issued by this document.")]
 def footer(canvas,doc):
     canvas.saveState(); canvas.setStrokeColor(colors.HexColor("#c3d6d9")); canvas.line(18*mm,16*mm,192*mm,16*mm)
