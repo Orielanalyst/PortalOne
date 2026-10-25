@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiMissionRouteImport } from './routes/api.mission'
+import { Route as ApiMapLayerRouteImport } from './routes/api.map.$layer'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiMissionRoute = ApiMissionRouteImport.update({
+  id: '/api/mission',
+  path: '/api/mission',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMapLayerRoute = ApiMapLayerRouteImport.update({
+  id: '/api/map/$layer',
+  path: '/api/map/$layer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/mission': typeof ApiMissionRoute
+  '/api/map/$layer': typeof ApiMapLayerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/mission': typeof ApiMissionRoute
+  '/api/map/$layer': typeof ApiMapLayerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/mission': typeof ApiMissionRoute
+  '/api/map/$layer': typeof ApiMapLayerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/mission' | '/api/map/$layer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/mission' | '/api/map/$layer'
+  id: '__root__' | '/' | '/api/mission' | '/api/map/$layer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiMissionRoute: typeof ApiMissionRoute
+  ApiMapLayerRoute: typeof ApiMapLayerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/mission': {
+      id: '/api/mission'
+      path: '/api/mission'
+      fullPath: '/api/mission'
+      preLoaderRoute: typeof ApiMissionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/map/$layer': {
+      id: '/api/map/$layer'
+      path: '/api/map/$layer'
+      fullPath: '/api/map/$layer'
+      preLoaderRoute: typeof ApiMapLayerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiMissionRoute: ApiMissionRoute,
+  ApiMapLayerRoute: ApiMapLayerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

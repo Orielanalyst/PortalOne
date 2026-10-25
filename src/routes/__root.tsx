@@ -8,20 +8,15 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PortalOne — verified emergency response" },
+      { title: "ReliefIntel — mission control" },
       {
         name: "description",
         content:
-          "PortalOne plans emergency response, checks every plan against federated evidence, and refuses to dispatch what the data does not support.",
+          "ReliefIntel connects community reports, mapped places and a visible investigation trace for humanitarian planning.",
       },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;700&display=swap",
-      },
     ],
   }),
   shellComponent: RootShell,
