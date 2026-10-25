@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-25T18:26:42Z",
+  "validatedSourceCommit": "32c2359676e94b803a2b14523fb46f607554c255",
+  "command": "bash .githooks/pre-push",
+  "mode": "local verification only; no Git publication",
+  "exitCode": 0,
+  "checks": {
+    "typecheck": "passed",
+    "vitest": {"filesPassed": 12, "testsPassed": 92},
+    "worldModel": {"checksPassed": 8, "checksTotal": 8},
+    "vendoredRegistryArchives": {"verified": 144, "networkCalls": false},
+    "reportWheels": {"verified": 4, "licenseRecordsPresent": true, "networkCalls": false},
+    "offlineReliefReplay": {"passed": true, "httpFetchDisabled": true, "dispatchAuthorized": false},
+    "offlineMissionReplay": {"passed": true, "httpFetchDisabled": true, "modelCalls": 0},
+    "productionClientAndServerBuild": "passed"
+  },
+  "buildWarnings": [
+    "vite-tsconfig-paths can be replaced by native Vite path resolution.",
+    "One minified client chunk exceeds 500 kB (approximately 155 kB gzip)."
+  ],
+  "publication": {
+    "status": "not-pushed",
+    "remote": "https://github.com/Orielanalyst/PortalOne.git",
+    "repositoryPrivacyVerifiedByGitHub": "private",
+    "viewerPermission": "ADMIN",
+    "reason": "Automatic approval review rejected the attempted push because authorization for this payload and destination was not established. No alternate publication was attempted."
+  },
+  "scope": [
+    "These checks are separate from the native-model live run, browser checks, PDF visual review and native QGIS handoff receipts.",
+    "The local check script was run directly after the push was rejected; hosted CI has not run for these commits.",
+    "A targeted credential-pattern scan of non-vendor tracked files returned no matches; this is not a comprehensive security audit.",
+    "The two raw brainstorming/event documents remain unchanged and untracked."
+  ]
+}
