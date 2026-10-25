@@ -21,6 +21,7 @@ it('keeps unknown facility capacity, unlocated blockages and unsurveyed zones ex
   expect(dossier.layers['facilities']?.features).toHaveLength(7);expect(dossier.layers['blockages']?.features).toHaveLength(0);expect(dossier.layers['intervention_zones']?.features).toHaveLength(0);
   expect(dossier.layers['facilities']?.features.every(feature=>feature.geometry.type==='Point' && feature.properties?.['capacity']===null)).toBe(true);
   expect(dossier.citations.filter(citation=>citation.kind==='facility').every(citation=>citation.sourceUrl?.startsWith('https://www.openstreetmap.org/'))).toBe(true);
+  expect(dossier.modelEvidence.filter(citation=>['facility','community'].includes(citation.kind)).every(citation=>!/\b\d{1,3}\.\d{4,}\b/.test(citation.statement))).toBe(true);
   expect(dossier.gaps.join(' ')).toContain('not an exhaustive');
 });
 it('rejects uncited paragraphs, unknown citations and placeholder content',async()=>{
@@ -29,7 +30,8 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   const content=`## Findings\n\n${'A sourced draft statement with explicit limits. '.repeat(5)}[${id}]`;
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown(content+'\n\n## Questions\n\n- What current field confirmation is available?\n- Who will confirm facility capacity?',dossier.citations)).toEqual([id]);
-  for(const bad of [content+'\n\nAn unsupported claim.',content.replace(id,'E0000000000'),content+'\n\nTBD',content+`\n\n## Another section\nAn uncited claim.`]) expect(()=>validateCitedMarkdown(bad,dossier.citations)).toThrow();
+  expect(validateCitedMarkdown('**Verdict: REVISE**\n\n'+content,dossier.citations)).toEqual([id]);
+  for(const bad of [content+'\n\nAn unsupported claim.',content.replace(id,'E0000000000'),content+'\n\nTBD',content+`\n\n## Another section\nAn uncited claim.`,content+`\n\nA location at 10.1974985. [${id}]`]) expect(()=>validateCitedMarkdown(bad,dossier.citations)).toThrow();
 });
 it('publishes v1 before evaluation, revises with an actual diff and reports only after independent review',async()=>{
   const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let reviews=0;

@@ -6,7 +6,7 @@ import type { KoboSnapshot } from './kobo';
 import type { FederatedEvidence } from './community-evidence';
 
 export type MissionDossier = { runId: string; objective: string; capturedAt: string; revision: string;
-  citations: EvidenceCitation[]; modelEvidence: EvidenceCitation[]; gaps: string[];
+  citations: EvidenceCitation[]; modelEvidence: Pick<EvidenceCitation,'id'|'kind'|'title'|'statement'>[]; gaps: string[];
   layers: Record<string, FeatureCollection>; bounds: number[]; attribution: string; mapVersion: string };
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const coordinate = (value: unknown): Position | null => {
@@ -72,19 +72,22 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   const layers = { roads:collection(roads),facilities:collection(facilities),blockages:collection(blockages),intervention_zones:collection([]),
     intervention_candidates:collection(candidates),places:map.layers['places']!,facility_footprints:collection(map.layers['facilities']!.features.filter(feature=>feature.geometry.type !== 'Point')) };
   return {runId,objective,capturedAt:new Date().toISOString(),revision:evidence.revision,citations,
-    modelEvidence:citations.filter(item=>item.kind !== 'report').concat(citations.filter(item=>item.kind==='report').slice(0,12)),gaps,layers,
+    modelEvidence:citations.filter(item=>item.kind !== 'report').concat(citations.filter(item=>item.kind==='report').slice(0,12)).map(({id,kind,title,statement})=>({id,kind,title,
+      statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')})),gaps,layers,
     bounds:map.manifest.bounds,attribution:map.manifest.attribution,mapVersion:map.manifest.version};
 }
 
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {
   if (markdown.length < 180 || /\b(TBD|lorem ipsum|insert here|placeholder)\b/i.test(markdown)) throw new Error('Document failed content quality checks.');
+  if(/\b\d{1,3}\.\d{4,}\b/.test(markdown))throw new Error('Remove numerical geographic coordinates from narrative prose; the exact inventories are generated directly from source geometry.');
   const known = new Set(citations.map(citation=>citation.id));
   const cited = [...markdown.matchAll(/\[(E[a-f0-9]{10})\]/g)].map(match=>match[1]!);
   const unknown=[...new Set(cited.filter(id=>!known.has(id)))];
   if (!cited.length || unknown.length) throw new Error(`Document contains missing or unknown evidence references.${unknown.length?` Unknown IDs: ${unknown.join(', ')}.`:''}`);
   const paragraphs = markdown.split(/\n\s*\n/).map(block=>block.replace(/^\s*#{1,6}\s.*$/gm,'').trim()).filter(Boolean);
   const questionOnly=(block:string)=>block.split('\n').filter(line=>line.trim()).every(line=>/^\s*(?:[-*]|\d+[.)])?\s*(?:what|which|who|when|where|how|is|are|can|does|do)\b.*\?\s*$/i.test(line));
-  const uncited=paragraphs.flatMap((block,index)=>!(/\[E[a-f0-9]{10}\]/.test(block)) && !questionOnly(block)?[index+1]:[]);
+  const verdictOnly=(block:string)=>/^\*\*Verdict:\s*(REVISE|ACCEPT_WITH_GAPS)\*\*$/.test(block);
+  const uncited=paragraphs.flatMap((block,index)=>!(/\[E[a-f0-9]{10}\]/.test(block)) && !questionOnly(block) && !verdictOnly(block)?[index+1]:[]);
   if (uncited.length) throw new Error(`Factual document blocks ${uncited.join(', ')} have no evidence reference.`);
   if (/<\/?(?:script|iframe|think)\b/i.test(markdown)) throw new Error('Document contains disallowed markup.');
   return [...new Set(cited)];

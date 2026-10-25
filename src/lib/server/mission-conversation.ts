@@ -28,7 +28,7 @@ export class NightshiftConversation implements MissionConversation {
   private async answer(prompt: string, signal: AbortSignal, onDelta?: (text: string) => void) {
     if (!onDelta) return this.client.complete(prompt, 'meterless/fast', 45_000, { signal, maxTokens: 256 });
     let json = '', visible = '';
-    return this.client.stream(prompt, NEMOTRON_STREAM_MODELS.fast, { signal, maxTokens: 256, timeoutMs: 45_000, onDelta(delta) {
+    return this.client.stream(prompt, NEMOTRON_STREAM_MODELS.fast, { signal, maxTokens: 512, timeoutMs: 45_000, onDelta(delta) {
       json += delta;
       let value: unknown; try { value = parsePartial(json); } catch { return; }
       const next = (value as { reply?: unknown })?.reply;
