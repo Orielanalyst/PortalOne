@@ -13,6 +13,9 @@ bun run check:world-model
 echo "pre-push: vendored archives"
 bun run check:vendor
 
+echo "pre-push: pinned report wheels"
+bun run check:report-assets
+
 echo "pre-push: offline relief replay with HTTP disabled"
 bun run check:offline-replay
 

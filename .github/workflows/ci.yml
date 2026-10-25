@@ -43,6 +43,9 @@ jobs:
       - name: Vendored archive integrity
         run: bun run check:vendor
 
+      - name: Pinned report wheel integrity
+        run: bun run check:report-assets
+
       - name: Offline relief replay with HTTP disabled
         run: bun run check:offline-replay
 

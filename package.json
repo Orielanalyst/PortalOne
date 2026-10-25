@@ -19,6 +19,7 @@
     "demo:relief-agent": "bun scripts/demo-relief-agent.ts",
     "check:offline-replay": "bun scripts/check-offline-replay.ts",
     "check:vendor": "bun scripts/check-vendor-packages.ts",
+    "check:report-assets": "bun scripts/check-report-assets.ts",
     "build:relief-replay": "bun build scripts/demo-relief-agent.ts --target=bun --outfile=.runtime/relief-replay.mjs",
     "prepare:community-map": "bun scripts/prepare-community-map.ts",
     "setup:kobo": "bun scripts/setup-kobo.ts",
