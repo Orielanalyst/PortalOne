@@ -32,6 +32,8 @@ it('persists actual engine dependencies, invalidates on changed facts and never 
 it('ignores fresh query receipts and fetch timestamps, and isolates a different project',async()=>{
   const world=new MissionWorld(),baseline=await evidence();
   await world.observe(baseline,'mission-one');await world.recordPlan({runId:'mission-one',documentId:'plan-one',version:1,evidence:baseline});
+  await world.recordPlan({runId:'mission-one',documentId:'plan-two',version:2,evidence:baseline});
+  expect(world.view('mission-one').plans.map(plan=>plan.version)).toEqual([1,2]);
   const eventCount=world.view('mission-one').events.length;
   expect(await world.observe({...baseline,fetchedAt:new Date().toISOString(),queries:[]},'mission-one')).toMatchObject({changed:false,eventIds:[],invalidated:[]});
   await world.observe({...baseline,sourceId:'another-project',revision:'another-revision'},'mission-other');

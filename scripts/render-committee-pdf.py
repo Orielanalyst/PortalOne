@@ -43,7 +43,7 @@ def tokens(items):
                 story.append(p(prefix+entry["text"]))
         elif kind=="table":
             headers=[cell["text"] for cell in item["header"]]
-            if len(headers)>=6:
+            if len(headers)>=4:
                 for row in item["rows"]:
                     values=[cell["text"] for cell in row]
                     block=[Paragraph(inline("Action "+values[0]+" | "+values[1]),styles["Heading3"])]

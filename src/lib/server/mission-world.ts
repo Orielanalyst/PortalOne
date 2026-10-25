@@ -98,7 +98,7 @@ export class MissionWorld {
     });
   }
   view(runId:string):MissionMemoryView {
-    return {engine:'Meterless World Model',namespace:this.namespace,plans:structuredClone(this.plans().filter(plan=>plan.runId===runId)),
+    return {engine:'Meterless World Model',namespace:this.namespace,plans:structuredClone(this.plans().filter(plan=>plan.runId===runId).sort((a,b)=>a.version-b.version)),
       events:this.model.events().filter(event=>(event.payload as {source?:{runId?:string}}).source?.runId===runId)
         .map(({id,seq,kind,at})=>({id,seq,kind,at})),audit:structuredClone(this.model.audit().filter(entry=>entry.runId===runId))};
   }
