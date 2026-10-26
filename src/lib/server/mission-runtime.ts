@@ -117,10 +117,13 @@ export class MissionRuntime {
         summaries.find(summary => summary.runId === turn.runId && summary.status === 'complete')?.reply].filter(Boolean).join('\n') }));
     const turn = this.journal.beginConversation(text, this.mode === 'live' ? 'live-model' : 'offline-replay');
     this.chatting = true;
-    const documentId = this.journal.beginDocument({ turnId: turn.id, actor: 'coordinator', kind: 'reply', title: 'Mission Coordinator · response' });
+    let documentId = this.journal.beginDocument({ turnId: turn.id, actor: 'coordinator', kind: 'reply', title: 'Mission Coordinator · response' });
     try {
       const responder = this.options.conversation ?? (this.mode === 'live'
-        ? new NightshiftConversation(configuredNightshift(), receipt => this.journal.conversationReceipt(turn.id, receipt)) : replayConversation);
+        ? new NightshiftConversation(configuredNightshift(), receipt => this.journal.conversationReceipt(turn.id, receipt),attempt=>{
+          this.journal.saveConversationAttempt(turn.id,attempt);this.journal.finishDocument(documentId,'failed',{validation:'conversation_contract',receipt:attempt.receipt});
+          if(!attempt.terminal)documentId=this.journal.beginDocument({turnId:turn.id,actor:'coordinator',kind:'reply',title:'Mission Coordinator · correcting the reply and input structure'});
+        }) : replayConversation);
       const latest = this.journal.recent().find(run => run.result);
       const signal = AbortSignal.timeout(50_000);
       const decision = ConversationDecision.parse(await responder.respond({ message: text, history,

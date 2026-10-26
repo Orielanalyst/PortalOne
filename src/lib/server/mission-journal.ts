@@ -12,6 +12,7 @@ import {applyMissionPatch} from './mission-requirements';
 import type {MissionRequirements,UserInputSource} from './mission-requirements';
 import type {MissionFeasibility} from './mission-feasibility';
 import type {OperatorReview} from './mission-review';
+import type {RejectedConversationAttempt} from './mission-conversation';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
@@ -73,11 +74,13 @@ export class MissionJournal {
     this.db.exec(`CREATE TABLE IF NOT EXISTS operator_reviews(id TEXT PRIMARY KEY,run_id TEXT NOT NULL REFERENCES runs(id),plan_id TEXT NOT NULL,
       status TEXT NOT NULL,reason TEXT,value TEXT NOT NULL); CREATE TABLE IF NOT EXISTS review_revisions(review_id TEXT PRIMARY KEY REFERENCES operator_reviews(id),
       next_run_id TEXT NOT NULL UNIQUE REFERENCES runs(id));`);
+    this.db.exec('CREATE TABLE IF NOT EXISTS conversation_attempts(id TEXT PRIMARY KEY,turn_id TEXT NOT NULL,value TEXT NOT NULL)');
   }
   requirements(sessionId:string):MissionRequirements|null {
     const row=this.db.prepare('SELECT value FROM mission_requirements WHERE session_id=? ORDER BY version DESC LIMIT 1').get(sessionId);
     return row?JSON.parse(row['value'] as string):null;
   }
+  saveConversationAttempt(turnId:string,value:RejectedConversationAttempt){this.db.prepare('INSERT INTO conversation_attempts VALUES(?,?,?)').run(`attempt-${randomUUID()}`,turnId,JSON.stringify(value));}
   updateRequirements(sessionId:string,patch:unknown,messages:UserInputSource[],turnId:string):MissionRequirements {
     const previous=this.requirements(sessionId),next=applyMissionPatch(previous,patch,messages,turnId);
     if(previous?.revision===next.revision)return previous;

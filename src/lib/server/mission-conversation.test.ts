@@ -154,3 +154,12 @@ it('replaces a model-invented mission value with an explicit input clarification
     expect(journal.documents().at(-1)?.title).toContain('input clarification');expect(journal.documents()[0]?.status).toBe('failed');
   }finally{runtime.stopMonitor();journal.close();}
 });
+it('retains a rejected conversational attempt and makes only one visible contract correction',async()=>{
+  let calls=0;const rejected=vi.fn();
+  const request=vi.fn(async()=>{calls++;const value=calls===1?reply('The mission patch requires JSON schema fields.'):reply('What time should the delivery leave, and when must it arrive?');
+    return new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify(value)},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}});});
+  const client=new MeterlessClient({baseUrl:'localhost:8088',token:'explicit-test-token',fetch:request as typeof fetch});
+  const result=await new NightshiftConversation(client,()=>{},rejected).respond({message:'Collect delivery details',history:[],activeMission:null,lastInvestigation:null},AbortSignal.timeout(5000),()=>{});
+  expect(request).toHaveBeenCalledTimes(2);expect(rejected).toHaveBeenCalledTimes(1);expect(rejected.mock.calls[0]?.[0]).toMatchObject({terminal:false});
+  expect(result.reply).not.toContain('schema');expect(result.action).toBe('reply');
+});
