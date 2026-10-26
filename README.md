@@ -11,6 +11,14 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
+26 October, private processing: the operator explicitly authorized private/live
+Kobo report-text inference through their configured NVIDIA/Nightshift service.
+Scoped authorization is enabled locally; private quotations and extracted mentions
+stay out of shared state, model documents and downloads. Only derived categorical
+assertions and provenance enter committee evidence. Fresh clones hold private text
+until their own operator configures authorization. See
+[processing and export boundaries](docs/PRIVATE_REPORT_PROCESSING.md).
+
 26 October: committee investigations now read eligible report text, retain checked
 source quotes and reuse unchanged readings. Native English/French probes preserve
 negation and unknown status. The new committee run streamed 2,042 updates through

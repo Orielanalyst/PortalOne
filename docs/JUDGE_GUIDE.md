@@ -1,5 +1,12 @@
 # Judge guide
 
+**Latest private-processing extension:** the human authorized the configured
+project's report_text transfer to NVIDIA Nemotron through Nightshift. A local
+project/provider-scoped consent record enables it; fresh checkouts remain closed
+to private text by default. Private quotes and extracted place/time mentions stay
+local while redacted categorical assertions enter committee evidence. See
+[private processing and quality boundaries](PRIVATE_REPORT_PROCESSING.md).
+
 **26 October text-reading increment:** [scope and authorization boundary](REPORT_INTERPRETATION.md),
 [native proof](evidence/report-interpretation-2026-10-26.json),
 [PDF](evidence/report-interpretation-demo-2026-10-26/report.pdf), and

@@ -1,5 +1,12 @@
 # Execution plan — revised 2026-10-25
 
+26 October, private inference: explicit human authorization resolves the prior
+transmission gate for this project/provider. The interpreter processes report_text
+under that local scope and keeps private quotations/mentions out of shared output.
+The pipeline now has a deterministic interpretation inventory and count checks;
+quality-rejected packs are withdrawn with history retained. Public news, road
+matching, real resources, human approval and restart-safe scheduling remain open.
+
 26 October: [report interpretation](REPORT_INTERPRETATION.md) feeds checked
 quotations/assertions to committee evidence and excludes unsupported access markers
 from export. Native example/committee proofs pass, including English/French negation.

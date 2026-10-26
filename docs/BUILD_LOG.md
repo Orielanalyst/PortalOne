@@ -1,5 +1,13 @@
 # Build log
 
+### 26 October — authorized private inference and quality controls
+
+- The human explicitly authorized private/live Kobo report_text processing through the configured NVIDIA Nemotron service via Nightshift, with private quotations excluded from public reports and GitHub. Added a local ignored consent record bound to project/provider/scope. Missing, disabled or mismatched settings hold processing before inference or private-cache reuse. The committed default remains closed for fresh clones.
+- Provider input contains narrative text and its demo/live label, not raw origin-reference, identity or GPS fields. Private support, extracted place/time strings and rejected model payloads remain local. Shared state, events, downstream prompts and exports use a categorical projection and source hashes. Local support links are explicitly labelled private/local only. Source interpretation and committee narratives use Ultra after native short-model failures.
+- Local native validation exercised actual Kobo transport, private inference, source-checked quotations, cache reuse, committee review and PDF/GIS export. Artifact/quote/marker scans, native QGIS checks, page-by-page PDF review and UI checks were performed locally. Private-run IDs, counts, model receipts and artifacts are retained locally rather than published in this checkpoint.
+- Quality review exposed an incorrect narrative aggregate. The pack was withdrawn with original bytes retained. Added a deterministic interpretation inventory and publication checks; corrected a false positive confusing extracted claims with confirmed incidents. A conversational wrap-up's unsupported field-confirmation wording was separately rejected/revised, and the interface now selects the latest non-rejected summary. Rejected histories remain available locally. These guards do not establish semantic completeness or field truth.
+- Automatic approval review rejected a proposed public private-run evidence upload because processing approval did not authorize public disclosure of derived metadata. The safe publication boundary is code, tests and generic setup documentation only. Private evidence remains local pending separate publication authorization. No private-run artifacts were added to the repository.
+
 ### 26 October — source-checked report interpretation
 
 - Added a bounded interpreter using existing Lightning streaming, Zod and SQLite. Only exact public synthetic examples are eligible; live-labelled/unknown narratives remain local. Automatic approval review rejected the raw-private-text path because it could disclose sensitive personal/location information without specific authorization. No alternate transmission route was used.

@@ -1,5 +1,13 @@
 # Provenance
 
+26 October authorized extension: the human approved private report_text inference
+through their configured NVIDIA/Nightshift service. New code implements local
+project/provider consent, categorical sharing, local-only supporting quotations,
+mode/visibility-separated caching and deterministic aggregate checks. Native private
+validation outputs and rejected histories remain local. Automatic approval review
+rejected public evidence upload; this source checkpoint contains generic technical
+documentation and synthetic unit cases rather than private-run data or artifacts.
+
 26 October text interpretation reuses existing MIT-licensed Zod/streaming dependencies,
 SQLite and the configured Nightshift/Nemotron service. New code and synthetic English/
 French examples were authored during this build. The provider sees only repository

@@ -1,5 +1,14 @@
 # AI usage
 
+26 October, authorized private extension: the human explicitly approved processing
+private/live Kobo report_text through the configured NVIDIA Nemotron service via
+Nightshift, while excluding private quotes from public output. Codex implemented
+project/provider-scoped local authorization, private/public cache isolation,
+categorical export projection and local-only quote inspection. Source extraction
+now uses Ultra after a retained Lightning contract failure. A new synthetic report
+with a private marker exercises the live path; it is not a field incident. See
+[private processing scope](PRIVATE_REPORT_PROCESSING.md).
+
 26 October: Codex added the bounded report-text interpreter, source-span checks,
 private-narrative hold, cache/journal bindings and committee/map integration.
 Native Lightning calls read only exact published synthetic examples; English and
