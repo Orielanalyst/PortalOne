@@ -25,10 +25,18 @@ it.each(['length','missing_done','private_tag','scratchpad'])('rejects %s stream
   expect(seen.join('')).not.toContain('hidden content');
 });
 it.each(['cache','quality_buffer','reasoning_scaffold','model_substitution','missing_receipt'])('refuses to certify %s as native single-model streaming',async fault=>{
-  const receipt={cache:{status:fault==='cache'?'exact':'miss'},phases:[{}],quality_race:{active:fault==='quality_buffer'},reasoning_scaffold:{active:fault==='reasoning_scaffold'}};
+  const receipt={cache:{status:fault==='cache'?'exact':'miss'},phases:[{}],hmem:null,quality_race:{active:fault==='quality_buffer'},reasoning_scaffold:{active:fault==='reasoning_scaffold'}};
   const body=frame({model:fault==='model_substitution'?'different-model':NEMOTRON_STREAM_MODELS.fast,choices:[{delta:{content:'A public answer.'},finish_reason:'stop'}],meterless:fault==='missing_receipt'?{}:{from_cache:fault==='cache',receipt}})+'data: [DONE]\n\n';
   const stream=new MeterlessClient({baseUrl:'localhost:8088',token:'test',fetch:vi.fn(async()=>new Response(body,{headers:{'content-type':'text/event-stream'}})) as unknown as typeof fetch});
   await expect(stream.stream('Public prompt',NEMOTRON_STREAM_MODELS.fast,{onDelta:()=>{}})).rejects.toThrow('fresh single-model streaming');
+});
+it.each([0,3,undefined])('requires an explicit zero-injection receipt for evidence-bound requests (%s)',async injected=>{
+  const receipt={cache:{status:'miss'},phases:[{}],...(injected===undefined?{}:{hmem:injected===0?null:{injected}})};
+  const body=frame({model:NEMOTRON_STREAM_MODELS.deep,choices:[{delta:{content:'A public answer.'},finish_reason:'stop'}],meterless:{from_cache:false,receipt}})+'data: [DONE]\n\n';
+  const stream=new MeterlessClient({baseUrl:'localhost:8088',token:'test',fetch:vi.fn(async()=>new Response(body,{headers:{'content-type':'text/event-stream'}})) as unknown as typeof fetch});
+  const response=stream.stream('Use only the supplied evidence',NEMOTRON_STREAM_MODELS.deep,{onDelta:()=>{}});
+  if(injected===0)await expect(response).resolves.toMatchObject({upstream:{memoryInjected:0}});
+  else await expect(response).rejects.toThrow('isolated evidence context');
 });
 it('publishes document deltas while the artifact is still streaming and freezes published drafts',()=>{
   const journal=new MissionJournal(':memory:');const changes:unknown[]=[];const unsubscribe=journal.subscribe(change=>changes.push(change));

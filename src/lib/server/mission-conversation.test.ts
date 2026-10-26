@@ -18,7 +18,7 @@ const investigate: ConversationDecision = { action: 'investigate', reply: 'I’l
   mission: { area: 'Bambili', objective: 'Investigate community reports and missing delivery evidence.' } };
 const reply = (text: string): ConversationDecision => ({ action: 'reply', reply: text, mission: null });
 it('does not publish a wrap-up that promotes report labels to field-confirmed locations',async()=>{
-  const request=vi.fn(async()=>new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify({reply:'The draft is ready. Field observations confirm three communities with submitted coordinates.'})},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
+  const request=vi.fn(async()=>new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}],hmem:null}},choices:[{delta:{content:JSON.stringify({reply:'The draft is ready. Field observations confirm three communities with submitted coordinates.'})},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
   const conversation=new NightshiftConversation(new MeterlessClient({baseUrl:'http://127.0.0.1:8088',token:'explicit-test-token',fetch:request as typeof fetch}));
   await expect(conversation.summarize({mission:'Review Bambili',summary:'Committee draft published.',at:null,gaps:['No field verification.'],reports:{demonstration:8,liveLabelled:0},communities:['Bambili'],planning:null},AbortSignal.timeout(5000),()=>{})).rejects.toThrow('field confirmation');
 });
@@ -32,7 +32,7 @@ function setup(conversation?: MissionConversation) {
 }
 
 it('replies to a greeting through the model adapter without reading data, delegating or enabling a watch', async () => {
-  const request = vi.fn(async () => new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify(reply('Hello! What area or mission would you like us to work on?'))},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
+  const request = vi.fn(async () => new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}],hmem:null}},choices:[{delta:{content:JSON.stringify(reply('Hello! What area or mission would you like us to work on?'))},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
   const client = new MeterlessClient({ baseUrl: 'localhost:8088', token: 'private-test-token', fetch: request as unknown as typeof fetch });
   const callbacks = vi.fn(); const { runtime, journal, source, dispatcher } = setup(new NightshiftConversation(client, callbacks));
   try {
@@ -157,7 +157,7 @@ it('replaces a model-invented mission value with an explicit input clarification
 it('retains a rejected conversational attempt and makes only one visible contract correction',async()=>{
   let calls=0;const rejected=vi.fn();
   const request=vi.fn(async()=>{calls++;const value=calls===1?reply('The mission patch requires JSON schema fields.'):reply('What time should the delivery leave, and when must it arrive?');
-    return new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify(value)},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}});});
+    return new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}],hmem:null}},choices:[{delta:{content:JSON.stringify(value)},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}});});
   const client=new MeterlessClient({baseUrl:'localhost:8088',token:'explicit-test-token',fetch:request as typeof fetch});
   const result=await new NightshiftConversation(client,()=>{},rejected).respond({message:'Collect delivery details',history:[],activeMission:null,lastInvestigation:null},AbortSignal.timeout(5000),()=>{});
   expect(request).toHaveBeenCalledTimes(2);expect(rejected).toHaveBeenCalledTimes(1);expect(rejected.mock.calls[0]?.[0]).toMatchObject({terminal:false});
@@ -166,9 +166,10 @@ it('retains a rejected conversational attempt and makes only one visible contrac
 it('preserves sourced numeric inputs and the authorized action when only the visible reply needs correction',async()=>{
   let calls=0;const rejected=vi.fn();
   const request=vi.fn(async()=>{calls++;const value=calls===1?{...reply('The mission patch requires JSON schema fields.'),missionPatch:{quantity:{value:'80',support:'80 kits'}}}:{reply:'What time should the delivery leave, and when must it arrive?',action:'investigate'};
-    return new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify(value)},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}});});
+    return new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}],hmem:null}},choices:[{delta:{content:JSON.stringify(value)},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}});});
   const client=new MeterlessClient({baseUrl:'localhost:8088',token:'explicit-test-token',fetch:request as typeof fetch});
   const result=await new NightshiftConversation(client,()=>{},rejected).respond({message:'Collect details for 80 kits',history:[],activeMission:null,lastInvestigation:null},AbortSignal.timeout(5000),()=>{});
   expect(request).toHaveBeenCalledTimes(2);expect(rejected).toHaveBeenCalledTimes(1);
   expect(result).toMatchObject({action:'reply',mission:null,missionPatch:{quantity:{value:80,support:'80 kits'}}});
 });
+

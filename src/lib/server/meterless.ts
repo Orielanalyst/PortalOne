@@ -4,7 +4,7 @@ export const NEMOTRON_STREAM_MODELS = { fast:'nvidia/nemotron-3.5-lightning-30b-
 export type StreamAnswer = { content: string; requestedMode: string; responseModel: string | null;
   usage: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number } | undefined;
   durationMs: number; firstDeltaMs: number | null; deltas: number;
-  upstream?: {receiptId:string|null;fromCache:boolean;qualityBuffered:boolean;reasoningScaffold:boolean;phaseCount:number} };
+  upstream?: {receiptId:string|null;fromCache:boolean;qualityBuffered:boolean;reasoningScaffold:boolean;phaseCount:number;memoryInjected?:number|null} };
 
 export type RuntimeProbe =
   | { state: 'online'; models: string[] }
@@ -35,7 +35,10 @@ export class MeterlessClient {
 
   private headers(chat = false): Record<string, string> {
     return { Authorization: `Bearer ${this.token}`, 'meterless-app': this.app,
-      ...(chat ? { 'meterless-scope': 'user', 'Content-Type': 'application/json' } : {}) };
+      // Nightshift H-MEM retrieves across apps inside a shared scope. Our own
+      // journal supplies versioned history/evidence; an isolated request scope
+      // prevents unreviewed prior model answers entering that evidence boundary.
+      ...(chat ? { 'meterless-scope': `request-${randomUUID()}`, 'Content-Type': 'application/json' } : {}) };
   }
 
   async probe(timeoutMs = 2_000): Promise<RuntimeProbe> {
@@ -128,7 +131,8 @@ export class MeterlessClient {
         const receipt=value.meterless.receipt;
         upstream={receiptId:typeof value.meterless.receipt_id==='string'?value.meterless.receipt_id:null,fromCache:value.meterless.from_cache===true || receipt.cache?.status!=='miss',
           qualityBuffered:receipt.quality_race?.streamed_after_selection===true || receipt.quality_race?.active===true,
-          reasoningScaffold:receipt.reasoning_scaffold?.active===true,phaseCount:Array.isArray(receipt.phases)?receipt.phases.length:0};
+          reasoningScaffold:receipt.reasoning_scaffold?.active===true,phaseCount:Array.isArray(receipt.phases)?receipt.phases.length:0,
+          memoryInjected:receipt.hmem===null?0:Number.isInteger(receipt.hmem?.injected) && receipt.hmem.injected>=0?receipt.hmem.injected:null};
       }
       const choice = value.choices?.[0];
       if (choice?.finish_reason) finish = choice.finish_reason;
@@ -144,7 +148,7 @@ export class MeterlessClient {
       parser.feed(decoder.decode());
       if (!done || finish !== 'stop') throw new Error('Provider stream did not finish successfully.');
       if(usage?.completion_tokens && usage.completion_tokens>=maxTokens)throw new Error('Provider answer reached its token ceiling; completeness is unconfirmed.');
-      if(pinned && (!upstream || upstream.fromCache || upstream.qualityBuffered || upstream.reasoningScaffold || upstream.phaseCount!==1 || responseModel!==model))throw new Error('Nightshift did not confirm fresh single-model streaming.');
+      if(pinned && (!upstream || upstream.fromCache || upstream.qualityBuffered || upstream.reasoningScaffold || upstream.phaseCount!==1 || upstream.memoryInjected!==0 || responseModel!==model))throw new Error('Nightshift did not confirm fresh single-model streaming with isolated evidence context.');
       emit(pending); if (!content.trim()) throw new Error('Provider returned an empty stream.');
       return { content, requestedMode: model, responseModel, usage, durationMs: Math.round(performance.now() - started), firstDeltaMs, deltas, ...(upstream?{upstream}:{}) };
     } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }

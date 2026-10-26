@@ -40,7 +40,10 @@ it('sends required headers and keeps routing mode separate from actual model evi
   const [url, options] = request.mock.calls[0] as unknown as [string, RequestInit];
   expect(url).toBe('http://localhost:8088/v1/chat/completions');
   expect(options.headers).toMatchObject({ Authorization: 'Bearer test-token',
-    'meterless-app': 'portal-one', 'meterless-scope': 'user' });
+    'meterless-app': 'portal-one', 'meterless-scope': expect.stringMatching(/^request-[a-f0-9-]{36}$/) });
+  await runtime.complete('A separate source-bound request');
+  const second=request.mock.calls[1] as unknown as [string,RequestInit];
+  expect(new Headers(second[1].headers).get('meterless-scope')).not.toBe(new Headers(options.headers).get('meterless-scope'));
   expect(JSON.parse(String(options.body)).chat_template_kwargs).toEqual({ enable_thinking: false });
   expect(JSON.parse(String(options.body)).max_tokens).toBe(128);
 });
