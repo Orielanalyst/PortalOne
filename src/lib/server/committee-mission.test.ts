@@ -65,6 +65,10 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   const dossier=buildDossier('test','Map facilities',source,evidence,map),id=dossier.citations[0]!.id;
   const content=`## Findings\n\n${'A sourced draft statement with explicit limits. '.repeat(5)}[${id}]`;
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
+  const missionSources=[...dossier.citations,{...dossier.citations[0]!,id:'E3333333333',kind:'mission' as const,recordId:'requirements:test',statement:JSON.stringify({values:{deadline:'2026-10-27T11:00:00Z',stockUnits:100}})}];
+  expect(()=>validateCitedMarkdown(content+'\n\nOperator deadline not supplied in evidence. [E3333333333]',missionSources)).toThrow('operator supplied the mission deadline');
+  expect(()=>validateCitedMarkdown(content+'\n\nRegistered stock (100 units) is expired. [E3333333333]',missionSources)).toThrow('Keep numeric resource and cargo values');
+  expect(validateCitedMarkdown(content+'\n\nConsult the generated mission-input section for operator values. The registered ledger requires independent confirmation. [E3333333333]',missionSources)).toContain('E3333333333');
   const publicSources=[...dossier.citations,{...dossier.citations[0]!,id:'E2222222222',kind:'public' as const,statement:'IFRC GO external public publisher records; historical context with unknown observation time.'}];
   expect(()=>validateCitedMarkdown(content+'\n\nAll 8 IFRC GO records are demonstrations. [E2222222222]',publicSources)).toThrow('must not be labelled as Kobo demonstrations');
   expect(validateCitedMarkdown(content+`\n\nKobo demonstration reports are separate from historical IFRC GO public records. [E2222222222]`,publicSources)).toContain('E2222222222');

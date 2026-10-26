@@ -152,13 +152,24 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   cite('map',`layers-${evidence.revision}`,'Generated evidence layer inventory',
     `Generated layer feature counts: ${JSON.stringify(Object.fromEntries(Object.entries(layers).map(([name,layer])=>[name,layer.features.length])))}. Blockage features are reported/unverified access observations, including demonstrations; they are not independently confirmed incidents. Intervention candidates are community references, not surveyed delivery zones.`,null,evidence.fetchedAt);
   return {runId,objective,capturedAt:new Date().toISOString(),revision:evidence.revision,citations,...(planning?{planning}:{}),
-    modelEvidence:citations.filter(item=>!['report','interpretation'].includes(item.kind)).concat(citations.filter(item=>item.kind==='report').slice(0,12),citations.filter(item=>item.kind==='interpretation').slice(0,12)).map(({id,kind,title,statement})=>({id,kind,title,
-      statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')})),gaps,layers,
+    modelEvidence:citations.filter(item=>!['report','interpretation'].includes(item.kind)).concat(citations.filter(item=>item.kind==='report').slice(0,12),citations.filter(item=>item.kind==='interpretation').slice(0,12)).map(({id,kind,title,statement,recordId})=>{
+      if(kind==='mission' && recordId.startsWith('requirements:')) {
+        const profile=JSON.parse(statement);
+        return {id,kind,title,statement:JSON.stringify({sourceContext:'Current operator-supplied mission inputs. These are separate from the registered synthetic/expired warehouse and fleet ledger. Read the supplied deadline and values; missing lists only absent inputs.',values:profile.values,missing:profile.missing,limitation:profile.limitation})};
+      }
+      return {id,kind,title,statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')};
+    }),gaps,layers,
     bounds:map.manifest.bounds,attribution:map.manifest.attribution,mapVersion:map.manifest.version,...(update?{update}:{})};
 }
 
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {
   if (markdown.length < 180) throw new Error('Document is too short to be a complete reviewable artifact.');
+  const supplied=citations.find(item=>item.kind==='mission' && item.recordId.startsWith('requirements:'));
+  if(supplied) {
+    const values=JSON.parse(supplied.statement).values;
+    if(values.deadline && /\bdeadline\s+(?:(?:is|was|has been)\s+)?(?:not\s+(?:supplied|provided|recorded)|missing|unknown|absent|unspecified)\b/i.test(markdown))throw new Error('The operator supplied the mission deadline. Do not call it missing; refer to the generated mission-input and feasibility sections.');
+    if(/\b(?:stock|payload|fuel|cargo|beneficiaries)\s*[:(=]?\s*\d/i.test(markdown))throw new Error('Keep numeric resource and cargo values in the generated mission-input/feasibility sections. In narrative distinguish operator-reported inputs from the separate registered rehearsal ledger; do not relabel operator values as registered, synthetic or expired.');
+  }
   if(citations.some(item=>item.kind==='public') && /\b(?:IFRC(?:\s+GO)?|ReliefWeb)(?:\s+[\w-]+){0,5}\s+(?:are|is|remain|were)(?:\s+(?:all|only|labelled|labeled))?\s+(?:demonstrations?|synthetic|examples?|test\s+records)\b/i.test(markdown))throw new Error('Public IFRC/ReliefWeb publisher records must not be labelled as Kobo demonstrations or synthetic submissions. Keep the public-record and Kobo test-report inventories separate.');
   const filler=markdown.match(/\b(TBD|lorem ipsum|insert here|placeholder)\b/i);
   if(filler)throw new Error(`Remove the filler marker "${filler[0]}" from the document, including when discussing its absence. State the actual evidence gap directly.`);
