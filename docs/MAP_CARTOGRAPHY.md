@@ -8,6 +8,12 @@ keeps the Leaflet canvas aligned with its panel. Report markers are grouped by
 their displayed reference and may be offset for readability; underlying coordinates
 are unchanged. Neither a mapped road nor a reference marker establishes clearance.
 
+Panels at most 600 pixels wide put the title/controls and legend outside the map
+canvas. Route framing then uses the available canvas rather than reserving room
+for overlays. The destination label faces inward; origin and destination labels
+remain on one line. This prevents the sidebar layout from hiding the route or
+clipping the destination when the application occupies a narrow browser panel.
+
 The export is an A3 landscape atlas with a route-focused map, coordinate ticks,
 metric scale, grid-north arrow, regional locator, keyed health inventory, legend,
 source dates and limitations. The solid route describes a geometric candidate;
@@ -54,3 +60,15 @@ checks every layer path remains inside the extracted pack, and requires the save
 main map/inset layout and unclipped mission geometry. Final delivery additionally
 requires visual inspection of the map and all report pages. Native review/update
 acceptance is recorded separately; a styling rehearsal alone does not close it.
+
+A failed export can be retried from Report. Recovery checks the exact proposal,
+mission inputs, calculation and fresh Kobo/public/Zetaris evidence before rendering
+and again before publication. Changed evidence blocks recovery. Published model
+documents and ready bundles are preserved. Each federation phase uses a fresh
+configured session rather than retaining a short-lived login throughout model work.
+Restarted exports remain visibly failed and can be recovered through the same gate.
+
+Layout-only PDF editions preserve the narrative and geodata, retain original files,
+and record the committed renderer and its hash. The edition command rejects an
+uncommitted layout implementation. A layout edition does not refresh field evidence
+or grant a new operational approval.

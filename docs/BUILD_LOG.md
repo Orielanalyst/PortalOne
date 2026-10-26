@@ -1,5 +1,13 @@
 # Build log
 
+### 26 October — readable mission maps and recoverable handoff
+
+- Reworked browser cartography and the native A3 atlas: cased mission route, inward-facing destination label, A/B references, distinct facility/report symbols, dated administrative context, regional locator, legend, scale, coordinate ticks and grid north. Compact browser panels place the title and legend outside the canvas. The separately licensed Mezam reference represents 2016; surveyed intervention zones stay empty without suitable evidence.
+- The eleven-layer handoff preserves source CRS, relative QGIS paths, styles, saved print layout and GeoJSON equivalents. Native exports write on container-local storage before copying validated files to Windows. Fresh network-disabled QGIS reopening and page-by-page PDF review are separate from component tests. Layout editions retain originals and bind the committed renderer without changing model prose or geodata.
+- Native rehearsals exercised exact-proposal approval, requested changes, source-change withdrawal, immutable historical downloads and automatic replacement generation. An interrupted session remains inspectable; the restored environment was rehearsed again through a replacement export. New private-run files and identifiers remain local, outside the earlier publication authorization.
+- Fixed transient public/model reads, bounded SELECT renewal and per-phase Zetaris sessions. Failed exports now offer a source-checked retry that preserves completed model documents; changed evidence requires a new investigation. Provider request scopes isolate model work from prior-answer memory; publication requires actual unbuffered Nemotron receipts with no injected answer memory.
+- Mandatory local gates at `d35d5e1` passed: 173 tests, typecheck, eight World Model checks, 154 vendored archives, four report wheels, two HTTP-disabled replays and production build. The branch was pushed. Current GitHub Actions jobs again started no steps; their annotation identifies the account billing lock. Hosted CI is not represented as passing.
+
 ### 26 October — native rehearsal and publication corrections
 
 - Real coordinator turns captured all required mission inputs, asked for missing details and waited before investigating. Source-bound values survived restart. Numeric string normalization and bounded reply repair retain original attempts and preserve already validated inputs.
