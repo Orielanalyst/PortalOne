@@ -124,3 +124,21 @@ it.each(['unknown_reference','output_limit'])('preserves %s and permits one visi
     expect(modes[1]).toBe('nvidia/nemotron-3-ultra-550b-a55b');expect(prompts[1]).not.toContain('E0000000000');
   }finally{journal.close();}
 });
+it('repairs a rejected report from reviewed evidence without copying its rejected inventory',async()=>{
+  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let reportCalls=0;const prompts:string[]=[];
+  const writer:CommitteeWriter={async stream(prompt,mode,options){
+    prompts.push(prompt);const id=prompt.match(/"source":"(S\d+)"/)![1];
+    const paragraph=`The committee must retain field verification holds before any delivery decision. [${id}]`;
+    let content=`## Findings\n\n${paragraph}\n\n${paragraph}\n\n${paragraph}`;
+    if(prompt.includes('Start with ## Evaluation'))content=`## Evaluation\n\n**Verdict: ACCEPT_WITH_GAPS** [${id}]\n\n${content}`;
+    if(prompt.includes('Write a polished, self-contained narrative') && ++reportCalls===1)content+='\n\nREJECTED INVENTORY ENUMERATION has no source.';
+    options.onDelta(content);return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
+  }};
+  try {
+    const run=journal.startRun('Prepare a cited Bambili committee draft.','test');const exporter=vi.fn(async({validateEvidence}:Parameters<import('./committee-mission').CommitteeExporter>[0])=>{await validateEvidence();});
+    await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter});
+    expect(exporter).toHaveBeenCalledOnce();expect(journal.documents(run.id).filter(doc=>doc.kind==='report').map(doc=>doc.status)).toEqual(['failed','published']);
+    const correction=prompts.find(prompt=>prompt.includes('PUBLICATION CORRECTION:'))!;
+    expect(correction).toContain('Regenerate the report from EVIDENCE');expect(correction).not.toContain('REJECTED INVENTORY ENUMERATION');
+  }finally{journal.close();}
+});

@@ -161,6 +161,7 @@ describe('quoted report interpretation',()=>{
       const inventory=dossier.citations.find(item=>item.kind==='inventory')!;
       const baseline=`The committee must obtain field verification, current facility status and operator confirmation before any dispatch decision. This remains a conditional document rather than an operational authorization. [${dossier.citations[0]!.id}]`;
       expect(()=>validateCitedMarkdown(`${baseline}\n\nText interpretation of source reports yields 0 source-checked claims. [${inventory.id}]`,dossier.citations)).toThrow('aggregate');
+      expect(()=>validateCitedMarkdown(`${baseline}\n\nEach report contains 0–1 source-checked claims. [${inventory.id}]`,dossier.citations)).toThrow('Unsupported numeric claim phrase "1 source-checked claims"');
       expect(()=>validateCitedMarkdown(`${baseline}\n\nText interpretation contains two extracted claims. [${dossier.citations[0]!.id}]`,dossier.citations)).toThrow('must cite');
       expect(validateCitedMarkdown(`${baseline}\n\nThe current source inventory contains 2 extracted claims. [${inventory.id}]`,dossier.citations)).toContain(inventory.id);
       expect(validateCitedMarkdown(`${baseline}\n\nThe inventory contains 2 extracted claims and 0 source-checked claims confirming actual incidents. [${inventory.id}]`,dossier.citations)).toContain(inventory.id);

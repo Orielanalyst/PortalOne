@@ -178,7 +178,7 @@ export function validateCitedMarkdown(markdown: string, citations: EvidenceCitat
       const actual=/^\d+$/.test(match[1]!)?Number(match[1]):words.indexOf(match[1]!.toLowerCase());
       const suffix=block.slice(match.index!+match[0].length);
       const verifiedQualifier=actual===0 && counts.verifiedIncidentClaims===0 && /^(?:\s*\[E[a-f0-9]{10}\])*\s+(?:confirming|corroborating|verifying|establishing)(?:\s+any)?\s+(?:actual|real)(?:\s+field)?\s+incidents\b/i.test(suffix);
-      if(actual!==expected && !verifiedQualifier)throw new Error(`Text-claim aggregate does not match the generated interpretation inventory (${expected}). Do not generalize one report's count or write per-report numeric claim totals in narrative.`);
+      if(actual!==expected && !verifiedQualifier)throw new Error(`Unsupported numeric claim phrase "${match[0]}". The generated aggregate is ${expected} text claims. Remove per-report numeric totals and ranges; do not generalize one report's count to the inventory.`);
       if(!block.includes(`[${inventory.id}]`))throw new Error('Numeric text-claim totals must cite the generated interpretation inventory.');
     }
   }
