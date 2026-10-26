@@ -100,6 +100,11 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   expect(()=>validateCitedMarkdown(content+'\n\nOperator deadline not supplied in evidence. [E3333333333]',missionSources)).toThrow('operator supplied the mission deadline');
   expect(()=>validateCitedMarkdown(content+'\n\nLogistics Officer to obtain the operator’s confirmed mission deadline. [E3333333333]',missionSources)).toThrow('deadline is already source-bound');
   expect(()=>validateCitedMarkdown(content+'\n\nThe deadline requires operator confirmation. [E3333333333]',missionSources)).toThrow('deadline is already source-bound');
+  expect(()=>validateCitedMarkdown(content+'\n\nVehicle inspection record dated within 7 days. [E3333333333]',missionSources)).toThrow('invented numeric freshness');
+  expect(()=>validateCitedMarkdown(content+'\n\nResolve candidate S25. [E3333333333]',missionSources)).toThrow('raw short source handles');
+  const routeSources=[...missionSources,{...missionSources[0]!,id:'E4444444444',kind:'calculation' as const,statement:JSON.stringify({route:{roadIds:['road-a','road-b']}})}];
+  expect(()=>validateCitedMarkdown(content+'\n\nThe route runs through 3 mapped road segments. [E4444444444]',routeSources)).toThrow('route reference count');
+  expect(validateCitedMarkdown(content+'\n\nThe route runs through 2 mapped road references. [E4444444444]',routeSources)).toContain('E4444444444');
   expect(()=>validateCitedMarkdown(content+'\n\nRegistered stock (100 units) is expired. [E3333333333]',missionSources)).toThrow('Keep numeric resource and cargo values');
   expect(validateCitedMarkdown(content+'\n\nConsult the generated mission-input section for operator values. The registered ledger requires independent confirmation. [E3333333333]',missionSources)).toContain('E3333333333');
   const publicSources=[...dossier.citations,{...dossier.citations[0]!,id:'E2222222222',kind:'public' as const,statement:'IFRC GO external public publisher records; historical context with unknown observation time.'}];

@@ -77,7 +77,7 @@ export type EvidenceRow = z.infer<typeof EvidenceRowSchema>;
 export type FederatedEvidence = { mode: 'live-zetaris' | 'offline-fixture'; inputRevision: string; revision: string; sourceId: string;cartographyRevision?:string;
   fetchedAt: string; reportCount: number; demoCount: number; liveCount: number; forwardedCount: number; rows: EvidenceRow[]; queries: QueryReceipt[];
   publicEvidence?: PublicSnapshot; requirements?:ReturnType<typeof publicRequirements>; dependencyBaseRevision?:string };
-export interface MissionEvidence { load(snapshot: KoboSnapshot, signal: AbortSignal,options?:{freshPublic?:boolean}): Promise<FederatedEvidence> }
+export interface MissionEvidence { load(snapshot: KoboSnapshot, signal: AbortSignal,options?:{freshPublic?:boolean;onQueryRetry?:(detail:string)=>void}): Promise<FederatedEvidence> }
 export function communityQueries(batchId: string) {
   if (!/^[a-f0-9]{64}$/.test(batchId)) throw new Error('Invalid evidence batch ID.');
   return [
@@ -133,14 +133,14 @@ function reportGroups(projection: EvidenceProjection) {
 export class ZetarisCommunityEvidence implements MissionEvidence {
   constructor(private readonly map: CommunityMap, private readonly client: Pick<ZetarisClient, 'query'> = configuredZetaris(),
     private readonly write: typeof communityPsql = communityPsql) {}
-  async load(snapshot: KoboSnapshot, signal: AbortSignal) {
+  async load(snapshot: KoboSnapshot, signal: AbortSignal,options?:{onQueryRetry?:(detail:string)=>void}) {
     const projection = projectEvidence(snapshot, this.map);
     const committed = JSON.parse(await this.write(projectionSql(projection), 'community_writer', signal));
     if (committed.batch !== projection.id || committed.reports !== projection.count) throw new Error('Community projection was not committed completely.');
     const tables: Record<string, unknown>[][] = [], queries: QueryReceipt[] = [];
     for (const query of communityQueries(projection.id)) {
       signal.throwIfAborted(); const started = performance.now();
-      const result = await this.client.query(query.sql, signal);
+      const result = await this.client.query(query.sql, signal,options?.onQueryRetry);
       tables.push(result.data.map(values => Object.fromEntries(result.headers.map((header, i) => [header, values[i]]))));
       queries.push({ id: `query-${randomUUID()}`, name: query.name, sql: query.sql, asOf: snapshot.checkedAt,
         fetchedAt: new Date().toISOString(), durationMs: Math.round(performance.now() - started), rowCount: result.data.length, resultHash: hashEvidence(result.data) });

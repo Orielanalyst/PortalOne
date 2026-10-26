@@ -178,8 +178,8 @@ export class ResilientPublicEvidence implements PublicEvidenceSource {
 export class PublicIntegratedEvidence implements MissionEvidence {
   constructor(private readonly base: MissionEvidence, private readonly publicSource: PublicEvidenceSource,
     private readonly progress?: (detail: string) => void) {}
-  async load(input: KoboSnapshot, signal: AbortSignal,options?:{freshPublic?:boolean}): Promise<FederatedEvidence> {
-    const [evidence, publicEvidence] = await Promise.all([this.base.load(input, signal), this.publicSource.snapshot(signal, this.progress,options?.freshPublic)]);
+  async load(input: KoboSnapshot, signal: AbortSignal,options?:{freshPublic?:boolean;onQueryRetry?:(detail:string)=>void}): Promise<FederatedEvidence> {
+    const [evidence, publicEvidence] = await Promise.all([this.base.load(input, signal,options), this.publicSource.snapshot(signal, this.progress,options?.freshPublic)]);
     signal.throwIfAborted();
     return { ...evidence, publicEvidence, inputRevision: digest({ base: evidence.inputRevision, public: publicEvidence.revision }),
       revision: digest({ base: evidence.revision, public: publicEvidence.revision }) };

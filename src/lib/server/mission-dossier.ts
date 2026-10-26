@@ -117,7 +117,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
     ...(evidence.demoCount ? ['Demonstration reports cannot corroborate an actual incident.'] : []),
     ...(evidence.rows.some(row => row.logisticsSimulated) ? ['Registered stock and fleet are synthetic; their values do not establish actual NGO resources.'] : []),
     ...(evidence.rows.some(row => row.stockUnits !== null && !row.stockFresh || row.fleetCount !== null && !row.fleetFresh) ? ['Registered resource observations have expired and require a current warehouse/fleet confirmation.'] : []),
-    ...(snapshot.records.some(record => map.resolve(record.signal).status === 'ambiguous') ? ['Duplicate settlement names retain multiple coordinate candidates; local clarification is required.'] : []),
+    ...(snapshot.records.some(record => map.resolve(record.signal).status === 'ambiguous') ? ['Mapped duplicate settlement names: '+[...new Set(map.places.map(place=>place.name))].filter(name=>map.places.filter(place=>place.name===name).length>1).map(name=>`${name} (${map.places.filter(place=>place.name===name).length} references)`).join('; ')+'. Road-location ambiguity is separate from settlement-name ambiguity. Other settlement names have a single mapped reference; clarify the listed duplicates locally.'] : []),
     ...missing,
   ])];
   cite('query',evidence.revision,'Independently queryable community/resource context',JSON.stringify({ reports:evidence.reportCount,demonstration:evidence.demoCount,liveLabelled:evidence.liveCount,forwarded:evidence.forwardedCount,communities:evidence.rows,queries:evidence.queries.map(query=>({id:query.id,name:query.name,rows:query.rowCount})) }),null,evidence.fetchedAt);
@@ -165,7 +165,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
       }
       if(kind==='calculation') {
         const result=JSON.parse(statement);
-        return {id,kind,title,statement:JSON.stringify({status:result.status,missing:result.missing,route:result.route,alternativeRoute:result.alternativeRoute,accessRelationships:result.accessRelationships,
+        return {id,kind,title,statement:JSON.stringify({status:result.status,missing:result.missing,route:result.route?{...result.route,roadReferenceCount:result.route.roadIds.length}:null,alternativeRoute:result.alternativeRoute,accessRelationships:result.accessRelationships,
           checks:result.checks.map((check:{code:string;status:string;message:string;fields:string[]})=>({code:check.code,status:check.status,explanation:check.fields.some(field=>!['origin','destination'].includes(field))?'Exact operator values and numerical verification are in the generated mission-input/feasibility sections.':check.message})),limitations:result.limitations,dispatchAuthorized:false})};
       }
       if(kind==='query' && recordId===evidence.revision) {
@@ -179,6 +179,10 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
 
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {
   if (markdown.length < 180) throw new Error('Document is too short to be a complete reviewable artifact.');
+  if(/\bS\d+\b/.test(markdown))throw new Error('Remove raw short source handles from prose. Use bracketed citations only, and name source features using their actual names.');
+  if(/\b(?:dated|observed|inspected)\s+within\s+(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:hours?|days?|weeks?)\b/i.test(markdown))throw new Error('Remove the invented numeric freshness requirement. Use source-bound observed/valid-until values and generated freshness checks; do not impose an unsupported inspection age.');
+  const routeSource=citations.find(item=>item.kind==='calculation');
+  if(routeSource){const route=JSON.parse(routeSource.statement).route;if(route?.roadIds)for(const claim of markdown.matchAll(/\b(?:through|comprises|consists of|total of)\s+(\d+)\s+(?:mapped\s+)?road\s+(?:segments|references|features)\b/gi))if(Number(claim[1])!==route.roadIds.length)throw new Error('The route reference count contradicts the deterministic route inventory. Use its exact count or refer to the generated map/route inventory without recounting source IDs.');}
   const supplied=citations.find(item=>item.kind==='mission' && item.recordId.startsWith('requirements:'));
   if(supplied) {
     const values=JSON.parse(supplied.statement).values;

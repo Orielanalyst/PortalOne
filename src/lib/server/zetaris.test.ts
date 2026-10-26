@@ -1,6 +1,23 @@
 // @vitest-environment node
 import { ZetarisClient } from './zetaris';
 import { reliefQueries, readScenario } from './relief-source';
+it('renews an expired generated session once for the same account, without retrying commands or supplied API keys',async()=>{
+  let logins=0,reads=0;const progress=vi.fn();
+  const request=vi.fn(async(url:string)=>url.endsWith('/api/auth/login')?Response.json({idToken:'test-session-'+(++logins)}):++reads===1?new Response('',{status:401}):Response.json({headers:['n'],data:[[1]],total:1}));
+  const client=new ZetarisClient({baseUrl:'http://localhost:3000',orgId:'1',username:'test',password:'test',fetch:request as unknown as typeof fetch});
+  expect((await client.query('SELECT 1 AS n',undefined,progress)).data).toEqual([[1]]);expect(logins).toBe(2);expect(progress).toHaveBeenCalledOnce();
+  const rejected=vi.fn<typeof fetch>().mockImplementation(async()=>new Response('',{status:401}));
+  await expect(new ZetarisClient({baseUrl:'http://localhost:3000',orgId:'1',token:'supplied-key',fetch:rejected}).query('SELECT 1')).rejects.toThrow('HTTP 401');expect(rejected).toHaveBeenCalledTimes(1);
+  const unavailable=vi.fn<typeof fetch>().mockImplementation(async()=>new Response('',{status:503}));
+  await expect(new ZetarisClient({baseUrl:'http://localhost:3000',orgId:'1',token:'test',fetch:unavailable}).command('CREATE DATASOURCE example')).rejects.toThrow('HTTP 503');expect(unavailable).toHaveBeenCalledTimes(1);
+});
+it('retries a transient bounded SELECT but never retries a malformed successful table',async()=>{
+  const request=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('',{status:503})).mockResolvedValueOnce(Response.json({headers:['n'],data:[[1]],total:1}));const progress=vi.fn();
+  const client=new ZetarisClient({baseUrl:'http://localhost:3000',orgId:'1',token:'test',fetch:request});
+  expect((await client.query('SELECT 1',undefined,progress)).data).toEqual([[1]]);expect(request).toHaveBeenCalledTimes(2);expect(progress).toHaveBeenCalledOnce();
+  const invalid=vi.fn<typeof fetch>().mockImplementation(async()=>Response.json({headers:['n'],data:[[]],total:1}));
+  await expect(new ZetarisClient({baseUrl:'http://localhost:3000',orgId:'1',token:'test',fetch:invalid}).query('SELECT 1')).rejects.toThrow('Unexpected');expect(invalid).toHaveBeenCalledTimes(1);
+});
 
 it('authenticates without returning credentials and sends org/request headers', async () => {
   const request = vi.fn(async (url: string, _options?: RequestInit) => url.endsWith('/api/auth/login')
@@ -8,6 +25,7 @@ it('authenticates without returning credentials and sends org/request headers', 
   const client = new ZetarisClient({ baseUrl: 'http://localhost:3000', orgId: '1', username: 'test', password: 'test', fetch: request as unknown as typeof fetch });
   expect((await client.query('SELECT 1 AS n')).data).toEqual([['1']]);
   const options = request.mock.calls[1]![1] as unknown as RequestInit;
+  expect(options.signal).not.toBe((request.mock.calls[0]![1] as RequestInit).signal);
   expect(options.headers).toMatchObject({ Authorization: 'Bearer test-only-token', 'X-Org-ID': '1' });
   expect((options.headers as Record<string, string>)['X-Request-ID']).toMatch(/^[0-9a-f-]{36}$/);
 });

@@ -12,6 +12,7 @@ import type { MissionEvidence } from './community-evidence';
 import { FixtureMissionLogistics, NightshiftMissionLogistics } from './mission-logistics';
 import type { MissionLogistics } from './mission-logistics';
 import { execFileSync } from 'node:child_process';
+import {writeFileSync} from 'node:fs';
 import { ConversationDecision, NightshiftConversation, replayConversation } from './mission-conversation';
 import type { MissionConversation, InvestigationContext } from './mission-conversation';
 import { runCommitteeMission } from './committee-mission';
@@ -173,18 +174,19 @@ export class MissionRuntime {
       try {
         const bound=this.journal.boundRequirements(run.id),current=this.journal.requirements(run.sessionId);
         if((bound?.revision ?? null)!==(current?.revision ?? null))throw new Error('Mission requirements changed during preparation.');
-        const context = withMissionRequirements(await this.evidence.load(snapshot, signal),bound);
+        const context = withMissionRequirements(await this.evidence.load(snapshot, signal,{onQueryRetry:detail=>this.journal.event(run.id,'coordinator','tool_read_retry',detail)}),bound);
         if((bound?.revision ?? null)!==(this.journal.requirements(run.sessionId)?.revision ?? null))throw new Error('Mission requirements changed during source refresh.');
         await observeMissionEvidence(this.world,this.journal,context,run.id); this.federationStatus = 'online'; return context;
       }
-      catch (error) { this.federationStatus = 'unavailable'; throw error; }
+      catch (error) { this.federationStatus = 'unavailable';this.journal.event(run.id,'coordinator','federation_read_failed','Zetaris could not supply a validated current read. Publication remains blocked; no prior result is substituted.');throw error; }
     } }, readSource: async (signal: AbortSignal) => {
       try { const snapshot = await this.source.snapshot(signal,detail=>this.journal.event(run.id,'intake','source_read_retry',detail)); this.sourceStatus = 'online'; this.checkedAt = snapshot.checkedAt; return snapshot; }
       catch (error) { this.sourceStatus = 'unavailable'; this.checkedAt = new Date().toISOString();this.journal.event(run.id,'intake','source_read_failed','Kobo source could not be refreshed; the current snapshot is unconfirmed and publication remains blocked.');throw error; }
     } };
     const writer=this.options.committeeWriter ?? client;
     const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,
-      interpreter:this.options.interpreter ?? (client?new NightshiftSignalInterpreter(client,{consent:loadReportInferenceConsent(),providerBaseUrl:client.baseUrl}):undefined),exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
+      interpreter:this.options.interpreter ?? (client?new NightshiftSignalInterpreter(client,{consent:loadReportInferenceConsent(),providerBaseUrl:client.baseUrl}):undefined),exporter:this.options.committeeExporter ?? buildCommitteeBundle,
+      onFailure:error=>{if(!this.options.journal)writeFileSync('.runtime/mission/last-committee-error.json',JSON.stringify({runId:run.id,at:new Date().toISOString(),name:error instanceof Error?error.name:'Unknown',message:error instanceof Error?error.message:'Unknown failure'},null,2));}}) : runMission(dependencies);
     void investigation.then(async result => {
       const assessment = this.journal.assessments(run.id).find(a => a.id === result.assessmentId);
       if (assessment?.status === 'checked' && this.monitor?.sessionId === run.sessionId) this.monitor.lastRevision = assessment.evidence.revision;
@@ -206,7 +208,7 @@ export class MissionRuntime {
         this.journal.event(run.id,'coordinator','review_refresh_started','Mission Coordinator → Independent checker: refresh Kobo, the public feed and Zetaris before accepting this exact operator decision.',[command.planId]);
         const snapshot=await this.source.snapshot(signal);signal.throwIfAborted();this.journal.ingest(snapshot);
         this.journal.event(run.id,'checker','review_kobo_read',`Independent checker: refreshed ${snapshot.count} Kobo report versions for this decision.`,[command.planId]);
-        const fresh=withMissionRequirements(await this.evidence.load(snapshot,signal,{freshPublic:true}),this.journal.requirements(run.sessionId));
+        const fresh=withMissionRequirements(await this.evidence.load(snapshot,signal,{freshPublic:true,onQueryRetry:detail=>this.journal.event(run.id,'evaluator','tool_read_retry',detail)}),this.journal.requirements(run.sessionId));
         for(const receipt of fresh.queries)this.journal.event(run.id,'checker','review_query',`Zetaris ${receipt.name}: ${receipt.rowCount} rows returned in ${receipt.durationMs} ms.`,[receipt.id]);
         await observeMissionEvidence(this.world,this.journal,fresh,run.id);signal.throwIfAborted();
         if(fresh.revision!==command.evidenceRevision || (bound?.revision ?? null)!==(this.journal.requirements(run.sessionId)?.revision ?? null))throw new ReviewError('Source evidence or mission inputs changed during review. The old proposal is superseded; prepare and review the fresh version.');
@@ -253,7 +255,7 @@ export class MissionRuntime {
       koboRead = true;
       if (this.monitor !== watching) return;
       if (Date.now() >= watching.until) { this.stopMonitor(); return; }
-      const context = withMissionRequirements(await this.evidence.load(snapshot, signal),this.journal.requirements(watching.sessionId));
+      const context = withMissionRequirements(await this.evidence.load(snapshot, signal,{onQueryRetry:detail=>this.journal.event(watching.runId,'coordinator','tool_read_retry',detail)}),this.journal.requirements(watching.sessionId));
       if (this.monitor !== watching) return;
       if (Date.now() >= watching.until) { this.stopMonitor(); return; }
       if (this.chatting || this.active || this.reviewing) return;
