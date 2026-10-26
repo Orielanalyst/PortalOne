@@ -1,6 +1,19 @@
 # Judge guide
 
-**Latest private-processing extension:** the human authorized the configured
+**Latest reviewed evidence:** [16-page PDF](evidence/private-inference-demo-2026-10-26/report.pdf),
+[QGIS/geodata pack](evidence/private-inference-demo-2026-10-26/committee-pack.zip)
+and [minimal native validation receipt](evidence/private-inference-2026-10-26.json).
+The human separately authorized publishing this redacted snapshot. Eight demo
+reports contain six extracted claims, zero verified incidents and zero verified
+field origins. The committee reused eight authorized readings, streamed 806
+document updates, published v1 before evaluation and produced the pack. This run
+needed no plan revision; it does not claim a v2/diff. The receipt distinguishes the
+initial extraction, final committee and corrected-summary source commits. All
+16 PDF pages were visually reviewed; a fresh network-disabled QGIS process reopened
+seven valid styled layers at a different mount. Private text/quotes/mentions and
+the full journal remain local. This permission does not publish future runs.
+
+**Private-processing extension:** the human authorized the configured
 project's report_text transfer to NVIDIA Nemotron through Nightshift. A local
 project/provider-scoped consent record enables it; fresh checkouts remain closed
 to private text by default. Private quotes and extracted place/time mentions stay
@@ -15,8 +28,8 @@ Seven synthetic records used three new native reads and four cache reuses, follo
 by 2,042 document updates through v1, evaluation, revision and export. Four empty
 readings remain not understood; three assert no observation. Separate native
 English/French probes verify negative road claims and uncertain health status.
-Other/private narratives stay local pending authorization; this is not claimed as
-unrestricted live text extraction.
+At that earlier checkpoint, other/private narratives stayed local pending
+authorization; it did not establish unrestricted live text extraction.
 
 **Latest live update:** [workflow](MISSION_UPDATES.md),
 [source-bound receipt](evidence/mission-update-2026-10-25.json),

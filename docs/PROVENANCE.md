@@ -139,3 +139,21 @@ the replacement; its coordinates were selected from a public Bambili map
 reference for the rehearsal, not observed in the field. All seven reports are
 demonstrations and all origins remain unverified. Raw texts, identities, keys and
 private input.json are excluded from the published pack and receipt.
+
+## 26 October — authorized redacted private-path demonstration
+
+The human separately approved publication of this specific synthetic-demo PDF/GIS
+pack and minimal source/model/validation metadata after authorizing NVIDIA
+processing. The [receipt](evidence/private-inference-2026-10-26.json) identifies
+the initial extraction commit, final report commit and subsequent summary-only
+correction; the PDF/GIS bytes are unchanged by publication. Actual Nemotron calls
+generated the documents, deterministic code aggregated counts and rendered the
+existing attributed OSM geography, and a fresh native QGIS process validated the
+handoff. The published files retain their existing data/license attributions.
+
+Eight demonstration records, six extracted claims and three overlapping demo
+blockage points do not establish independent incidents or verified origins.
+Private narrative, private quotations, extracted private mentions, reporter
+identity/GPS, credentials and the full private journal are excluded. No new package,
+service, dataset, model call or field report was acquired for publication. Future
+private-run publication is outside this one-snapshot permission.

@@ -69,11 +69,21 @@ verify field truth, independent origins, current capacity or road clearance.
 Remaining work includes public news, precise road matching, real logistics,
 version-bound operator approval, durable resumption and submission packaging.
 
-Private-run artifacts and derived metadata remain local. Authorization for model
-processing does not authorize publishing their source IDs, timestamps, counts,
-receipts, documents or hashes to a public repository. Public disclosure requires
-separate operator authorization. Code and generic setup documentation are the
-current public checkpoint.
+Authorization for model processing does not authorize public disclosure. The
+initial code-only checkpoint kept all private-run artifacts and derived metadata
+local after automatic approval review rejected their publication. The human then
+separately authorized this specific redacted synthetic-demo PDF/GIS pack and minimal
+metadata: source/project/report IDs, timestamps, counts, categorical assertions,
+source/file hashes and model receipts. See the [public receipt](evidence/private-inference-2026-10-26.json),
+[16-page PDF](evidence/private-inference-demo-2026-10-26/report.pdf) and
+[GIS pack](evidence/private-inference-demo-2026-10-26/committee-pack.zip).
+
+The published snapshot contains eight demonstrations, six extracted text claims
+and zero verified incidents. The final committee reused eight saved readings
+after the authorization check and observed 806 document updates; the receipt does
+not represent these as new extraction calls. Private narrative/quotes, extracted
+private mentions, raw reporter GPS, identities, credentials and the full journal
+remain local. Future runs require their own publication authorization.
 
 ## Quality review remains separate from privacy
 

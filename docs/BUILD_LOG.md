@@ -1,5 +1,12 @@
 # Build log
 
+### 26 October — separately authorized redacted evidence publication
+
+- The human explicitly approved publishing the reviewed synthetic-demo PDF/GIS pack and minimal source/model/validation metadata to public Orielanalyst/PortalOne. This resolves the earlier publication rejection within that stated scope; private narrative, quotations, extracted private mentions and the full journal remain local. It does not authorize future-run publication.
+- Published unchanged native bytes from mission-c7da54ab-212d-4ee5-959a-09dde19011bf at report source 584482d. Eight demonstrations yield six extracted text claims and zero verified incidents/origins. The final committee reused eight scoped readings rather than calling extraction again; 806 document updates arrived before publication. V1 was accepted with gaps, without a forced revision or invented diff.
+- The minimal [receipt](evidence/private-inference-2026-10-26.json) separates initial extraction at 4de9ac7, final report generation and the summary-only quality correction at 8061e1c. It records categorical assertions, hashes, source IDs and allowlisted model accounting/routing fields. Arbitrary document text, events and memory were not copied from the private journal.
+- The [16-page PDF](evidence/private-inference-demo-2026-10-26/report.pdf) and [GIS ZIP](evidence/private-inference-demo-2026-10-26/committee-pack.zip) retain the reviewed hashes. Existing native receipts cover all 29 manifest files/30 archive members, page-by-page visual review and seven valid styled relative-path QGIS layers reopened in a network-disabled fresh process. Publication adds fresh private-content, artifact-hash and staged-file checks. Full mandatory checks run on push; hosted Actions remains separate and the last inspected jobs failed before steps due to the account billing lock.
+
 ### 26 October — authorized private inference and quality controls
 
 - The human explicitly authorized private/live Kobo report_text processing through the configured NVIDIA Nemotron service via Nightshift, with private quotations excluded from public reports and GitHub. Added a local ignored consent record bound to project/provider/scope. Missing, disabled or mismatched settings hold processing before inference or private-cache reuse. The committed default remains closed for fresh clones.

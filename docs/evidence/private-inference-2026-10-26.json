@@ -1,0 +1,604 @@
+{
+  "schemaVersion": 1,
+  "publishedAt": "2026-10-26T06:04:05.233Z",
+  "publicationAuthorization": {
+    "explicitHumanApproval": true,
+    "dateLocal": "2026-10-26",
+    "scope": "This reviewed redacted synthetic-demo PDF/GIS pack and minimal source, model and validation metadata in public Orielanalyst/PortalOne.",
+    "excluded": [
+      "private narrative",
+      "private quotations",
+      "extracted private place/time mentions",
+      "reporter identity/contact fields",
+      "raw reporter GPS",
+      "credentials",
+      "full private journal",
+      "future run publication"
+    ],
+    "doesNotEnablePrivateInferenceOnOtherMachines": true
+  },
+  "application": {
+    "reportSourceCommit": "584482dd1e639c79dfa1b17518959acee5068ad1",
+    "extractionSourceCommit": "4de9ac7e929c7f7b5b603f0e91a2662bce15aa78",
+    "correctedSummarySourceCommit": "8061e1c2ab287d322f6a7dd9c307e03390572b76",
+    "latestSummarySelectionCommit": "9e421fe",
+    "codeCheckpointBeforePublication": "913962c61197809cafb95a900f71671d55249dfb",
+    "branch": "codex/execution-readiness"
+  },
+  "run": {
+    "id": "mission-c7da54ab-212d-4ee5-959a-09dde19011bf",
+    "startedAt": "2026-10-26T05:32:03.299Z",
+    "finishedAt": "2026-10-26T05:33:24.401Z",
+    "status": "complete",
+    "disposition": "hold"
+  },
+  "inventory": {
+    "reports": 8,
+    "readings": 8,
+    "accepted": 8,
+    "claims": 6,
+    "verifiedIncidentClaims": 0,
+    "emptyNoObservation": 3,
+    "notUnderstood": 0,
+    "privateReadings": 1,
+    "byAssertion": {
+      "reported": 0,
+      "denied": 1,
+      "uncertain": 1,
+      "example": 4
+    },
+    "basis": "Deterministic aggregation of versioned local readings; claims and copies are not independent incidents or verified field facts."
+  },
+  "inference": {
+    "initialExtractionRunId": "mission-e1e22bed-be7d-4b05-9738-50776942f0c7",
+    "initialNewReadings": 4,
+    "committeeNewModelReads": 0,
+    "committeeCachedReadings": 8,
+    "authorizationRecheckedBeforeCacheReuse": true,
+    "readings": [
+      {
+        "citationId": "E02a8fd4630",
+        "reportId": "interpretation-99685bd7-b597-4421-a966-eca424a7c500",
+        "citationSha256": "d44ebba9b99913121a81cbc2a7547fa8527047aa17f06ef3fc29e48d2e674371",
+        "sourceTextSha256": "6b44597e5882cd5289a26e4c5def55ce407a1453addc3f6ab302e4ebf34c478f",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [
+          {
+            "category": "road_blockage",
+            "assertion": "example"
+          }
+        ],
+        "noClaimReason": null,
+        "reusedFrom": "interpretation-11d1165e-ed34-4747-8417-ce6e5b64eb55",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 890,
+            "completion_tokens": 70,
+            "total_tokens": 960
+          },
+          "durationMs": 4350,
+          "firstDeltaMs": 4316,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_6d68tfos",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "E3d2eb97ed5",
+        "reportId": "interpretation-795647c5-de3d-4ef8-8c12-f23b4d5b0fb6",
+        "citationSha256": "f70e948821807c4d30a13b3a63ab78648c032c94bca3f0a460393923ec478b9a",
+        "sourceTextSha256": "3407577440b00a297daabc1dc82016a7df89778abcd330ae0974b5d56c5203a6",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [],
+        "noClaimReason": "no_observation",
+        "reusedFrom": "interpretation-a021b3bb-5ced-4f3e-bb43-7f39115d0240",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 1006,
+            "completion_tokens": 16,
+            "total_tokens": 1022
+          },
+          "durationMs": 1413,
+          "firstDeltaMs": 1384,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_dzet9wf2",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "E4d748e2766",
+        "reportId": "interpretation-7c251e64-48f8-492e-920c-14a66519cfd0",
+        "citationSha256": "c4376cd0c3713e593c4a96f8b9735820847ada0ee6adaa9bbe379baea063ee07",
+        "sourceTextSha256": "9118527029f31e27ee10cc5f72d54eff4f3462f6a5ee0db8141bc5a368ba78af",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [
+          {
+            "category": "access_restriction",
+            "assertion": "example"
+          }
+        ],
+        "noClaimReason": null,
+        "reusedFrom": "interpretation-611c7c33-3239-4e3c-a45c-e1b188a2e883",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 950,
+            "completion_tokens": 91,
+            "total_tokens": 1041
+          },
+          "durationMs": 1799,
+          "firstDeltaMs": 1653,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_2q54m8ce",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "E823f4f77f7",
+        "reportId": "interpretation-f29a6cab-ff15-4fb7-b51c-bbc615c29ca5",
+        "citationSha256": "a319376ef94461dd62db9a1c227cc913086aaf674fad69ac2998864e505f2039",
+        "sourceTextSha256": "597a7d81efde6323650e2f275ec30024a85870d88187664d61e5dc3e97b79f57",
+        "status": "accepted",
+        "visibility": "private",
+        "claims": [
+          {
+            "category": "road_blockage",
+            "assertion": "denied"
+          },
+          {
+            "category": "service_status",
+            "assertion": "uncertain"
+          }
+        ],
+        "noClaimReason": null,
+        "reusedFrom": "interpretation-b7d49f56-9045-4fe3-9aa3-664eae09397e",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 1015,
+            "completion_tokens": 117,
+            "total_tokens": 1132
+          },
+          "durationMs": 2425,
+          "firstDeltaMs": 2389,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_rdqct40f",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "E8c5a8e8d7a",
+        "reportId": "interpretation-b5418b5c-c714-429e-9480-9c514716c6ee",
+        "citationSha256": "363d197a33c1bc8bf9c45fc94abc25fb3b24b1f019fb79fa4c8c505e3d0ce193",
+        "sourceTextSha256": "9118527029f31e27ee10cc5f72d54eff4f3462f6a5ee0db8141bc5a368ba78af",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [
+          {
+            "category": "access_restriction",
+            "assertion": "example"
+          }
+        ],
+        "noClaimReason": null,
+        "reusedFrom": "interpretation-611c7c33-3239-4e3c-a45c-e1b188a2e883",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 950,
+            "completion_tokens": 91,
+            "total_tokens": 1041
+          },
+          "durationMs": 1799,
+          "firstDeltaMs": 1653,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_2q54m8ce",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "Ec31e39ea30",
+        "reportId": "interpretation-a8a7e21d-369b-44f6-b732-01e2b0108a0a",
+        "citationSha256": "8f1c1a562b490d668295e115a205ce2d1f0f804dc1fe1bdf2b11d2dc97c1cb4b",
+        "sourceTextSha256": "3407577440b00a297daabc1dc82016a7df89778abcd330ae0974b5d56c5203a6",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [],
+        "noClaimReason": "no_observation",
+        "reusedFrom": "interpretation-a021b3bb-5ced-4f3e-bb43-7f39115d0240",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 1006,
+            "completion_tokens": 16,
+            "total_tokens": 1022
+          },
+          "durationMs": 1413,
+          "firstDeltaMs": 1384,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_dzet9wf2",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "Ee4e4445a74",
+        "reportId": "interpretation-b54f3c6b-3e47-418a-b2a7-2092a854ad45",
+        "citationSha256": "ba48df4251f047fdd4e3b9545efde50f24802826757ef459fa105f1f32ec6821",
+        "sourceTextSha256": "9118527029f31e27ee10cc5f72d54eff4f3462f6a5ee0db8141bc5a368ba78af",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [
+          {
+            "category": "access_restriction",
+            "assertion": "example"
+          }
+        ],
+        "noClaimReason": null,
+        "reusedFrom": "interpretation-611c7c33-3239-4e3c-a45c-e1b188a2e883",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 950,
+            "completion_tokens": 91,
+            "total_tokens": 1041
+          },
+          "durationMs": 1799,
+          "firstDeltaMs": 1653,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_2q54m8ce",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "citationId": "Ef227be60a9",
+        "reportId": "interpretation-740b5f28-08f1-4b35-8cd1-6083b5be5f1a",
+        "citationSha256": "1471ffe47bd431593810f6c1dd8bfa579951ec69f70a7518c3041293b65a2ef3",
+        "sourceTextSha256": "3407577440b00a297daabc1dc82016a7df89778abcd330ae0974b5d56c5203a6",
+        "status": "accepted",
+        "visibility": "public_example",
+        "claims": [],
+        "noClaimReason": "no_observation",
+        "reusedFrom": "interpretation-a021b3bb-5ced-4f3e-bb43-7f39115d0240",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 1006,
+            "completion_tokens": 16,
+            "total_tokens": 1022
+          },
+          "durationMs": 1413,
+          "firstDeltaMs": 1384,
+          "deltas": 2,
+          "upstream": {
+            "receiptId": "rcpt_req_dzet9wf2",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      }
+    ]
+  },
+  "committee": {
+    "documentDeltas": 806,
+    "deltasObservedBeforePublication": 806,
+    "documents": [
+      {
+        "id": "document-853f7ede-737d-4f9f-9a1a-049c9e789e33",
+        "actor": "expert",
+        "kind": "findings",
+        "version": 1,
+        "status": "published",
+        "createdAt": "2026-10-26T05:32:07.421Z",
+        "publishedAt": "2026-10-26T05:32:12.163Z",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 8291,
+            "completion_tokens": 341,
+            "total_tokens": 8632
+          },
+          "durationMs": 4665,
+          "firstDeltaMs": 1761,
+          "deltas": 96,
+          "upstream": {
+            "receiptId": "rcpt_req_o7berr7e",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "id": "document-279bda77-6714-4756-b9b0-8e9ff072c859",
+        "actor": "planner",
+        "kind": "plan",
+        "version": 1,
+        "status": "published",
+        "createdAt": "2026-10-26T05:32:12.870Z",
+        "publishedAt": "2026-10-26T05:32:27.515Z",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 8738,
+            "completion_tokens": 1109,
+            "total_tokens": 9847
+          },
+          "durationMs": 14270,
+          "firstDeltaMs": 1963,
+          "deltas": 290,
+          "upstream": {
+            "receiptId": "rcpt_req_1l06m6d1",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "id": "document-cedabbc7-6659-4061-96c9-740c2de8ca78",
+        "actor": "evaluator",
+        "kind": "critique",
+        "version": 1,
+        "status": "published",
+        "createdAt": "2026-10-26T05:32:31.631Z",
+        "publishedAt": "2026-10-26T05:32:35.490Z",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 10349,
+            "completion_tokens": 312,
+            "total_tokens": 10661
+          },
+          "durationMs": 3785,
+          "firstDeltaMs": 2273,
+          "deltas": 86,
+          "upstream": {
+            "receiptId": "rcpt_req_pgm5n5w2",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      },
+      {
+        "id": "document-92bec4c6-4912-4a33-bf54-d0115934e2ec",
+        "actor": "reporter",
+        "kind": "report",
+        "version": 1,
+        "status": "published",
+        "createdAt": "2026-10-26T05:32:35.808Z",
+        "publishedAt": "2026-10-26T05:32:52.484Z",
+        "modelReceipt": {
+          "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "usage": {
+            "prompt_tokens": 9810,
+            "completion_tokens": 1312,
+            "total_tokens": 11122
+          },
+          "durationMs": 16564,
+          "firstDeltaMs": 4393,
+          "deltas": 333,
+          "upstream": {
+            "receiptId": "rcpt_req_h7xmy9hq",
+            "fromCache": false,
+            "qualityBuffered": false,
+            "reasoningScaffold": false,
+            "phaseCount": 1
+          }
+        }
+      }
+    ],
+    "finalRunRequiredPlanRevision": false,
+    "correctedSummary": {
+      "documentId": "document-ee17f1db-19cc-4bee-9ac7-2f6cb25405b0",
+      "previousDocumentRetainedAsRejected": "document-9fe24a3f-748c-4dfd-a260-def2fe78c455",
+      "modelReceipt": {
+        "requestedMode": "nvidia/nemotron-3-ultra-550b-a55b",
+        "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+        "usage": {
+          "prompt_tokens": 1332,
+          "completion_tokens": 90,
+          "total_tokens": 1422
+        },
+        "durationMs": 9105,
+        "firstDeltaMs": 9084,
+        "deltas": 2,
+        "upstream": {
+          "receiptId": "rcpt_req_vcb5pnoh",
+          "fromCache": false,
+          "qualityBuffered": false,
+          "reasoningScaffold": false,
+          "phaseCount": 1
+        }
+      },
+      "packBytesUnchanged": true
+    }
+  },
+  "qualityHistory": {
+    "initialPackWithdrawn": true,
+    "reason": "A narrative generalized an individual zero-claim reading to all reports. Deterministic aggregate inventory and publication checks were added before the final run.",
+    "subsequentFalsePositiveFixed": "Zero confirmed incidents is distinct from a nonzero count of extracted text claims.",
+    "summaryCorrectedWithoutRegeneratingPack": "Unsupported field-confirmation wording was rejected; the corrected summary preserves demonstration and verification gaps.",
+    "originalFailedRunsAndPrivateSupportRetainedLocally": true
+  },
+  "validation": {
+    "exactLocalQuotesRetained": true,
+    "sourceHashMatches": true,
+    "denialAndUnknownPreserved": true,
+    "privateMarkerAbsentFromSharedStateAndStream": true,
+    "exportChecks": {
+      "allManifestHashesMatch": true,
+      "safeUniquePaths": true,
+      "privateInputsExcluded": true,
+      "actualPrivateQuotesAbsentFromEveryExport": true,
+      "privateMarkerAbsentFromEveryExport": true,
+      "pdfTextExtractedAndScanned": true,
+      "nestedQgisProjectInspected": true,
+      "downloadPdfMatchesArchive": true,
+      "privateMarkerAbsentFromTrackedFiles": true
+    },
+    "pdfPages": 16,
+    "pdfPagesIndividuallyVisuallyReviewed": 16,
+    "manifestFilesVerified": 29,
+    "allArchiveMembersInspected": 30,
+    "qgis": {
+      "version": "3.44.15-Solothurn",
+      "freshProcess": true,
+      "openedFromZipAtNewMount": true,
+      "networkEnabled": false,
+      "displayCrs": "EPSG:32632",
+      "layers": [
+        {
+          "layer": "blockages",
+          "features": 3,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        },
+        {
+          "layer": "intervention_candidates",
+          "features": 4,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        },
+        {
+          "layer": "facility_footprints",
+          "features": 3,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        },
+        {
+          "layer": "facilities",
+          "features": 7,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        },
+        {
+          "layer": "places",
+          "features": 16,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        },
+        {
+          "layer": "roads",
+          "features": 5100,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        },
+        {
+          "layer": "intervention_zones",
+          "features": 0,
+          "crs": "EPSG:4326",
+          "valid": true,
+          "invalidGeometries": 0,
+          "styleLoaded": true,
+          "pathWithinExtractedPack": true
+        }
+      ]
+    },
+    "harnessQualification": "The first harness incorrectly required an internal note marker inside every selected quote. The application retained valid complete-sentence operational quotes. Follow-up checks validate each actual quote against the exact source and scan actual quotes plus the entire-source marker in exports."
+  },
+  "artifacts": [
+    {
+      "path": "docs/evidence/private-inference-demo-2026-10-26/report.pdf",
+      "sha256": "f225a29e8ccc5333bbed16e0365d3f3b91d6df376a8091e89e81902b5b5a91c4"
+    },
+    {
+      "path": "docs/evidence/private-inference-demo-2026-10-26/committee-pack.zip",
+      "sha256": "1e5d10fa62deb140ed78c3cca41382d613da1e95ab74b289a48565db81ae2219"
+    }
+  ],
+  "limitations": [
+    "Eight demonstration reports and zero verified field origins; no actual incident, resource availability, road clearance or dispatch approval is established.",
+    "Six extracted claims include copied examples and are not six independent incidents.",
+    "Three demonstration blockage points overlap a public settlement reference; they are not independent field observations.",
+    "Final committee run reused source-checked readings after scoped authorization, rather than making eight new extraction calls.",
+    "Public news, precise road matching, real logistics, version-bound human approval and durable monitoring remain open.",
+    "Local checks and native artifact validation do not establish hosted CI success or a deployed multi-user service."
+  ],
+  "publicationChecks": {
+    "checkedAt": "2026-10-26T06:07:02.630213+00:00",
+    "reviewedArtifactHashesMatch": true,
+    "archiveMembersInspected": 30,
+    "manifestFilesVerified": 29,
+    "privateNarrativeMarkerAndActualQuotesAbsent": true,
+    "privateMentionFieldsAndValuesExcludedFromMinimalReceipt": true,
+    "configuredCredentialsAbsent": true,
+    "rawJournalFieldsExcluded": true,
+    "originalUserDocumentsUnchangedAndUnstaged": true,
+    "publicReceiptAndChangedFilesScanned": 9
+  }
+}

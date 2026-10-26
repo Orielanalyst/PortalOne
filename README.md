@@ -11,6 +11,14 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
+26 October, reviewed evidence publication: the operator separately authorized the
+redacted synthetic-demo [16-page PDF](docs/evidence/private-inference-demo-2026-10-26/report.pdf),
+[QGIS/geodata pack](docs/evidence/private-inference-demo-2026-10-26/committee-pack.zip)
+and [minimal validation receipt](docs/evidence/private-inference-2026-10-26.json).
+Eight demonstration reports yield six extracted text claims and zero verified
+incidents. The final committee reused eight authorized readings and streamed 806
+document updates. Private narrative, quotations and extracted mentions stay local.
+
 26 October, private processing: the operator explicitly authorized private/live
 Kobo report-text inference through their configured NVIDIA/Nightshift service.
 Scoped authorization is enabled locally; private quotations and extracted mentions
@@ -19,11 +27,11 @@ assertions and provenance enter committee evidence. Fresh clones hold private te
 until their own operator configures authorization. See
 [processing and export boundaries](docs/PRIVATE_REPORT_PROCESSING.md).
 
-26 October: committee investigations now read eligible report text, retain checked
+Earlier on 26 October: committee investigations read eligible report text, retain checked
 source quotes and reuse unchanged readings. Native English/French probes preserve
 negation and unknown status. The new committee run streamed 2,042 updates through
-a reviewed plan and PDF/GIS export. Only exact published synthetic examples are
-eligible; other narratives remain local pending authorization. Four current empty
+a reviewed plan and PDF/GIS export. That checkpoint allowed only exact published
+synthetic examples; other narratives stayed local pending authorization. Four empty
 readings remain not understood and three assert no observation. See
 [scope and limits](docs/REPORT_INTERPRETATION.md),
 [live proof](docs/evidence/report-interpretation-2026-10-26.json) and

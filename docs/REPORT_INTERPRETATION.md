@@ -4,6 +4,12 @@ The committee runs a bounded text-reading step before the Mission Expert writes
 findings. It reuses Nightshift/Nemotron streaming, Zod and SQLite; no new service
 or dependency was acquired.
 
+The operator separately authorized publication of the later redacted private-path
+demonstration. Its [minimal receipt](evidence/private-inference-2026-10-26.json)
+links the unchanged PDF/GIS bytes, source commits, categorical readings and native
+validation. Private narrative, quotes and extracted private mentions remain local;
+this permission does not publish future runs.
+
 ## Transmission boundary
 
 On 26 October the human explicitly authorized sending private/live Kobo
