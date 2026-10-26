@@ -58,6 +58,7 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   const dossier=buildDossier('test','Map facilities',source,evidence,map),id=dossier.citations[0]!.id;
   const content=`## Findings\n\n${'A sourced draft statement with explicit limits. '.repeat(5)}[${id}]`;
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
+  expect(()=>validateCitedMarkdown(content+`\n\nThe empty layer is not a placeholder. [${id}]`,dossier.citations)).toThrow('Remove the filler marker "placeholder"');
   expect(validateCitedMarkdown(content+'\n\n## Questions\n\n- What current field confirmation is available?\n- Who will confirm facility capacity?',dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown('**Verdict: REVISE**\n\n'+content,dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown(content+'\n\n## Required changes\n\n- None.',dossier.citations)).toEqual([id]);

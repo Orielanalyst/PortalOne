@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { parsePublicFeed, ReliefWebPublicEvidence, PublicIntegratedEvidence, OfflinePublicEvidence } from './public-evidence';
+import { parsePublicFeed, ReliefWebPublicEvidence, PublicIntegratedEvidence, OfflinePublicEvidence, parseIfrcEvents,IfrcPublicEvidence,ResilientPublicEvidence } from './public-evidence';
 import { CommunityMap } from './community-map';
 import { FixtureCommunityEvidence } from './community-evidence';
 import { replayCommunitySource } from './mission-replay';
@@ -65,4 +65,27 @@ it('public content changes invalidate actual World Model dependencies and enter 
 });
 it('offline mode explicitly has no live public articles', async () => {
   expect(await new OfflinePublicEvidence().snapshot(AbortSignal.timeout(1000))).toMatchObject({ status: 'offline', reports: [] });
+});
+const ifrcEvent=(overrides:Record<string,unknown>={})=>({id:123,name:'Cameroon historical event',created_at:'2026-02-26T11:42:19Z',updated_at:'2026-03-01T10:00:00Z',disaster_start_date:'2025-12-01T00:00:00Z',countries:[{id:41,iso3:'CMR'}],summary:'Excluded public narrative',emergency_response_contact_email:'excluded@example.test',...overrides});
+it('projects only public event identity and dates, verifies country identity and excludes contact/narrative fields',()=>{
+  const reports=parseIfrcEvents({results:[ifrcEvent(),ifrcEvent({id:124,countries:[{id:41,iso3:'GHA'}]})]},now);
+  expect(reports).toHaveLength(1);expect(reports[0]).toMatchObject({dateBasis:'record_created',observedAt:null,publishedAt:'2026-02-26T11:42:19.000Z',coverage:'national_context',declaredStartAt:'2025-12-01T00:00:00.000Z'});
+  expect(JSON.stringify(reports)).not.toMatch(/Excluded|excluded@example/);
+  expect(parseIfrcEvents({results:[ifrcEvent({summary:'Changed excluded narrative'})]},now)[0]?.id).toBe(reports[0]?.id);
+  expect(()=>parseIfrcEvents({results:[ifrcEvent(),ifrcEvent({name:'Conflicting version'})]},now)).toThrow('Conflicting');
+});
+it('uses the documented fallback only after an unavailable primary, preserving dates and unavailable gaps',async()=>{
+  const fetcher=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify({results:[ifrcEvent()]}))).mockResolvedValueOnce(new Response('',{status:503}));
+  const fallback=new IfrcPublicEvidence({fetch:fetcher,now:()=>now});
+  const primary={snapshot:vi.fn().mockResolvedValue({status:'unavailable'})},source=new ResilientPublicEvidence(primary,fallback);
+  const result=await source.snapshot(AbortSignal.timeout(1000));expect(result).toMatchObject({source:'IFRC GO public API',status:'available'});expect(result.gap).toContain('may be old');
+  expect(await fallback.snapshot(AbortSignal.timeout(1000))).toMatchObject({cached:true,revision:result.revision});expect(fetcher).toHaveBeenCalledTimes(1);
+  expect(await source.snapshot(AbortSignal.timeout(1000),undefined,true)).toMatchObject({status:'unavailable',reports:[]});
+  primary.snapshot.mockResolvedValue({status:'empty'});expect(await source.snapshot(AbortSignal.timeout(1000))).toMatchObject({status:'empty'});expect(fetcher).toHaveBeenCalledTimes(2);
+});
+it('rejects oversized or invalid IFRC windows and exposes no successful snapshot on failure',async()=>{
+  expect(()=>parseIfrcEvents({results:Array.from({length:9},()=>ifrcEvent())},now)).toThrow();
+  expect(parseIfrcEvents({results:[ifrcEvent({created_at:'2030-01-01T00:00:00Z'})]},now)).toHaveLength(0);
+  const source=new IfrcPublicEvidence({fetch:vi.fn().mockResolvedValue(new Response('x'.repeat(1_000_001))),now:()=>now});
+  expect(await source.snapshot(AbortSignal.timeout(1000))).toMatchObject({status:'unavailable',reports:[]});await expect(source.snapshot(AbortSignal.abort())).rejects.toThrow();
 });

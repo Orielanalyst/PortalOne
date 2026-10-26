@@ -38,9 +38,9 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   if(evidence.publicEvidence) {
     const source=evidence.publicEvidence;
     cite('public',`public-source:${source.revision}`,'Public humanitarian source coverage',
-      `ReliefWeb public RSS status: ${source.status}. Eligible reports: ${source.reports.length}. Retrieved at ${source.checkedAt}${source.cached?' (reused within the bounded fetch window)':''}. ${source.gap}`,source.sourceUrl,null);
+      `${source.source} status: ${source.status}. Eligible reports: ${source.reports.length}. Retrieved at ${source.checkedAt}${source.cached?' (reused within the bounded fetch window)':''}. ${source.gap}`,source.sourceUrl,null);
     for(const report of source.reports)cite('public',report.id,report.title,
-      `Publisher: ${report.publisher}. Published at ${report.publishedAt}; this is not the observation date. Coverage: ${report.coverage.replaceAll('_',' ')}; name mentions do not confirm local conditions. ${report.excerpt?`Short publisher excerpt: ${JSON.stringify(report.excerpt)}. `:'No short complete-sentence excerpt is available. '}Observation time and corridor-specific road/facility status remain unconfirmed. Source content SHA-256: ${report.contentSha256}.`,report.url,null);
+      `Publisher: ${report.publisher}. ${report.dateBasis==='record_created'?`Public record created at ${report.publishedAt}; updated ${report.updatedAt??'unknown'}; declared event start ${report.declaredStartAt??'unknown'}`:`Published at ${report.publishedAt}`}; this is not the observation date. Coverage: ${report.coverage.replaceAll('_',' ')}; name mentions do not confirm local conditions. ${report.excerpt?`Short publisher excerpt: ${JSON.stringify(report.excerpt)}. `:'No short complete-sentence excerpt is available. '}Observation time and corridor-specific road/facility status remain unconfirmed. Source content SHA-256: ${report.contentSha256}.`,report.url,null);
   }
   if(update)cite('memory',`${update.previousRunId}:${evidence.revision}`,'Why this mission requires a fresh review',
     `Meterless World Model marked the previous mission ${update.previousRunId} superseded after its evidence changed. This replacement reviews the new snapshot; it does not authorize dispatch. ${update.changes.length} changed facts. Summary: ${update.changes.filter(change=>change.label!=='Report/map input revision').slice(0,12).map(describeMemoryChange).join('; ') || 'The report/map revision changed'}. The mission-memory.json file preserves the complete comparison.`,null,evidence.fetchedAt);
@@ -158,7 +158,9 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
 }
 
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {
-  if (markdown.length < 180 || /\b(TBD|lorem ipsum|insert here|placeholder)\b/i.test(markdown)) throw new Error('Document failed content quality checks.');
+  if (markdown.length < 180) throw new Error('Document is too short to be a complete reviewable artifact.');
+  const filler=markdown.match(/\b(TBD|lorem ipsum|insert here|placeholder)\b/i);
+  if(filler)throw new Error(`Remove the filler marker "${filler[0]}" from the document, including when discussing its absence. State the actual evidence gap directly.`);
   if(/\b\d{1,3}\.\d{4,}\b/.test(markdown))throw new Error('Remove numerical geographic coordinates from narrative prose; the exact inventories are generated directly from source geometry.');
   const supportedDates=new Set(citations.flatMap(citation=>calendarDays(citation.statement)));
   if(calendarDays(markdown).some(date=>!supportedDates.has(date)))throw new Error('Remove unsupported calendar dates; obtain missing deadlines from the operator.');

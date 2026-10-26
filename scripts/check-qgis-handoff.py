@@ -15,7 +15,9 @@ for layer in project.mapLayers().values():
     invalid=sum(1 for feature in layer.getFeatures() if feature.hasGeometry() and not feature.geometry().isGeosValid())
     if invalid: raise RuntimeError('Invalid relocated geometry: '+name)
     checks.append({'layer':name,'features':layer.featureCount(),'crs':layer.crs().authid(),'valid':True,'invalidGeometries':invalid,'styleLoaded':True,'pathWithinExtractedPack':True})
-if len(checks)!=7: raise RuntimeError('Expected seven evidence layers')
+expected_names={row['layer'] for row in expected['layers']}
+if len(expected_names)!=len(expected['layers']) or {row['layer'] for row in checks}!=expected_names or len(checks)!=len(expected_names):
+    raise RuntimeError('Relocated project does not contain the exact exported evidence layers')
 result={'qgis':Qgis.QGIS_VERSION,'freshProcess':True,'openedFromZipAtNewMount':True,'displayCrs':project.crs().authid(),'layers':checks,'networkEnabled':False}
 (root/'handoff-validation.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result),flush=True)

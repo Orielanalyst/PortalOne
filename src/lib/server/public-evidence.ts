@@ -5,13 +5,15 @@ import { SaxesParser } from 'saxes';
 import { parseFragment } from 'parse5';
 import type { MissionEvidence, FederatedEvidence } from './community-evidence';
 import type { KoboSnapshot } from './kobo';
+import {z} from 'zod';
 
 export const RELIEFWEB_FEED = 'https://reliefweb.int/updates/rss.xml?search=Cameroon';
+export const IFRC_EVENTS='https://goadmin.ifrc.org/api/v2/event/?countries__in=41&limit=8&ordering=-created_at';
 const digest = (value: unknown) => createHash('sha256').update(typeof value === 'string' ? value : JSON.stringify(value)).digest('hex');
 export type PublicReport = { id: string; title: string; publisher: string; url: string; publishedAt: string;
   observedAt: null; contentSha256: string; excerpt: string | null;
-  coverage: 'corridor_mention' | 'northwest_mention' | 'national_context'; };
-export type PublicSnapshot = { source: 'ReliefWeb public RSS'; sourceUrl: string; revision: string;
+  coverage: 'corridor_mention' | 'northwest_mention' | 'national_context'; dateBasis?:'record_created';updatedAt?:string|null;declaredStartAt?:string|null; };
+export type PublicSnapshot = { source: 'ReliefWeb public RSS'|'IFRC GO public API'; sourceUrl: string; revision: string;
   status: 'available' | 'empty' | 'unavailable' | 'offline'; checkedAt: string; cached: boolean;
   reports: PublicReport[]; feedSha256: string | null; gap: string; };
 export interface PublicEvidenceSource { snapshot(signal: AbortSignal, progress?: (detail: string) => void,fresh?:boolean): Promise<PublicSnapshot> }
@@ -113,6 +115,55 @@ export class ReliefWebPublicEvidence implements PublicEvidenceSource {
       progress?.('Mission Expert: public retrieval failed. The gap is visible; earlier articles are not silently presented as refreshed.');
       return snapshot('unavailable', checkedAt);
     }
+  }
+}
+
+/** The documented unauthenticated API exposes public records only. Never use private contact fields. */
+export function parseIfrcEvents(input:unknown,asOf:number):PublicReport[] {
+  const event=z.object({id:z.number().int().positive(),name:z.string().min(1).max(600),created_at:z.string(),updated_at:z.string().nullable().optional(),
+    disaster_start_date:z.string().nullable().optional(),countries:z.array(z.object({id:z.number(),iso3:z.string().nullable()}))});
+  const result=z.object({results:z.array(event).max(8)}).parse(input),reports=new Map<number,PublicReport>();
+  const date=(value:string|null|undefined)=>value && Number.isFinite(Date.parse(value)) && Date.parse(value)<=asOf+300_000?new Date(value).toISOString():null;
+  for(const item of result.results){
+    if(!item.countries.some(country=>country.id===41 && country.iso3==='CMR'))continue;
+    const created=date(item.created_at);if(!created)continue;
+    const safe={id:item.id,name:htmlText(item.name),createdAt:created,updatedAt:date(item.updated_at),declaredStartAt:date(item.disaster_start_date)};
+    const report:PublicReport={id:digest(safe),title:safe.name,publisher:'IFRC GO',url:`https://goadmin.ifrc.org/api/v2/event/${item.id}/`,
+      publishedAt:created,dateBasis:'record_created',updatedAt:safe.updatedAt,declaredStartAt:safe.declaredStartAt,observedAt:null,
+      contentSha256:digest(safe),excerpt:null,coverage:'national_context'};
+    if(reports.has(item.id) && reports.get(item.id)!.id!==report.id)throw new Error('Conflicting IFRC event versions.');
+    reports.set(item.id,report);
+  }
+  return [...reports.values()].sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)||a.id.localeCompare(b.id));
+}
+export class IfrcPublicEvidence implements PublicEvidenceSource {
+  private cached:PublicSnapshot|null=null;
+  constructor(private readonly options:{fetch?:typeof fetch;directory?:string;now?:()=>number;ttlMs?:number}={}){}
+  async snapshot(signal:AbortSignal,progress?:(detail:string)=>void,fresh=false):Promise<PublicSnapshot>{
+    signal.throwIfAborted();const now=(this.options.now??Date.now)(),checkedAt=new Date(now).toISOString();
+    if(!fresh && this.cached && now-Date.parse(this.cached.checkedAt)<(this.options.ttlMs??60_000))return {...structuredClone(this.cached),cached:true};
+    progress?.('Mission Expert → IFRC GO public API: read the bounded Cameroon public event window. Record dates are not current field observations.');
+    try{
+      const response=await (this.options.fetch??fetch)(IFRC_EVENTS,{signal:AbortSignal.any([signal,AbortSignal.timeout(20_000)]),redirect:'error'});
+      if(!response.ok || !response.body || Number(response.headers.get('content-length'))>1_000_000)throw new Error('IFRC source unavailable.');
+      const reader=response.body.getReader(),chunks:Uint8Array[]=[];let size=0;
+      try{while(true){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>1_000_000)throw new Error('IFRC size budget exceeded.');chunks.push(part.value);}}finally{await reader.cancel();}
+      signal.throwIfAborted();const reports=parseIfrcEvents(JSON.parse(Buffer.concat(chunks).toString('utf8')),now),status=reports.length?'available':'empty';
+      const gap='ReliefWeb RSS was unavailable. IFRC GO supplies only a bounded eight-record Cameroon public event window, not a complete archive or local incident feed. Records may be old; record creation, update and declared event start dates are not observation times or new confirmation. No present corridor road condition or facility operation is established. Public narrative and contact fields are excluded.';
+      const result:PublicSnapshot={source:'IFRC GO public API',sourceUrl:IFRC_EVENTS,status,checkedAt,cached:false,reports,feedSha256:null,gap,
+        revision:digest({source:IFRC_EVENTS,status,reports,gap})};
+      if(this.options.directory){mkdirSync(this.options.directory,{recursive:true});writeFileSync(resolve(this.options.directory,`${result.revision}.json`),JSON.stringify(result,null,2)+'\n');}
+      this.cached=result;progress?.(`Mission Expert retrieved ${reports.length} public Cameroon IFRC records. Their dates and historical-context limits are retained.`);return structuredClone(result);
+    }catch{signal.throwIfAborted();return {source:'IFRC GO public API',sourceUrl:IFRC_EVENTS,status:'unavailable',checkedAt,cached:false,reports:[],feedSha256:null,
+      revision:digest({source:IFRC_EVENTS,status:'unavailable'}),gap:'ReliefWeb RSS and the IFRC GO public fallback could not be refreshed. Public coverage is unavailable; prior history is not current confirmation.'};}
+  }
+}
+export class ResilientPublicEvidence implements PublicEvidenceSource {
+  constructor(private readonly primary:PublicEvidenceSource,private readonly fallback:PublicEvidenceSource){}
+  async snapshot(signal:AbortSignal,progress?:(detail:string)=>void,fresh=false){
+    const result=await this.primary.snapshot(signal,progress,fresh);if(result.status!=='unavailable')return result;
+    progress?.('Mission Expert: ReliefWeb is unavailable. Trying the separately documented IFRC GO public API; its records remain distinct historical context.');
+    return this.fallback.snapshot(signal,progress,fresh);
   }
 }
 

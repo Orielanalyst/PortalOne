@@ -21,7 +21,7 @@ import type { CommitteeWriter, CommitteeExporter } from './committee-mission';
 import { NightshiftSignalInterpreter } from './signal-interpretation';
 import type { SignalInterpreter } from './signal-interpretation';
 import {loadReportInferenceConsent} from './report-inference-policy';
-import { PublicIntegratedEvidence, ReliefWebPublicEvidence, OfflinePublicEvidence } from './public-evidence';
+import { PublicIntegratedEvidence, ReliefWebPublicEvidence, OfflinePublicEvidence, IfrcPublicEvidence, ResilientPublicEvidence } from './public-evidence';
 import type { PublicEvidenceSource } from './public-evidence';
 import {roadIndex} from './spatial-grounding';
 import {publicRequirements,withMissionRequirements,MissionInputError,fieldLabels} from './mission-requirements';
@@ -65,7 +65,7 @@ export class MissionRuntime {
     this.source = options.source ?? (this.mode === 'live' ? configuredKobo() : replayCommunitySource);
     const baseEvidence=options.evidence ?? (this.mode === 'live' ? new ZetarisCommunityEvidence(this.map) : new FixtureCommunityEvidence(this.map));
     this.evidence = new PublicIntegratedEvidence(baseEvidence,options.publicSource ??
-      (this.mode==='live' && !options.source ? new ReliefWebPublicEvidence({directory:'.runtime/public-evidence'}) : new OfflinePublicEvidence()),
+      (this.mode==='live' && !options.source ? new ResilientPublicEvidence(new ReliefWebPublicEvidence({directory:'.runtime/public-evidence'}),new IfrcPublicEvidence({directory:'.runtime/public-evidence'})) : new OfflinePublicEvidence()),
       detail=>{const runId=this.active ?? this.reviewRunId;if(runId)this.journal.event(runId,'expert','public_source_read',detail);});
     this.journal.interruptConversations();
     this.journal.invalidateApprovalsAfterRestart();
