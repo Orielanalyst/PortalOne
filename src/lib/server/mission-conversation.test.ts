@@ -163,3 +163,12 @@ it('retains a rejected conversational attempt and makes only one visible contrac
   expect(request).toHaveBeenCalledTimes(2);expect(rejected).toHaveBeenCalledTimes(1);expect(rejected.mock.calls[0]?.[0]).toMatchObject({terminal:false});
   expect(result.reply).not.toContain('schema');expect(result.action).toBe('reply');
 });
+it('preserves sourced numeric inputs and the authorized action when only the visible reply needs correction',async()=>{
+  let calls=0;const rejected=vi.fn();
+  const request=vi.fn(async()=>{calls++;const value=calls===1?{...reply('The mission patch requires JSON schema fields.'),missionPatch:{quantity:{value:'80',support:'80 kits'}}}:{reply:'What time should the delivery leave, and when must it arrive?',action:'investigate'};
+    return new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify(value)},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}});});
+  const client=new MeterlessClient({baseUrl:'localhost:8088',token:'explicit-test-token',fetch:request as typeof fetch});
+  const result=await new NightshiftConversation(client,()=>{},rejected).respond({message:'Collect details for 80 kits',history:[],activeMission:null,lastInvestigation:null},AbortSignal.timeout(5000),()=>{});
+  expect(request).toHaveBeenCalledTimes(2);expect(rejected).toHaveBeenCalledTimes(1);
+  expect(result).toMatchObject({action:'reply',mission:null,missionPatch:{quantity:{value:80,support:'80 kits'}}});
+});

@@ -30,7 +30,8 @@ export const fieldLabels: Record<MissionField, string> = {
   vehicleObservedAt: 'vehicle confirmation timestamp', vehicleValidUntil: 'vehicle confirmation expiry',
   planningSpeedKph: 'assumed planning speed in km/h', handlingMinutes: 'handling time in minutes', bufferMinutes: 'time buffer in minutes', fuelReserveLitres: 'fixed fuel reserve in litres',
 };
-const supportedValue = (schema: z.ZodType) => z.object({ value: schema.nullable(), support: z.string().min(1).max(500) }).strict();
+const supportedValue = (schema: z.ZodType) => z.object({ value: (schema instanceof z.ZodNumber
+  ? z.preprocess(value=>typeof value==='string' && /^\d+(?:\.\d+)?$/.test(value)?Number(value):value,schema):schema).nullable(), support: z.string().min(1).max(500) }).strict();
 const timeFields=new Set<MissionField>(['departAt','deadline','stockObservedAt','stockValidUntil','vehicleObservedAt','vehicleValidUntil']);
 export const MissionPatchSchema = z.object(Object.fromEntries(missionFields.map(key => [key, supportedValue(timeFields.has(key)?text:MissionValuesSchema.shape[key]).optional()]))).strict();
 export type MissionPatch = Partial<{ [K in MissionField]: { value: MissionValues[K] | null; support: string } }>;

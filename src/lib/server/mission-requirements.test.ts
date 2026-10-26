@@ -23,6 +23,11 @@ it('rejects invented numbers, source quotations and unstated mode', () => {
   expect(() => applyMissionPatch(null, { mode: { value: 'demonstration', support: 'Start planning' } }, ['Start planning'], 't')).toThrow('mode');
   expect(() => applyMissionPatch(null, { fuelLitres: { value: -5, support: '-5 litres' } }, ['-5 litres'], 't')).toThrow();
 });
+it('normalizes decimal strings without accepting truthy values or dropping exact-source checks',()=>{
+  expect(applyMissionPatch(null,{quantity:{value:'80',support:'80 kits'}},['80 kits'],'t').values.quantity).toBe(80);
+  expect(()=>applyMissionPatch(null,{quantity:{value:true,support:'1 kit'}},['1 kit'],'t')).toThrow();
+  expect(()=>applyMissionPatch(null,{quantity:{value:'800',support:'80 kits'}},['80 kits'],'t')).toThrow('number');
+});
 it('requires explicit timezone timestamps and prevents unsupported boolean/clearing changes', () => {
   expect(() => applyMissionPatch(null, { departAt: { value: '2026-10-27T08:00:00', support: '2026-10-27T08:00:00' } }, ['2026-10-27T08:00:00'], 't')).toThrow();
   expect(() => applyMissionPatch(null, { vehicleAvailable: { value: true, support: 'not available' } }, ['not available'], 't')).toThrow('boolean');
