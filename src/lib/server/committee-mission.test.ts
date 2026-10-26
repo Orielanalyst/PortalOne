@@ -6,7 +6,14 @@ import { FixtureCommunityEvidence } from './community-evidence';
 import { buildDossier,validateCitedMarkdown } from './mission-dossier';
 import { runCommitteeMission } from './committee-mission';
 import type { CommitteeWriter } from './committee-mission';
+import {normalizeKobo} from './kobo';
 const map=new CommunityMap();
+it('counts excluded access records once even when each has several location warnings',async()=>{
+  const original=await replayCommunitySource.snapshot(),source={...original,records:original.records.map(record=>normalizeKobo({...record.raw as Record<string,unknown>,category:'road_blockage'},'offlineReplay',original.checkedAt))};
+  const evidence=await new FixtureCommunityEvidence(map).load(source,AbortSignal.timeout(1000)),dossier=buildDossier('test','Map access gaps',source,evidence,map);
+  expect(dossier.gaps.find(gap=>gap.startsWith('Location handling:'))).toContain('0 reported access observations');
+  expect(dossier.gaps.find(gap=>gap.startsWith('Location handling:'))).toContain('2 other access records');
+});
 it('exposes an unsupported area as a coverage gap before any source, model or export action',async()=>{
   const journal=new MissionJournal(':memory:');
   try {
