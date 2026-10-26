@@ -124,7 +124,7 @@ ${kind==='critique'?'Put all explanatory claims in cited Evidence checks. If acc
       dossier = prepareDossier(); journal.saveCitations(dossier.citations);
       journal.event(run.id,'expert','tool_completed',`Map source inspected: ${dossier.layers['facilities']!.features.length} health features; ${dossier.layers['roads']!.features.length} road line features. Capacity and current operating status are unknown.`,dossier.citations.filter(item=>['map','facility'].includes(item.kind)).map(item=>item.id),task,parent);
       const finding = await write('expert',task,'findings','Mission Expert · evidence findings',
-        'Write four brief sections: ## Mission scope, ## Findings, ## Evidence limits, ## Questions for planning. Use at most two cited findings and two cited evidence-limit bullets, followed by two questions. Stay below 220 words. Summarize facility/place counts; the appendices already contain every source feature.');
+        'Write four brief sections: ## Mission scope, ## Findings, ## Evidence limits, ## Planning handoff. Use at most two cited findings and two cited evidence-limit bullets. End with one cited paragraph proposing the next verification work for the planner. Every section must contain source citations, including Planning handoff. Do not include a question list. Stay below 220 words. Summarize facility/place counts; the appendices already contain every source feature.');
       expertFindings=finding.text;
       journal.finishTask(task,{documentId:finding.id});
       journal.event(run.id,'coordinator','handoff','Mission Expert has published the findings. Mission Coordinator is commissioning plan v1.',[finding.id],parent);
