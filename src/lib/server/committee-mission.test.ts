@@ -9,6 +9,23 @@ import type { CommitteeWriter } from './committee-mission';
 import {normalizeKobo} from './kobo';
 import {publicRequirements} from './mission-requirements';
 const map=new CommunityMap();
+it.each(['transport','context_guard'] as const)('preserves a failed %s attempt and retries only transport failures',async failure=>{
+  const journal=new MissionJournal(':memory:'),source=await replayCommunitySource.snapshot();let calls=0;
+  const writer:CommitteeWriter={async stream(prompt,mode,options){
+    if(++calls===1){options.onDelta('A partial generation that must remain failed.');throw new Error(failure==='transport'?'Provider stream did not finish successfully.':'Nightshift did not confirm fresh single-model streaming with isolated evidence context.');}
+    const id=prompt.match(/"source":"(S\d+)"/)![1],paragraph=`The committee must retain explicit field evidence gaps before any operational decision. [${id}]`;
+    const content=(prompt.includes('Start with ## Evaluation')?`## Evaluation\n\n**Verdict: ACCEPT_WITH_GAPS** [${id}]\n\n`:'## Findings\n\n')+[paragraph,paragraph,paragraph].join('\n\n');
+    options.onDelta(content);return {content,requestedMode:mode,responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:1};
+  }};
+  try{
+    const run=journal.startRun('Prepare a cited Bambili committee draft.','test');const exporter=vi.fn(async({validateEvidence}:Parameters<import('./committee-mission').CommitteeExporter>[0])=>{await validateEvidence();});
+    await runCommitteeMission({run,journal,map,writer,readSource:async()=>source,evidence:new FixtureCommunityEvidence(map),exporter});
+    expect(journal.documents(run.id)[0]!.status).toBe('failed');
+    expect(journal.events(run.id).filter(event=>event.kind==='provider_retry')).toHaveLength(failure==='transport'?1:0);
+    expect(exporter).toHaveBeenCalledTimes(failure==='transport'?1:0);
+    if(failure==='context_guard')expect(calls).toBe(1);
+  }finally{journal.close();}
+});
 it('keeps exact mission values in source artifacts while giving the writer separated context and check outcomes',async()=>{
   const source=await replayCommunitySource.snapshot(),base=await new FixtureCommunityEvidence(map).load(source,AbortSignal.timeout(1000));
   const requirements=publicRequirements({id:'inputs-test',version:1,revision:'a'.repeat(64),updatedAt:'2026-10-26T10:00:00Z',sources:{},values:{mode:'demonstration',origin:'Bamenda',deadline:'2026-10-27T11:00:00Z',stockUnits:100}});
@@ -81,6 +98,8 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
   const missionSources=[...dossier.citations,{...dossier.citations[0]!,id:'E3333333333',kind:'mission' as const,recordId:'requirements:test',statement:JSON.stringify({values:{deadline:'2026-10-27T11:00:00Z',stockUnits:100}})}];
   expect(()=>validateCitedMarkdown(content+'\n\nOperator deadline not supplied in evidence. [E3333333333]',missionSources)).toThrow('operator supplied the mission deadline');
+  expect(()=>validateCitedMarkdown(content+'\n\nLogistics Officer to obtain the operator’s confirmed mission deadline. [E3333333333]',missionSources)).toThrow('deadline is already source-bound');
+  expect(()=>validateCitedMarkdown(content+'\n\nThe deadline requires operator confirmation. [E3333333333]',missionSources)).toThrow('deadline is already source-bound');
   expect(()=>validateCitedMarkdown(content+'\n\nRegistered stock (100 units) is expired. [E3333333333]',missionSources)).toThrow('Keep numeric resource and cargo values');
   expect(validateCitedMarkdown(content+'\n\nConsult the generated mission-input section for operator values. The registered ledger requires independent confirmation. [E3333333333]',missionSources)).toContain('E3333333333');
   const publicSources=[...dossier.citations,{...dossier.citations[0]!,id:'E2222222222',kind:'public' as const,statement:'IFRC GO external public publisher records; historical context with unknown observation time.'}];

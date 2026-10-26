@@ -6,6 +6,7 @@ import { parseFragment } from 'parse5';
 import type { MissionEvidence, FederatedEvidence } from './community-evidence';
 import type { KoboSnapshot } from './kobo';
 import {z} from 'zod';
+import pRetry,{AbortError} from 'p-retry';
 
 export const RELIEFWEB_FEED = 'https://reliefweb.int/updates/rss.xml?search=Cameroon';
 export const IFRC_EVENTS='https://goadmin.ifrc.org/api/v2/event/?countries__in=41&limit=8&ordering=-created_at';
@@ -144,11 +145,18 @@ export class IfrcPublicEvidence implements PublicEvidenceSource {
     if(!fresh && this.cached && now-Date.parse(this.cached.checkedAt)<(this.options.ttlMs??60_000))return {...structuredClone(this.cached),cached:true};
     progress?.('Mission Expert → IFRC GO public API: read the bounded Cameroon public event window. Record dates are not current field observations.');
     try{
-      const response=await (this.options.fetch??fetch)(IFRC_EVENTS,{signal:AbortSignal.any([signal,AbortSignal.timeout(20_000)]),redirect:'error'});
-      if(!response.ok || !response.body || Number(response.headers.get('content-length'))>1_000_000)throw new Error('IFRC source unavailable.');
-      const reader=response.body.getReader(),chunks:Uint8Array[]=[];let size=0;
-      try{while(true){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>1_000_000)throw new Error('IFRC size budget exceeded.');chunks.push(part.value);}}finally{await reader.cancel();}
-      signal.throwIfAborted();const reports=parseIfrcEvents(JSON.parse(Buffer.concat(chunks).toString('utf8')),now),status=reports.length?'available':'empty';
+      const reports=await pRetry(async()=>{
+        try{
+          const current=await (this.options.fetch??fetch)(IFRC_EVENTS,{signal:AbortSignal.any([signal,AbortSignal.timeout(20_000)]),redirect:'error'});
+          if(!current.ok){await current.body?.cancel();if([408,429].includes(current.status)||current.status>=500)throw new Error('IFRC transient HTTP failure.');throw new AbortError('IFRC request rejected.');}
+          if(!current.body || Number(current.headers.get('content-length'))>1_000_000)throw new AbortError('IFRC invalid or oversized response.');
+          const reader=current.body.getReader(),chunks:Uint8Array[]=[];let size=0;
+          try{while(true){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>1_000_000)throw new AbortError('IFRC size budget exceeded.');chunks.push(part.value);}}finally{await reader.cancel().catch(()=>{});}
+          signal.throwIfAborted();
+          try{return parseIfrcEvents(JSON.parse(Buffer.concat(chunks).toString('utf8')),now);}catch{throw new AbortError('IFRC payload validation failed.');}
+        }catch(error){signal.throwIfAborted();if(error instanceof AbortError)throw error;throw new Error('IFRC transport read failed.');}
+      },{retries:1,minTimeout:100,maxTimeout:100,signal,onFailedAttempt:({retriesLeft})=>{if(retriesLeft)progress?.('Mission Expert → IFRC GO: transient source failure; one bounded fresh read retry. No cached success is substituted.');}});
+      const status=reports.length?'available':'empty';
       const gap='ReliefWeb RSS was unavailable. IFRC GO supplies only a bounded eight-record Cameroon public event window, not a complete archive or local incident feed. Records may be old; record creation, update and declared event start dates are not observation times or new confirmation. No present corridor road condition or facility operation is established. Public narrative and contact fields are excluded.';
       const result:PublicSnapshot={source:'IFRC GO public API',sourceUrl:IFRC_EVENTS,status,checkedAt,cached:false,reports,feedSha256:null,gap,
         revision:digest({source:IFRC_EVENTS,status,reports,gap})};

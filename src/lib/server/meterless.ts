@@ -110,7 +110,8 @@ export class MeterlessClient {
     const response = await this.request(`${this.baseUrl}/chat/completions`, { method: 'POST', headers: {...this.headers(true),'meterless-trace':'true'}, signal,
       body: JSON.stringify({ model, messages: [{ role:'system',content:`This is a fresh public-document generation, request ${randomUUID()}. Follow the user's output contract. Return only the requested answer, with no private scratchpad or reasoning transcript.` },{ role: 'user', content: prompt }], max_tokens: maxTokens, temperature: 0,
         stream: true, stream_options: { include_usage: true }, chat_template_kwargs: { enable_thinking: false },...(options.jsonMode?{response_format:{type:'json_object'}}:{}) }) });
-    if (!response.ok || !response.body || !response.headers.get('content-type')?.includes('text/event-stream')) throw new Error('Provider streaming is unavailable.');
+    if (!response.ok){await response.body?.cancel();throw new Error(`Provider streaming failed (HTTP ${response.status}).`);}
+    if (!response.body || !response.headers.get('content-type')?.includes('text/event-stream')) throw new Error('Provider streaming is unavailable.');
     let content = '', pending = '', done = false, finish: string | null = null, responseModel: string | null = null;
     let usage: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number } | undefined;
     let upstream: StreamAnswer['upstream'];
@@ -146,6 +147,7 @@ export class MeterlessClient {
     try {
       while (true) { signal.throwIfAborted(); const chunk = await reader.read(); if (chunk.done) break; parser.feed(decoder.decode(chunk.value, { stream: true })); }
       parser.feed(decoder.decode());
+      if(finish==='length')throw new Error('Provider answer reached its token ceiling; completeness is unconfirmed.');
       if (!done || finish !== 'stop') throw new Error('Provider stream did not finish successfully.');
       if(usage?.completion_tokens && usage.completion_tokens>=maxTokens)throw new Error('Provider answer reached its token ceiling; completeness is unconfirmed.');
       if(pinned && (!upstream || upstream.fromCache || upstream.qualityBuffered || upstream.reasoningScaffold || upstream.phaseCount!==1 || upstream.memoryInjected!==0 || responseModel!==model))throw new Error('Nightshift did not confirm fresh single-model streaming with isolated evidence context.');

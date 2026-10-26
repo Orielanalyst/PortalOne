@@ -75,13 +75,27 @@ it('projects only public event identity and dates, verifies country identity and
   expect(()=>parseIfrcEvents({results:[ifrcEvent(),ifrcEvent({name:'Conflicting version'})]},now)).toThrow('Conflicting');
 });
 it('uses the documented fallback only after an unavailable primary, preserving dates and unavailable gaps',async()=>{
-  const fetcher=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify({results:[ifrcEvent()]}))).mockResolvedValueOnce(new Response('',{status:503}));
+  const fetcher=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify({results:[ifrcEvent()]}))).mockImplementation(async()=>new Response('',{status:503}));
   const fallback=new IfrcPublicEvidence({fetch:fetcher,now:()=>now});
   const primary={snapshot:vi.fn().mockResolvedValue({status:'unavailable'})},source=new ResilientPublicEvidence(primary,fallback);
   const result=await source.snapshot(AbortSignal.timeout(1000));expect(result).toMatchObject({source:'IFRC GO public API',status:'available'});expect(result.gap).toContain('may be old');
   expect(await fallback.snapshot(AbortSignal.timeout(1000))).toMatchObject({cached:true,revision:result.revision});expect(fetcher).toHaveBeenCalledTimes(1);
   expect(await source.snapshot(AbortSignal.timeout(1000),undefined,true)).toMatchObject({status:'unavailable',reports:[]});
-  primary.snapshot.mockResolvedValue({status:'empty'});expect(await source.snapshot(AbortSignal.timeout(1000))).toMatchObject({status:'empty'});expect(fetcher).toHaveBeenCalledTimes(2);
+  primary.snapshot.mockResolvedValue({status:'empty'});expect(await source.snapshot(AbortSignal.timeout(1000))).toMatchObject({status:'empty'});expect(fetcher).toHaveBeenCalledTimes(3);
+});
+it('retries one transient public fetch visibly, without reusing cached success or retrying denied access',async()=>{
+  const fetcher=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('',{status:503})).mockResolvedValueOnce(new Response(JSON.stringify({results:[ifrcEvent()]})));
+  const progress=vi.fn();const source=new IfrcPublicEvidence({fetch:fetcher,now:()=>now});
+  expect(await source.snapshot(AbortSignal.timeout(1000),progress,true)).toMatchObject({status:'available',cached:false});
+  expect(fetcher).toHaveBeenCalledTimes(2);expect(progress.mock.calls.some(([line])=>line.includes('one bounded fresh read retry'))).toBe(true);
+  const denied=vi.fn<typeof fetch>().mockResolvedValue(new Response('',{status:403}));
+  expect(await new IfrcPublicEvidence({fetch:denied,now:()=>now}).snapshot(AbortSignal.timeout(1000))).toMatchObject({status:'unavailable',reports:[]});expect(denied).toHaveBeenCalledTimes(1);
+});
+it('retries an interrupted public response body instead of publishing a partial source window',async()=>{
+  const broken=new ReadableStream<Uint8Array>({start(controller){controller.error(new Error('connection interrupted'));}});
+  const fetcher=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(broken)).mockResolvedValueOnce(new Response(JSON.stringify({results:[ifrcEvent()]})));
+  const result=await new IfrcPublicEvidence({fetch:fetcher,now:()=>now}).snapshot(AbortSignal.timeout(1000),undefined,true);
+  expect(result).toMatchObject({status:'available',cached:false});expect(result.reports).toHaveLength(1);expect(fetcher).toHaveBeenCalledTimes(2);
 });
 it('rejects oversized or invalid IFRC windows and exposes no successful snapshot on failure',async()=>{
   expect(()=>parseIfrcEvents({results:Array.from({length:9},()=>ifrcEvent())},now)).toThrow();

@@ -152,6 +152,7 @@
 .map-canvas .mission-target{background:#e7b45d;color:#17241f;box-shadow:0 0 0 5px #e7b45d45,0 3px 8px #0008}
 .map-canvas .report-map-marker{color:#efa45e;text-shadow:0 1px 3px #102025;font:700 23px/24px sans-serif;display:flex;align-items:center;gap:2px}.map-canvas .report-map-marker b{font-size:10px;color:#ffe6c4;background:#453326;border:1px solid #b98d5b;border-radius:7px;padding:0 4px;line-height:14px}
 .map-canvas .endpoint-label{background:#172326f2;border:1px solid #a38aba;color:#f2edff;font-size:12px;font-weight:650;padding:5px 8px}
+.map-canvas .leaflet-tooltip.endpoint-label{white-space:nowrap;max-width:none;line-height:1.3;font-size:11px;padding:5px 8px}
 .map-canvas .leaflet-control-scale{margin-left:18px;margin-bottom:27px}
 .map-canvas .leaflet-control-scale-line{background:#162126e8;border-color:#c7d3ce;color:#e6ebe8;text-shadow:none;font-size:10px}
 .map-canvas .leaflet-popup-content-wrapper,.map-canvas .leaflet-popup-tip{background:#eff5f1;color:#20362f}

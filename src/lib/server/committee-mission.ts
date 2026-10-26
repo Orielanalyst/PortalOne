@@ -37,6 +37,7 @@ export async function runCommitteeMission(options: { run: JournalRun; journal: M
   let snapshot: KoboSnapshot, evidence: FederatedEvidence, dossier: MissionDossier, assessmentId: string | undefined;
   let querySlots = 0;
   let publicationRepairs = 2;
+  let transportRetries=2;
   let observedSnapshot:KoboSnapshot|undefined;
   let expertFindings='';
   const interpretationBudget={remaining:4,signal:AbortSignal.any([signal,AbortSignal.timeout(90_000)])};
@@ -65,7 +66,7 @@ export async function runCommitteeMission(options: { run: JournalRun; journal: M
     const memory=await world.recordPlan({runId:run.id,documentId,version,evidence});
     journal.event(run.id,'memory','plan_dependency_recorded',`Meterless World Model bound plan v${version} to its exact evidence revision. A changed revision will invalidate this draft.`,[documentId,...memory.eventIds]);
   }
-  async function write(actor: string, taskId: string, kind: 'findings' | 'plan' | 'critique' | 'report', title: string, instruction: string, version = 1, correction = ''): Promise<{id:string;text:string}> {
+  async function write(actor: string, taskId: string, kind: 'findings' | 'plan' | 'critique' | 'report', title: string, instruction: string, version = 1, correction = '',transportRetried=false): Promise<{id:string;text:string}> {
     const id = journal.beginDocument({runId:run.id,taskId,actor,kind,title:correction ? `${title} · source-check correction` : title,version,metadata:{evidenceRevision:evidence.revision}});
     journal.event(run.id,actor,'model_started',`${title}: generating a cited public document.`,[id],taskId,parent);
     let answer: StreamAnswer | undefined;
@@ -77,6 +78,7 @@ Write the actual Markdown document now, not instructions for creating a file. No
 Use ONLY facts supplied in EVIDENCE. Every factual paragraph, recommendation and list block MUST end with one or more supplied short source handles exactly like [S1]. Every table data row must cite its source. This includes decision gates, final hold statements and proposed actions: cite the required-evidence-gaps source for those rules. Use only the S-handles in DATA.allowedSources; the application resolves them to clickable evidence records. Check every block before finishing.
 Never invent capacities, coordinates, boundaries, road clearance, beneficiaries, people, supplies, dates or quantities. Missing information is an explicit gap, never a placeholder. No TBD or filler.
 Never select a calendar deadline absent from the supplied evidence. When a mission/reporting deadline is missing, name the role responsible for obtaining it from the operator; keep that input unresolved. A request for an actionable plan does not authorize invented dates.
+When deadlineRecorded is true, the operator has ALREADY supplied the deadline. Use the generated timing check. Never add an action to obtain, secure, clarify or reconfirm that deadline. Ask only for fields explicitly listed as missing. Committee review of recorded inputs is separate from asking the operator to provide them again.
 Null or unknown resources mean no source confirmation, never that no resources exist. Do not convert absent data into a negative field claim.
 Do not transcribe geographic coordinates into narrative prose. The system generates the exact coordinate inventories directly from source features. Refer to those inventories; preserve ambiguity and feature identity.
 The registered warehouse/fleet ledger is synthetic/expired. Current operator-supplied mission inputs are a SEPARATE source: their values and freshness are in the generated mission-input/feasibility sections. Do not copy their quantities into narrative resource claims or label them as registered ledger data. Do not say a supplied input is missing. Refer readers to those generated sections for exact cargo, stock, vehicle, fuel and timing values; discuss the independent-confirmation gap in prose. Never invent an additional numeric freshness policy or deadline. Operational dispatch remains HOLD. A mapped settlement or facility is not an incident location or verified entrance; map coverage is not exhaustive.
@@ -97,9 +99,14 @@ DATA:${JSON.stringify({objective:run.message,evidenceRevision:evidence.revision,
       return {id,text};
     } catch (error) {
       const outputLimit=error instanceof Error && error.message==='Provider answer reached its token ceiling; completeness is unconfirmed.';
-      journal.finishDocument(id,'failed',answer ? {receipt:{...answer,content:undefined},publicationError:error instanceof Error ? error.message : 'Publication validation failed.'} : {failureReason:outputLimit?'output_limit':'generation_failed'});
+      const transient=error instanceof Error && (['TimeoutError'].includes(error.name) || error instanceof TypeError || /^Provider stream (?:failed\.|did not finish successfully\.)$/.test(error.message) || /^Provider streaming failed \(HTTP (?:408|429|5\d\d)\)\.$/.test(error.message));
+      journal.finishDocument(id,'failed',answer ? {receipt:{...answer,content:undefined},publicationError:error instanceof Error ? error.message : 'Publication validation failed.'} : {failureReason:outputLimit?'output_limit':transient?'provider_transport':'generation_failed'});
       journal.event(run.id,actor,answer ? 'document_validation_failed' : 'document_generation_failed',
         answer ? `${title} did not pass citation/content checks. The rejected draft and model receipt remain inspectable.` : outputLimit?`${title} reached its output limit before completeness could be confirmed. Its partial draft remains inspectable.`:`${title} stopped before a complete model answer was received. Its partial draft remains inspectable.`,[id],taskId,parent);
+      if(transient && !transportRetried && transportRetries>0 && !signal.aborted){
+        transportRetries--;journal.event(run.id,'coordinator','provider_retry',`Mission Coordinator → ${actor}: the provider transport did not complete. Preserve the failed attempt and regenerate from the same evidence in a fresh isolated request. One transport retry per attempt, at most two per run.`,[id],taskId,parent);
+        return write(actor,taskId,kind,title,instruction,version,correction,true);
+      }
       if((answer || outputLimit) && publicationRepairs>0 && !correction) {
         publicationRepairs--;
         journal.event(run.id,'coordinator','publication_repair',`Mission Coordinator → ${actor==='planner'?'Planning Agent':actor==='expert'?'Mission Expert':actor==='evaluator'?'Evaluator Agent':'Report preparation'}: correct the rejected document against its source checks. One repair per document, at most two per run; the independent evaluation still follows.`,[id],taskId,parent);

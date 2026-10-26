@@ -7,6 +7,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    // Keep the live sponsor services usable on the shared Windows demo machine.
+    // Worker contention otherwise makes bounded async checks time out.
+    maxWorkers: 2,
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
   },
