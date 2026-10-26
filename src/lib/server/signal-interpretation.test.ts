@@ -6,7 +6,7 @@ import type { KoboSnapshot } from './kobo';
 import { MissionJournal } from './mission-journal';
 import { CommunityMap } from './community-map';
 import { FixtureCommunityEvidence } from './community-evidence';
-import { buildDossier } from './mission-dossier';
+import { buildDossier,validateCitedMarkdown } from './mission-dossier';
 import { NightshiftSignalInterpreter,interpretReports,validateQuotedClaims,interpretationStatement,InterpretationCheckError } from './signal-interpretation';
 import type { SignalInterpreter,QuotedClaims } from './signal-interpretation';
 import {privateInferenceAllowed,ReportInferenceConsent} from './report-inference-policy';
@@ -150,6 +150,32 @@ describe('quoted report interpretation',()=>{
       const run=journal.startRun('Demo separation','test');const values=await interpret(journal,run.id,snapshot([text]),{allowsPrivate:()=>true,
         extract:async()=>({value:{claims:[{category:'road_blockage',assertion:'reported',support:text,placeMention:null,timeMention:null}],noClaimReason:null},receipt})});
       expect(values[0]?.status).toBe('failed');expect(values[0]?.claims).toEqual([]);
+    }finally{journal.close();}
+  });
+  it('rejects false aggregate text-claim counts and requires the deterministic inventory citation',async()=>{
+    const journal=new MissionJournal(':memory:');
+    try {
+      const run=journal.startRun('Aggregate source checks','test'),current=snapshot([example.text]);
+      const readings=await interpret(journal,run.id,current,{extract:async()=>({value:claims,receipt})});
+      const dossier=buildDossier(run.id,run.message,current,await new FixtureCommunityEvidence(map).load(current,AbortSignal.timeout(5000)),map,undefined,readings);
+      const inventory=dossier.citations.find(item=>item.kind==='inventory')!;
+      const baseline=`The committee must obtain field verification, current facility status and operator confirmation before any dispatch decision. This remains a conditional document rather than an operational authorization. [${dossier.citations[0]!.id}]`;
+      expect(()=>validateCitedMarkdown(`${baseline}\n\nText interpretation of source reports yields 0 source-checked claims. [${inventory.id}]`,dossier.citations)).toThrow('aggregate');
+      expect(()=>validateCitedMarkdown(`${baseline}\n\nText interpretation contains two extracted claims. [${dossier.citations[0]!.id}]`,dossier.citations)).toThrow('must cite');
+      expect(validateCitedMarkdown(`${baseline}\n\nThe current source inventory contains 2 extracted claims. [${inventory.id}]`,dossier.citations)).toContain(inventory.id);
+    }finally{journal.close();}
+  });
+  it('withdraws a quality-rejected pack from current eligibility while retaining artifact metadata and assessment history',async()=>{
+    const journal=new MissionJournal(':memory:');
+    try {
+      const run=journal.startRun('Quality hold','test'),current=snapshot([example.text]);journal.ingest(current);
+      const evidence=await new FixtureCommunityEvidence(map).load(current,AbortSignal.timeout(5000));
+      journal.recordAssessment(run.id,evidence,{placeId:null,nextAction:'clarify_mission',rationale:'Explicit test assessment.'});
+      const files=[{name:'report.pdf',sha256:'0'.repeat(64),bytes:1}];
+      journal.saveBundle({runId:run.id,status:'ready',revision:evidence.revision,files,note:'Explicit test bundle.',createdAt:new Date().toISOString()});
+      journal.rejectBundle(run.id,'Quality review rejected an incorrect narrative aggregate.');
+      expect(journal.bundle(run.id)).toMatchObject({status:'failed',files});expect(journal.currency(run.id)).toMatchObject({status:'superseded'});
+      expect(journal.events(run.id).at(-1)?.kind).toBe('quality_rejected');
     }finally{journal.close();}
   });
 });

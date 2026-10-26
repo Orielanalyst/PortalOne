@@ -138,6 +138,12 @@ export class MissionJournal {
     this.db.prepare('INSERT INTO report_bundles VALUES(?,?) ON CONFLICT(run_id) DO UPDATE SET value=excluded.value').run(bundle.runId,JSON.stringify(bundle)); this.changed();
   }
   bundle(runId: string): ReportBundle | null { const row = this.db.prepare('SELECT value FROM report_bundles WHERE run_id=?').get(runId); return row ? JSON.parse(row['value'] as string) : null; }
+  rejectBundle(runId:string,reason:string) {
+    const bundle=this.bundle(runId);if(!bundle)throw new Error('No bundle to reject.');
+    this.db.prepare("UPDATE assessments SET status='invalidated',reason=? WHERE run_id=? AND status<>'invalidated'").run(reason,runId);
+    this.saveBundle({...bundle,status:'failed',note:reason});
+    this.event(runId,'evaluator','quality_rejected',reason);
+  }
   beginConversationSummary(runId: string) {
     this.db.prepare("INSERT INTO conversation_summaries VALUES(?,'pending',NULL,NULL)").run(runId);
   }

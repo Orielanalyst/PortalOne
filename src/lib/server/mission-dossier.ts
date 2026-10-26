@@ -70,6 +70,15 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
     for (const place of grounding.candidates) if (!candidates.some(feature => feature.id === place.id)) candidates.push({ type:'Feature',id:place.id,
       geometry:{type:'Point',coordinates:[place.lng,place.lat]},properties:{name:place.name,status:'verification_candidate_not_delivery_zone',ambiguous:grounding.status === 'ambiguous',evidence_id:id} });
   }
+  if(interpretations.length) {
+    const accepted=interpretations.filter(item=>item.status==='accepted'),claims=accepted.flatMap(item=>item.claims);
+    cite('inventory',`interpretation-inventory:${evidence.revision}`,'Generated report-text interpretation inventory',JSON.stringify({reportTextInterpretation:{
+      reports:snapshot.count,readings:interpretations.length,accepted:accepted.length,claims:claims.length,
+      emptyNoObservation:accepted.filter(item=>item.noClaimReason==='no_observation').length,notUnderstood:accepted.filter(item=>item.noClaimReason==='not_understood').length,
+      privateReadings:interpretations.filter(item=>item.visibility==='private').length,
+      byAssertion:Object.fromEntries(['reported','denied','uncertain','example'].map(kind=>[kind,claims.filter(claim=>claim.assertion===kind).length])),
+      basis:'Deterministic aggregation of versioned local readings; claims and copies are not independent incidents or verified field facts.'}}),null,evidence.fetchedAt);
+  }
   const gaps = [...new Set([
     ...(interpretations.length?[`Report text interpretation: ${interpretations.filter(item=>item.status==='accepted').length} accepted source-span checks; ${interpretations.filter(item=>item.status!=='accepted').length} held, failed or budget-limited readings; ${interpretations.filter(item=>item.noClaimReason==='not_understood').length} empty readings require manual interpretation. Private report text is processed only with authorization bound to the project and configured provider. Private quotes and place/time mentions are withheld from shared outputs. A checked quote is not semantic or field verification; text denial/absence of an incident never certifies a road open.`]:[]),
     'Facility capacity, operating hours, services and current availability require direct confirmation; mapped health features are not an exhaustive hospital inventory.',
@@ -107,6 +116,16 @@ export function validateCitedMarkdown(markdown: string, citations: EvidenceCitat
   const unknown=[...new Set(cited.filter(id=>!known.has(id)))];
   if (!cited.length || unknown.length) throw new Error(`Document contains missing or unknown evidence references.${unknown.length?` Unknown IDs: ${unknown.join(', ')}.`:''}`);
   const paragraphs = markdown.split(/\n\s*\n/).map(block=>block.replace(/^\s*#{1,6}\s.*$/gm,'').trim()).filter(Boolean);
+  const inventory=citations.find(item=>item.kind==='inventory' && item.recordId.startsWith('interpretation-inventory:'));
+  if(inventory) {
+    const expected=JSON.parse(inventory.statement).reportTextInterpretation.claims as number;
+    const words=['zero','one','two','three','four','five','six','seven','eight','nine','ten'];
+    for(const block of paragraphs)for(const match of block.matchAll(/\b(\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:(?:source[- ]checked|extracted|interpreted|text|operational)\s+){0,3}claims\b/gi)) {
+      const actual=/^\d+$/.test(match[1]!)?Number(match[1]):words.indexOf(match[1]!.toLowerCase());
+      if(actual!==expected)throw new Error(`Text-claim aggregate does not match the generated interpretation inventory (${expected}). Do not generalize one report's count or write per-report numeric claim totals in narrative.`);
+      if(!block.includes(`[${inventory.id}]`))throw new Error('Numeric text-claim totals must cite the generated interpretation inventory.');
+    }
+  }
   const questionOnly=(block:string)=>block.split('\n').filter(line=>line.trim()).every(line=>/^\s*(?:[-*]|\d+[.)])?\s*(?:what|which|who|when|where|how|is|are|can|does|do)\b.*\?\s*$/i.test(line));
   const verdictOnly=(block:string)=>/^\*\*Verdict:\s*(REVISE|ACCEPT_WITH_GAPS)\*\*$/.test(block);
   const noChangesOnly=(block:string)=>/^(?:[-*]\s*)?None[.!]?$/.test(block);

@@ -106,7 +106,12 @@ for citation in data["citations"]:
     if citation["kind"]=="query" and statement.startswith("{"):
         query=json.loads(statement)
         statement=f"Bounded community/resource query result: {query['reports']} reports, {query['demonstration']} demonstration, {query['liveLabelled']} live-labelled and {query['forwarded']} forwarded. Candidate rows can share ambiguous reports; do not sum them as independent observations. Resource values below are source references, not actual confirmed NGO resources."
-    entry.append(p(statement,True))
+    if citation["kind"]=="inventory":
+        counts=json.loads(statement)["reportTextInterpretation"]
+        statement=f"Across {counts['reports']} reports, {counts['accepted']} readings passed source checks and contain {counts['claims']} extracted text claims. Counts describe model readings, not independent incidents or verified field facts. Private quotations remain local."
+        entry.append(p(statement,True))
+        entry.append(table([["Assertion / result","Count"]]+[[key,str(value)] for key,value in counts["byAssertion"].items()]+[["No observation",str(counts["emptyNoObservation"])],["Not understood",str(counts["notUnderstood"])],["Private readings",str(counts["privateReadings"])]],[130*mm,44*mm]))
+    else: entry.append(p(statement,True))
     if query:
         rows=[["Community candidate","Reports demo/live","Stock reference","Fleet reference","Status"]]
         for row in query["communities"]:
