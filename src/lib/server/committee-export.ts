@@ -10,10 +10,17 @@ export function reportDirectory(runId: string) {
   if (!/^mission-[a-f0-9-]{36}$/.test(runId)) throw new Error('Invalid report identity.');
   return resolve('.runtime/reports',runId);
 }
-function run(executable: string,args: string[],signal: AbortSignal,timeout=150_000,env?: NodeJS.ProcessEnv) {
-  return new Promise<void>((accept,reject)=>execFile(executable,args,{signal,timeout,maxBuffer:200_000,windowsHide:true,env:env ?? process.env},(error,stdout,stderr)=>{
-    if(error){writeFileSync('.runtime/report-engine-error.json',JSON.stringify({engine:executable,stdout:stdout.slice(-12000),stderr:stderr.slice(-12000)},null,2));reject(new Error('Report engine process failed.'));}else accept();
-  }));
+function run(executable: string,args: string[],signal: AbortSignal,timeout=150_000,env?: NodeJS.ProcessEnv,onStage?:(text:string)=>void) {
+  const started=Date.now();
+  return new Promise<void>((accept,reject)=>{
+    const child=execFile(executable,args,{signal,timeout,maxBuffer:200_000,windowsHide:true,env:env ?? process.env},(error,stdout,stderr)=>{
+      if(error){writeFileSync('.runtime/report-engine-error.json',JSON.stringify({engine:executable,durationMs:Date.now()-started,killed:error.killed,signal:error.signal,code:error.code,stdout:stdout.slice(-12000),stderr:stderr.slice(-12000)},null,2));reject(new Error('Report engine process failed.'));}else accept();
+    });
+    let pending='';child.stdout?.on('data',(bytes:Buffer)=>{
+      pending+=bytes.toString();const lines=pending.split('\n');pending=lines.pop()??'';
+      for(const line of lines)try{const value=JSON.parse(line);if(typeof value.stage==='string' && /^Validated [a-z_]+ \(\d+ features\)$|^Rendering route-focused A3 atlas and regional inset$|^Published validated atlas, GeoPackage, project and styles$/.test(value.stage))onStage?.(`QGIS: ${value.stage}.`);}catch{/* Only bounded native progress labels enter the public event stream. */}
+    });
+  });
 }
 function publicFiles(folder: string,sub=''): {name:string;sha256:string;bytes:number}[] {
   return readdirSync(join(folder,sub)).flatMap(name=>{
@@ -44,7 +51,7 @@ export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,f
     progress('QGIS: writing the GeoPackage and styled project, reopening every layer and checking feature counts, CRS and geometry.');
     await run('docker',['run','--rm','--network','none','--cap-drop','ALL','-e','QT_QPA_PLATFORM=offscreen','-e','HOME=/tmp',
       '--mount',`type=bind,src=${root},dst=/work`,'--mount',`type=bind,src=${resolve('scripts/export-qgis.py')},dst=/tools/export-qgis.py,readonly`,
-      '--entrypoint','/usr/bin/python3',QGIS_IMAGE,'/tools/export-qgis.py','/work'],signal);
+      '--entrypoint','/usr/bin/python3',QGIS_IMAGE,'/tools/export-qgis.py','/work'],signal,150_000,undefined,progress);
     const qgis=JSON.parse(readFileSync(join(root,'qgis-validation.json'),'utf8'));
     if (!qgis.projectReopened || qgis.layers.some((layer: {valid:boolean;invalidGeometries:number})=>!layer.valid || layer.invalidGeometries)) throw new Error('Native QGIS validation failed.');
     progress('QGIS validation passed. Rendering the committee PDF with the native map, facility/coordinate inventories and cited evidence register.');

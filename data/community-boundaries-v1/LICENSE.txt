@@ -1,0 +1,5 @@
+Mezam administrative boundary: geoBoundaries gbOpen / Open Africa.
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+Source: https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/9469f09/releaseData/gbOpen/CMR/ADM2/geoBoundaries-CMR-ADM2.geojson
+Boundary year represented: 2016. Upstream revision: 9469f09.

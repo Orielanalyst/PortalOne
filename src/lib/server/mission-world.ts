@@ -21,6 +21,7 @@ function assumptions(evidence: FederatedEvidence): Assumption[] {
     {key:'input',label:'Report/map input revision',value:evidence.inputRevision},
     ...(['reportCount','demoCount','liveCount','forwardedCount'] as const).map(key=>({key,label:({reportCount:'Report records',demoCount:'Demonstration records',liveCount:'Live-labelled records',forwardedCount:'Forwarded records'})[key],value:evidence[key]})),
   ];
+  if(evidence.cartographyRevision)result.push({key:'map:cartography',label:'Administrative reference geometry revision',value:evidence.cartographyRevision});
   if(evidence.publicEvidence)result.push(
     {key:'public:revision',label:'Public-source content revision',value:evidence.publicEvidence.revision},
     {key:'public:status',label:'Public-source availability',value:evidence.publicEvidence.status},

@@ -18,6 +18,19 @@ for layer in project.mapLayers().values():
 expected_names={row['layer'] for row in expected['layers']}
 if len(expected_names)!=len(expected['layers']) or {row['layer'] for row in checks}!=expected_names or len(checks)!=len(expected_names):
     raise RuntimeError('Relocated project does not contain the exact exported evidence layers')
+layouts=project.layoutManager().layouts()
+if expected.get('cartography'):
+    from qgis.core import QgsLayoutItemMap, QgsCoordinateTransform
+    if len(layouts)!=1:raise RuntimeError('Relocated atlas layout missing or duplicated')
+    maps=[item for item in layouts[0].items() if isinstance(item,QgsLayoutItemMap)]
+    if len(maps)!=2:raise RuntimeError('Atlas must retain its main map and regional inset')
+    main=max(maps,key=lambda item:item.sizeWithUnits().width())
+    route_layer=next((layer for layer in project.mapLayers().values() if layer.source().endswith('layername=mission_route')),None)
+    if route_layer:
+        transform=QgsCoordinateTransform(route_layer.crs(),main.crs(),project)
+        for feature in route_layer.getFeatures():
+            if feature['status']=='exclusion_scenario_unverified':continue
+            if any(not main.extent().contains(transform.transform(vertex.x(),vertex.y())) for vertex in feature.geometry().vertices()):raise RuntimeError('Mission route is clipped by atlas framing')
 result={'qgis':Qgis.QGIS_VERSION,'freshProcess':True,'openedFromZipAtNewMount':True,'displayCrs':project.crs().authid(),'layers':checks,'networkEnabled':False}
 (root/'handoff-validation.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result),flush=True)

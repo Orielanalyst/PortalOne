@@ -8,7 +8,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
-from pypdf import PdfReader
+from pypdf import PdfReader, PdfWriter
 
 root=Path(sys.argv[1]).resolve(); data=json.loads((root/"input.json").read_text(encoding="utf-8")); dossier=data["dossier"]
 source_numbers={citation["id"]:str(index+1) for index,citation in enumerate(data["citations"])}
@@ -98,8 +98,8 @@ if dossier.get("planning"):
         alternative=planning["alternativeRoute"]
         story += [Paragraph("Geometric exclusion scenario",styles["Heading2"]),p("Alternative status: "+alternative["status"].replace("_"," ")+("; "+str(alternative["distanceKm"])+" km" if alternative["distanceKm"] is not None else "")+". This scenario excludes possible report-overlap roads and is not a verified safe bypass.")]
     for limit in planning["limitations"]:story.append(p(limit))
-story += [PageBreak(),Paragraph("Mapped evidence and coverage",styles["Heading1"]),p("Native QGIS rendering. The scale bar applies to this reproduced map; the full-resolution map PDF and editable QGIS project are included in the pack."),Image(str(root/"map.png"),width=width,height=width*210/297)]
-story += [p("Road geometry indicates mapped existence. It does not establish present passability. Blockage points require report coordinates; no point is invented for an unlocated claim. Intervention candidates are community references, not surveyed zones.")]
+story += [PageBreak(),Paragraph("MISSION_ATLAS_INSERT",styles["Heading1"]),p("This page is replaced with the full-resolution landscape atlas after narrative pagination. The native map is retained at its authored page size.")]
+story += [PageBreak(),p("Road geometry indicates mapped existence. It does not establish present passability. Blockage points require report coordinates; no point is invented for an unlocated claim. Intervention candidates are community references, not surveyed zones.")]
 story.append(Paragraph("Required evidence gaps",styles["Heading2"]))
 story += [p("• "+gap) for gap in dossier["gaps"]]
 story += [PageBreak(),Paragraph("Health facility reference inventory",styles["Heading1"]),p("Coordinates are WGS84 (EPSG:4326). Polygon-derived coordinates are an existing boundary vertex, not a centroid, entrance or ambulance access point. Capacity and operation remain unverified.")]
@@ -156,13 +156,23 @@ for citation in data["citations"]:
     if citation.get("sourceUrl"): entry.append(Paragraph('<link href="'+html.escape(citation["sourceUrl"],quote=True)+'" color="#147384">Open original source</link> | '+html.escape(citation["recordId"]),styles["MissionSmall"]))
     else: entry.append(p("Traceable record: "+citation["recordId"],True))
     story.append(KeepTogether(entry))
-story += [Paragraph("GIS handoff and symbology",styles["Heading2"]),p("Open mission.qgz to load the styled GeoPackage. Individual GeoJSON layers are also included. Roads are gray; possible road links are dashed amber and remain unverified; health features teal crosses; reported access constraints red; intervention zones amber; community verification candidates amber points. Empty blockage/zone layers represent missing located evidence, not an all-clear. Source layers use EPSG:4326 and the map display uses EPSG:32632."),p(dossier["attribution"]+" | ODbL 1.0. HOT and OSM are the same underlying source, not independent corroboration."),p("End of committee draft. No dispatch authorization is issued by this document.")]
+story += [Paragraph("GIS handoff and symbology",styles["Heading2"]),p("Open mission.qgz to load the styled GeoPackage and saved A3 atlas layout. Individual GeoJSON layers are also included. The mission route has a solid violet stroke with white casing; its current passability remains unknown. A/B markers identify source road references, not verified loading or unloading sites. Health references are numbered teal crosses; access references are orange triangles; possible road matches are dashed amber; the Mezam department reference is dashed teal and represents 2016. Surveyed intervention zones remain separate from administrative context. Empty blockage/zone layers represent missing located evidence, not an all-clear. Source layers use EPSG:4326 and the map display uses EPSG:32632."),p(dossier["attribution"]+". OSM/HOT layers: ODbL 1.0; administrative reference: CC BY 4.0. HOT and OSM are the same underlying source, not independent corroboration."),p("End of committee draft. No dispatch authorization is issued by this document.")]
 def footer(canvas,doc):
     canvas.saveState(); canvas.setStrokeColor(colors.HexColor("#c3d6d9")); canvas.line(18*mm,16*mm,192*mm,16*mm)
     canvas.setFont("Helvetica",8); canvas.setFillColor(colors.HexColor("#587078")); canvas.drawString(18*mm,11*mm,"RELIEFINTEL | Committee draft | Operational hold"); canvas.drawRightString(192*mm,11*mm,str(doc.page)); canvas.restoreState()
 doc=SimpleDocTemplate(str(root/"report.pdf"),pagesize=A4,rightMargin=18*mm,leftMargin=18*mm,topMargin=18*mm,bottomMargin=23*mm,title="ReliefIntel committee evidence and intervention proposal",author="ReliefIntel Mission Coordinator")
 doc.build(story,onFirstPage=footer,onLaterPages=footer)
+body=PdfReader(str(root/"report.pdf"));atlas=PdfReader(str(root/"map.pdf"));writer=PdfWriter();insertions=0
+for page in body.pages:
+    if "MISSION_ATLAS_INSERT" in (page.extract_text() or ""):
+        if len(atlas.pages)!=1:raise RuntimeError("Expected one native atlas page")
+        writer.add_page(atlas.pages[0]);insertions+=1
+    else:writer.add_page(page)
+if insertions!=1:raise RuntimeError("Native atlas insertion point missing or duplicated")
+writer.add_metadata({"/Title":"ReliefIntel committee evidence and intervention proposal","/Author":"ReliefIntel Mission Coordinator"})
+with (root/"report-with-atlas.pdf").open("wb") as output:writer.write(output)
+(root/"report-with-atlas.pdf").replace(root/"report.pdf")
 reader=PdfReader(str(root/"report.pdf")); text="\n".join(page.extract_text() or "" for page in reader.pages)
-if len(reader.pages)<3 or re.search(r"\b(TBD|lorem ipsum)\b",text,re.I): raise RuntimeError("PDF content verification failed")
+if len(reader.pages)<3 or re.search(r"\b(TBD|lorem ipsum|MISSION_ATLAS_INSERT)\b",text,re.I): raise RuntimeError("PDF content verification failed")
 (root/"pdf-validation.json").write_text(json.dumps({"pages":len(reader.pages),"textCharacters":len(text),"placeholders":False,"mapIncluded":True},indent=2),encoding="utf-8")
 print(json.dumps({"pages":len(reader.pages),"pdfWritten":True}))

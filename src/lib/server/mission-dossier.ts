@@ -147,7 +147,13 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
   if(alternative){alternative.properties!['evidence_id']=citations.find(c=>c.kind==='calculation')!.id;alternative.properties!['status']='exclusion_scenario_unverified';}
   const roads = map.layers['roads']!.features.filter(feature => ['LineString','MultiLineString'].includes(feature.geometry.type))
     .map(feature => ({ ...feature, properties: { ...feature.properties, passability:'unknown',evidence_id:mapId } }));
-  const layers = { roads:collection(roads),road_candidates:collection(roadCandidates),mission_route:collection([...(route?[route]:[]),...(alternative?[alternative]:[])]),facilities:collection(facilities),blockages:collection(blockages),intervention_zones:collection([]),
+  const missionPoints:Feature[]=[];
+  if(route?.geometry.type==='LineString')for(const [index,role,name] of [[0,'origin',planning!.route!.from],[-1,'destination',planning!.route!.to]] as const) {
+    missionPoints.push({type:'Feature',id:`${route.id}-${role}`,geometry:{type:'Point',coordinates:route.geometry.coordinates.at(index)!},properties:{name,role,label:role==='origin'?'A':'B',status:'route_reference_not_verified_entrance',evidence_id:route.properties!['evidence_id']}});
+  }
+  const boundaries=map.layers['boundaries'] ?? collection([]);
+  if(boundaries.features.length)cite('map','mezam-adm2-2016','Mezam administrative reference boundary','geoBoundaries / Open Africa ADM2 geometry represents Mezam department in 2016 (CC BY 4.0). It supplies administrative context only, not a current jurisdiction verification, intervention zone, beneficiary catchment or security perimeter.',String(boundaries.features[0]!.properties!['source_url']));
+  const layers = { roads:collection(roads),road_candidates:collection(roadCandidates),mission_route:collection([...(route?[route]:[]),...(alternative?[alternative]:[])]),mission_points:collection(missionPoints),boundaries,facilities:collection(facilities),blockages:collection(blockages),intervention_zones:collection([]),
     intervention_candidates:collection(candidates),places:map.layers['places']!,facility_footprints:collection(map.layers['facilities']!.features.filter(feature=>feature.geometry.type !== 'Point')) };
   cite('map',`layers-${evidence.revision}`,'Generated evidence layer inventory',
     `Generated layer feature counts: ${JSON.stringify(Object.fromEntries(Object.entries(layers).map(([name,layer])=>[name,layer.features.length])))}. Blockage features are reported/unverified access observations, including demonstrations; they are not independently confirmed incidents. Intervention candidates are community references, not surveyed delivery zones.`,null,evidence.fetchedAt);
@@ -168,7 +174,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
       }
       return {id,kind,title,statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')};
     }),gaps,layers,
-    bounds:map.manifest.bounds,attribution:map.manifest.attribution,mapVersion:map.manifest.version,...(update?{update}:{})};
+    bounds:map.manifest.bounds,attribution:map.attribution,mapVersion:map.cartographyVersion,...(update?{update}:{})};
 }
 
 export function validateCitedMarkdown(markdown: string, citations: EvidenceCitation[]) {

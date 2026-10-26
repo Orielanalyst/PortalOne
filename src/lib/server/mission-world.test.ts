@@ -10,6 +10,15 @@ import {applyMissionPatch,withMissionRequirements} from './mission-requirements'
 import {MissionJournal} from './mission-journal';
 
 async function evidence() {return new FixtureCommunityEvidence(new CommunityMap()).load(await replayCommunitySource.snapshot(),AbortSignal.timeout(1000));}
+it('invalidates a proposal when the separately sourced administrative geometry changes',async()=>{
+  const world=new MissionWorld(),baseline=await evidence();
+  await world.observe(baseline,'map-source-one');await world.recordPlan({runId:'map-source-one',documentId:'mapped-plan',version:1,evidence:baseline});
+  const changed={...baseline,cartographyRevision:hashEvidence('different-source-geometry'),revision:hashEvidence({base:baseline.revision,geometry:'different'})};
+  const update=await world.observe(changed,'map-source-two');
+  expect(update.invalidated).toHaveLength(1);
+  expect(update.invalidated[0]!.changes).toContainEqual({label:'Administrative reference geometry revision',before:baseline.cartographyRevision,after:changed.cartographyRevision});
+  expect(changed.inputRevision).toBe(baseline.inputRevision); // OSM-place SQL identity remains unchanged.
+});
 it('persists actual engine dependencies, invalidates on changed facts and never resurrects an old plan',async()=>{
   const directory=mkdtempSync(join(tmpdir(),'reliefintel-mission-world-'));
   try {

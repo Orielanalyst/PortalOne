@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import type { FeatureCollection, Point } from 'geojson';
@@ -13,12 +13,24 @@ export class CommunityMap {
     limits: string; files: { file: string; sha256: string; features: number }[] };
   readonly layers: Record<string, FeatureCollection> = {};
   readonly places: MapPlace[];
+  readonly boundaryRevision:string|null=null;
+  readonly boundaryVersion:string|null=null;
+  get cartographyVersion(){return this.manifest.version+(this.boundaryVersion?'+'+this.boundaryVersion:'');}
+  get attribution(){return this.manifest.attribution+(this.boundaryVersion?'; administrative reference: geoBoundaries / Open Africa, 2016, CC BY 4.0':'');}
   constructor(directory = resolve('data/community-map-v1')) {
     this.manifest = JSON.parse(readFileSync(resolve(directory, 'manifest.json'), 'utf8'));
     for (const layer of this.manifest.files) {
       const bytes = readFileSync(resolve(directory, layer.file));
       if (createHash('sha256').update(bytes).digest('hex') !== layer.sha256) throw new Error(`Map integrity mismatch: ${layer.file}.`);
       this.layers[layer.file.replace('.geojson', '')] = JSON.parse(bytes.toString('utf8'));
+    }
+    const boundaryDirectory=resolve('data/community-boundaries-v1');
+    if(directory===resolve('data/community-map-v1') && existsSync(resolve(boundaryDirectory,'manifest.json'))) {
+      const boundary=JSON.parse(readFileSync(resolve(boundaryDirectory,'manifest.json'),'utf8'));
+      const bytes=readFileSync(resolve(boundaryDirectory,boundary.file));
+      if(createHash('sha256').update(bytes).digest('hex')!==boundary.sha256)throw new Error('Administrative boundary integrity mismatch.');
+      this.layers['boundaries']=JSON.parse(bytes.toString('utf8'));
+      this.boundaryRevision=boundary.sha256;this.boundaryVersion=boundary.version;
     }
     this.places = (this.layers['places']?.features ?? []).flatMap(f => f.geometry.type === 'Point' && f.properties?.['name'] ? [{
       id: String(f.properties['evidenceId']), name: String(f.properties['name']), kind: String(f.properties['place'] ?? 'place'),

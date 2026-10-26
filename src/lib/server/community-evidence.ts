@@ -12,6 +12,9 @@ import type { PublicSnapshot } from './public-evidence';
 import type { publicRequirements } from './mission-requirements';
 
 export const hashEvidence = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+function withCartography(evidence:FederatedEvidence,map:CommunityMap):FederatedEvidence {
+  return map.boundaryRevision?{...evidence,cartographyRevision:map.boundaryRevision,revision:hashEvidence({evidence:evidence.revision,cartography:map.boundaryRevision})}:evidence;
+}
 export type EvidenceProjection = { id: string; sourceId: string; mapRevision: string; count: number;
   reports: { signal_id: string; mode: 'demo' | 'live'; category: string; relation: string; observed_at: string;
     ground_status: Grounding['status']; candidate_count: number; origin_verified: false }[];
@@ -71,7 +74,7 @@ export const EvidenceRowSchema = z.object({ placeId: z.string(), name: z.string(
   fleetCount: integer.nullable(), availableVehicles: integer.nullable(), fleetObservedAt: z.string().nullable(), fleetValidUntil: z.string().nullable(),
   logisticsSimulated: z.boolean(), stockFresh: z.boolean(), fleetFresh: z.boolean() }).strict();
 export type EvidenceRow = z.infer<typeof EvidenceRowSchema>;
-export type FederatedEvidence = { mode: 'live-zetaris' | 'offline-fixture'; inputRevision: string; revision: string; sourceId: string;
+export type FederatedEvidence = { mode: 'live-zetaris' | 'offline-fixture'; inputRevision: string; revision: string; sourceId: string;cartographyRevision?:string;
   fetchedAt: string; reportCount: number; demoCount: number; liveCount: number; forwardedCount: number; rows: EvidenceRow[]; queries: QueryReceipt[];
   publicEvidence?: PublicSnapshot; requirements?:ReturnType<typeof publicRequirements>; dependencyBaseRevision?:string };
 export interface MissionEvidence { load(snapshot: KoboSnapshot, signal: AbortSignal,options?:{freshPublic?:boolean}): Promise<FederatedEvidence> }
@@ -160,7 +163,7 @@ export class ZetarisCommunityEvidence implements MissionEvidence {
         row.unlocated !== expected.filter(r => r.ground_status !== 'named_place').length || row.blockers !== expected.filter(r => r.category === 'road_blockage').length ||
         row.name !== (this.map.places.find(p => p.id === row.placeId)?.name ?? 'Unresolved community')) throw new Error('Federated report-group verification failed.');
     }
-    return finishEvidence(projection, 'live-zetaris', rows, queries);
+    return withCartography(finishEvidence(projection, 'live-zetaris', rows, queries),this.map);
   }
 }
 /** Same context contract, explicitly enumerated fixtures with no HTTP/SQL calls. */
@@ -180,6 +183,6 @@ export class FixtureCommunityEvidence implements MissionEvidence {
         fleet_observed_at: stock ? [...pack.vehicles.map((v: any) => v.observed_at)].sort().at(-1) : null,
         fleet_valid_until: stock ? [...pack.vehicles.map((v: any) => v.expires_at)].sort()[0] : null, logistics_simulated: !!stock }, Date.now());
     }).sort((a, b) => a.placeId.localeCompare(b.placeId));
-    return finishEvidence(projection, 'offline-fixture', rows, []);
+    return withCartography(finishEvidence(projection, 'offline-fixture', rows, []),this.map);
   }
 }

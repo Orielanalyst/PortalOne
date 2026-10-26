@@ -7,6 +7,7 @@
 /docs/evidence/*.json text eol=lf
 /data/relief-scenario-v1/** text eol=lf
 /data/community-map-v1/** text eol=lf
+/data/community-boundaries-v1/** text eol=lf
 /data/kobo/** text eol=lf
 /vendor/npm-registry/*.json text eol=lf
 /vendor/npm-registry/*.md text eol=lf

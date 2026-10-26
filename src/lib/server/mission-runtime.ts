@@ -307,7 +307,7 @@ export class MissionRuntime {
       signals: signals.map(({ claimedOrigin: _privateOrigin, contentFingerprint: _fingerprint, location: _privateGps, ...signal }) => signal),
       groundings: signals.map(s => this.map.resolve(s)),
       roadGroundings:signals.map(s=>roadIndex(this.map).match(s)).filter(item=>item.status!=='not_access_report'),
-      map: { version: this.map.manifest.version, bounds: this.map.manifest.bounds, attribution: this.map.manifest.attribution,
+      map: { version: this.map.cartographyVersion, bounds: this.map.manifest.bounds, attribution: this.map.attribution,
         limits: this.map.manifest.limits, places: this.map.places },
       projectUrl: this.source.origin ? `${this.source.origin}/#/forms/${process.env['KOBO_PROJECT_UID']}/summary` : null };
   }

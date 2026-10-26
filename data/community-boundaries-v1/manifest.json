@@ -1,0 +1,15 @@
+{
+  "version": "mezam-gbopen-adm2-9469f09",
+  "file": "boundaries.geojson",
+  "features": 1,
+  "sha256": "46586d4e74c19844ad2b76bb781c663760fe67fe5d25b96e7aaea230c3c04a19",
+  "sourceSha256": "81b6159418f9b8d8341822d7bcfd9d42d31c893492ce336f5f629ca08bf939fb",
+  "sourceUrl": "https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/9469f09/releaseData/gbOpen/CMR/ADM2/geoBoundaries-CMR-ADM2.geojson",
+  "metadataUrl": "https://www.geoboundaries.org/api/current/gbOpen/CMR/ADM2/",
+  "sourceYear": 2016,
+  "upstreamCommit": "9469f09",
+  "attribution": "geoBoundaries / Open Africa",
+  "license": "Creative Commons Attribution 4.0 International",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "limits": "Department reference geometry representing 2016. It does not define beneficiary coverage, a surveyed intervention zone, current jurisdiction verification or a security perimeter."
+}
