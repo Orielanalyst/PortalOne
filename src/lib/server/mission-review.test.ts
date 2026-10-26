@@ -11,6 +11,7 @@ import { reviewCandidate, assertReviewMatches, exportedReview } from './mission-
 import type { ReviewSubmission } from './mission-review';
 import type { MissionValues } from './mission-requirements';
 import { observeMissionEvidence } from './mission-world';
+import {buildDossier} from './mission-dossier';
 const at = (minutes: number) => new Date(Date.now() + minutes * 60_000).toISOString();
 async function setup() {
   const journal = new MissionJournal(':memory:'), snapshot = await replayCommunitySource.snapshot();
@@ -46,6 +47,31 @@ async function setup() {
     decision: 'approve', comment: 'Controlled test review.', acknowledgedHolds: true };
   return { runtime, journal, profile, run, source, context, command, values };
 }
+it('recovers only a failed unchanged export, retaining the published plan and requiring a final source check',async()=>{
+  const f=await setup();
+  try{
+    const dossier=buildDossier(f.run.id,f.run.message,await f.source.snapshot(),f.context,f.runtime.map);f.journal.saveCitations(dossier.citations);
+    const report=f.journal.beginDocument({runId:f.run.id,actor:'reporter',kind:'report',title:'Explicit recovery test narrative'});f.journal.appendDocument(report,'Published unit-test narrative; no actual PDF or model claimed.');f.journal.finishDocument(report,'published',{evidenceRevision:f.context.revision});
+    f.journal.saveBundle({runId:f.run.id,status:'failed',revision:f.context.revision,files:[],note:'Explicit fixture export failure',createdAt:new Date().toISOString()});
+    const before=f.journal.documents(f.run.id).map(doc=>[doc.id,doc.markdown]);
+    const exporter=vi.fn(async(input:Parameters<import('./committee-mission').CommitteeExporter>[0])=>{await input.validateEvidence();input.journal.saveBundle({runId:f.run.id,status:'ready',revision:f.context.revision,files:[],note:'Unit-test exporter, not a native pack.',createdAt:new Date().toISOString()});});
+    (f.runtime as unknown as {options:{committeeExporter:typeof exporter}}).options.committeeExporter=exporter;
+    expect(await f.runtime.retryExport(f.run.id,30)).toEqual({runId:f.run.id,status:'ready'});expect(exporter).toHaveBeenCalledOnce();
+    expect(f.journal.documents(f.run.id).map(doc=>[doc.id,doc.markdown])).toEqual(before);expect(f.journal.events(f.run.id).some(event=>event.kind==='export_recovered')).toBe(true);
+    await expect(f.runtime.retryExport(f.run.id)).rejects.toThrow('failed export');
+  }finally{f.runtime.stopMonitor();f.journal.close();}
+});
+it('does not recover an export after its source identity changes',async()=>{
+  const f=await setup();
+  try{
+    const dossier=buildDossier(f.run.id,f.run.message,await f.source.snapshot(),f.context,f.runtime.map);f.journal.saveCitations(dossier.citations);
+    const report=f.journal.beginDocument({runId:f.run.id,actor:'reporter',kind:'report',title:'Explicit recovery fixture'});f.journal.appendDocument(report,'Published test narrative');f.journal.finishDocument(report,'published',{evidenceRevision:f.context.revision});
+    f.journal.saveBundle({runId:f.run.id,status:'failed',revision:f.context.revision,files:[],note:'Fixture failure',createdAt:new Date().toISOString()});
+    const snapshot=await f.source.snapshot();f.source.snapshot.mockResolvedValue({...snapshot,sourceId:snapshot.sourceId+'-changed'});
+    const exporter=vi.fn();(f.runtime as unknown as {options:{committeeExporter:typeof exporter}}).options.committeeExporter=exporter;
+    await expect(f.runtime.retryExport(f.run.id)).rejects.toThrow('could not be recovered');expect(exporter).not.toHaveBeenCalled();expect(f.journal.bundle(f.run.id)?.status).toBe('failed');
+  }finally{f.runtime.stopMonitor();f.journal.close();}
+});
 it('refreshes sources, binds an exact proposal and input version, preserves holds and is idempotent', async () => {
   const f = await setup();
   try {

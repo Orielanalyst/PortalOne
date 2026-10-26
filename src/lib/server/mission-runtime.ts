@@ -74,6 +74,7 @@ export class MissionRuntime {
     for (const run of this.journal.recent()) if (run.status === 'running') {
       this.journal.event(run.id, 'runtime', 'interrupted', 'Application restarted; this investigation was interrupted. Start a fresh check.');
       this.journal.interrupt(run.id);
+      const bundle=this.journal.bundle(run.id);if(bundle?.status==='building')this.journal.saveBundle({...bundle,status:'failed',files:[],note:'Export interrupted by restart. Retry the pack only after its exact sources are checked again.'});
     }
   }
   private investigationContext(run: JournalRun): InvestigationContext | null {
@@ -195,6 +196,52 @@ export class MissionRuntime {
     return run.id;
   }
   stopMonitor() { this.monitor = null; if (this.timer) clearTimeout(this.timer); this.timer = null; this.journal.changed(); }
+  async retryExport(runId:string,watchMinutes=0){
+    if(this.active||this.chatting||this.reviewing||![0,30].includes(watchMinutes))throw new ReviewError('Wait for active work to finish.');
+    const run=this.journal.run(runId),bundle=this.journal.bundle(runId),candidate=reviewCandidate(this.journal,runId);
+    const report=this.journal.documents(runId).filter(doc=>doc.kind==='report'&&doc.status==='published').at(-1);
+    const assessment=this.journal.assessments(runId).at(-1),bound=this.journal.boundRequirements(runId);
+    if(!run||!bundle||bundle.status!=='failed'||!candidate||!report||report.metadata['evidenceRevision']!==bundle.revision||!assessment||!bound||this.journal.currency(runId).status==='superseded')throw new ReviewError('Only a current proposal with a published narrative and failed export can be retried.');
+    this.journal.resumeExport(runId);this.active=runId;
+    const task=this.journal.startTask(runId,null,'reporter','Mission Coordinator: recheck the exact proposal sources and recover the failed PDF/GIS export.');
+    const signal=AbortSignal.timeout(300_000);
+    const fresh=async()=>{
+      const currentCandidate=reviewCandidate(this.journal,runId);
+      if(currentCandidate?.planId!==candidate.planId||currentCandidate.planSha256!==candidate.planSha256||this.journal.requirements(run.sessionId)?.revision!==bound.revision)throw new Error('Proposal or inputs changed; a fresh investigation is required.');
+      const snapshot=await this.source.snapshot(signal,detail=>this.journal.event(runId,'intake','source_read_retry',detail));this.sourceStatus='online';this.checkedAt=snapshot.checkedAt;this.journal.ingest(snapshot);
+      const evidence=withMissionRequirements(await this.evidence.load(snapshot,signal,{freshPublic:true,onQueryRetry:detail=>this.journal.event(runId,'coordinator','tool_read_retry',detail)}),bound);
+      this.federationStatus='online';
+      await observeMissionEvidence(this.world,this.journal,evidence,runId);
+      if(evidence.revision!==bundle.revision||this.journal.requirements(run.sessionId)?.revision!==bound.revision||this.journal.currency(runId).status==='superseded'||missionFeasibility(bound,this.map).id!==candidate.calculationId)throw new Error('Evidence or feasibility changed; a fresh investigation is required.');
+      signal.throwIfAborted();return {snapshot,evidence};
+    };
+    try{
+      this.journal.event(runId,'coordinator','export_recovery_started','Mission Coordinator → report preparation: retry the failed pack after fresh source checks. The published proposal and narrative remain unchanged.',[report.id],task);
+      const {snapshot,evidence}=await fresh(),lineage=this.journal.lineage(runId),previous=lineage.previousRunId?this.world.view(lineage.previousRunId).plans.at(-1):null;
+      const dossier=buildDossier(runId,run.message,snapshot,evidence,this.map,lineage.previousRunId&&previous?.status==='invalidated'?{previousRunId:lineage.previousRunId,previousRevision:previous.revision,changes:previous.changes}:undefined,
+        this.journal.interpretations(runId).filter(item=>snapshot.records.some(record=>record.signal.id===item.signalId)),this.journal.reviewForRevision(runId)??undefined);
+      const stored=this.journal.citations(runId),mapping=new Map(dossier.citations.map(source=>{
+        const original=stored.find(item=>item.kind===source.kind&&item.recordId===source.recordId);if(!original)throw new Error('Narrative source registry changed; fresh investigation required.');return [source.id,original.id];
+      }));
+      for(const layer of Object.values(dossier.layers))for(const feature of layer.features){const id=feature.properties?.['evidence_id'];if(typeof id==='string'){const original=mapping.get(id);if(!original)throw new Error('A map feature lost its narrative source.');feature.properties!['evidence_id']=original;}}
+      dossier.citations=stored;dossier.modelEvidence=stored.map(({id,kind,title,statement})=>({id,kind,title,statement}));
+      if(dossier.planning)this.journal.saveFeasibility(runId,dossier.planning);
+      const recoveryAssessment=this.journal.recordAssessment(runId,evidence,assessment.advice);
+      if(watchMinutes===30){this.monitor={sessionId:run.sessionId,runId,message:run.message,until:Date.now()+30*60_000,lastRevision:evidence.revision,autoRuns:0,workflow:'committee'};this.journal.event(runId,'coordinator','monitor_started','A 30-minute source watch was requested with this export recovery.');}
+      let publicationChecked=false;
+      await (this.options.committeeExporter??buildCommitteeBundle)({dossier,journal:this.journal,finalDocumentId:report.id,signal,memory:this.world.view(runId),
+        validateEvidence:async()=>{const current=await fresh();if(!this.journal.checkAssessment(recoveryAssessment,current.evidence))throw new Error('The recovered proposal failed its final evidence check.');publicationChecked=true;return {revision:current.evidence.revision,checkedAt:current.evidence.fetchedAt};},
+        progress:detail=>this.journal.event(runId,'reporter','export_progress',detail,[report.id],task)});
+      if(!publicationChecked)throw new Error('Exporter omitted the final evidence check.');
+      const result={disposition:'hold' as const,summary:'The committee PDF/GIS pack was recovered after exact source revalidation. The published proposal and field holds are retained.',gaps:dossier.gaps,signalIds:snapshot.records.map(item=>item.signal.id),placeIds:dossier.layers['intervention_candidates']!.features.map(feature=>String(feature.id)),demoReports:evidence.demoCount,liveReports:evidence.liveCount,assessmentId:recoveryAssessment};
+      this.journal.finishTask(task,{recovered:true,documentId:report.id});this.journal.event(runId,'coordinator','export_recovered','The committee PDF/GIS pack is ready after fresh checks. Published model documents were preserved; field holds remain.',[report.id],task);this.journal.finish(runId,result);
+      return {runId,status:'ready'};
+    }catch(error){
+      this.journal.failOpenChildren(runId);this.journal.event(runId,'coordinator','export_recovery_failed','Export recovery stopped. The failed attempt remains inspectable; changed evidence requires a new investigation.',[],task);
+      if(run.result)this.journal.finish(runId,{...run.result,summary:'Export recovery did not complete. No current pack was published.'});else this.journal.interrupt(runId);
+      throw new ReviewError('The pack could not be recovered. Inspect Activity and start a fresh investigation if evidence changed.');
+    }finally{this.active=null;this.schedule();this.journal.changed();}
+  }
   async review(input:ReviewSubmission):Promise<{review:OperatorReview;replacementRunId:string|null}> {
     const command=ReviewSubmissionSchema.parse(input),known=this.journal.reviewByRequestId(command.requestId);
     if(known){if(JSON.stringify(ReviewSubmissionSchema.strip().parse(known))!==JSON.stringify(command))throw new ReviewError('This review request ID was already used for a different decision.');return {review:known,replacementRunId:known.replacementRunId ?? null};}

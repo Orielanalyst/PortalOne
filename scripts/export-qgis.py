@@ -91,7 +91,8 @@ for index,(name,geojson) in enumerate(dossier["layers"].items()):
         layer.setRenderer(QgsSingleSymbolRenderer(QgsFillSymbol.createSimple({"color":"237,183,71,35","outline_color":"#a78132" if name=="intervention_zones" else "#53aaa0","outline_width":".4"})))
     elif name=="blockages":
         layer.setRenderer(QgsSingleSymbolRenderer(QgsMarkerSymbol.createSimple({"name":"triangle","color":"#cc693b","outline_color":"white","outline_width":".45","size":"5.5","offset":"-5,-4"})))
-        labels(layer,"'Reported access | unverified'","#9c4e27",7,9)
+        # The legend identifies these symbols. Repeating long access labels at
+        # nearby report coordinates obscures the higher-priority A/B reference.
     else:
         layer.setRenderer(QgsSingleSymbolRenderer(QgsMarkerSymbol.createSimple({"name":"circle","color":"0,0,0,0" if name=="intervention_candidates" else "#81928c",
           "outline_color":"#c99236" if name=="intervention_candidates" else "#81928c","outline_width":".5","size":"5.5" if name=="intervention_candidates" else "1.5"})))
@@ -155,9 +156,9 @@ label("MISSION REFERENCES",319,114,88,7,9,bold=True)
 distance=str(route["distanceKm"])+" km geometric candidate" if route.get("distanceKm") is not None else "Route not resolved"
 label("A  "+route.get("from","Origin unresolved")+"\nB  "+route.get("to","Destination unresolved")+"\n"+distance,319,123,88,22,8)
 label("LEGEND",319,150,88,7,9,bold=True)
-legend_rows=[("route","Mission route candidate"),("target","Destination road reference"),("facility","Health facility / H-number"),("access","Reported access, unverified"),("candidate","Possible road match"),("boundary","Mezam administrative reference")]
+legend_rows=[("route","Mission route candidate"),("origin","Origin road reference"),("target","Destination road reference"),("facility","Health facility / H-number"),("access","Reported access, unverified"),("candidate","Possible road match"),("boundary","Mezam administrative reference")]
 for index,(kind,caption) in enumerate(legend_rows):
-    y=161+index*7.5
+    y=159+index*7
     if kind in ("route","candidate","boundary"):
         symbol=route_symbol() if kind=="route" else line("#df9e32" if kind=="candidate" else "#508b87",.8,True)
         from qgis.core import QgsLayoutItemPolyline
@@ -165,7 +166,7 @@ for index,(kind,caption) in enumerate(legend_rows):
         from qgis.PyQt.QtGui import QPolygonF
         item=QgsLayoutItemPolyline(QPolygonF([QPointF(0,0),QPointF(11,0)]),layout);item.setSymbol(symbol);layout.addLayoutItem(item);item.attemptMove(QgsLayoutPoint(320,y+3))
     else:
-        item=QgsLayoutItemMarker(layout);item.setSymbol(layers["facilities"].renderer().symbol().clone() if kind=="facility" else QgsMarkerSymbol.createSimple({"name":"triangle" if kind=="access" else "circle","color":{"target":"#db9c28","access":"#cc693b"}[kind],"outline_color":"white","outline_width":".3","size":"3.5"}));layout.addLayoutItem(item);item.attemptMove(QgsLayoutPoint(324,y+3))
+        item=QgsLayoutItemMarker(layout);item.setSymbol(layers["facilities"].renderer().symbol().clone() if kind=="facility" else QgsMarkerSymbol.createSimple({"name":"triangle" if kind=="access" else "circle","color":{"origin":"#7140c6","target":"#db9c28","access":"#cc693b"}[kind],"outline_color":"white","outline_width":".3","size":"3.5"}));layout.addLayoutItem(item);item.attemptMove(QgsLayoutPoint(324,y+3))
     label(caption,334,y,73,7,7.3)
 label("HEALTH FEATURE INDEX",319,212,88,7,9,bold=True)
 health=[]

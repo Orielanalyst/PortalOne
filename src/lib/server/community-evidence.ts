@@ -131,16 +131,19 @@ function reportGroups(projection: EvidenceProjection) {
   return groups;
 }
 export class ZetarisCommunityEvidence implements MissionEvidence {
-  constructor(private readonly map: CommunityMap, private readonly client: Pick<ZetarisClient, 'query'> = configuredZetaris(),
+  constructor(private readonly map: CommunityMap, private readonly client?: Pick<ZetarisClient, 'query'>,
     private readonly write: typeof communityPsql = communityPsql) {}
   async load(snapshot: KoboSnapshot, signal: AbortSignal,options?:{onQueryRetry?:(detail:string)=>void}) {
+    // A source phase is shorter than the local 15-minute session. Do not carry
+    // a cached login across long model generation or committee review intervals.
+    const client=this.client ?? configuredZetaris();
     const projection = projectEvidence(snapshot, this.map);
     const committed = JSON.parse(await this.write(projectionSql(projection), 'community_writer', signal));
     if (committed.batch !== projection.id || committed.reports !== projection.count) throw new Error('Community projection was not committed completely.');
     const tables: Record<string, unknown>[][] = [], queries: QueryReceipt[] = [];
     for (const query of communityQueries(projection.id)) {
       signal.throwIfAborted(); const started = performance.now();
-      const result = await this.client.query(query.sql, signal,options?.onQueryRetry);
+      const result = await client.query(query.sql, signal,options?.onQueryRetry);
       tables.push(result.data.map(values => Object.fromEntries(result.headers.map((header, i) => [header, values[i]]))));
       queries.push({ id: `query-${randomUUID()}`, name: query.name, sql: query.sql, asOf: snapshot.checkedAt,
         fetchedAt: new Date().toISOString(), durationMs: Math.round(performance.now() - started), rowCount: result.data.length, resultHash: hashEvidence(result.data) });

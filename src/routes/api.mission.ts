@@ -7,6 +7,7 @@ const input = z.discriminatedUnion('action', [
   z.object({ action: z.literal('chat'), message: z.string().trim().min(1).max(2000), watchMinutes: z.union([z.literal(0), z.literal(30)]) }).strict(),
   z.object({ action: z.literal('investigate'), message: z.string().trim().min(5).max(2000), watchMinutes: z.union([z.literal(0), z.literal(30)]) }).strict(),
   z.object({ action: z.literal('stop_monitor') }).strict(),
+  z.object({action:z.literal('retry_export'),runId:z.string().regex(/^mission-[a-f0-9-]{36}$/),watchMinutes:z.union([z.literal(0),z.literal(30)])}).strict(),
   ReviewSubmissionSchema.extend({action:z.literal('review')}),
 ]);
 export const Route = createFileRoute('/api/mission')({ server: { handlers: {
@@ -24,6 +25,7 @@ export const Route = createFileRoute('/api/mission')({ server: { handlers: {
       const text = await request.text(); if (text.length > 10_000) return new Response(null, { status: 413 });
       const command = input.parse(JSON.parse(text)); const runtime = missionRuntime();
       if (command.action === 'stop_monitor') { runtime.stopMonitor(); return Response.json({ stopped: true }); }
+      if(command.action==='retry_export')return Response.json(await runtime.retryExport(command.runId,command.watchMinutes));
       if(command.action==='review'){const {action:_action,...submission}=command;return Response.json(await runtime.review(submission));}
       if (command.action === 'chat') {
         const turn = await runtime.chat(command.message, command.watchMinutes);

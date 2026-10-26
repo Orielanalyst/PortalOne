@@ -59,7 +59,7 @@ export const buildCommitteeBundle: CommitteeExporter = async ({dossier,journal,f
     const pdf=JSON.parse(readFileSync(join(root,'pdf-validation.json'),'utf8')); if(pdf.placeholders || !pdf.mapIncluded) throw new Error('PDF validation failed.');
     writeFileSync(join(root,'README.txt'),`RELIEFINTEL COMMITTEE DRAFT - OPERATIONAL HOLD\nEvidence revision: ${dossier.revision}\nCaptured: ${dossier.capturedAt}\nOpen mission.qgz in QGIS. Source CRS: EPSG:4326; map display: EPSG:32632.\nGeoJSON equivalents and per-layer QML styles are included. Capacity and operating status are unverified.\nEmpty blockage/intervention-zone layers are evidence gaps, not an all-clear. Facility polygon reference points are source boundary vertices, not verified entrances.\n${dossier.attribution} | ODbL 1.0\n`);
     const publicationCheck=await validateEvidence();
-    const files=publicFiles(root);
+    const files=publicFiles(root).filter(file=>file.name!=='manifest.json');
     writeFileSync(join(root,'manifest.json'),JSON.stringify({runId:dossier.runId,revision:dossier.revision,capturedAt:dossier.capturedAt,publicationCheck,previousRunId:dossier.update?.previousRunId ?? null,qgis,files,operationalStatus:'hold',dispatchAuthorized:false},null,2));
     progress('Packing the PDF, map, editable QGIS project, GeoPackage, GeoJSON, source register and versioned drafts with checksums.');
     await run(python,['-c','import json,sys,zipfile,pathlib; r=pathlib.Path(sys.argv[1]); m=json.loads((r/"manifest.json").read_text()); z=zipfile.ZipFile(r/"committee-pack.zip","w",zipfile.ZIP_DEFLATED); [z.write(r/f["name"],f["name"]) for f in m["files"]]; z.write(r/"manifest.json","manifest.json"); z.close()',root],signal,30_000,env);

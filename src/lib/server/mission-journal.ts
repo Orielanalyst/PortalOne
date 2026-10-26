@@ -361,6 +361,10 @@ export class MissionJournal {
     this.db.prepare("UPDATE runs SET status='interrupted',finished_at=? WHERE id=? AND status='running'").run(new Date().toISOString(), runId);
     this.db.prepare("UPDATE tasks SET status='interrupted' WHERE run_id=? AND status='running'").run(runId);
   }
+  resumeExport(runId:string){
+    if(this.bundle(runId)?.status!=='failed' || this.currency(runId).status==='superseded')throw new Error('Only an incomplete current export can resume.');
+    this.db.prepare("UPDATE runs SET status='running',finished_at=NULL WHERE id=? AND status IN ('complete','interrupted')").run(runId);this.changed();
+  }
   run(id: string): JournalRun | null {
     const row = this.db.prepare('SELECT * FROM runs WHERE id=?').get(id);
     return row ? { id, sessionId: row['session_id'] as string, message: row['message'] as string, cause: row['cause'] as string,
