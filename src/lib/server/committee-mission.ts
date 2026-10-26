@@ -13,6 +13,7 @@ import type { MissionMemoryView } from './mission-world';
 import { CitationStream } from './citation-stream';
 import { interpretReports } from './signal-interpretation';
 import type { SignalInterpreter } from './signal-interpretation';
+import {missionFeasibility} from './mission-feasibility';
 
 export type CommitteeWriter = Pick<MeterlessClient, 'stream'>;
 export type CommitteeExporter = (input: { dossier: MissionDossier; journal: MissionJournal; finalDocumentId: string; signal: AbortSignal;
@@ -51,11 +52,14 @@ export async function runCommitteeMission(options: { run: JournalRun; journal: M
     await observeMissionEvidence(world,journal,value,run.id); return value;
   }
   function prepareDossier() {
+    if(evidence.requirements)journal.event(run.id,'planner','feasibility_started','Planning Agent → mapped-route and feasibility tools: calculate from source-bound operator inputs; retain unknown field constraints.',[],undefined,parent);
     const previousRunId=journal.lineage(run.id).previousRunId;
     const previous=previousRunId?world.view(previousRunId).plans.at(-1):null;
-    return buildDossier(run.id,run.message,snapshot,evidence,map,previousRunId && previous?.status==='invalidated'
+    const prepared=buildDossier(run.id,run.message,snapshot,evidence,map,previousRunId && previous?.status==='invalidated'
       ? {previousRunId,previousRevision:previous.revision,changes:previous.changes}:undefined,
-      journal.interpretations(run.id).filter(item=>snapshot.records.some(record=>record.signal.id===item.signalId)));
+      journal.interpretations(run.id).filter(item=>snapshot.records.some(record=>record.signal.id===item.signalId)),journal.reviewForRevision(run.id) ?? undefined);
+    if(prepared.planning){journal.saveFeasibility(run.id,prepared.planning);journal.event(run.id,'planner','feasibility_checked',`Planning tools: ${prepared.planning.status}; ${prepared.planning.missing.length} missing mission inputs. Source-backed geometry and deterministic stock, mass, fuel, timing and freshness checks are separate from dispatch approval.`,[prepared.planning.id],undefined,parent);}
+    return prepared;
   }
   async function rememberPlan(documentId:string,version:number) {
     const memory=await world.recordPlan({runId:run.id,documentId,version,evidence});
@@ -153,6 +157,7 @@ MISSION EXPERT FINDINGS:\n${expertFindings}`,1);
       const task = handoff('evaluator','Evaluator Agent',`Independently check the sources and critique plan v${state.version}.`);
       const fresh = await options.readSource(signal); signal.throwIfAborted(); journal.ingest(fresh);observedSnapshot=fresh;
       const current = await query('evaluator',task,fresh);
+      if(current.requirements){const recheck=missionFeasibility(current.requirements,map);journal.event(run.id,'evaluator','feasibility_rechecked',`Independent deterministic recheck: ${recheck.status}; ${recheck.checks.filter(check=>check.status==='fail').length} failed checks.`,[recheck.id],task,parent);}
       const matched = assessmentId ? journal.checkAssessment(assessmentId,current) : false;
       if (!matched) {
         snapshot=fresh; evidence=current;

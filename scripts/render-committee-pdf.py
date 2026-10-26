@@ -73,9 +73,35 @@ if dossier.get("update"):
     block.append(p("The ZIP includes the full dependency record in mission-memory.json and an actual text diff from the previous mission in drafts/. Report counts do not establish independent witnesses or verified incidents.",True))
     story.append(KeepTogether(block))
 tokens(data["tokens"])
+if dossier.get("planning"):
+    planning=dossier["planning"]
+    calc_cite=next((citation["id"] for citation in data["citations"] if citation["kind"]=="calculation"),None)
+    story += [PageBreak(),Paragraph("Mission-specific feasibility",styles["Heading1"]),p("Deterministic tool result: "+planning["status"].replace("_"," ")+". This is a conditional proposal check, not dispatch authorization."+(" ["+calc_cite+"]" if calc_cite else ""))]
+    requirement=next((citation for citation in data["citations"] if citation["recordId"].startswith("requirements:")),None)
+    if requirement:
+        inputs=json.loads(requirement["statement"])
+        story.append(p("Operator-supplied inputs, version "+str(inputs["version"])+". Supporting user-message quotations remain in the local journal. ["+requirement["id"]+"]"))
+        story.append(table([["Input","Recorded value"]]+[[re.sub(r"([A-Z])",r" \1",key).strip().capitalize(),str(value)] for key,value in inputs["values"].items()],[60*mm,114*mm]))
+    if planning["calculations"]:
+        calculation=planning["calculations"]
+        story += [Paragraph("Computed quantities and timing",styles["Heading2"]),table([["Metric","Calculated value"],
+            ["Cargo mass",str(calculation["cargoKg"])+" kg"],["Loaded vehicle mass",str(calculation["grossKg"])+" kg"],
+            ["Mapped road distance",str(calculation["distanceKm"])+" km"],["Travel time at supplied planning speed",str(calculation["travelMinutes"])+" minutes"],
+            ["Fuel including round trip, contingency and reserve",format(calculation["requiredFuelLitres"],".2f")+" L"],["Arrival including handling and buffer",calculation["arrivalAt"]]],[92*mm,82*mm])]
+    if planning["missing"]:
+        story += [Paragraph("Inputs still required",styles["Heading2"]),table([["Missing input","Required next action"]]+[[item["label"],"Obtain an explicit operator statement before completing the calculation."] for item in planning["missing"]],[80*mm,94*mm])]
+    story += [Paragraph("Independent calculation checks",styles["Heading2"]),table([["Check","Result","Tool finding"]]+[[check["code"].replace("_"," "),check["status"],check["message"]] for check in planning["checks"]],[42*mm,18*mm,114*mm])]
+    if planning.get("accessRelationships"):
+        story += [Paragraph("Access constraints and this intervention",styles["Heading2"]),p("Relationships below connect report-location candidates to the proposed mission route. They are not confirmed affected-road assignments."),
+            table([["Report/source","Relationship","Road references on this route"]]+[[item["signalId"]+" ["+item["evidenceId"]+"]",item["relationship"].replace("_"," "),"; ".join(item["overlappingRoadIds"]) or "No displayed overlap; unresolved evidence remains"] for item in planning["accessRelationships"]],[65*mm,44*mm,65*mm])]
+    if planning.get("alternativeRoute"):
+        alternative=planning["alternativeRoute"]
+        story += [Paragraph("Geometric exclusion scenario",styles["Heading2"]),p("Alternative status: "+alternative["status"].replace("_"," ")+("; "+str(alternative["distanceKm"])+" km" if alternative["distanceKm"] is not None else "")+". This scenario excludes possible report-overlap roads and is not a verified safe bypass.")]
+    for limit in planning["limitations"]:story.append(p(limit))
 story += [PageBreak(),Paragraph("Mapped evidence and coverage",styles["Heading1"]),p("Native QGIS rendering. The scale bar applies to this reproduced map; the full-resolution map PDF and editable QGIS project are included in the pack."),Image(str(root/"map.png"),width=width,height=width*210/297)]
 story += [p("Road geometry indicates mapped existence. It does not establish present passability. Blockage points require report coordinates; no point is invented for an unlocated claim. Intervention candidates are community references, not surveyed zones.")]
-story.append(KeepTogether([Paragraph("Required evidence gaps",styles["Heading2"])] + [p("• "+gap) for gap in dossier["gaps"]]))
+story.append(Paragraph("Required evidence gaps",styles["Heading2"]))
+story += [p("• "+gap) for gap in dossier["gaps"]]
 story += [PageBreak(),Paragraph("Health facility reference inventory",styles["Heading1"]),p("Coordinates are WGS84 (EPSG:4326). Polygon-derived coordinates are an existing boundary vertex, not a centroid, entrance or ambulance access point. Capacity and operation remain unverified.")]
 rows=[["Mapped health feature / source","Type","Latitude","Longitude","Capacity"]]
 for feature in dossier["layers"]["facilities"]["features"]:
@@ -102,6 +128,12 @@ for citation in data["citations"]:
     title='<a name="source-'+citation["id"]+'"/>'+html.escape('['+source_numbers[citation["id"]]+'] '+citation["title"])
     entry=[Paragraph(title,styles["Heading3"]),p('Source ID: '+citation["id"],True)]
     statement=citation["statement"]
+    if citation["kind"]=="calculation":
+        value=json.loads(statement)
+        statement="Deterministic mission check: "+value["status"]+"; "+str(len(value["missing"]))+" inputs missing. Generated quantities, timing, checks and field limitations appear in Mission-specific feasibility. Full source facts remain in evidence.json. No dispatch authorization is granted."
+    if citation["recordId"].startswith("requirements:"):
+        value=json.loads(statement)
+        statement="Source-bound operator inputs, version "+str(value["version"])+": "+str(len(value["values"]))+" recorded fields and "+str(len(value["missing"]))+" missing fields. The feasibility section lists them. Exact user-message support remains local; field/turn references and quote hashes are retained in evidence.json. These statements are not an independently verified NGO ledger."
     query=None
     if citation["kind"]=="query" and statement.startswith("{"):
         query=json.loads(statement)
@@ -124,7 +156,7 @@ for citation in data["citations"]:
     if citation.get("sourceUrl"): entry.append(Paragraph('<link href="'+html.escape(citation["sourceUrl"],quote=True)+'" color="#147384">Open original source</link> | '+html.escape(citation["recordId"]),styles["MissionSmall"]))
     else: entry.append(p("Traceable record: "+citation["recordId"],True))
     story.append(KeepTogether(entry))
-story += [Paragraph("GIS handoff and symbology",styles["Heading2"]),p("Open mission.qgz to load the styled GeoPackage. Individual GeoJSON layers are also included. Roads are gray; health features teal crosses; reported access constraints red; intervention zones amber; community verification candidates amber points. Empty blockage/zone layers represent missing located evidence, not an all-clear. Source layers use EPSG:4326 and the map display uses EPSG:32632."),p(dossier["attribution"]+" | ODbL 1.0. HOT and OSM are the same underlying source, not independent corroboration."),p("End of committee draft. No dispatch authorization is issued by this document.")]
+story += [Paragraph("GIS handoff and symbology",styles["Heading2"]),p("Open mission.qgz to load the styled GeoPackage. Individual GeoJSON layers are also included. Roads are gray; possible road links are dashed amber and remain unverified; health features teal crosses; reported access constraints red; intervention zones amber; community verification candidates amber points. Empty blockage/zone layers represent missing located evidence, not an all-clear. Source layers use EPSG:4326 and the map display uses EPSG:32632."),p(dossier["attribution"]+" | ODbL 1.0. HOT and OSM are the same underlying source, not independent corroboration."),p("End of committee draft. No dispatch authorization is issued by this document.")]
 def footer(canvas,doc):
     canvas.saveState(); canvas.setStrokeColor(colors.HexColor("#c3d6d9")); canvas.line(18*mm,16*mm,192*mm,16*mm)
     canvas.setFont("Helvetica",8); canvas.setFillColor(colors.HexColor("#587078")); canvas.drawString(18*mm,11*mm,"RELIEFINTEL | Committee draft | Operational hold"); canvas.drawRightString(192*mm,11*mm,str(doc.page)); canvas.restoreState()

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MissionView } from '../lib/server/mission-runtime';
-import type { FeatureCollection } from 'geojson';
+import type { FeatureCollection,Feature,LineString } from 'geojson';
 import type * as Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -42,8 +42,18 @@ export function CommunityMapView({ view }: { view: MissionView }) {
         const node = document.createElement('span'); node.textContent = `${signal.mode === 'demo' ? 'DEMONSTRATION' : 'UNVERIFIED REPORT'} · ${signal.placeName} · ${grounding.gap}`;
         L.circleMarker([grounding.location.lat, grounding.location.lng], { radius: 12, color: signal.mode === 'demo' ? '#dcba7c' : '#a6bfd6', weight: 2, fillOpacity: .15 }).bindTooltip(node).addTo(reports.current);
       }
+      for(const match of view.roadGroundings ?? [])for(const candidate of match.candidates) {
+        const node=document.createElement('span');node.textContent=`Form-to-road location candidate · ${candidate.roadId} · ${candidate.distanceM} m from rounded reference. ${match.gap}`;
+        const feature:Feature<LineString>={type:'Feature',geometry:candidate.geometry,properties:{}};
+        L.geoJSON(feature,{style:{color:'#d5ac61',weight:3,dashArray:'5 5'},onEachFeature:(_f,layer)=>layer.bindTooltip(node)}).addTo(reports.current);
+      }
+      if(view.planning?.route?.geometry) {
+        const node=document.createElement('span');node.textContent=`Mapped mission candidate · ${view.planning.route.distanceKm} km. Present passability, endpoint access and field confirmation remain unresolved.`;
+        const feature:Feature<LineString>={type:'Feature',geometry:view.planning.route.geometry,properties:{}};
+        L.geoJSON(feature,{style:{color:'#b5a7e4',weight:4,dashArray:'9 4'},onEachFeature:(_f,layer)=>layer.bindTooltip(node)}).addTo(reports.current);
+      }
     });
-  }, [ready, view.groundings, view.signals]);
+  }, [ready, view.groundings, view.signals,view.roadGroundings,view.planning]);
   return <div className="community-map"><div ref={element} className="map-canvas" aria-label="Community geography map of Bamenda and Bambili" />
     <div className="map-caption"><span className="eyebrow">COMMUNITY CONTEXT</span><h2>A picture of the ground.</h2><p>5,111 mapped road features · 16 places · 7 health facilities</p></div>
     {!ready && <div className="map-loading">{error ? 'Map unavailable. Check local map files.' : 'Loading acquired map geography…'}</div>}

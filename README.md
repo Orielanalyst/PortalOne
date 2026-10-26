@@ -11,6 +11,13 @@ the current plan provisionally targets *Reasoning Architecture*.
 
 ## Status
 
+Active implementation: [goal 1–4 and its acceptance boundary](docs/GOAL_1_TO_4.md)
+covers public-source intake, source-backed road/route candidates, conversational
+mission requirements and deterministic feasibility, and version-bound committee
+decisions. Component checks and public/map smoke tests pass. The combined native
+model, UI, PDF/GIS and approval-invalidation rehearsal is still required before
+calling that goal complete. Earlier published snapshots below remain historical.
+
 26 October, reviewed evidence publication: the operator separately authorized the
 redacted synthetic-demo [16-page PDF](docs/evidence/private-inference-demo-2026-10-26/report.pdf),
 [QGIS/geodata pack](docs/evidence/private-inference-demo-2026-10-26/committee-pack.zip)

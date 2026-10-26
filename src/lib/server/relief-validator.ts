@@ -7,6 +7,14 @@ export type Violation = { code: string; message: string; evidenceIds: string[] }
 export type Validation = { eligible: boolean; violations: Violation[]; assessments: SegmentAssessment[];
   calculations: { cargoKg: number; grossKg: number; requiredFuelLitres: number; arrivalAt: string } | null };
 
+export function deliveryCalculations(mission:Pick<ReliefMission,'quantity'|'fuelReserveLitres'|'handlingMinutes'|'bufferMinutes'>,
+  candidate:Pick<ReliefCandidate,'unitMassKg'|'tareKg'|'distanceKm'|'litresPerKm'|'travelMinutes'>,departAt:string) {
+  const cargoKg=mission.quantity*candidate.unitMassKg,grossKg=candidate.tareKg+cargoKg;
+  const requiredFuelLitres=candidate.distanceKm*2*candidate.litresPerKm*1.5+mission.fuelReserveLitres;
+  const arrivalAt=new Date(Date.parse(departAt)+(candidate.travelMinutes+mission.handlingMinutes+mission.bufferMinutes)*60_000).toISOString();
+  return {cargoKg,grossKg,requiredFuelLitres,arrivalAt};
+}
+
 /** Pure constraints after an independently fetched snapshot; no model approval. */
 async function validateCandidate(missionInput: ReliefMission, candidateInput: ReliefCandidate | undefined,
   snapshot: ReliefSnapshot): Promise<Validation> {
@@ -16,11 +24,8 @@ async function validateCandidate(missionInput: ReliefMission, candidateInput: Re
     { code: 'UNKNOWN_CANDIDATE', message: 'Proposed route and vehicle are absent from the independent snapshot.', evidenceIds: [] },
   ] };
   const candidate = CandidateSchema.parse(candidateInput);
-  const cargoKg = mission.quantity * candidate.unitMassKg;
-  const grossKg = candidate.tareKg + cargoKg;
-  const requiredFuelLitres = candidate.distanceKm * 2 * candidate.litresPerKm * 1.5 + mission.fuelReserveLitres;
-  const arrival = Date.parse(snapshot.asOf) + (candidate.travelMinutes + mission.handlingMinutes + mission.bufferMinutes) * 60_000;
-  const arrivalAt = new Date(arrival).toISOString();
+  const {cargoKg,grossKg,requiredFuelLitres,arrivalAt}=deliveryCalculations(mission,candidate,snapshot.asOf);
+  const arrival=Date.parse(arrivalAt);
   const violations: Violation[] = [];
   const add = (code: string, message: string, evidenceIds = candidate.evidenceIds) => violations.push({ code, message, evidenceIds });
   if (!candidate.available) add('VEHICLE_UNAVAILABLE', 'The vehicle is unavailable.');

@@ -6,6 +6,8 @@ import {MissionWorld} from './mission-world';
 import {CommunityMap} from './community-map';
 import {FixtureCommunityEvidence,hashEvidence} from './community-evidence';
 import {replayCommunitySource} from './mission-replay';
+import {applyMissionPatch,withMissionRequirements} from './mission-requirements';
+import {MissionJournal} from './mission-journal';
 
 async function evidence() {return new FixtureCommunityEvidence(new CommunityMap()).load(await replayCommunitySource.snapshot(),AbortSignal.timeout(1000));}
 it('persists actual engine dependencies, invalidates on changed facts and never resurrects an old plan',async()=>{
@@ -49,4 +51,25 @@ it('invalidates on logistics freshness drift without needing a new report and re
   const drift=await world.observe(changed,'mission-one');
   expect(drift.invalidated[0]?.changes.some(change=>change.label.includes('stock freshness'))).toBe(true);
   await expect(world.recordPlan({runId:'mission-one',documentId:'late-plan',version:2,evidence:baseline})).rejects.toThrow('Evidence changed');
+});
+it('isolates different mission requirements but invalidates all affected missions when their shared source changes',async()=>{
+  const world=new MissionWorld(),journal=new MissionJournal(':memory:'),base=await evidence();
+  try {
+    const a=journal.updateRequirements('session-a',{quantity:{value:10,support:'10 kits'}},['10 kits'],'turn-a');
+    const b=journal.updateRequirements('session-b',{quantity:{value:20,support:'20 kits'}},['20 kits'],'turn-b');
+    const ea=withMissionRequirements(base,a),eb=withMissionRequirements(base,b);
+    const ra=journal.startRun('Mission A','test','session-a'),rb=journal.startRun('Mission B','test','session-b');
+    await world.observe(ea,ra.id);await world.recordPlan({runId:ra.id,documentId:'plan-a',version:1,evidence:ea});
+    const aa=journal.recordAssessment(ra.id,ea,{placeId:null,nextAction:'clarify_mission',rationale:'Fixture A'});journal.checkAssessment(aa,ea);
+    await world.observe(eb,rb.id);await world.recordPlan({runId:rb.id,documentId:'plan-b',version:1,evidence:eb});
+    const ab=journal.recordAssessment(rb.id,eb,{placeId:null,nextAction:'clarify_mission',rationale:'Fixture B'});journal.checkAssessment(ab,eb);
+    expect(world.view(ra.id).plans[0]?.status).toBe('recorded');expect(journal.assessments(ra.id)[0]?.status).toBe('checked');
+    const changed=journal.updateRequirements('session-a',{quantity:{value:30,support:'30 kits'}},['30 kits'],'turn-a2');
+    const update=withMissionRequirements(base,changed);await world.observe(update,ra.id);journal.observeEvidence(update);
+    expect(world.view(ra.id).plans[0]?.status).toBe('invalidated');expect(world.view(rb.id).plans[0]?.status).toBe('recorded');
+    expect(journal.assessments(rb.id)[0]?.status).toBe('checked');
+    const sourceChange={...base,reportCount:base.reportCount+1,revision:hashEvidence('changed-public-or-community-source')};
+    const newB=withMissionRequirements(sourceChange,b);await world.observe(newB,rb.id);journal.observeEvidence(newB);
+    expect(world.view(rb.id).plans[0]?.status).toBe('invalidated');expect(journal.assessments(rb.id)[0]?.status).toBe('invalidated');
+  }finally{journal.close();}
 });

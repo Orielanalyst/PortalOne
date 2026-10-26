@@ -1,4 +1,4 @@
-export type EvidenceCitation = { id: string; runId: string; kind: 'mission' | 'map' | 'facility' | 'report' | 'community' | 'query' | 'memory' | 'interpretation' | 'inventory';
+export type EvidenceCitation = { id: string; runId: string; kind: 'mission' | 'map' | 'facility' | 'report' | 'community' | 'query' | 'memory' | 'interpretation' | 'inventory' | 'public' | 'calculation';
   title: string; statement: string; sourceUrl: string | null; recordId: string; observedAt: string | null; sha256: string | null;
   supportVisibility?:'public_example'|'private' };
 export type MissionDocument = { id: string; runId: string | null; turnId: string | null; taskId: string | null; actor: string;

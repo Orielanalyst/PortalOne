@@ -22,11 +22,15 @@ layers = []
 checks = []
 colors = {"roads":"#647681", "facilities":"#167c8a", "blockages":"#bb4d3e", "intervention_zones":"#d79e42", "intervention_candidates":"#c88d26", "places":"#3e565d", "facility_footprints":"#6a9999"}
 names = {"roads":"Roads | condition unknown", "facilities":"Health facilities | unverified", "blockages":"Access reports | unverified", "intervention_zones":"Surveyed intervention zones", "intervention_candidates":"Community verification points", "places":"Named settlements", "facility_footprints":"Facility footprints"}
+colors["road_candidates"]="#c88d26"
+names["road_candidates"]="Possible road links | unverified"
+colors["mission_route"]="#75679e"
+names["mission_route"]="Mission route candidate | unverified"
 gpkg = root / "mission.gpkg"
 for index, (name, geojson) in enumerate(payload["dossier"]["layers"].items()):
     source = QgsVectorLayer(str(root / "geojson" / (name + ".geojson")), name, "ogr")
     if not geojson["features"]:
-        geometry = "Polygon" if name == "intervention_zones" else "Point"
+        geometry = "Polygon" if name == "intervention_zones" else "LineString" if name in ("roads","road_candidates","mission_route") else "Point"
         source = QgsVectorLayer(geometry + "?crs=EPSG:4326&field=name:string&field=status:string&field=evidence_id:string", name, "memory")
     if not source.isValid():
         raise RuntimeError("Invalid source layer: " + name)
@@ -40,8 +44,8 @@ for index, (name, geojson) in enumerate(payload["dossier"]["layers"].items()):
     if not layer.isValid() or layer.featureCount() != len(geojson["features"]) or layer.crs().authid() != "EPSG:4326":
         raise RuntimeError("QGIS round-trip validation failed: " + name)
     color = colors[name]
-    if name == "roads":
-        symbol = QgsLineSymbol.createSimple({"line_color":color,"line_width":"0.22"})
+    if name in ("roads","road_candidates","mission_route"):
+        symbol = QgsLineSymbol.createSimple({"line_color":color,"line_width":"0.75" if name=="mission_route" else "0.55" if name=="road_candidates" else "0.22","line_style":"dash" if name in ("road_candidates","mission_route") else "solid"})
     elif name in ("intervention_zones", "facility_footprints"):
         symbol = QgsFillSymbol.createSimple({"color":"220,235,232,80", "outline_color":color,"outline_width":"0.3"})
     else:
@@ -63,7 +67,7 @@ from qgis.core import QgsLayoutItemPage
 layout.pageCollection().pages()[0].setPageSize("A4", QgsLayoutItemPage.Landscape)
 map_item = QgsLayoutItemMap(layout); layout.addLayoutItem(map_item)
 map_item.attemptMove(QgsLayoutPoint(8, 25)); map_item.attemptResize(QgsLayoutSize(208, 159)); map_item.setCrs(project.crs())
-ordered = [layer for key in ["places","facilities","blockages","intervention_candidates","intervention_zones","facility_footprints","roads"] for layer in layers if layer.name() == names[key]]
+ordered = [layer for key in ["places","facilities","blockages","intervention_candidates","road_candidates","mission_route","intervention_zones","facility_footprints","roads"] for layer in layers if layer.name() == names[key]]
 map_item.setLayers(ordered); map_item.setKeepLayerSet(True)
 west,south,east,north = payload["dossier"]["bounds"]
 transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:4326"),project.crs(),project)

@@ -131,3 +131,26 @@ it('labels offline conversation explicitly and never calls a live provider', asy
     expect(turn.reply).toContain('no conversational model'); expect(journal.recent()).toHaveLength(0);
   } finally { runtime.stopMonitor(); journal.close(); vi.unstubAllEnvs(); }
 });
+
+it('persists sourced mission inputs across conversation turns and supplies the known values back to the coordinator',async()=>{
+  let count=0;const contexts:unknown[]=[];
+  const conversation:MissionConversation={async respond(context){contexts.push(context);count++;return count===1?
+    {action:'reply',reply:'I have the cargo count and origin. Where should it go?',mission:null,missionPatch:{quantity:{value:120,support:'120 kits'},origin:{value:'Bamenda',support:'from Bamenda'}}}:
+    {action:'reply',reply:'Destination recorded. What is the required delivery time?',mission:null,missionPatch:{destination:{value:'Bambili',support:'to Bambili'}}};}};
+  const {runtime,journal,source}=setup(conversation);
+  try {
+    const first=await runtime.chat('Deliver 120 kits from Bamenda',0);await runtime.chat('Send them to Bambili',0);
+    expect(journal.requirements(first.sessionId)?.values).toMatchObject({quantity:120,origin:'Bamenda',destination:'Bambili'});
+    expect(contexts[1]).toMatchObject({requirements:{values:{quantity:120,origin:'Bamenda'}}});
+    expect(runtime.state().requirements?.missing.map(v=>v.field)).toContain('deadline');
+    expect(source.snapshot).not.toHaveBeenCalled();expect(journal.recent()).toHaveLength(0);
+  }finally{runtime.stopMonitor();journal.close();}
+});
+it('replaces a model-invented mission value with an explicit input clarification before starting work',async()=>{
+  const {runtime,journal,source}=setup({async respond(){return {action:'reply',reply:'Recorded.',mission:null,missionPatch:{quantity:{value:1000,support:'100 kits'}}};}});
+  try {
+    const turn=await runtime.chat('100 kits',0);expect(turn.status).toBe('replied');expect(turn.reply).toContain('Please confirm');
+    expect(journal.requirements(turn.sessionId)).toBeNull();expect(source.snapshot).not.toHaveBeenCalled();
+    expect(journal.documents().at(-1)?.title).toContain('input clarification');expect(journal.documents()[0]?.status).toBe('failed');
+  }finally{runtime.stopMonitor();journal.close();}
+});

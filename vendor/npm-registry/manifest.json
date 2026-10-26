@@ -1,5 +1,5 @@
 {
-  "acquiredAt": "2026-10-25T15:00:37.305Z",
+  "acquiredAt": "2026-10-26T07:29:25.244Z",
   "baselineCommit": "341de32",
   "lockedPackages": [
     {
@@ -67,6 +67,72 @@
       "tarball": "https://registry.npmjs.org/@langchain/protocol/-/protocol-0.0.20.tgz",
       "sha256": "77304d15e8bfc89dbedede55702a16a9f48649ab4bde1f1a0684f5dcbd7431fa",
       "bytes": 12237,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@turf/distance",
+      "version": "7.3.5",
+      "license": "MIT",
+      "filename": "turf-distance-7.3.5.tgz",
+      "integrity": "sha512-uQAC63zg/l91KUxzfhqio7Ii3+UXTrPOVJScIdRj6EO6+9XHI4kC+AdyIS4cPAv14sZfJLIBxzMnzcGrss+kEA==",
+      "tarball": "https://registry.npmjs.org/@turf/distance/-/distance-7.3.5.tgz",
+      "sha256": "e00c5cc67e654dc897afa3b31af58ad14a758fe27c72a60390b4277398f1b011",
+      "bytes": 4107,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@turf/helpers",
+      "version": "7.3.5",
+      "license": "MIT",
+      "filename": "turf-helpers-7.3.5.tgz",
+      "integrity": "sha512-E/NMGV5MwbjjP7AJXBtsanC3yY8N2MQ87IGdIgkB2ji5AtBpwnH4L3gEqpYN4RlCJJWbLbzO91BbKv2waUd0eg==",
+      "tarball": "https://registry.npmjs.org/@turf/helpers/-/helpers-7.3.5.tgz",
+      "sha256": "6b3280afb3d67a7d2fb68fc72fbc7a8490728f80f32435bbceb501877b9d7bc8",
+      "bytes": 21939,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@turf/invariant",
+      "version": "7.3.5",
+      "license": "MIT",
+      "filename": "turf-invariant-7.3.5.tgz",
+      "integrity": "sha512-ZVIvsBvjr8lO7WxC5zYNjRsjSDvyGvWkJMjuWaJjTU8x+1tmfNnw3gDX/TI2Sit83gcRYLYkNo23lB/udqx/Hg==",
+      "tarball": "https://registry.npmjs.org/@turf/invariant/-/invariant-7.3.5.tgz",
+      "sha256": "126f6f28d82121d0c69b106d8a6691948aedaf9316ae7921aa4a904ccd537704",
+      "bytes": 7995,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@turf/length",
+      "version": "7.3.5",
+      "license": "MIT",
+      "filename": "turf-length-7.3.5.tgz",
+      "integrity": "sha512-Bi+vEP54wt1ly3BRcCOP0nd2kGTYEhGk6haQxTpkrqr3XtmqDh8c3NowSgseN2cegIZRjwCOEC8eSsZ0JemJdA==",
+      "tarball": "https://registry.npmjs.org/@turf/length/-/length-7.3.5.tgz",
+      "sha256": "41ebc3923c4f2fff6b47b913406d49eefddd968497578101da62022a327a93c7",
+      "bytes": 3859,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@turf/meta",
+      "version": "7.3.5",
+      "license": "MIT",
+      "filename": "turf-meta-7.3.5.tgz",
+      "integrity": "sha512-r+ohqxoyqeigFB0oFrQx/YEHIkOKqcKpCjvZkvZs7Tkv+IFco5MezAd2zd4rzK+0DfFgDP3KpJc7HqrYjvEjhg==",
+      "tarball": "https://registry.npmjs.org/@turf/meta/-/meta-7.3.5.tgz",
+      "sha256": "f37e2004c499458f117806443a8b8e159f4830730b5dcf0d44e85aaa681b9d20",
+      "bytes": 36159,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "@turf/nearest-point-on-line",
+      "version": "7.3.5",
+      "license": "MIT",
+      "filename": "turf-nearest-point-on-line-7.3.5.tgz",
+      "integrity": "sha512-MZn6OkEFZpjS6BNUANfqiHMIbQSivu7TNji3a+OAIrnPJ71vp8cbz0N2aVEa5M7I8ipvxoxAPIV3eqg3h280Vg==",
+      "tarball": "https://registry.npmjs.org/@turf/nearest-point-on-line/-/nearest-point-on-line-7.3.5.tgz",
+      "sha256": "660338f03eb233f1a6efac9df8ba859afd73813a78fc5d213cc29ce00ab0b0fb",
+      "bytes": 11979,
       "licenseTextSource": "included in archive"
     },
     {
@@ -265,6 +331,17 @@
       "tarball": "https://registry.npmjs.org/character-reference-invalid/-/character-reference-invalid-2.0.1.tgz",
       "sha256": "1c7cf768d20811f2e6e72b441986814c0264c668a19c73dd38ca10d66f3ecf02",
       "bytes": 3457,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "chrono-node",
+      "version": "2.10.3",
+      "license": "MIT",
+      "filename": "chrono-node-2.10.3.tgz",
+      "integrity": "sha512-MOfrzXgSMZTH4SZ5gyRKQCVwiCrCKY+uYkSJiWoRLXS88DA6WGJm8UjgS+VVEuUQeew/UUXaxrO+SeDn/WCisg==",
+      "tarball": "https://registry.npmjs.org/chrono-node/-/chrono-node-2.10.3.tgz",
+      "sha256": "3840e2cba43f1d865a30a9ac2191991e4f1467290e888a8e2312155895b86f0d",
+      "bytes": 374734,
       "licenseTextSource": "included in archive"
     },
     {
@@ -1124,6 +1201,39 @@
       "tarball": "https://registry.npmjs.org/mustache/-/mustache-4.2.0.tgz",
       "sha256": "05ea84bf212d37d84fb201aa77a82b347a6f744a3fcaef750c88e58f889c357c",
       "bytes": 34584,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "ngraph.events",
+      "version": "1.4.0",
+      "license": "BSD-3-Clause",
+      "filename": "ngraph.events-1.4.0.tgz",
+      "integrity": "sha512-NeDGI4DSyjBNBRtA86222JoYietsmCXbs8CEB0dZ51Xeh4lhVl1y3wpWLumczvnha8sFQIW4E0vvVWwgmX2mGw==",
+      "tarball": "https://registry.npmjs.org/ngraph.events/-/ngraph.events-1.4.0.tgz",
+      "sha256": "b59e7dcdefe18f6ad4ca75cf142deb30f39cb64c95315f7f6dbc466e571ab5eb",
+      "bytes": 7414,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "ngraph.graph",
+      "version": "20.1.2",
+      "license": "BSD-3-Clause",
+      "filename": "ngraph.graph-20.1.2.tgz",
+      "integrity": "sha512-W/G3GBR3Y5UxMLHTUCPP9v+pbtpzwuAEIqP5oZV+9IwgxAIEZwh+Foc60iPc1idlnK7Zxu0p3puxAyNmDvBd0Q==",
+      "tarball": "https://registry.npmjs.org/ngraph.graph/-/ngraph.graph-20.1.2.tgz",
+      "sha256": "51b34bd35e35662a729e38ba844f6bdafa1914df737b2ea991060591d27592e9",
+      "bytes": 29710,
+      "licenseTextSource": "included in archive"
+    },
+    {
+      "name": "ngraph.path",
+      "version": "1.6.1",
+      "license": "MIT",
+      "filename": "ngraph.path-1.6.1.tgz",
+      "integrity": "sha512-NiA52wAoRo/t36/1dBAZkXPeX+rQ1mn82bc9LSfnfywGY9TxH/jXw3x3fZ1mOCblyln26lHtfHHEzssjjyX+aw==",
+      "tarball": "https://registry.npmjs.org/ngraph.path/-/ngraph.path-1.6.1.tgz",
+      "sha256": "4bfadc653fcb5bb41af2c54c7eb593185dc50375767f8729cd0b79a2b7d4c7e3",
+      "bytes": 2588632,
       "licenseTextSource": "included in archive"
     },
     {

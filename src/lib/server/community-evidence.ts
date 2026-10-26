@@ -8,6 +8,8 @@ import { configuredZetaris } from './zetaris';
 import type { ZetarisClient } from './zetaris';
 import { readScenario } from './relief-source';
 import type { QueryReceipt } from './relief-data';
+import type { PublicSnapshot } from './public-evidence';
+import type { publicRequirements } from './mission-requirements';
 
 export const hashEvidence = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export type EvidenceProjection = { id: string; sourceId: string; mapRevision: string; count: number;
@@ -70,8 +72,9 @@ export const EvidenceRowSchema = z.object({ placeId: z.string(), name: z.string(
   logisticsSimulated: z.boolean(), stockFresh: z.boolean(), fleetFresh: z.boolean() }).strict();
 export type EvidenceRow = z.infer<typeof EvidenceRowSchema>;
 export type FederatedEvidence = { mode: 'live-zetaris' | 'offline-fixture'; inputRevision: string; revision: string; sourceId: string;
-  fetchedAt: string; reportCount: number; demoCount: number; liveCount: number; forwardedCount: number; rows: EvidenceRow[]; queries: QueryReceipt[] };
-export interface MissionEvidence { load(snapshot: KoboSnapshot, signal: AbortSignal): Promise<FederatedEvidence> }
+  fetchedAt: string; reportCount: number; demoCount: number; liveCount: number; forwardedCount: number; rows: EvidenceRow[]; queries: QueryReceipt[];
+  publicEvidence?: PublicSnapshot; requirements?:ReturnType<typeof publicRequirements>; dependencyBaseRevision?:string };
+export interface MissionEvidence { load(snapshot: KoboSnapshot, signal: AbortSignal,options?:{freshPublic?:boolean}): Promise<FederatedEvidence> }
 export function communityQueries(batchId: string) {
   if (!/^[a-f0-9]{64}$/.test(batchId)) throw new Error('Invalid evidence batch ID.');
   return [

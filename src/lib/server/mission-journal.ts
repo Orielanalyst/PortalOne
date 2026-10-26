@@ -8,6 +8,10 @@ import type { LogisticsAdvice } from './mission-logistics';
 import type { ConversationReceipt } from './mission-conversation';
 import type { EvidenceCitation, MissionDocument, ReportBundle, JournalChange } from '../mission-artifacts';
 import type { Interpretation } from './signal-interpretation';
+import {applyMissionPatch} from './mission-requirements';
+import type {MissionRequirements,UserInputSource} from './mission-requirements';
+import type {MissionFeasibility} from './mission-feasibility';
+import type {OperatorReview} from './mission-review';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
@@ -63,6 +67,86 @@ export class MissionJournal {
     this.db.exec(`CREATE TABLE IF NOT EXISTS signal_interpretations(id TEXT PRIMARY KEY,cache_key TEXT NOT NULL,
       run_id TEXT NOT NULL REFERENCES runs(id),signal_id TEXT NOT NULL REFERENCES signals(id),status TEXT NOT NULL,value TEXT NOT NULL,
       UNIQUE(run_id,signal_id)); CREATE INDEX IF NOT EXISTS interpretation_cache ON signal_interpretations(cache_key,status);`);
+    this.db.exec(`CREATE TABLE IF NOT EXISTS mission_requirements(session_id TEXT NOT NULL,version INTEGER NOT NULL,value TEXT NOT NULL,
+      PRIMARY KEY(session_id,version)); CREATE TABLE IF NOT EXISTS mission_run_inputs(run_id TEXT PRIMARY KEY REFERENCES runs(id),value TEXT NOT NULL);`);
+    this.db.exec('CREATE TABLE IF NOT EXISTS mission_calculations(run_id TEXT PRIMARY KEY REFERENCES runs(id),value TEXT NOT NULL)');
+    this.db.exec(`CREATE TABLE IF NOT EXISTS operator_reviews(id TEXT PRIMARY KEY,run_id TEXT NOT NULL REFERENCES runs(id),plan_id TEXT NOT NULL,
+      status TEXT NOT NULL,reason TEXT,value TEXT NOT NULL); CREATE TABLE IF NOT EXISTS review_revisions(review_id TEXT PRIMARY KEY REFERENCES operator_reviews(id),
+      next_run_id TEXT NOT NULL UNIQUE REFERENCES runs(id));`);
+  }
+  requirements(sessionId:string):MissionRequirements|null {
+    const row=this.db.prepare('SELECT value FROM mission_requirements WHERE session_id=? ORDER BY version DESC LIMIT 1').get(sessionId);
+    return row?JSON.parse(row['value'] as string):null;
+  }
+  updateRequirements(sessionId:string,patch:unknown,messages:UserInputSource[],turnId:string):MissionRequirements {
+    const previous=this.requirements(sessionId),next=applyMissionPatch(previous,patch,messages,turnId);
+    if(previous?.revision===next.revision)return previous;
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      this.db.prepare('INSERT INTO mission_requirements VALUES(?,?,?)').run(sessionId,next.version,JSON.stringify(next));
+      const affected=this.db.prepare("SELECT DISTINCT a.run_id FROM assessments a JOIN runs r ON a.run_id=r.id WHERE r.session_id=? AND a.status<>'invalidated'").all(sessionId);
+      for(const row of affected) {
+        const runId=row['run_id'] as string;
+        this.db.prepare("UPDATE assessments SET status='invalidated',reason='Mission requirements changed; a fresh proposal and review are required.' WHERE run_id=?").run(runId);
+        this.invalidateReviews(runId,'Operator mission requirements changed; this decision no longer applies.');
+        this.event(runId,'coordinator','requirements_changed','Operator requirements changed. This proposal is superseded and requires a fresh calculation and review.',[next.id]);
+      }
+      this.db.exec('COMMIT');this.changed();return next;
+    }catch(error){this.db.exec('ROLLBACK');throw error;}
+  }
+  bindRequirements(runId:string) {
+    const run=this.run(runId);if(!run)throw new Error('Unknown mission run.');
+    this.db.prepare('INSERT INTO mission_run_inputs VALUES(?,?)').run(runId,JSON.stringify(this.requirements(run.sessionId)));
+  }
+  boundRequirements(runId:string):MissionRequirements|null {
+    const row=this.db.prepare('SELECT value FROM mission_run_inputs WHERE run_id=?').get(runId);
+    return row?JSON.parse(row['value'] as string):null;
+  }
+  saveFeasibility(runId:string,value:MissionFeasibility){this.db.prepare('INSERT INTO mission_calculations VALUES(?,?) ON CONFLICT(run_id) DO UPDATE SET value=excluded.value').run(runId,JSON.stringify(value));this.changed();}
+  feasibility(runId:string):MissionFeasibility|null{const row=this.db.prepare('SELECT value FROM mission_calculations WHERE run_id=?').get(runId);return row?JSON.parse(row['value'] as string):null;}
+  reviews(runId:string,now=Date.now()):OperatorReview[] {
+    const rows=this.db.prepare('SELECT * FROM operator_reviews WHERE run_id=? ORDER BY rowid').all(runId);
+    return rows.map(row=>{
+      const value=JSON.parse(row['value'] as string) as OperatorReview;let status=row['status'] as OperatorReview['status'],reason=row['reason'] as string|null;
+      if(status==='active' && value.decision==='approve' && value.validUntil && Date.parse(value.validUntil)<=now) {
+        status='expired';reason='The bounded operator approval expired; refresh sources and review again.';
+        this.db.prepare("UPDATE operator_reviews SET status='expired',reason=? WHERE id=?").run(reason,value.id);
+        this.event(runId,'operator','review_expired',reason,[value.id]);
+      }
+      return {...value,status,reason,replacementRunId:this.db.prepare('SELECT next_run_id FROM review_revisions WHERE review_id=?').get(value.id)?.['next_run_id'] as string|undefined ?? null};
+    });
+  }
+  reviewByRequestId(requestId:string):OperatorReview|null {
+    const row=this.db.prepare('SELECT run_id FROM operator_reviews WHERE id=?').get(`review-${requestId}`);
+    return row?this.reviews(row['run_id'] as string).find(value=>value.id===`review-${requestId}`) ?? null:null;
+  }
+  saveReview(value:OperatorReview) {
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      this.db.prepare("UPDATE operator_reviews SET status='superseded',reason='A newer operator decision replaced this decision.' WHERE plan_id=? AND status='active'").run(value.planId);
+      this.db.prepare('INSERT INTO operator_reviews VALUES(?,?,?,?,?,?)').run(value.id,value.runId,value.planId,value.status,value.reason,JSON.stringify(value));
+      if(value.decision!=='approve')this.db.prepare("UPDATE assessments SET status='invalidated',reason=? WHERE run_id=?").run(value.decision==='reject'?'The operator rejected this proposal.':'The operator requested a revised proposal.',value.runId);
+      this.db.exec('COMMIT');
+      this.event(value.runId,'operator',`proposal_${value.decision}`,`Local operator: ${value.decision.replaceAll('_',' ')} for plan v${value.version}. The decision binds its exact document, inputs, evidence and calculation; no dispatch is authorized.`,[value.id,value.planId]);
+    }catch(error){this.db.exec('ROLLBACK');throw error;}
+  }
+  invalidateReviews(runId:string,reason:string) {
+    const rows=this.db.prepare("SELECT id FROM operator_reviews WHERE run_id=? AND status='active'").all(runId);
+    for(const row of rows){this.db.prepare("UPDATE operator_reviews SET status='invalidated',reason=? WHERE id=?").run(reason,row['id'] as string);this.event(runId,'operator','review_invalidated',reason,[row['id'] as string]);}
+  }
+  invalidateApprovalsAfterRestart() {
+    const rows=this.db.prepare("SELECT DISTINCT run_id FROM operator_reviews WHERE status='active'").all();
+    for(const row of rows)this.invalidateReviews(row['run_id'] as string,'Application restarted; the prior decision remains historical and sources require fresh review.');
+  }
+  linkReviewRevision(reviewId:string,runId:string){this.db.prepare('INSERT INTO review_revisions VALUES(?,?)').run(reviewId,runId);this.changed();}
+  reviewForRevision(runId:string):OperatorReview|null {
+    let current:string|null=runId;
+    for(let depth=0;current && depth<20;depth++) {
+      const row=this.db.prepare('SELECT r.run_id,r.id FROM operator_reviews r JOIN review_revisions x ON x.review_id=r.id WHERE x.next_run_id=?').get(current);
+      if(row)return this.reviews(row['run_id'] as string).find(value=>value.id===row['id']) ?? null;
+      current=this.lineage(current).previousRunId;
+    }
+    return null;
   }
   saveInterpretation(value:Interpretation) {
     this.db.prepare('INSERT INTO signal_interpretations VALUES(?,?,?,?,?,?)').run(value.id,value.cacheKey,value.runId,value.signalId,value.status,JSON.stringify(value));
@@ -219,11 +303,14 @@ export class MissionJournal {
   }
   finishTask(id: string, result: unknown) { this.db.prepare("UPDATE tasks SET status='complete',result=? WHERE id=?").run(JSON.stringify(result), id); }
   observeEvidence(evidence: FederatedEvidence) {
-    const affected = this.db.prepare("SELECT id,run_id FROM assessments WHERE source_id=? AND revision<>? AND status<>'invalidated'").all(evidence.sourceId, evidence.revision);
+    const affected = this.db.prepare("SELECT id,run_id,evidence FROM assessments WHERE source_id=? AND revision<>? AND status<>'invalidated'").all(evidence.sourceId, evidence.revision)
+      .filter(row=>{const previous=JSON.parse(row['evidence'] as string) as FederatedEvidence;
+        return (previous.dependencyBaseRevision ?? previous.revision)!==(evidence.dependencyBaseRevision ?? evidence.revision) || previous.requirements?.id===evidence.requirements?.id;});
     this.db.exec('BEGIN IMMEDIATE');
     try {
       for (const row of affected) {
         this.db.prepare("UPDATE assessments SET status='invalidated',reason=? WHERE id=?").run('Federated community evidence or logistics changed; fresh review required.', row['id'] as string);
+        this.invalidateReviews(row['run_id'] as string,'A relevant source, resource or mission dependency changed. The prior operator decision is withdrawn.');
         this.event(row['run_id'] as string, 'checker', 'assessment_invalidated', 'This planning assessment is superseded by changed federated evidence. Fresh review is required.', [row['id'] as string]);
       }
       this.db.exec('COMMIT'); return affected.map(row => row['id'] as string);
@@ -280,12 +367,12 @@ export class MissionJournal {
   recent(): JournalRun[] {
     return this.db.prepare('SELECT id FROM runs ORDER BY started_at DESC LIMIT 20').all().map(row => this.run(row['id'] as string)!);
   }
-  linkReplacement(previousRunId: string, nextRunId: string) {
+  linkReplacement(previousRunId: string, nextRunId: string,cause='source_change') {
     const before=this.run(previousRunId),after=this.run(nextRunId);
     if(!before || !after || before.id===after.id || before.sessionId!==after.sessionId)throw new Error('Invalid mission replacement lineage.');
     this.db.prepare('INSERT INTO mission_replacements VALUES(?,?,?)').run(previousRunId,nextRunId,new Date().toISOString());
-    this.event(previousRunId,'coordinator','replacement_started','Mission Coordinator is preparing a replacement after changed evidence. This run and its downloads remain historical.',[nextRunId]);
-    this.event(nextRunId,'coordinator','replaces_run','Mission Coordinator has started a new evidence review to replace the previous mission snapshot.',[previousRunId]);
+    this.event(previousRunId,'coordinator','replacement_started',cause==='operator_revision'?'Mission Coordinator is preparing a replacement after the operator requested changes. This proposal and its downloads remain historical.':'Mission Coordinator is preparing a replacement after changed evidence. This run and its downloads remain historical.',[nextRunId]);
+    this.event(nextRunId,'coordinator','replaces_run',cause==='operator_revision'?'Mission Coordinator has started a revised committee proposal in response to the operator decision.':'Mission Coordinator has started a new evidence review to replace the previous mission snapshot.',[previousRunId]);
   }
   lineage(runId:string) {
     return {previousRunId:this.db.prepare('SELECT previous_run_id FROM mission_replacements WHERE next_run_id=?').get(runId)?.['previous_run_id'] as string|undefined ?? null,

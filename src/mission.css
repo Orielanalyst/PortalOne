@@ -208,5 +208,22 @@
 .mission-currency button,.mission-lineage button{border:1px solid currentColor;border-radius:5px;background:transparent;color:inherit;padding:7px 11px;cursor:pointer}
 .mission-memory{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
 .mission-memory summary{cursor:pointer;color:var(--dim)}
+.mission-inputs{margin:0 0 24px;padding:18px 20px;border:1px solid var(--line);border-radius:9px;line-height:1.7;font-size:13px;overflow-wrap:anywhere}
+.mission-inputs>strong{color:var(--text)}
+.mission-inputs summary{cursor:pointer;color:var(--dim)}
+.mission-inputs dl>div{display:grid;grid-template-columns:minmax(110px,1fr) minmax(0,2fr);gap:12px;padding:5px 0;border-bottom:1px solid var(--line)}
+.mission-inputs dt{text-transform:capitalize;color:var(--dim)}
+.mission-inputs dd{margin:0}
+.operator-review{margin:26px 0;padding:20px;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.operator-review button{border:1px solid var(--line);border-radius:6px;background:transparent;color:inherit;padding:8px 12px;cursor:pointer}
+.operator-review button:disabled{opacity:.4;cursor:not-allowed}
+.review-ack{display:flex;align-items:flex-start;gap:10px;margin:16px 0}
+.review-ack input{margin-top:5px;flex:none}
+.review-comment{display:block;color:var(--dim)}
+.review-comment textarea{display:block;width:100%;box-sizing:border-box;background:transparent;color:inherit;border:1px solid var(--line);border-radius:6px;margin:6px 0 14px;padding:9px;font:inherit;resize:vertical}
+.review-actions{display:flex;flex-wrap:wrap;gap:8px}
+.review-history{padding-left:20px}
+.review-history>li{padding:12px 0;border-bottom:1px solid var(--line)}
+.review-history p{margin:4px 0}
 .mission-memory article{padding:12px 0;border-bottom:1px solid var(--line)}
 .mission-memory article>code{display:block;font-size:10px;margin:6px 0;overflow-wrap:anywhere}
