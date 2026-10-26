@@ -1,5 +1,12 @@
 # Judge guide
 
+**Active extension:** [goal 1–4](GOAL_1_TO_4.md) adds live public context,
+source-backed road relationships, conversational mission feasibility and exact
+proposal review. Native intake, streamed committee revisions and nine-layer
+exports have run locally. The combined approval/revision/source-change acceptance
+gate is still open. These new private-run artifacts have not been published;
+the separately authorized public snapshot below remains an earlier checkpoint.
+
 **Latest reviewed evidence:** [16-page PDF](evidence/private-inference-demo-2026-10-26/report.pdf),
 [QGIS/geodata pack](evidence/private-inference-demo-2026-10-26/committee-pack.zip)
 and [minimal native validation receipt](evidence/private-inference-2026-10-26.json).

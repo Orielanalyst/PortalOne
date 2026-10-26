@@ -1,5 +1,14 @@
 # Build log
 
+### 26 October — native rehearsal and publication corrections
+
+- Real coordinator turns captured all required mission inputs, asked for missing details and waited before investigating. Source-bound values survived restart. Numeric string normalization and bounded reply repair retain original attempts and preserve already validated inputs.
+- Native Node received ReliefWeb's bot-block response despite the earlier Bun transport success. Added the documented public IFRC GO fallback, verified Cameroon country identity, and excluded contact/narrative fields. Record creation/update dates remain distinct from field observation time; bounded historical context never proves current corridor conditions.
+- Native committees published initial plans before evaluation, revised with actual diffs, and produced the nine-layer PDF/GIS handoff. A fresh network-disabled QGIS process reopened the extracted layers with valid CRS, styles, paths and geometry. Artifact hashes and private-content checks passed. Visual/content review then found a source-label error, and the exact proposal was rejected through the real UI; this pack is historical and cannot be approved.
+- Fixed excluded-access counts to count records rather than warnings. Publication guards reject public-source/demo conflation and unsupported aggregate claim counts. Bounded corrections identify offending phrases and regenerate from evidence without copying rejected prose. Uncited factual questions remain rejected. Failed drafts, receipts and decisions remain inspectable.
+- Restarted the previously configured Docker and Nightshift services after they were found stopped. Real Nemotron inference recovered; the cold standalone federation check timed out, while subsequent native mission query receipts completed. Combined final approval, requested revision and changed-evidence withdrawal remain open until demonstrated together. New private-run artifacts remain local.
+- Current full local checks pass: 160 tests across 22 files, TypeScript and the production build. Vite reports bundle-size and plugin-timing advisories; they are not represented as failed tests or hosted CI results.
+
 ### 26 October — goal 1–4 implementation checkpoint
 
 - The human made public evidence, road relationships, mission-specific feasibility and exact-version operator review one persistent goal. [Acceptance requirements](GOAL_1_TO_4.md) retain the full scope; component success alone does not close it.

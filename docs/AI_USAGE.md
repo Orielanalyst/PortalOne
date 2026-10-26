@@ -88,6 +88,16 @@ public sharing or dispatch approval were automated.
 
 ## Responsibility and attribution
 
+26 October continuation: Codex implemented the public-source, road relationship,
+mission-input/feasibility and exact-version operator-review extensions. Native
+Nightshift/Nemotron runs exercised conversation, investigation, planning,
+evaluation and report generation; deterministic code performs source checks,
+calculations, version binding and GIS validation. Rejected drafts and model
+receipts remain local. A real UI rejection records a source-label error found
+during visual review. The combined approval/revision/invalidation acceptance gate
+remains open; implementation and component passes are not represented as final
+acceptance or operational authority.
+
 The human owns project direction and final acceptance. AI has contributed
 architecture, scope and demo suggestions as well as code and documents; those
 contributions are not represented as exclusively human-authored. A commit made

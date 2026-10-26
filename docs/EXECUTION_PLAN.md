@@ -1,5 +1,11 @@
 # Execution plan — revised 2026-10-25
 
+26 October active priority: [goal 1–4](GOAL_1_TO_4.md) supersedes the older open
+implementation list below for public context, road relationships, mission-specific
+feasibility and operator review. The implementation is present; native combined
+acceptance is still required. Field confirmation, actual NGO resources, durable
+scheduling after process restart and the submission package remain distinct work.
+
 26 October, private inference: explicit human authorization resolves the prior
 transmission gate for this project/provider. The interpreter processes report_text
 under that local scope and keeps private quotations/mentions out of shared output.
