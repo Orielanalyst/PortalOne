@@ -155,7 +155,16 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
     modelEvidence:citations.filter(item=>!['report','interpretation'].includes(item.kind)).concat(citations.filter(item=>item.kind==='report').slice(0,12),citations.filter(item=>item.kind==='interpretation').slice(0,12)).map(({id,kind,title,statement,recordId})=>{
       if(kind==='mission' && recordId.startsWith('requirements:')) {
         const profile=JSON.parse(statement);
-        return {id,kind,title,statement:JSON.stringify({sourceContext:'Current operator-supplied mission inputs. These are separate from the registered synthetic/expired warehouse and fleet ledger. Read the supplied deadline and values; missing lists only absent inputs.',values:profile.values,missing:profile.missing,limitation:profile.limitation})};
+        return {id,kind,title,statement:JSON.stringify({sourceContext:'Current operator-supplied mission inputs, separate from the registered synthetic/expired warehouse and fleet ledger. Exact quantities and times are generated directly in the mission-input and feasibility sections, not transcribed by the narrative writer.',mission:{mode:profile.values.mode,origin:profile.values.origin,destination:profile.values.destination,cargoLabel:profile.values.cargoLabel},recordedInputFields:Object.keys(profile.values),deadlineRecorded:Boolean(profile.values.deadline),missing:profile.missing,limitation:profile.limitation})};
+      }
+      if(kind==='calculation') {
+        const result=JSON.parse(statement);
+        return {id,kind,title,statement:JSON.stringify({status:result.status,missing:result.missing,route:result.route,alternativeRoute:result.alternativeRoute,accessRelationships:result.accessRelationships,
+          checks:result.checks.map((check:{code:string;status:string;message:string;fields:string[]})=>({code:check.code,status:check.status,explanation:check.fields.some(field=>!['origin','destination'].includes(field))?'Exact operator values and numerical verification are in the generated mission-input/feasibility sections.':check.message})),limitations:result.limitations,dispatchAuthorized:false})};
+      }
+      if(kind==='query' && recordId===evidence.revision) {
+        const context=JSON.parse(statement);
+        return {id,kind,title,statement:JSON.stringify({...context,communities:context.communities.map(({stockUnits:_stock,unitMassKg:_mass,stockObservedAt:_stockAt,stockValidUntil:_stockUntil,fleetCount:_fleet,availableVehicles:_available,fleetObservedAt:_fleetAt,fleetValidUntil:_fleetUntil,...facts}:Record<string,unknown>)=>facts)})};
       }
       return {id,kind,title,statement:statement.replace(/reference longitude [-\d.]+, latitude [-\d.]+; /g,'').replace(/ at longitude [-\d.]+, latitude [-\d.]+/g,' at the mapped source reference').replace(/ Bounds \[[^\]]+\] in EPSG:4326\./g,' Geographic coordinates are retained in the generated source inventory.')};
     }),gaps,layers,

@@ -7,7 +7,21 @@ import { buildDossier,validateCitedMarkdown } from './mission-dossier';
 import { runCommitteeMission } from './committee-mission';
 import type { CommitteeWriter } from './committee-mission';
 import {normalizeKobo} from './kobo';
+import {publicRequirements} from './mission-requirements';
 const map=new CommunityMap();
+it('keeps exact mission values in source artifacts while giving the writer separated context and check outcomes',async()=>{
+  const source=await replayCommunitySource.snapshot(),base=await new FixtureCommunityEvidence(map).load(source,AbortSignal.timeout(1000));
+  const requirements=publicRequirements({id:'inputs-test',version:1,revision:'a'.repeat(64),updatedAt:'2026-10-26T10:00:00Z',sources:{},values:{mode:'demonstration',origin:'Bamenda',deadline:'2026-10-27T11:00:00Z',stockUnits:100}});
+  const dossier=buildDossier('test','Map facilities',source,{...base,requirements},map);
+  const original=dossier.citations.find(c=>c.recordId.startsWith('requirements:'))!,projected=dossier.modelEvidence.find(c=>c.id===original.id)!;
+  expect(JSON.parse(original.statement).values.stockUnits).toBe(100);
+  expect(JSON.parse(projected.statement)).toMatchObject({deadlineRecorded:true,recordedInputFields:expect.arrayContaining(['stockUnits','deadline'])});
+  expect(projected.statement).not.toContain('2026-10-27T11:00:00Z');expect(projected.statement).not.toContain('"stockUnits":100');
+  const calculation=dossier.modelEvidence.find(c=>c.kind==='calculation')!;
+  expect(JSON.parse(calculation.statement)).toMatchObject({status:'needs_inputs',dispatchAuthorized:false});
+  expect(JSON.parse(calculation.statement).missing.some((field:{field:string})=>field.field==='deadline')).toBe(false);
+  expect(dossier.modelEvidence.find(c=>c.title==='Independently queryable community/resource context')!.statement).not.toContain('"stockUnits":');
+});
 it('counts excluded access records once even when each has several location warnings',async()=>{
   const original=await replayCommunitySource.snapshot(),source={...original,records:original.records.map(record=>normalizeKobo({...record.raw as Record<string,unknown>,category:'road_blockage'},'offlineReplay',original.checkedAt))};
   const evidence=await new FixtureCommunityEvidence(map).load(source,AbortSignal.timeout(1000)),dossier=buildDossier('test','Map access gaps',source,evidence,map);
