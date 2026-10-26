@@ -16,6 +16,7 @@ styles=getSampleStyleSheet()
 styles.add(ParagraphStyle(name="MissionTitle",fontName="Helvetica-Bold",fontSize=25,leading=29,textColor=colors.HexColor("#183d44"),spaceAfter=15))
 styles.add(ParagraphStyle(name="MissionBody",fontName="Helvetica",fontSize=10,leading=15,spaceAfter=9,textColor=colors.HexColor("#273d43")))
 styles.add(ParagraphStyle(name="MissionSmall",parent=styles["MissionBody"],fontSize=8,leading=11,spaceAfter=5,wordWrap="CJK"))
+styles.add(ParagraphStyle(name="MissionGap",parent=styles["MissionBody"],leading=14,spaceAfter=5))
 styles["Heading2"].textColor=colors.HexColor("#167c8a"); styles["Heading2"].spaceBefore=15; styles["Heading2"].spaceAfter=8
 styles["Heading3"].spaceBefore=10
 styles["Heading3"].fontName="Helvetica-Bold"; styles["Heading3"].fontSize=11; styles["Heading3"].leading=14
@@ -101,7 +102,7 @@ if dossier.get("planning"):
 story += [PageBreak(),Paragraph("MISSION_ATLAS_INSERT",styles["Heading1"]),p("This page is replaced with the full-resolution landscape atlas after narrative pagination. The native map is retained at its authored page size.")]
 story += [PageBreak(),p("Road geometry indicates mapped existence. It does not establish present passability. Blockage points require report coordinates; no point is invented for an unlocated claim. Intervention candidates are community references, not surveyed zones.")]
 story.append(Paragraph("Required evidence gaps",styles["Heading2"]))
-story += [p("• "+gap) for gap in dossier["gaps"]]
+story += [Paragraph(inline("• "+gap),styles["MissionGap"]) for gap in dossier["gaps"]]
 story += [PageBreak(),Paragraph("Health facility reference inventory",styles["Heading1"]),p("Coordinates are WGS84 (EPSG:4326). Polygon-derived coordinates are an existing boundary vertex, not a centroid, entrance or ambulance access point. Capacity and operation remain unverified.")]
 rows=[["Mapped health feature / source","Type","Latitude","Longitude","Capacity"]]
 for feature in dossier["layers"]["facilities"]["features"]:

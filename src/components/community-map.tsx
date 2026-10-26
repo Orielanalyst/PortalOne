@@ -17,7 +17,10 @@ export function CommunityMapView({ view }: { view: MissionView }) {
   const [ready,setReady]=useState(false),[error,setError]=useState(false),[counts,setCounts]=useState({roads:0,facilities:0});
   const [showFacilities,setShowFacilities]=useState(true),[showReports,setShowReports]=useState(true),[showCandidates,setShowCandidates]=useState(true);
   const route=view.planning?.route;
-  const framing=(bounds:Leaflet.LatLngBounds)=>map.current?.fitBounds(bounds,{paddingTopLeft:[45,118],paddingBottomRight:[45,155],maxZoom:14,animate:false});
+  const framing=(bounds:Leaflet.LatLngBounds)=>{
+    const compact=(element.current?.clientWidth??0)<=600;
+    map.current?.fitBounds(bounds,{paddingTopLeft:[45,compact?45:118],paddingBottomRight:[45,compact?45:155],maxZoom:14,animate:false});
+  };
   useEffect(()=>{
     let cancelled=false;const abort=new AbortController();let resize:ResizeObserver|undefined;
     void(async()=>{
@@ -98,7 +101,7 @@ export function CommunityMapView({ view }: { view: MissionView }) {
         const points=route.geometry.coordinates;
         for(const [xy,letter,name,kind] of [[points[0]!,'A',route.from,'Origin road reference'],[points.at(-1)!,'B',route.to,'Destination road reference']] as [Position,string,string,string][]){
           L.marker([xy[1]!,xy[0]!],{pane:'endpoints',icon:L.divIcon({className:'mission-endpoint '+(letter==='B'?'mission-target':''),html:'<span>'+letter+'</span>',iconSize:[34,34],iconAnchor:[17,17]})})
-            .bindTooltip(textNode(letter+' · '+name),{permanent:true,direction:'right',offset:[18,0],className:'endpoint-label'})
+            .bindTooltip(textNode(letter+' · '+name),{permanent:true,direction:letter==='B'?'left':'right',offset:[letter==='B'?-18:18,0],className:'endpoint-label'})
             .bindPopup(textNode(kind+' · '+name+'. Actual loading/unloading entrance and last-mile access require field confirmation.')).addTo(overlays.current);
         }
         if(lastFramed.current!==route.id){framing(routeBounds.current);lastFramed.current=route.id;}
@@ -107,7 +110,7 @@ export function CommunityMapView({ view }: { view: MissionView }) {
     return()=>{cancelled=true;};
   },[ready,signature]);
   useEffect(()=>{if(!ready||!map.current)return;for(const [group,visible] of [[facilities.current,showFacilities],[reportPoints.current,showReports],[roadCandidates.current,showCandidates]] as const){if(group){if(visible)map.current.addLayer(group);else map.current.removeLayer(group);}}},[ready,showFacilities,showReports,showCandidates]);
-  const overview=()=>{const [w,s,e,n]=view.map.bounds as [number,number,number,number];map.current?.fitBounds([[s,w],[n,e]],{paddingTopLeft:[35,118],paddingBottomRight:[35,155],animate:false});};
+  const overview=()=>{const [w,s,e,n]=view.map.bounds as [number,number,number,number],compact=(element.current?.clientWidth??0)<=600;map.current?.fitBounds([[s,w],[n,e]],{paddingTopLeft:[35,compact?35:118],paddingBottomRight:[35,compact?35:155],animate:false});};
   return <div className="community-map">
     <div ref={element} className="map-canvas" aria-label="Mission map with traced route, source boundaries and health facilities"/>
     <div className="map-caption"><span className="eyebrow">MISSION GEOGRAPHY · FIELD CONDITIONS UNVERIFIED</span><h2>{route?.geometry?route.from+' → '+route.to:'Bamenda–Bambili evidence map'}</h2>
