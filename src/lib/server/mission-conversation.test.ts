@@ -17,6 +17,11 @@ const snapshot = () => ({ sourceId: 'kobo:test', checkedAt: new Date().toISOStri
 const investigate: ConversationDecision = { action: 'investigate', reply: 'I’ll check the community evidence around Bambili.',
   mission: { area: 'Bambili', objective: 'Investigate community reports and missing delivery evidence.' } };
 const reply = (text: string): ConversationDecision => ({ action: 'reply', reply: text, mission: null });
+it('does not publish a wrap-up that promotes report labels to field-confirmed locations',async()=>{
+  const request=vi.fn(async()=>new Response(`data: ${JSON.stringify({model:NEMOTRON_STREAM_MODELS.deep,meterless:{from_cache:false,receipt:{cache:{status:'miss'},phases:[{}]}},choices:[{delta:{content:JSON.stringify({reply:'The draft is ready. Field observations confirm three communities with submitted coordinates.'})},finish_reason:'stop'}]})}\n\ndata: [DONE]\n\n`,{headers:{'content-type':'text/event-stream'}}));
+  const conversation=new NightshiftConversation(new MeterlessClient({baseUrl:'http://127.0.0.1:8088',token:'explicit-test-token',fetch:request as typeof fetch}));
+  await expect(conversation.summarize({mission:'Review Bambili',summary:'Committee draft published.',at:null,gaps:['No field verification.'],reports:{demonstration:8,liveLabelled:0},communities:['Bambili'],planning:null},AbortSignal.timeout(5000),()=>{})).rejects.toThrow('field confirmation');
+});
 function setup(conversation?: MissionConversation) {
   const journal = new MissionJournal(':memory:');
   const source = { origin: null, snapshot: vi.fn(async () => snapshot()) };
