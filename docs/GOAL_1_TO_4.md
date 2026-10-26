@@ -1,4 +1,29 @@
-# Active goal: complete the live mission-to-review path
+# Live mission-to-review acceptance
+
+**26 October — local acceptance completed for the supported demonstration corridor.**
+The native path captured mission inputs, queried current community/public evidence,
+streamed findings and plan v1 before evaluation, revised with actual diffs, exported
+the map pack, recorded exact-version approval, withdrew it after a new source record,
+and automatically produced a reviewed replacement. Requested changes also produced
+a linked successor. The UI review controls were exercised. Restart retained inputs,
+files and historical decisions while withdrawing active approval for fresh review.
+
+The final local layout edition has a visually reviewed 27-page PDF, valid internal
+citations, and eleven styled GIS layers reopened from its ZIP in fresh network-disabled
+QGIS. The compact browser map keeps its title and legend outside the route canvas.
+The current local code gate passes 173 tests, typecheck, World Model conformance,
+vendored asset checks, both offline replays and production build. Hosted CI remains
+separate: its last inspected jobs could not start because of the account billing lock.
+
+This is demonstration acceptance, not evidence of field clearance, verified facility
+capacity, independently confirmed NGO stock/fleet, durable background scheduling or
+coverage outside the acquired corridor. The new private acceptance files remain local;
+the earlier single-snapshot publication permission was not extended.
+
+## Earlier implementation checkpoint
+
+The table below preserves the original acceptance criteria and the earlier open
+implementation state. The completion record above supersedes its pending-work notes.
 
 The human asked to achieve items 1–4 together. Completion requires the whole path
 below; passing component checks does not close the goal. Scope is one supported
