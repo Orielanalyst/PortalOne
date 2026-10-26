@@ -6,7 +6,7 @@ import type { KoboSnapshot } from './kobo';
 import type { MissionEvidence, FederatedEvidence } from './community-evidence';
 import type { MeterlessClient, StreamAnswer } from './meterless';
 import { NEMOTRON_STREAM_MODELS } from './meterless';
-import { buildDossier, validateCitedMarkdown, calendarDays } from './mission-dossier';
+import { buildDossier, validateCitedMarkdown } from './mission-dossier';
 import type { MissionDossier } from './mission-dossier';
 import { MissionWorld, observeMissionEvidence } from './mission-world';
 import type { MissionMemoryView } from './mission-world';
@@ -103,15 +103,12 @@ DATA:${JSON.stringify({objective:run.message,evidenceRevision:evidence.revision,
       if((answer || outputLimit) && publicationRepairs>0 && !correction) {
         publicationRepairs--;
         journal.event(run.id,'coordinator','publication_repair',`Mission Coordinator → ${actor==='planner'?'Planning Agent':actor==='expert'?'Mission Expert':actor==='evaluator'?'Evaluator Agent':'Report preparation'}: correct the rejected document against its source checks. One repair per document, at most two per run; the independent evaluation still follows.`,[id],taskId,parent);
-        const rejected=answer?.content ?? journal.documents(run.id).find(document=>document.id===id)?.markdown ?? '';
-        const supportedDates=new Set(dossier.citations.flatMap(citation=>calendarDays(citation.statement)));
-        const safeRejected=rejected.replace(/\[(?:E[a-f0-9]{10}|S\d+)\]/g,'[source required]')
-          .replace(/\b\d{4}-\d{2}-\d{2}(?=T|\b)/g,date=>supportedDates.has(date)?date:'[operator deadline not supplied]');
         return write(actor,taskId,kind,title,instruction,version,`PUBLICATION CORRECTION: The previous draft failed this check: ${(error instanceof Error ? error.message : 'Content validation failed.').replace(/E[a-f0-9]{10}/g,'(unrecognized source)')}
 Rewrite the full document with supported citations in EVERY substantive block, including the final hold statement and decision gates. Remove unsupported claims; unknown resource records never prove absent resources. Preserve missing inputs as gaps. Do not merely append a generic citation to unsupported prose.
 Keep this correction under 250 words excluding citation IDs. Do not list the facility/place inventory; its complete data is already in the generated appendices.
 Select citations only from DATA.allowedSources and verify each statement against its matching EVIDENCE entry. Rejected citation markers below have been removed; re-establish support from the supplied evidence.
-${kind==='critique'?'Regenerate this evaluation from the supplied latest plan and EVIDENCE. Put all explanatory claims in cited Evidence checks. If accepting, Required changes must contain only the control line "- None." with no additional paragraph. The rejected document remains available in the journal.':kind==='report'?'Regenerate the report from EVIDENCE and the supplied reviewed plan. Do not reproduce the rejected report or its inventory enumeration. Use the generated interpretation inventory only for the single aggregate text-claim count; omit all per-report totals and ranges. The rejected document remains available in the journal.':`REJECTED DRAFT:\n${safeRejected}`}`);
+Regenerate from EVIDENCE and the supplied reviewed material. The rejected draft is deliberately omitted so its unsupported wording cannot anchor this correction; it remains inspectable in the journal. Questions that mention a count, road ID, named feature, role assignment or evidence finding MUST carry source citations, just like statements.
+${kind==='critique'?'Put all explanatory claims in cited Evidence checks. If accepting, Required changes must contain only the control line "- None." with no additional paragraph.':kind==='report'?'Regenerate the report from EVIDENCE and the supplied reviewed plan. Use the generated interpretation inventory only for the single aggregate text-claim count; omit all per-report totals and ranges.':'Use brief cited paragraphs. Keep questions limited to missing mission inputs and cite the gap or feature record they refer to.'}`);
       }
       throw error;
     }
