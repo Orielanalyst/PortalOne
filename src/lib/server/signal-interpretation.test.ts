@@ -163,6 +163,7 @@ describe('quoted report interpretation',()=>{
       expect(()=>validateCitedMarkdown(`${baseline}\n\nText interpretation of source reports yields 0 source-checked claims. [${inventory.id}]`,dossier.citations)).toThrow('aggregate');
       expect(()=>validateCitedMarkdown(`${baseline}\n\nText interpretation contains two extracted claims. [${dossier.citations[0]!.id}]`,dossier.citations)).toThrow('must cite');
       expect(validateCitedMarkdown(`${baseline}\n\nThe current source inventory contains 2 extracted claims. [${inventory.id}]`,dossier.citations)).toContain(inventory.id);
+      expect(validateCitedMarkdown(`${baseline}\n\nThe inventory contains 2 extracted claims and 0 source-checked claims confirming actual incidents. [${inventory.id}]`,dossier.citations)).toContain(inventory.id);
     }finally{journal.close();}
   });
   it('withdraws a quality-rejected pack from current eligibility while retaining artifact metadata and assessment history',async()=>{

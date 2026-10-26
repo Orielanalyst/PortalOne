@@ -83,6 +83,7 @@ Document length limit: ${kind==='critique'?'300':kind==='findings'?'220':kind===
 ${instruction}
 ${correction}
 Use ONLY the Generated report-text interpretation inventory for aggregate text-claim counts and cite it for every such number. Do not generalize an individual reading's zero claims to all reports. Avoid per-report numeric claim totals in narrative; describe individual assertions qualitatively and cite their own record.
+Distinguish extracted text claims from independently verified incidents. The generated inventory records those separately; source-span checks and demonstration claims do not confirm actual incidents.
 DATA:${JSON.stringify({objective:run.message,evidenceRevision:evidence.revision,gaps:dossier.gaps,allowedSources:modelEvidence.map(item=>item.source),EVIDENCE:modelEvidence})}`), NEMOTRON_STREAM_MODELS.deep,
         {signal,maxTokens:kind === 'report' ? 3000 : kind === 'plan' ? 2400 : kind==='critique'?2200:2000,timeoutMs:120_000,onDelta:text=>cited.push(text)});
       signal.throwIfAborted(); const text=cited.finish(answer.content),citations = validateCitedMarkdown(text,dossier.citations);
