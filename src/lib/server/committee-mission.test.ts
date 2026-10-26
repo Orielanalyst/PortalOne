@@ -65,6 +65,9 @@ it('rejects uncited paragraphs, unknown citations and placeholder content',async
   const dossier=buildDossier('test','Map facilities',source,evidence,map),id=dossier.citations[0]!.id;
   const content=`## Findings\n\n${'A sourced draft statement with explicit limits. '.repeat(5)}[${id}]`;
   expect(validateCitedMarkdown(content,dossier.citations)).toEqual([id]);
+  const publicSources=[...dossier.citations,{...dossier.citations[0]!,id:'E2222222222',kind:'public' as const,statement:'IFRC GO external public publisher records; historical context with unknown observation time.'}];
+  expect(()=>validateCitedMarkdown(content+'\n\nAll 8 IFRC GO records are demonstrations. [E2222222222]',publicSources)).toThrow('must not be labelled as Kobo demonstrations');
+  expect(validateCitedMarkdown(content+`\n\nKobo demonstration reports are separate from historical IFRC GO public records. [E2222222222]`,publicSources)).toContain('E2222222222');
   expect(()=>validateCitedMarkdown(content+`\n\nThe empty layer is not a placeholder. [${id}]`,dossier.citations)).toThrow('Remove the filler marker "placeholder"');
   expect(validateCitedMarkdown(content+'\n\n## Questions\n\n- What current field confirmation is available?\n- Who will confirm facility capacity?',dossier.citations)).toEqual([id]);
   expect(validateCitedMarkdown('**Verdict: REVISE**\n\n'+content,dossier.citations)).toEqual([id]);
