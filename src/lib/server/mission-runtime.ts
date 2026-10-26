@@ -40,6 +40,7 @@ function sourceRevision() {
 
 /** One local application process owns this journal and its bounded monitoring loop. */
 export class MissionRuntime {
+  private readonly directory:string;
   readonly applicationSourceCommit = sourceRevision();
   readonly mode = process.env['RELIEFINTEL_MODE'] === 'offline-replay' ? 'offline-replay' : 'live';
   readonly journal: MissionJournal;
@@ -61,8 +62,11 @@ export class MissionRuntime {
     dispatcher?: MissionDispatcher; pollIntervalMs?: number; evidence?: MissionEvidence; logistics?: MissionLogistics; conversation?: MissionConversation;
     world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter; interpreter?:SignalInterpreter; publicSource?:PublicEvidenceSource } = {}) {
     if (process.env['RELIEFINTEL_MODE'] && !['live', 'offline-replay'].includes(process.env['RELIEFINTEL_MODE'])) throw new Error('Unsupported ReliefIntel runtime mode.');
-    this.journal = options.journal ?? new MissionJournal(`.runtime/${this.mode === 'live' ? 'mission' : 'mission-replay'}/journal.sqlite`);
-    this.world=options.world ?? new MissionWorld({namespace:this.mode==='live'?'live-committee':'offline-committee',directory:options.journal?undefined:`.runtime/${this.mode==='live'?'mission':'mission-replay'}`});
+    const partition=process.env['RELIEFINTEL_SESSION_NAMESPACE']?.trim();
+    if(partition&&!/^[a-z0-9][a-z0-9-]{0,40}$/.test(partition))throw new Error('Invalid local session namespace.');
+    this.directory=`.runtime/${this.mode==='live'?'mission':'mission-replay'}${partition?'-'+partition:''}`;
+    this.journal = options.journal ?? new MissionJournal(`${this.directory}/journal.sqlite`);
+    this.world=options.world ?? new MissionWorld({namespace:(this.mode==='live'?'live-committee':'offline-committee')+(partition?'-'+partition:''),directory:options.journal?undefined:this.directory});
     this.source = options.source ?? (this.mode === 'live' ? configuredKobo() : replayCommunitySource);
     const baseEvidence=options.evidence ?? (this.mode === 'live' ? new ZetarisCommunityEvidence(this.map) : new FixtureCommunityEvidence(this.map));
     this.evidence = new PublicIntegratedEvidence(baseEvidence,options.publicSource ??
@@ -187,7 +191,7 @@ export class MissionRuntime {
     const writer=this.options.committeeWriter ?? client;
     const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,
       interpreter:this.options.interpreter ?? (client?new NightshiftSignalInterpreter(client,{consent:loadReportInferenceConsent(),providerBaseUrl:client.baseUrl}):undefined),exporter:this.options.committeeExporter ?? buildCommitteeBundle,
-      onFailure:error=>{if(!this.options.journal)writeFileSync('.runtime/mission/last-committee-error.json',JSON.stringify({runId:run.id,at:new Date().toISOString(),name:error instanceof Error?error.name:'Unknown',message:error instanceof Error?error.message:'Unknown failure'},null,2));}}) : runMission(dependencies);
+      onFailure:error=>{if(!this.options.journal)writeFileSync(`${this.directory}/last-committee-error.json`,JSON.stringify({runId:run.id,at:new Date().toISOString(),name:error instanceof Error?error.name:'Unknown',message:error instanceof Error?error.message:'Unknown failure'},null,2));}}) : runMission(dependencies);
     void investigation.then(async result => {
       const assessment = this.journal.assessments(run.id).find(a => a.id === result.assessmentId);
       if (assessment?.status === 'checked' && this.monitor?.sessionId === run.sessionId) this.monitor.lastRevision = assessment.evidence.revision;
