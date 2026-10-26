@@ -55,8 +55,11 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
     const reading=interpretations.find(item=>item.signalId===signal.id);
     const id = cite('report',signal.id,`${signal.placeName} · ${signal.category.replaceAll('_',' ')}`,
       `${signal.mode === 'demo' ? 'Demonstration' : 'Live-labelled, unverified'} form category ${signal.category.replaceAll('_',' ')} for ${signal.placeName}; relationship ${signal.relation}; observed ${signal.observedAt}. ${grounding.gap} Origin is unverified. A selected form category does not establish an affirmative narrative claim.`, null, signal.observedAt);
-    if(reading)cite('interpretation',reading.id,`${signal.placeName} · report text interpretation`,
-      `Report version ${signal.id}; text SHA-256 ${reading.textSha256}. ${interpretationStatement(reading)}`,null,signal.observedAt);
+    if(reading) {
+      cite('interpretation',reading.id,`${signal.placeName} · report text interpretation`,
+        `Report version ${signal.id}; text SHA-256 ${reading.textSha256}. ${interpretationStatement(reading)}`,null,signal.observedAt);
+      citations.at(-1)!.supportVisibility=reading.visibility==='private' || !reading.exampleId?'private':'public_example';
+    }
     if (['road_blockage','access_restriction'].includes(signal.category)) {
       const textSupportsAccess=!reading || reading.status==='accepted' && reading.claims.some(claim=>['road_blockage','access_restriction'].includes(claim.category) && claim.assertion!=='denied');
       if(!textSupportsAccess)missing.push(`${signal.id}: form category indicates access constraints, but no accepted affirmative or uncertain text claim supports it. The record is excluded from the blockage point layer; this does not establish road clearance.`);
@@ -68,7 +71,7 @@ export function buildDossier(runId: string, objective: string, snapshot: KoboSna
       geometry:{type:'Point',coordinates:[place.lng,place.lat]},properties:{name:place.name,status:'verification_candidate_not_delivery_zone',ambiguous:grounding.status === 'ambiguous',evidence_id:id} });
   }
   const gaps = [...new Set([
-    ...(interpretations.length?[`Report text interpretation: ${interpretations.filter(item=>item.status==='accepted').length} accepted source-span checks; ${interpretations.filter(item=>item.status!=='accepted').length} held, failed or budget-limited readings. Only exact published synthetic examples are eligible for model transmission. A checked quote is not semantic or field verification; text denial/absence of an incident never certifies a road open.`]:[]),
+    ...(interpretations.length?[`Report text interpretation: ${interpretations.filter(item=>item.status==='accepted').length} accepted source-span checks; ${interpretations.filter(item=>item.status!=='accepted').length} held, failed or budget-limited readings; ${interpretations.filter(item=>item.noClaimReason==='not_understood').length} empty readings require manual interpretation. Private report text is processed only with authorization bound to the project and configured provider. Private quotes and place/time mentions are withheld from shared outputs. A checked quote is not semantic or field verification; text denial/absence of an incident never certifies a road open.`]:[]),
     'Facility capacity, operating hours, services and current availability require direct confirmation; mapped health features are not an exhaustive hospital inventory.',
     'Current road passability, exact incident locations and affected road segments are unverified. No road is certified open or impassable by this map.',
     `Location handling: ${blockages.length} reported access observations have submitted coordinate references and are retained in the reported-access layer; ${missing.length} other access records lack usable coordinates or accepted narrative support and are excluded. Retained points remain unverified, may be demonstrations and do not establish actual incident locations. Exclusion never establishes road clearance.`,

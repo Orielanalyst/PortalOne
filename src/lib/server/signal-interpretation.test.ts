@@ -7,8 +7,9 @@ import { MissionJournal } from './mission-journal';
 import { CommunityMap } from './community-map';
 import { FixtureCommunityEvidence } from './community-evidence';
 import { buildDossier } from './mission-dossier';
-import { NightshiftSignalInterpreter,interpretReports,validateQuotedClaims } from './signal-interpretation';
+import { NightshiftSignalInterpreter,interpretReports,validateQuotedClaims,interpretationStatement,InterpretationCheckError } from './signal-interpretation';
 import type { SignalInterpreter,QuotedClaims } from './signal-interpretation';
+import {privateInferenceAllowed,ReportInferenceConsent} from './report-inference-policy';
 
 const map=new CommunityMap(),example=examples.find(item=>item.id==='negation-example')!;
 const support="The road at Bambili is not blocked in this fictional scenario; the clinic's operating status is unknown.";
@@ -16,6 +17,8 @@ const claims:QuotedClaims={claims:[{category:'road_blockage',assertion:'denied',
   {category:'service_status',assertion:'uncertain',support,placeMention:'Bambili',timeMention:null}],noClaimReason:null};
 const empty:QuotedClaims={claims:[],noClaimReason:'no_observation'};
 const receipt={requestedMode:'test',responseModel:'explicit-test-fixture',usage:undefined,durationMs:1,firstDeltaMs:0,deltas:2};
+const consent=ReportInferenceConsent.parse({version:1,enabled:true,scope:'report_text',provider:'nvidia-nemotron',projectUid:'project123',
+  proxyBaseUrl:'http://127.0.0.1:8088/v1',quoteExport:'local_only',authorizedAt:'2026-10-26T00:00:00Z',authorization:'explicit-local-operator'});
 const snapshot=(texts:string[],mode:'demo'|'live'='demo'):KoboSnapshot=>({sourceId:'kobo:project123',checkedAt:'2026-10-26T06:00:00Z',count:texts.length,
   records:texts.map((text,index)=>normalizeKobo({_id:index+1,_uuid:`example-${index}`,report_mode:mode,observed_at:'2026-10-26T05:00:00Z',place_name:'Bambili',
     category:'road_blockage',report_text:text,source_relation:'forwarded',location:'5.990 10.250 0 100'},'project123','2026-10-26T06:00:00Z'))});
@@ -86,5 +89,66 @@ describe('quoted report interpretation',()=>{
     const stream=vi.fn();const interpreter=new NightshiftSignalInterpreter({stream});
     await expect(interpreter.extract({id:examples[0]!.id,text:'private changed text'},AbortSignal.timeout(5000),()=>{})).rejects.toThrow('Only an exact published');
     expect(stream).not.toHaveBeenCalled();
+  });
+  it('binds private authorization to the configured project, provider and enabled state',()=>{
+    expect(privateInferenceAllowed(consent,'project123','http://127.0.0.1:8088')).toBe(true);
+    for(const [policy,project,url] of [[null,'project123',consent.proxyBaseUrl],[{...consent,enabled:false},'project123',consent.proxyBaseUrl],
+      [consent,'different123',consent.proxyBaseUrl],[consent,'project123','https://other-provider.invalid/v1'],
+      [{...consent,quoteExport:'public'},'project123',consent.proxyBaseUrl]] as const)expect(privateInferenceAllowed(policy as never,project,url)).toBe(false);
+  });
+  it('blocks a direct private adapter call when project/provider authorization does not match',async()=>{
+    const stream=vi.fn();const input={id:'private',text:'Private test narrative.',visibility:'private' as const,projectUid:'project123',mode:'demo' as const};
+    for(const policy of [{},{consent,providerBaseUrl:'https://other-provider.invalid/v1'},{consent:{...consent,projectUid:'other123'},providerBaseUrl:consent.proxyBaseUrl}]) {
+      await expect(new NightshiftSignalInterpreter({stream},policy).extract(input,AbortSignal.timeout(5000),()=>{})).rejects.toThrow('not authorized');
+    }
+    expect(stream).not.toHaveBeenCalled();
+  });
+  it('sends only authorized report text/mode and withholds private quotes and mentions from dossier, events and shared evidence',async()=>{
+    const journal=new MissionJournal(':memory:');
+    const text="DEMONSTRATION ONLY. At dusk, the fictional road by PRIVATE-ALIAS-CANARY is not blocked; clinic capacity is unknown. PRIVATE-QUOTE-CANARY.";
+    const value:QuotedClaims={claims:[{category:'road_blockage',assertion:'denied',support:text,placeMention:'PRIVATE-ALIAS-CANARY',timeMention:'At dusk'},
+      {category:'service_status',assertion:'uncertain',support:text,placeMention:null,timeMention:null}],noClaimReason:null};
+    const prompts:string[]=[];
+    const interpreter=new NightshiftSignalInterpreter({async stream(prompt,model,options){prompts.push(prompt);const content=JSON.stringify(value);options.onDelta(content);return {...receipt,requestedMode:model,content};}},
+      {consent,providerBaseUrl:consent.proxyBaseUrl});
+    try {
+      const current=snapshot([text]);(current.records[0]!.raw as Record<string,unknown>)['origin_reference']='PRIVATE-ORIGIN-CANARY';
+      const run=journal.startRun('Review authorized narrative','test');const readings=await interpret(journal,run.id,current,interpreter);
+      expect(prompts).toHaveLength(1);expect(prompts[0]).toContain(text);expect(prompts[0]).not.toContain('PRIVATE-ORIGIN-CANARY');expect(prompts[0]).not.toContain('5.990');
+      expect(readings[0]?.visibility).toBe('private');expect(readings[0]?.claims[0]?.support).toBe(text);
+      const dossier=buildDossier(run.id,run.message,current,await new FixtureCommunityEvidence(map).load(current,AbortSignal.timeout(5000)),map,undefined,readings);
+      const shared=JSON.stringify({dossier,events:journal.events(run.id)});
+      for(const canary of ['PRIVATE-QUOTE-CANARY','PRIVATE-ALIAS-CANARY','PRIVATE-ORIGIN-CANARY','At dusk'])expect(shared).not.toContain(canary);
+      expect(dossier.citations.find(item=>item.kind==='interpretation')).toMatchObject({supportVisibility:'private'});
+      expect(dossier.modelEvidence.some(item=>item.statement.includes('road blockage: denied'))).toBe(true);
+      expect(dossier.layers['blockages']?.features).toHaveLength(0);
+    }finally{journal.close();}
+  });
+  it('rechecks permission before private cache reuse and isolates demonstration/live interpretation contexts',async()=>{
+    const journal=new MissionJournal(':memory:');const text='A private synthetic text without public fixture matching.';
+    const extract=vi.fn<SignalInterpreter['extract']>(async()=>({value:empty,receipt}));
+    try {
+      const first=journal.startRun('Authorized','test');await interpret(journal,first.id,snapshot([text]),{extract,allowsPrivate:()=>true});
+      const held=journal.startRun('Permission disabled','test');const readings=await interpret(journal,held.id,snapshot([text]),{extract,allowsPrivate:()=>false});
+      expect(readings[0]?.status).toBe('held');expect(extract).toHaveBeenCalledTimes(1);
+      const live=journal.startRun('Different report mode','test');await interpret(journal,live.id,snapshot([text],'live'),{extract,allowsPrivate:()=>true});expect(extract).toHaveBeenCalledTimes(2);
+    }finally{journal.close();}
+  });
+  it('keeps rejected private model output in the journal while shared failure statements remain clean',async()=>{
+    const journal=new MissionJournal(':memory:');const marker='PRIVATE-FAILED-OUTPUT-CANARY';
+    const extract=vi.fn<SignalInterpreter['extract']>(async()=>{throw new InterpretationCheckError('Rejected',{content:marker,receipt});});
+    try {
+      const run=journal.startRun('Reject private output','test');const values=await interpret(journal,run.id,snapshot(['Private example narrative.']),{extract,allowsPrivate:()=>true});
+      expect(values[0]?.rejectedAttempt?.content).toBe(marker);expect(values[0]?.status).toBe('failed');
+      expect(interpretationStatement(values[0]!)).not.toContain(marker);expect(JSON.stringify(journal.events(run.id))).not.toContain(marker);
+    }finally{journal.close();}
+  });
+  it('prevents demonstration assertions becoming actual reported claims even with private processing enabled',async()=>{
+    const journal=new MissionJournal(':memory:');const text='A synthetic test says the road is blocked.';
+    try {
+      const run=journal.startRun('Demo separation','test');const values=await interpret(journal,run.id,snapshot([text]),{allowsPrivate:()=>true,
+        extract:async()=>({value:{claims:[{category:'road_blockage',assertion:'reported',support:text,placeMention:null,timeMention:null}],noClaimReason:null},receipt})});
+      expect(values[0]?.status).toBe('failed');expect(values[0]?.claims).toEqual([]);
+    }finally{journal.close();}
   });
 });

@@ -20,6 +20,7 @@ import { MissionWorld, observeMissionEvidence } from './mission-world';
 import type { CommitteeWriter, CommitteeExporter } from './committee-mission';
 import { NightshiftSignalInterpreter } from './signal-interpretation';
 import type { SignalInterpreter } from './signal-interpretation';
+import {loadReportInferenceConsent} from './report-inference-policy';
 
 function sourceRevision() {
   try {
@@ -146,7 +147,7 @@ export class MissionRuntime {
     } };
     const writer=this.options.committeeWriter ?? client;
     const investigation=workflow==='committee' && writer ? runCommitteeMission({...dependencies,world:this.world,writer,
-      interpreter:this.options.interpreter ?? (client?new NightshiftSignalInterpreter(client):undefined),exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
+      interpreter:this.options.interpreter ?? (client?new NightshiftSignalInterpreter(client,{consent:loadReportInferenceConsent(),providerBaseUrl:client.baseUrl}):undefined),exporter:this.options.committeeExporter ?? buildCommitteeBundle}) : runMission(dependencies);
     void investigation.then(async result => {
       const assessment = this.journal.assessments(run.id).find(a => a.id === result.assessmentId);
       if (assessment?.status === 'checked' && this.monitor?.sessionId === run.sessionId) this.monitor.lastRevision = assessment.evidence.revision;

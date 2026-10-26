@@ -9,7 +9,9 @@ if(!process.argv.includes('--apply')) {
   process.exit(0);
 }
 const directory='.runtime/report-interpretation';mkdirSync(directory,{recursive:true});
-const target=`${directory}/public-examples.json`;
+const tag=process.argv.find(arg=>arg.startsWith('--tag='))?.slice(6) ?? '';
+assert(!tag || /^[a-z0-9-]{1,32}$/.test(tag),'Use a short safe rehearsal tag.');
+const target=`${directory}/public-examples${tag?'-'+tag:''}.json`;
 assert(!existsSync(target),'Preserve the existing rehearsal receipt.');
 const interpreter=new NightshiftSignalInterpreter(configuredNightshift());
 const results=[];
