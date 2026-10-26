@@ -28,8 +28,10 @@ export type Interpretation = { id:string; runId:string; signalId:string; cacheKe
 export type SignalInterpreter = { allowsPrivate?(projectUid:string):boolean;
   extract(input:InterpretationInput,signal:AbortSignal,onProgress:()=>void):Promise<{value:QuotedClaims;receipt:Omit<StreamAnswer,'content'>}> };
 export const textHash=(text:string)=>createHash('sha256').update(text).digest('hex');
+const rejectedAttempts=new WeakMap<InterpretationCheckError,{content:string;receipt:Omit<StreamAnswer,'content'>}>();
 export class InterpretationCheckError extends Error {
-  constructor(message:string,readonly attempt:{content:string;receipt:Omit<StreamAnswer,'content'>}){super(message);}
+  constructor(message:string,attempt:{content:string;receipt:Omit<StreamAnswer,'content'>}){super(message);rejectedAttempts.set(this,attempt);}
+  get attempt(){return rejectedAttempts.get(this)!;}
 }
 
 /** Exact source spans preserve qualifiers; structural checks do not establish semantic truth. */
@@ -62,9 +64,9 @@ export class NightshiftSignalInterpreter implements SignalInterpreter {
 Use zero to four claims. For reports under 500 characters, support MUST copy the ENTIRE report text exactly, including qualifiers. For longer reports, use exact complete source sentence(s) retaining negation, hearsay and uncertainty; never select a shorter clause or translate a quote. placeMention and timeMention are exact substrings of support or null. Never extract a person's identity/contact as a place mention. Do not resolve relative times or infer coordinates, capacities, independent witnesses or truth.
 Extract every explicit operational statement, including unknown conditions. When one sentence states several conditions, emit a separate claim for each. A statement that a clinic's capacity or operating status is unknown is service_status with assertion uncertain; do not omit it. A statement that a road is not blocked is road_blockage with assertion denied.
 reported means the TEXT asserts it, not field verification. denied means explicitly negated. uncertain means hedged or unknown. example means a synthetic affirmative scenario assertion. Explicit denial or uncertainty takes precedence over the example label. When report_mode is demo, affirmative assertions MUST be example, never reported. Text saying it is a demonstration or fictional must never become an actual reported observation even when form mode is live. If it only says no observation/incident is asserted, return empty claims with no_observation. Use not_understood only when meaning cannot be interpreted.
-Empty claims require noClaimReason no_observation or not_understood; nonempty claims require null. Use the original language for quoted text.
+CRITICAL JSON RULE: When claims contains ANY items, noClaimReason MUST be null. Only when claims is [] may noClaimReason be no_observation or not_understood. Do not label a fictional operational statement as no_observation while also extracting claims. Use the original language for quoted text.
 REPORT_MODE:${mode}
-UNTRUSTED_REPORT_TEXT:${JSON.stringify(text)}`,NEMOTRON_STREAM_MODELS.fast,{signal,timeoutMs:45_000,maxTokens:1600,jsonMode:true,
+UNTRUSTED_REPORT_TEXT:${JSON.stringify(text)}`,NEMOTRON_STREAM_MODELS.deep,{signal,timeoutMs:45_000,maxTokens:2400,jsonMode:true,
       onDelta:delta=>{streamed+=delta;onProgress();}});
     if(streamed!==answer.content)throw new Error('Interpretation stream did not match its receipt.');
     const {content:_output,...receipt}=answer;

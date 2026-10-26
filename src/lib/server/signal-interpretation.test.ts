@@ -141,6 +141,7 @@ describe('quoted report interpretation',()=>{
       const run=journal.startRun('Reject private output','test');const values=await interpret(journal,run.id,snapshot(['Private example narrative.']),{extract,allowsPrivate:()=>true});
       expect(values[0]?.rejectedAttempt?.content).toBe(marker);expect(values[0]?.status).toBe('failed');
       expect(interpretationStatement(values[0]!)).not.toContain(marker);expect(JSON.stringify(journal.events(run.id))).not.toContain(marker);
+      expect(JSON.stringify(new InterpretationCheckError('Rejected',{content:marker,receipt}))).not.toContain(marker);
     }finally{journal.close();}
   });
   it('prevents demonstration assertions becoming actual reported claims even with private processing enabled',async()=>{
