@@ -13,7 +13,7 @@ class GeographyFixture extends AreaGeography{
   override ready(){return true;}
   override async prepare(){}
   override search(query:string){return query==='Missing'?[]:query==='Ambiguous'?[place,duplicate]:[place];}
-  override async build(value:AreaPlace,progress:(detail:string)=>void){progress('Mapped actual fixture features.');if(this.fail)throw new Error('Source verification failed.');return {key:'a'.repeat(64),place:value,bounds:areaBounds(value),counts:{roads:2,facilities:0,places:1},files:{},halfWidthKm:5,createdAt:new Date().toISOString(),sourceAcquiredAt:'2026-10-25T00:00:00Z',attribution:'Fixture',sourceUrls:[],limits:'No verified conditions.'} as AreaMap;}
+  override async build(value:AreaPlace,progress:(detail:string)=>void){progress('Mapped actual fixture features.');if(this.fail)throw new Error('Source verification failed.');return {key:'a'.repeat(64),place:value,bounds:areaBounds(value),counts:{roads:2,facilities:0,places:1},files:{},halfWidthKm:5,createdAt:new Date().toISOString(),sourceAcquiredAt:'2026-10-25T00:00:00Z',attribution:'Fixture',license:'ODbL-1.0',licenseUrl:'https://opendatacommons.org/licenses/odbl/1-0/',sourceUrls:[],limits:'No verified conditions.'} as AreaMap;}
 }
 function runtime(geography=new GeographyFixture()){
   const journal=new MissionJournal(':memory:');
