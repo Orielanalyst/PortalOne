@@ -1,0 +1,28 @@
+{
+  "namespace": "lightning.metastore.portalone",
+  "usl": "mission_intelligence_v1",
+  "scope": "Public OSM community references and explicitly synthetic logistics/access rehearsal sources. No report rows or narratives are queried. These are three logical Zetaris sources; the two PostgreSQL schemas share one physical rehearsal database.",
+  "exploration": [
+    {"id":"community-inventory","source":"PORTALONE_COMMUNITY_V1","sql":"SELECT COUNT(*) AS communities, COUNT(DISTINCT map_revision) AS map_revisions FROM PORTALONE_COMMUNITY_V1.sites"},
+    {"id":"community-logistics-scope","source":"PORTALONE_COMMUNITY_V1","sql":"SELECT s.place_id, s.name, l.depot_id, l.simulated FROM PORTALONE_COMMUNITY_V1.sites s JOIN PORTALONE_COMMUNITY_V1.logistics_scope l ON s.place_id=l.place_id"},
+    {"id":"logistics-stock","source":"PORTALONE_LOGISTICS_V1","sql":"SELECT depot_id, SUM(available_units) AS stock_units, MIN(expires_at) AS stock_expires_at FROM PORTALONE_LOGISTICS_V1.inventory GROUP BY depot_id"},
+    {"id":"logistics-fleet","source":"PORTALONE_LOGISTICS_V1","sql":"SELECT depot_id, COUNT(*) AS vehicles, SUM(CASE WHEN available THEN 1 ELSE 0 END) AS available_vehicles FROM PORTALONE_LOGISTICS_V1.vehicles GROUP BY depot_id"},
+    {"id":"scenario-route-options","source":"PORTALONE_SCENARIO_V1","sql":"SELECT route_id, COUNT(*) AS segments, SUM(distance_km) AS distance_km, MIN(max_gross_kg) AS max_gross_kg FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY route_id ORDER BY route_id"},
+    {"id":"scenario-validity","source":"PORTALONE_SCENARIO_V1","sql":"SELECT simulated, MIN(expires_at) AS earliest_expiry, COUNT(*) AS segments FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY simulated"}
+  ],
+  "activations": [
+    {"table":"communities","sql":"SELECT COALESCE(place_id,'') AS place_id, name, map_revision FROM PORTALONE_COMMUNITY_V1.sites"},
+    {"table":"depots","sql":"SELECT COALESCE(i.depot_id,'') AS depot_id, SUM(CAST(i.available_units AS BIGINT)) AS stock_units, MAX(v.available_vehicles) AS available_vehicles, MIN(i.expires_at) AS stock_expires_at, MIN(CAST(i.simulated AS INT))=1 AS simulated FROM PORTALONE_LOGISTICS_V1.inventory i LEFT JOIN (SELECT depot_id, SUM(CASE WHEN available THEN CAST(1 AS BIGINT) ELSE CAST(0 AS BIGINT) END) AS available_vehicles FROM PORTALONE_LOGISTICS_V1.vehicles GROUP BY depot_id) v ON i.depot_id=v.depot_id GROUP BY i.depot_id"},
+    {"table":"community_logistics","sql":"SELECT COALESCE(place_id,'') AS place_id, depot_id, simulated FROM PORTALONE_COMMUNITY_V1.logistics_scope"},
+    {"table":"route_options","sql":"SELECT COALESCE(route_id,'') AS route_id, MAX(CASE WHEN sequence=1 THEN from_node END) AS depot_id, CAST(SUM(distance_km) AS DOUBLE) AS distance_km, SUM(CAST(travel_minutes AS BIGINT)) AS travel_minutes, CAST(MIN(max_gross_kg) AS DOUBLE) AS max_gross_kg, MIN(expires_at) AS expires_at, MIN(CAST(simulated AS INT))=1 AS simulated FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY route_id"}
+  ],
+  "verification": [
+    {"id":"active-community-count","sql":"SELECT COUNT(*) AS communities FROM lightning.metastore.portalone.mission_intelligence_v1.communities"},
+    {"id":"three-source-mission-context","sql":"SELECT c.place_id, c.name, d.depot_id, d.stock_units, d.available_vehicles, r.route_id, r.distance_km, r.travel_minutes, r.max_gross_kg, d.stock_expires_at, r.expires_at, l.simulated AND d.simulated AND r.simulated AS simulated FROM lightning.metastore.portalone.mission_intelligence_v1.communities c JOIN lightning.metastore.portalone.mission_intelligence_v1.community_logistics l ON c.place_id=l.place_id JOIN lightning.metastore.portalone.mission_intelligence_v1.depots d ON l.depot_id=d.depot_id JOIN lightning.metastore.portalone.mission_intelligence_v1.route_options r ON d.depot_id=r.depot_id ORDER BY r.route_id"},
+    {"id":"expired-options-remain-visible","sql":"SELECT route_id, expires_at, simulated, TO_TIMESTAMP(expires_at) >= CURRENT_TIMESTAMP() AS current FROM lightning.metastore.portalone.mission_intelligence_v1.route_options ORDER BY route_id"}
+  ],
+  "quality": [
+    {"id":"nonnegative_rehearsal_capacity","table":"depots","expression":"stock_units >= 0 AND available_vehicles >= 0 AND simulated = true"},
+    {"id":"current_access_evidence","table":"route_options","expression":"TO_TIMESTAMP(expires_at) >= CURRENT_TIMESTAMP()"}
+  ]
+}
