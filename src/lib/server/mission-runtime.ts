@@ -30,6 +30,9 @@ import {ReviewSubmissionSchema,reviewCandidate,assertReviewMatches,ReviewError} 
 import type {ReviewSubmission,OperatorReview} from './mission-review';
 import {missionFeasibility} from './mission-feasibility';
 import {buildDossier} from './mission-dossier';
+import {AreaGeography} from './area-geography';
+import type {AreaMapJob} from '../area-geography';
+import {randomUUID} from 'node:crypto';
 
 function sourceRevision() {
   try {
@@ -46,6 +49,8 @@ export class MissionRuntime {
   readonly journal: MissionJournal;
   readonly world: MissionWorld;
   readonly map = new CommunityMap();
+  readonly geography:AreaGeography;
+  private mapping:string|null=null;
   private readonly source: { origin: string | null; snapshot(signal?: AbortSignal,onRetry?:(detail:string)=>void): Promise<KoboSnapshot> };
   private readonly evidence: MissionEvidence;
   private active: string | null = null;
@@ -60,12 +65,13 @@ export class MissionRuntime {
   private federationStatus: 'unchecked' | 'online' | 'unavailable' = 'unchecked';
   constructor(private readonly options: { journal?: MissionJournal; source?: { origin: string | null; snapshot(signal?: AbortSignal,onRetry?:(detail:string)=>void): Promise<KoboSnapshot> };
     dispatcher?: MissionDispatcher; pollIntervalMs?: number; evidence?: MissionEvidence; logistics?: MissionLogistics; conversation?: MissionConversation;
-    world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter; interpreter?:SignalInterpreter; publicSource?:PublicEvidenceSource } = {}) {
+    world?:MissionWorld; committeeWriter?:CommitteeWriter; committeeExporter?:CommitteeExporter; interpreter?:SignalInterpreter; publicSource?:PublicEvidenceSource;geography?:AreaGeography } = {}) {
     if (process.env['RELIEFINTEL_MODE'] && !['live', 'offline-replay'].includes(process.env['RELIEFINTEL_MODE'])) throw new Error('Unsupported ReliefIntel runtime mode.');
     const partition=process.env['RELIEFINTEL_SESSION_NAMESPACE']?.trim();
     if(partition&&!/^[a-z0-9][a-z0-9-]{0,40}$/.test(partition))throw new Error('Invalid local session namespace.');
     this.directory=`.runtime/${this.mode==='live'?'mission':'mission-replay'}${partition?'-'+partition:''}`;
     this.journal = options.journal ?? new MissionJournal(`${this.directory}/journal.sqlite`);
+    this.geography=options.geography??new AreaGeography();this.journal.interruptAreaMaps();
     this.world=options.world ?? new MissionWorld({namespace:(this.mode==='live'?'live-committee':'offline-committee')+(partition?'-'+partition:''),directory:options.journal?undefined:this.directory});
     this.source = options.source ?? (this.mode === 'live' ? configuredKobo() : replayCommunitySource);
     const baseEvidence=options.evidence ?? (this.mode === 'live' ? new ZetarisCommunityEvidence(this.map) : new FixtureCommunityEvidence(this.map));
@@ -114,11 +120,30 @@ export class MissionRuntime {
     }
   }
   newSession() {
-    if(this.active||this.chatting||this.reviewing||this.polling)throw new Error('Wait for the active work to finish before starting a new mission.');
+    if(this.active||this.chatting||this.reviewing||this.polling||this.mapping)throw new Error('Wait for the active work to finish before starting a new mission.');
     const watching=this.monitor;
     this.stopMonitor();
     if(watching)this.journal.event(watching.runId,'coordinator','monitor_stopped','The operator started a new mission. The earlier source watch has stopped; its history is preserved.');
     return this.journal.createSession();
+  }
+  mapArea(sessionId:string,area:string,placeId?:string,turnId:string|null=null){
+    if(!this.journal.session(sessionId))throw new Error('Mission conversation not found.');
+    if(this.mapping||this.active||this.reviewing||this.chatting)throw new Error('Wait for the current work to finish before mapping another area.');
+    const at=new Date().toISOString(),job:AreaMapJob={id:`geography-${randomUUID()}`,sessionId,turnId,area,status:'building',startedAt:at,updatedAt:at,steps:[],candidates:[],map:null,error:null};
+    this.journal.noteSessionActivity(sessionId,'Map '+area);
+    this.mapping=job.id;
+    const step=(detail:string,actor='Mapping Agent')=>{job.steps.push({actor,detail,at:new Date().toISOString()});job.updatedAt=new Date().toISOString();this.journal.saveAreaMap(job);};
+    step('Delegating the area map for '+area+'.','Mission Coordinator');
+    void(async()=>{try{
+      if(this.mode==='offline-replay'&&!this.geography.ready())throw new Error('Offline replay needs a previously prepared Cameroon geography catalog.');
+      if(!this.geography.ready())await this.geography.prepare(step);step('Resolving the requested place against the source gazetteer.');
+      const candidates=this.geography.search(area),exact=placeId?candidates.find(candidate=>candidate.id===placeId):candidates.length===1?candidates[0]:null;
+      job.candidates=candidates;
+      if(!exact){job.status=candidates.length?'choose_place':'failed';job.error=candidates.length?'Choose the intended source location before mapping.':'No source location matched. Search a Cameroon settlement name; global coverage is not connected.';step(job.error);return;}
+      job.map=await this.geography.build(exact,step,AbortSignal.timeout(90_000),this.mode==='live');job.status='ready';step('The area map and source-linked GeoJSON layers are ready for review.','Mission Coordinator');
+    }catch(error){job.status='failed';job.error=error instanceof Error?error.message:'The map could not be built.';step(job.error);}
+    finally{this.mapping=null;this.journal.changed();}})();
+    return job;
   }
   async chat(message: string, watchMinutes: number,sessionId?:string) {
     const text = message.trim();
@@ -143,8 +168,8 @@ export class MissionRuntime {
       const latest = this.journal.recent(session.id).find(run => run.result);
       const signal = AbortSignal.timeout(50_000);
       const decision = ConversationDecision.parse(await responder.respond({ message: text, history,
-        activeMission: this.active ? this.journal.run(this.active)?.message ?? 'Investigation in progress' : null,
-        lastInvestigation: latest ? this.investigationContext(latest) : null,requirements:publicRequirements(this.journal.requirements(turn.sessionId)),messageAt:turn.createdAt }, signal, delta => this.journal.appendDocument(documentId, delta)));
+        activeMission: this.mapping?'An area map is being prepared.':this.active ? this.journal.run(this.active)?.message ?? 'Investigation in progress' : null,
+        lastInvestigation: latest ? this.investigationContext(latest) : null,areaMap:this.journal.areaMaps(session.id)[0]??null,requirements:publicRequirements(this.journal.requirements(turn.sessionId)),messageAt:turn.createdAt }, signal, delta => this.journal.appendDocument(documentId, delta)));
       signal.throwIfAborted();
       if(decision.missionPatch && Object.keys(decision.missionPatch).length)this.journal.updateRequirements(turn.sessionId,decision.missionPatch,this.journal.conversation(session.id).map(item=>({text:item.message,at:item.createdAt,turnId:item.id})),turn.id);
       if (!this.journal.documents(undefined,session.id).find(document => document.id === documentId)?.markdown) this.journal.appendDocument(documentId, decision.reply);
@@ -155,6 +180,8 @@ export class MissionRuntime {
         this.chatting = false;
         const runId = this.start(`${decision.mission.objective}\nArea: ${decision.mission.area}`, watchMinutes, 'operator', turn.sessionId, this.options.committeeWriter || this.mode==='live' && !this.options.dispatcher ? 'committee' : 'investigation');
         this.journal.finishConversation(turn.id, decision.reply, decision.action, runId);
+      } else if(decision.action==='map_area'){
+        this.chatting=false;this.mapArea(session.id,decision.area,undefined,turn.id);this.journal.finishConversation(turn.id,decision.reply,'map_area');
       } else this.journal.finishConversation(turn.id, decision.reply, 'reply');
     } catch(error) {
       if(error instanceof MissionInputError) {
@@ -173,7 +200,7 @@ export class MissionRuntime {
     return this.journal.conversation(session.id).find(item => item.id === turn.id)!;
   }
   start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string, workflow: 'investigation' | 'committee' = 'investigation',previousRunId?:string) {
-    if (this.active || this.chatting || this.reviewing) throw new Error('The coordinator is already working.');
+    if (this.active || this.chatting || this.reviewing || this.mapping) throw new Error('The coordinator is already working.');
     const client = this.mode === 'live' && !this.options.dispatcher ? configuredNightshift() : null;
     const run = this.journal.startRun(message, cause, sessionId??this.journal.defaultSession().id);
     this.journal.bindRequirements(run.id);
@@ -358,7 +385,8 @@ export class MissionRuntime {
     const events=selected?this.journal.events(selected.id):[];
     const signals = selected ? this.journal.signalsByIds(selected.result?.signalIds??[...new Set(events.flatMap(event=>event.evidenceIds))]) : [];
     return { mode: this.mode, applicationSourceCommit: this.applicationSourceCommit, runs, selected, events, activeRunId: this.active,
-      session,sessions:this.journal.sessions(),activeSessionId:this.active?this.journal.run(this.active)?.sessionId??null:null,
+      session,sessions:this.journal.sessions(),activeSessionId:this.active?this.journal.run(this.active)?.sessionId??null:this.mapping?this.journal.areaMap(this.mapping)?.sessionId??null:null,
+      areaMaps:this.journal.areaMaps(session.id),mappingBusy:!!this.mapping,
       conversation: this.journal.conversation(session.id), chatBusy: this.chatting,
       conversationSummaries: this.journal.conversationSummaries(session.id),
       documents: this.journal.documents(selected?.id,session.id), citations: selected ? this.journal.citations(selected.id) : [],

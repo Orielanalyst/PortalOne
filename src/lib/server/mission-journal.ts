@@ -13,6 +13,7 @@ import type {MissionRequirements,UserInputSource} from './mission-requirements';
 import type {MissionFeasibility} from './mission-feasibility';
 import type {OperatorReview} from './mission-review';
 import type {RejectedConversationAttempt} from './mission-conversation';
+import type {AreaMapJob} from '../area-geography';
 
 export type MissionEvent = { seq: number; runId: string; taskId: string | null; parentTaskId: string | null;
   actor: string; kind: string; detail: string; evidenceIds: string[]; at: string };
@@ -24,7 +25,7 @@ export type PlanningAssessment = { id: string; runId: string; status: 'draft' | 
 export type JournalRun = { id: string; sessionId: string; message: string; cause: string; status: 'running' | 'complete' | 'interrupted';
   startedAt: string; finishedAt: string | null; result: MissionResult | null };
 export type ConversationTurn = { id: string; sessionId: string; message: string; reply: string | null;
-  mode: 'live-model' | 'offline-replay'; status: 'pending' | 'replied' | 'failed'; action: 'reply' | 'investigate' | null;
+  mode: 'live-model' | 'offline-replay'; status: 'pending' | 'replied' | 'failed'; action: 'reply' | 'investigate' | 'map_area' | null;
   runId: string | null; createdAt: string; receipt: ConversationReceipt | null };
 export type ConversationSummary = { runId: string; status: 'pending' | 'complete' | 'failed'; reply: string | null; receipt: ConversationReceipt | null };
 export type MissionSession = { id: string; title: string; createdAt: string; updatedAt: string; runCount: number; turnCount: number };
@@ -76,6 +77,7 @@ export class MissionJournal {
       status TEXT NOT NULL,reason TEXT,value TEXT NOT NULL); CREATE TABLE IF NOT EXISTS review_revisions(review_id TEXT PRIMARY KEY REFERENCES operator_reviews(id),
       next_run_id TEXT NOT NULL UNIQUE REFERENCES runs(id));`);
     this.db.exec('CREATE TABLE IF NOT EXISTS conversation_attempts(id TEXT PRIMARY KEY,turn_id TEXT NOT NULL,value TEXT NOT NULL)');
+    this.db.exec('CREATE TABLE IF NOT EXISTS area_map_jobs(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,value TEXT NOT NULL)');
     this.db.exec(`CREATE TABLE IF NOT EXISTS mission_sessions(id TEXT PRIMARY KEY,title TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
       CREATE INDEX IF NOT EXISTS conversation_session ON conversation_turns(session_id);
       CREATE INDEX IF NOT EXISTS runs_session ON runs(session_id);`);
@@ -92,6 +94,10 @@ export class MissionJournal {
     return row?{id:row['id'] as string,title:row['title'] as string,createdAt:row['created_at'] as string,updatedAt:row['updated_at'] as string,
       runCount:row['run_count'] as number,turnCount:row['turn_count'] as number}:null;
   }
+  saveAreaMap(job:AreaMapJob){this.db.prepare('INSERT INTO area_map_jobs VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET value=excluded.value').run(job.id,job.sessionId,JSON.stringify(job));this.changed();}
+  areaMaps(sessionId:string):AreaMapJob[]{return this.db.prepare('SELECT value FROM area_map_jobs WHERE session_id=? ORDER BY rowid DESC LIMIT 12').all(sessionId).map(row=>JSON.parse(row['value'] as string));}
+  areaMap(id:string):AreaMapJob|null{const row=this.db.prepare('SELECT value FROM area_map_jobs WHERE id=?').get(id);return row?JSON.parse(row['value'] as string):null;}
+  interruptAreaMaps(){for(const row of this.db.prepare('SELECT value FROM area_map_jobs').all()){const job=JSON.parse(row['value'] as string) as AreaMapJob;if(job.status==='building'){job.status='failed';job.error='The map build was interrupted by a restart. Select the area again to rebuild.';job.updatedAt=new Date().toISOString();this.saveAreaMap(job);}}}
   sessions():MissionSession[] {
     return this.db.prepare('SELECT id FROM mission_sessions ORDER BY updated_at DESC,rowid DESC LIMIT 100').all().map(row=>this.session(row['id'] as string)!);
   }
@@ -105,6 +111,7 @@ export class MissionJournal {
     this.db.prepare("UPDATE mission_sessions SET title=CASE WHEN title='New mission' THEN ? ELSE title END,updated_at=? WHERE id=?")
       .run(message.replace(/\s+/g,' ').trim().slice(0,80),new Date().toISOString(),id);
   }
+  noteSessionActivity(id:string,message:string){this.touchSession(id,message);}
   requirements(sessionId:string):MissionRequirements|null {
     const row=this.db.prepare('SELECT value FROM mission_requirements WHERE session_id=? ORDER BY version DESC LIMIT 1').get(sessionId);
     return row?JSON.parse(row['value'] as string):null;

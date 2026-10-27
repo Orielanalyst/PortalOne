@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiGeographyRouteImport } from './routes/api.geography'
 import { Route as ApiMissionRouteImport } from './routes/api.mission'
 import { Route as ApiMapLayerRouteImport } from './routes/api.map.$layer'
 import { Route as ApiMissionDownloadRouteImport } from './routes/api.mission.download'
@@ -19,6 +20,11 @@ import { Route as ApiMissionStreamRouteImport } from './routes/api.mission.strea
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGeographyRoute = ApiGeographyRouteImport.update({
+  id: '/api/geography',
+  path: '/api/geography',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMissionRoute = ApiMissionRouteImport.update({
@@ -49,6 +55,7 @@ const ApiMissionStreamRoute = ApiMissionStreamRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/geography': typeof ApiGeographyRoute
   '/api/mission': typeof ApiMissionRouteWithChildren
   '/api/map/$layer': typeof ApiMapLayerRoute
   '/api/mission/download': typeof ApiMissionDownloadRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/geography': typeof ApiGeographyRoute
   '/api/mission': typeof ApiMissionRouteWithChildren
   '/api/map/$layer': typeof ApiMapLayerRoute
   '/api/mission/download': typeof ApiMissionDownloadRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/geography': typeof ApiGeographyRoute
   '/api/mission': typeof ApiMissionRouteWithChildren
   '/api/map/$layer': typeof ApiMapLayerRoute
   '/api/mission/download': typeof ApiMissionDownloadRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api/geography'
     | '/api/mission'
     | '/api/map/$layer'
     | '/api/mission/download'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/geography'
     | '/api/mission'
     | '/api/map/$layer'
     | '/api/mission/download'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/api/geography'
     | '/api/mission'
     | '/api/map/$layer'
     | '/api/mission/download'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiGeographyRoute: typeof ApiGeographyRoute
   ApiMissionRoute: typeof ApiMissionRouteWithChildren
   ApiMapLayerRoute: typeof ApiMapLayerRoute
 }
@@ -112,6 +125,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/geography': {
+      id: '/api/geography'
+      path: '/api/geography'
+      fullPath: '/api/geography'
+      preLoaderRoute: typeof ApiGeographyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/mission': {
@@ -170,6 +190,7 @@ const ApiMissionRouteWithChildren = ApiMissionRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiGeographyRoute: ApiGeographyRoute,
   ApiMissionRoute: ApiMissionRouteWithChildren,
   ApiMapLayerRoute: ApiMapLayerRoute,
 }
