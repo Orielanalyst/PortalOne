@@ -39,7 +39,7 @@ The prepared HackOS materials include a 2:46 product recording and a ten-slide p
 
 The [README quickstart](../README.md#run-reliefintel) separates credential-free offline replay from actual live services. Live setup requires the sponsor runtimes, an owned Kobo project, configured credentials and the report runtime. There is no silent replay fallback.
 
-Recorded implementation gate at [`d4f66f4`](https://github.com/Orielanalyst/PortalOne/commit/d4f66f4): **187 tests in 25 files, typecheck, production build, 8/8 World Model checks, 154 retained archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The dark UI refinement and area-mapping workflow are included. The last inspected GitHub Actions runs could not start because of the account billing lock; local results do not claim hosted CI success.
+Recorded implementation gate at [`742de65`](https://github.com/Orielanalyst/PortalOne/commit/742de65): **187 tests in 25 files, typecheck, production build, 8/8 World Model checks, 154 retained archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The dark UI refinement and area-mapping workflow are included. The last inspected GitHub Actions runs could not start because of the account billing lock; local results do not claim hosted CI success.
 
 ```powershell
 bun run typecheck
