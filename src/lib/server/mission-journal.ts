@@ -27,6 +27,7 @@ export type ConversationTurn = { id: string; sessionId: string; message: string;
   mode: 'live-model' | 'offline-replay'; status: 'pending' | 'replied' | 'failed'; action: 'reply' | 'investigate' | null;
   runId: string | null; createdAt: string; receipt: ConversationReceipt | null };
 export type ConversationSummary = { runId: string; status: 'pending' | 'complete' | 'failed'; reply: string | null; receipt: ConversationReceipt | null };
+export type MissionSession = { id: string; title: string; createdAt: string; updatedAt: string; runCount: number; turnCount: number };
 export class MissionJournal {
   private readonly db: DatabaseSync;
   private readonly listeners = new Set<(change: JournalChange) => void>();
@@ -75,6 +76,34 @@ export class MissionJournal {
       status TEXT NOT NULL,reason TEXT,value TEXT NOT NULL); CREATE TABLE IF NOT EXISTS review_revisions(review_id TEXT PRIMARY KEY REFERENCES operator_reviews(id),
       next_run_id TEXT NOT NULL UNIQUE REFERENCES runs(id));`);
     this.db.exec('CREATE TABLE IF NOT EXISTS conversation_attempts(id TEXT PRIMARY KEY,turn_id TEXT NOT NULL,value TEXT NOT NULL)');
+    this.db.exec(`CREATE TABLE IF NOT EXISTS mission_sessions(id TEXT PRIMARY KEY,title TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+      CREATE INDEX IF NOT EXISTS conversation_session ON conversation_turns(session_id);
+      CREATE INDEX IF NOT EXISTS runs_session ON runs(session_id);`);
+    // Add metadata around legacy histories; never delete or reassign their turns/runs.
+    const legacy=this.db.prepare(`SELECT session_id,message,created_at AS at FROM conversation_turns
+      UNION ALL SELECT session_id,message,started_at AS at FROM runs ORDER BY at ASC`).all();
+    const insert=this.db.prepare('INSERT OR IGNORE INTO mission_sessions VALUES(?,?,?,?)');
+    const latest=this.db.prepare('UPDATE mission_sessions SET updated_at=MAX(updated_at,?) WHERE id=?');
+    for(const row of legacy){insert.run(row['session_id'] as string,String(row['message']).replace(/\s+/g,' ').slice(0,80),row['at'] as string,row['at'] as string);latest.run(row['at'] as string,row['session_id'] as string);}
+  }
+  session(id:string):MissionSession|null {
+    const row=this.db.prepare(`SELECT s.*,(SELECT COUNT(*) FROM runs r WHERE r.session_id=s.id) AS run_count,
+      (SELECT COUNT(*) FROM conversation_turns t WHERE t.session_id=s.id) AS turn_count FROM mission_sessions s WHERE s.id=?`).get(id);
+    return row?{id:row['id'] as string,title:row['title'] as string,createdAt:row['created_at'] as string,updatedAt:row['updated_at'] as string,
+      runCount:row['run_count'] as number,turnCount:row['turn_count'] as number}:null;
+  }
+  sessions():MissionSession[] {
+    return this.db.prepare('SELECT id FROM mission_sessions ORDER BY updated_at DESC,rowid DESC LIMIT 100').all().map(row=>this.session(row['id'] as string)!);
+  }
+  createSession(title='New mission',id=`session-${randomUUID()}`):MissionSession {
+    const at=new Date().toISOString();
+    this.db.prepare('INSERT INTO mission_sessions VALUES(?,?,?,?)').run(id,title.replace(/\s+/g,' ').trim().slice(0,80)||'New mission',at,at);
+    this.changed();return this.session(id)!;
+  }
+  defaultSession():MissionSession { return this.sessions()[0]??this.createSession(); }
+  private touchSession(id:string,message:string) {
+    this.db.prepare("UPDATE mission_sessions SET title=CASE WHEN title='New mission' THEN ? ELSE title END,updated_at=? WHERE id=?")
+      .run(message.replace(/\s+/g,' ').trim().slice(0,80),new Date().toISOString(),id);
   }
   requirements(sessionId:string):MissionRequirements|null {
     const row=this.db.prepare('SELECT value FROM mission_requirements WHERE session_id=? ORDER BY version DESC LIMIT 1').get(sessionId);
@@ -163,13 +192,14 @@ export class MissionJournal {
     return row?JSON.parse(row['value'] as string):null;
   }
   close() { this.db.close(); }
-  beginConversation(message: string, mode: ConversationTurn['mode']) {
-    const previous = this.conversation().at(-1);
-    const id = `turn-${randomUUID()}`, sessionId = previous?.sessionId ?? `session-${randomUUID()}`;
+  beginConversation(message: string, mode: ConversationTurn['mode'],requestedSessionId?:string) {
+    const session=requestedSessionId?this.session(requestedSessionId):this.defaultSession();
+    if(!session)throw new Error('Mission conversation not found.');
+    const id = `turn-${randomUUID()}`, sessionId = session.id;
     this.db.prepare('INSERT INTO conversation_turns VALUES(?,?,?,?,?,?,?,?,?,?)')
       .run(id, sessionId, message, null, mode, 'pending', null, null, new Date().toISOString(), null);
-    this.changed();
-    return this.conversation().find(turn => turn.id === id)!;
+    this.touchSession(sessionId,message);this.changed();
+    return this.conversation(sessionId).find(turn => turn.id === id)!;
   }
   conversationReceipt(id: string, receipt: ConversationReceipt) {
     this.db.prepare("UPDATE conversation_turns SET receipt=? WHERE id=? AND status='pending'").run(JSON.stringify(receipt), id);
@@ -204,9 +234,12 @@ export class MissionJournal {
     this.db.prepare("UPDATE documents SET status=?,metadata=?,updated_at=? WHERE id=? AND status='streaming'")
       .run(status,JSON.stringify(metadata),new Date().toISOString(),id); this.changed();
   }
-  documents(runId?: string): MissionDocument[] {
-    return this.db.prepare(runId ? 'SELECT * FROM documents WHERE run_id=? OR run_id IS NULL ORDER BY rowid DESC LIMIT 100'
-      : 'SELECT * FROM documents ORDER BY rowid DESC LIMIT 100').all(...(runId ? [runId] : [])).reverse().map(row => ({
+  documents(runId?: string,sessionId?:string): MissionDocument[] {
+    const query=sessionId?`SELECT d.* FROM documents d LEFT JOIN runs r ON r.id=d.run_id LEFT JOIN conversation_turns t ON t.id=d.turn_id
+      WHERE COALESCE(r.session_id,t.session_id)=? AND ${runId?'(d.run_id=? OR d.run_id IS NULL)':'d.run_id IS NULL'} ORDER BY d.rowid DESC LIMIT 200`
+      :runId?'SELECT * FROM documents WHERE run_id=? OR run_id IS NULL ORDER BY rowid DESC LIMIT 100':'SELECT * FROM documents ORDER BY rowid DESC LIMIT 100';
+    const parameters=sessionId?(runId?[sessionId,runId]:[sessionId]):runId?[runId]:[];
+    return this.db.prepare(query).all(...parameters).reverse().map(row => ({
       id: row['id'] as string,runId: row['run_id'] as string | null,turnId: row['turn_id'] as string | null,taskId: row['task_id'] as string | null,
       actor: row['actor'] as string,kind: row['kind'] as MissionDocument['kind'],title: row['title'] as string,version: row['version'] as number,
       status: row['status'] as MissionDocument['status'],markdown: row['markdown'] as string,createdAt: row['created_at'] as string,
@@ -238,14 +271,16 @@ export class MissionJournal {
     this.db.prepare("UPDATE conversation_summaries SET status=?,reply=?,receipt=? WHERE run_id=? AND status='pending'")
       .run(receipt ? 'complete' : 'failed', reply, receipt ? JSON.stringify(receipt) : null, runId);
   }
-  conversationSummaries(): ConversationSummary[] {
-    return this.db.prepare('SELECT * FROM conversation_summaries ORDER BY rowid DESC LIMIT 20').all().map(row => ({
+  conversationSummaries(sessionId?:string): ConversationSummary[] {
+    return this.db.prepare(sessionId?'SELECT s.* FROM conversation_summaries s JOIN runs r ON r.id=s.run_id WHERE r.session_id=? ORDER BY s.rowid DESC LIMIT 200'
+      :'SELECT * FROM conversation_summaries ORDER BY rowid DESC LIMIT 20').all(...(sessionId?[sessionId]:[])).map(row => ({
       runId: row['run_id'] as string, status: row['status'] as ConversationSummary['status'], reply: row['reply'] as string | null,
       receipt: row['receipt'] ? JSON.parse(row['receipt'] as string) : null,
     }));
   }
-  conversation(): ConversationTurn[] {
-    return this.db.prepare('SELECT * FROM conversation_turns ORDER BY rowid DESC LIMIT 20').all().reverse().map(row => ({
+  conversation(sessionId?:string): ConversationTurn[] {
+    return this.db.prepare(sessionId?'SELECT * FROM conversation_turns WHERE session_id=? ORDER BY rowid DESC LIMIT 200'
+      :'SELECT * FROM conversation_turns ORDER BY rowid DESC LIMIT 20').all(...(sessionId?[sessionId]:[])).reverse().map(row => ({
       id: row['id'] as string, sessionId: row['session_id'] as string, message: row['message'] as string,
       reply: row['reply'] as string | null, mode: row['mode'] as ConversationTurn['mode'], status: row['status'] as ConversationTurn['status'],
       action: row['action'] as ConversationTurn['action'], runId: row['run_id'] as string | null,
@@ -284,6 +319,8 @@ export class MissionJournal {
     return this.signals().filter(s => ids.has(s.id));
   }
   startRun(message: string, cause: string, sessionId = `session-${randomUUID()}`) {
+    if(!this.session(sessionId))this.createSession(message,sessionId);
+    this.touchSession(sessionId,message);
     const id = `mission-${randomUUID()}`;
     this.db.prepare('INSERT INTO runs VALUES(?,?,?,?,?,?,?,?)').run(id, sessionId, message, cause, 'running', new Date().toISOString(), null, null);
     return this.run(id)!;
@@ -371,8 +408,9 @@ export class MissionJournal {
       status: row['status'] as JournalRun['status'], startedAt: row['started_at'] as string, finishedAt: row['finished_at'] as string | null,
       result: row['result'] ? JSON.parse(row['result'] as string) : null } : null;
   }
-  recent(): JournalRun[] {
-    return this.db.prepare('SELECT id FROM runs ORDER BY started_at DESC LIMIT 20').all().map(row => this.run(row['id'] as string)!);
+  recent(sessionId?:string): JournalRun[] {
+    return this.db.prepare(sessionId?'SELECT id FROM runs WHERE session_id=? ORDER BY started_at DESC,rowid DESC LIMIT 20'
+      :'SELECT id FROM runs ORDER BY started_at DESC,rowid DESC LIMIT 20').all(...(sessionId?[sessionId]:[])).map(row => this.run(row['id'] as string)!);
   }
   linkReplacement(previousRunId: string, nextRunId: string,cause='source_change') {
     const before=this.run(previousRunId),after=this.run(nextRunId);

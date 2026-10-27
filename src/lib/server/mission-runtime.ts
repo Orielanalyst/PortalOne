@@ -94,8 +94,8 @@ export class MissionRuntime {
         missing:calculated.missing,limitations:calculated.limitations,route:calculated.route?{id:calculated.route.id,from:calculated.route.from,to:calculated.route.to,distanceKm:calculated.route.distanceKm,status:calculated.route.status}:null}}:{}) };
   }
   private async concludeConversation(runId: string) {
-    const turn = this.journal.conversation().find(item => item.runId === runId);
     const run = this.journal.run(runId);
+    const turn = run?this.journal.conversation(run.sessionId).find(item => item.runId === runId):null;
     if (!turn || !run || this.mode === 'offline-replay') return;
     const context = this.investigationContext(run); if (!context) return;
     this.journal.beginConversationSummary(runId);
@@ -113,15 +113,25 @@ export class MissionRuntime {
       this.journal.finishConversationSummary(runId, 'The structured findings are ready below, but I could not complete the model-backed summary. You can still inspect the evidence and blockers.', null);
     }
   }
-  async chat(message: string, watchMinutes: number) {
+  newSession() {
+    if(this.active||this.chatting||this.reviewing||this.polling)throw new Error('Wait for the active work to finish before starting a new mission.');
+    const watching=this.monitor;
+    this.stopMonitor();
+    if(watching)this.journal.event(watching.runId,'coordinator','monitor_stopped','The operator started a new mission. The earlier source watch has stopped; its history is preserved.');
+    return this.journal.createSession();
+  }
+  async chat(message: string, watchMinutes: number,sessionId?:string) {
     const text = message.trim();
     if (!text || text.length > 2000 || ![0, 30].includes(watchMinutes)) throw new Error('Invalid conversation request.');
     if (this.chatting || this.reviewing) throw new Error('The coordinator is already replying or refreshing an operator review.');
-    const summaries = this.journal.conversationSummaries();
-    const history = this.journal.conversation().filter(turn => turn.status === 'replied').slice(-6)
+    const session=sessionId?this.journal.session(sessionId):this.journal.defaultSession();
+    if(!session)throw new Error('Mission conversation not found.');
+    if(this.active&&this.journal.run(this.active)?.sessionId!==session.id)throw new Error('Another mission is running. Wait for it to finish.');
+    const summaries = this.journal.conversationSummaries(session.id);
+    const history = this.journal.conversation(session.id).filter(turn => turn.status === 'replied').slice(-6)
       .map(turn => ({ message: turn.message.slice(0, 1200), reply: [turn.reply,
         summaries.find(summary => summary.runId === turn.runId && summary.status === 'complete')?.reply].filter(Boolean).join('\n') }));
-    const turn = this.journal.beginConversation(text, this.mode === 'live' ? 'live-model' : 'offline-replay');
+    const turn = this.journal.beginConversation(text, this.mode === 'live' ? 'live-model' : 'offline-replay',session.id);
     this.chatting = true;
     let documentId = this.journal.beginDocument({ turnId: turn.id, actor: 'coordinator', kind: 'reply', title: 'Mission Coordinator · response' });
     try {
@@ -130,15 +140,15 @@ export class MissionRuntime {
           this.journal.saveConversationAttempt(turn.id,attempt);this.journal.finishDocument(documentId,'failed',{validation:'conversation_contract',receipt:attempt.receipt});
           if(!attempt.terminal)documentId=this.journal.beginDocument({turnId:turn.id,actor:'coordinator',kind:'reply',title:'Mission Coordinator · correcting the reply and input structure'});
         }) : replayConversation);
-      const latest = this.journal.recent().find(run => run.result);
+      const latest = this.journal.recent(session.id).find(run => run.result);
       const signal = AbortSignal.timeout(50_000);
       const decision = ConversationDecision.parse(await responder.respond({ message: text, history,
         activeMission: this.active ? this.journal.run(this.active)?.message ?? 'Investigation in progress' : null,
         lastInvestigation: latest ? this.investigationContext(latest) : null,requirements:publicRequirements(this.journal.requirements(turn.sessionId)),messageAt:turn.createdAt }, signal, delta => this.journal.appendDocument(documentId, delta)));
       signal.throwIfAborted();
-      if(decision.missionPatch && Object.keys(decision.missionPatch).length)this.journal.updateRequirements(turn.sessionId,decision.missionPatch,this.journal.conversation().map(item=>({text:item.message,at:item.createdAt,turnId:item.id})),turn.id);
-      if (!this.journal.documents().find(document => document.id === documentId)?.markdown) this.journal.appendDocument(documentId, decision.reply);
-      this.journal.finishDocument(documentId, 'published', { receipt: this.journal.conversation().find(item => item.id === turn.id)?.receipt });
+      if(decision.missionPatch && Object.keys(decision.missionPatch).length)this.journal.updateRequirements(turn.sessionId,decision.missionPatch,this.journal.conversation(session.id).map(item=>({text:item.message,at:item.createdAt,turnId:item.id})),turn.id);
+      if (!this.journal.documents(undefined,session.id).find(document => document.id === documentId)?.markdown) this.journal.appendDocument(documentId, decision.reply);
+      this.journal.finishDocument(documentId, 'published', { receipt: this.journal.conversation(session.id).find(item => item.id === turn.id)?.receipt });
       if (decision.action === 'investigate') {
         if (this.active) throw new Error('Investigation already running.');
         // No await between releasing this lock and reserving the investigation slot.
@@ -160,12 +170,12 @@ export class MissionRuntime {
         : 'I could not complete the model-backed reply. Your message is saved; please try again. No investigation was started.', null, null, true);
       }
     } finally { this.chatting = false; this.schedule(); this.journal.changed(); }
-    return this.journal.conversation().find(item => item.id === turn.id)!;
+    return this.journal.conversation(session.id).find(item => item.id === turn.id)!;
   }
   start(message: string, watchMinutes: number, cause = 'operator', sessionId?: string, workflow: 'investigation' | 'committee' = 'investigation',previousRunId?:string) {
     if (this.active || this.chatting || this.reviewing) throw new Error('The coordinator is already working.');
     const client = this.mode === 'live' && !this.options.dispatcher ? configuredNightshift() : null;
-    const run = this.journal.startRun(message, cause, sessionId);
+    const run = this.journal.startRun(message, cause, sessionId??this.journal.defaultSession().id);
     this.journal.bindRequirements(run.id);
     if(previousRunId)this.journal.linkReplacement(previousRunId,run.id,cause);
     this.active = run.id;
@@ -337,18 +347,25 @@ export class MissionRuntime {
       this.checkedAt = new Date().toISOString();
     } finally { this.polling = false; this.schedule(); }
   }
-  state(selectedId?: string) {
-    const runs = this.journal.recent();
-    const selected: JournalRun | null = selectedId ? this.journal.run(selectedId) : runs[0] ?? null;
-    const signals = selected?.result ? this.journal.signalsByIds(selected.result.signalIds) : this.journal.signals();
-    return { mode: this.mode, applicationSourceCommit: this.applicationSourceCommit, runs, selected, events: selected ? this.journal.events(selected.id) : [], activeRunId: this.active,
-      conversation: this.journal.conversation(), chatBusy: this.chatting,
-      conversationSummaries: this.journal.conversationSummaries(),
-      documents: this.journal.documents(selected?.id), citations: selected ? this.journal.citations(selected.id) : [],
+  state(selectedId?: string,sessionId?:string) {
+    const requested=selectedId?this.journal.run(selectedId):null;
+    if(selectedId&&!requested)throw new Error('Mission run not found.');
+    const session=sessionId?this.journal.session(sessionId):requested?this.journal.session(requested.sessionId):this.journal.defaultSession();
+    if(!session)throw new Error('Mission conversation not found.');
+    if(requested&&requested.sessionId!==session.id)throw new Error('The run belongs to a different mission conversation.');
+    const runs = this.journal.recent(session.id);
+    const selected: JournalRun | null = requested ?? runs[0] ?? null;
+    const events=selected?this.journal.events(selected.id):[];
+    const signals = selected ? this.journal.signalsByIds(selected.result?.signalIds??[...new Set(events.flatMap(event=>event.evidenceIds))]) : [];
+    return { mode: this.mode, applicationSourceCommit: this.applicationSourceCommit, runs, selected, events, activeRunId: this.active,
+      session,sessions:this.journal.sessions(),activeSessionId:this.active?this.journal.run(this.active)?.sessionId??null:null,
+      conversation: this.journal.conversation(session.id), chatBusy: this.chatting,
+      conversationSummaries: this.journal.conversationSummaries(session.id),
+      documents: this.journal.documents(selected?.id,session.id), citations: selected ? this.journal.citations(selected.id) : [],
       reportBundle: selected ? this.journal.bundle(selected.id) : null,
       currency:selected?this.journal.currency(selected.id):null,
       memory:selected?this.world.view(selected.id):null,
-      requirements:publicRequirements(this.journal.requirements(this.journal.conversation().at(-1)?.sessionId ?? selected?.sessionId ?? '')),
+      requirements:publicRequirements(this.journal.requirements(session.id)),
       selectedRequirements:selected?publicRequirements(this.journal.boundRequirements(selected.id)):null,
       planning:selected?this.journal.feasibility(selected.id):null,
       reviewCandidate:selected?reviewCandidate(this.journal,selected.id):null,
@@ -356,7 +373,7 @@ export class MissionRuntime {
       sourceStatus: this.sourceStatus, federationStatus: this.federationStatus, checkedAt: this.checkedAt,
       assessments: selected ? this.journal.assessments(selected.id) : [],
       assessmentStatuses: Object.fromEntries(runs.map(r => [r.id, this.journal.assessments(r.id).at(-1)?.status ?? null])),
-      monitorUntil: this.monitor && this.monitor.until > Date.now() ? new Date(this.monitor.until).toISOString() : null,
+      monitorUntil: this.monitor?.sessionId===session.id && this.monitor.until > Date.now() ? new Date(this.monitor.until).toISOString() : null,
       signals: signals.map(({ claimedOrigin: _privateOrigin, contentFingerprint: _fingerprint, location: _privateGps, ...signal }) => signal),
       groundings: signals.map(s => this.map.resolve(s)),
       roadGroundings:signals.map(s=>roadIndex(this.map).match(s)).filter(item=>item.status!=='not_access_report'),
