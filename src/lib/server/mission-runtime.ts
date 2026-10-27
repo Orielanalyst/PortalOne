@@ -140,7 +140,7 @@ export class MissionRuntime {
       const candidates=this.geography.search(area),exact=placeId?candidates.find(candidate=>candidate.id===placeId):candidates.length===1?candidates[0]:null;
       job.candidates=candidates;
       if(!exact){job.status=candidates.length?'choose_place':'failed';job.error=candidates.length?'Choose the intended source location before mapping.':'No source location matched. Search a Cameroon settlement name; global coverage is not connected.';step(job.error);return;}
-      job.map=await this.geography.build(exact,step,AbortSignal.timeout(90_000),this.mode==='live');job.status='ready';step('The area map and source-linked GeoJSON layers are ready for review.','Mission Coordinator');
+      job.map=await this.geography.build(exact,step,AbortSignal.timeout(330_000),this.mode==='live');job.status='ready';step('The area map and source-linked GeoJSON layers are ready for review.','Mission Coordinator');
     }catch(error){job.status='failed';job.error=error instanceof Error?error.message:'The map could not be built.';step(job.error);}
     finally{this.mapping=null;this.journal.changed();}})();
     return job;

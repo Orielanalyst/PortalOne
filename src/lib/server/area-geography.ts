@@ -26,7 +26,8 @@ export class AreaGeography {
     if(this.nationalReady())return;
     if(!this.preparing)this.preparing=new Promise<void>((accept,reject)=>{
       progress('Preparing the verified Cameroon source catalog.');
-      const child=spawn(process.execPath,['--experimental-strip-types','scripts/prepare-area-catalog.ts'],{windowsHide:true,stdio:['ignore','pipe','pipe']});
+      const args=process.versions['bun']?['run','scripts/prepare-area-catalog.ts']:['--experimental-strip-types','scripts/prepare-area-catalog.ts'];
+      const child=spawn(process.execPath,args,{windowsHide:true,stdio:['ignore','pipe','pipe']});
       let line='';child.stdout.on('data',chunk=>{line+=String(chunk);const parts=line.split('\n');line=parts.pop()??'';for(const part of parts)try{const item=JSON.parse(part);if(typeof item.detail==='string')progress(item.detail);}catch{/* ignore non-progress output */}});
       child.stderr.resume();child.on('error',()=>reject(new Error('The geography preparation process could not start.')));
       child.on('exit',code=>code===0?accept():reject(new Error('The pinned geography catalog could not be prepared. Check source availability and local disk space.')));
@@ -65,7 +66,7 @@ export class AreaGeography {
       if(sourceHash.digest('hex')!==catalog.files[layer]?.sha256)throw new Error('Geography source index integrity check failed.');
       const bytes=JSON.stringify(collection);writeFileSync(resolve(directory,layer+'.geojson'),bytes);counts[layer]=collection.features.length;files[layer]={features:collection.features.length,sha256:digest(bytes)};
     }
-    const map:AreaMap={key,place,bounds,halfWidthKm,createdAt:new Date().toISOString(),sourceAcquiredAt:catalog.sourceAcquiredAt,counts,files,attribution:catalog.attribution,sourceUrls:catalog.sourceUrls,
+    const map:AreaMap={key,place,bounds,halfWidthKm,createdAt:new Date().toISOString(),sourceAcquiredAt:catalog.sourceAcquiredAt,counts,files,attribution:catalog.attribution,license:'ODbL-1.0',licenseUrl:'https://opendatacommons.org/licenses/odbl/1-0/',sourceUrls:catalog.sourceUrls,
       limits:'Source-backed reference geography within a ±5 km viewing window, not a surveyed boundary. Whole overlapping features are retained. Coverage may be incomplete. Facility capacity/operation, road passability, field incidents and delivery logistics remain unverified. This exploration does not expand the committee workflow’s verified corridor.'};
     writeFileSync(resolve(directory,'manifest.json'),JSON.stringify(map,null,2));progress('Area map ready: '+counts.roads+' roads, '+counts.facilities+' health features and '+counts.places+' settlement references.');return map;
   }

@@ -41,5 +41,7 @@
     "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/populated_places/hotosm_cmr_populated_places_osm_geojson.zip",
     "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/health_facilities/hotosm_cmr_health_facilities_osm_geojson.zip"
   ],
-  "limits": "Source-backed reference geography within a ±5 km viewing window, not a surveyed boundary. Whole overlapping features are retained. Coverage may be incomplete. Facility capacity/operation, road passability, field incidents and delivery logistics remain unverified. This exploration does not expand the committee workflow’s verified corridor."
+  "limits": "Source-backed reference geography within a ±5 km viewing window, not a surveyed boundary. Whole overlapping features are retained. Coverage may be incomplete. Facility capacity/operation, road passability, field incidents and delivery logistics remain unverified. This exploration does not expand the committee workflow’s verified corridor.",
+  "license": "ODbL-1.0",
+  "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/"
 }

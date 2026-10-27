@@ -1,7 +1,7 @@
 import type {Feature,FeatureCollection} from 'geojson';
 export type AreaPlace={id:string;name:string;kind:string;lat:number;lng:number};
 export type AreaMap={key:string;place:AreaPlace;bounds:[number,number,number,number];halfWidthKm:number;createdAt:string;sourceAcquiredAt:string;
-  counts:{roads:number;facilities:number;places:number};files:Record<string,{sha256:string;features:number}>;attribution:string;limits:string;sourceUrls:string[]};
+  counts:{roads:number;facilities:number;places:number};files:Record<string,{sha256:string;features:number}>;attribution:string;license:'ODbL-1.0';licenseUrl:string;limits:string;sourceUrls:string[]};
 export type AreaMapJob={id:string;sessionId:string;turnId:string|null;area:string;status:'building'|'choose_place'|'ready'|'failed';startedAt:string;updatedAt:string;
   steps:{actor:string;detail:string;at:string}[];candidates:AreaPlace[];map:AreaMap|null;error:string|null};
 export const normalizePlace=(value:string)=>value.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().replace(/[,\s]+cameroon$/,'').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
