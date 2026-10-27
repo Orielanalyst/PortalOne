@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "publishedAt": "2026-10-27T11:19:17.215Z",
+  "codeCheckpoint": "d4f66f4",
+  "liveTest": {
+    "action": "map_area",
+    "committeeRunStarted": false,
+    "responseModel": "nvidia/nemotron-3-ultra-550b-a55b",
+    "durationMs": 3582,
+    "toolMapCompleted": true,
+    "sourceCommitDuringLiveTest": "234fed5eebe8051ff7c8e664dab8ae22c1a5888f",
+    "workingTreeImplementationUnderTest": true
+  },
+  "maps": [
+    {
+      "key": "d340069b41e982703b08f07a955649a6969ebe58144af7ac6fde4db64cd5b05e",
+      "place": {
+        "id": "places-node:331130782",
+        "name": "Buea",
+        "kind": "city",
+        "lng": 9.2315915,
+        "lat": 4.1567895
+      },
+      "bounds": [
+        9.18655747597725,
+        4.111873941250449,
+        9.276625524022752,
+        4.2017050587495515
+      ],
+      "halfWidthKm": 5,
+      "createdAt": "2026-10-27T10:53:24.235Z",
+      "sourceAcquiredAt": "2026-10-25T06:21:10.459Z",
+      "counts": {
+        "roads": 779,
+        "facilities": 32,
+        "places": 10
+      },
+      "files": {
+        "roads": {
+          "features": 779,
+          "sha256": "ac0f3cce05524f72134e0768b0e26459a5c11b2636e8757191e731c74b3b353d"
+        },
+        "facilities": {
+          "features": 32,
+          "sha256": "b3c0f9eaca5c75b26e678ded0a8c8c73481235f3508f55b9295904edd92dfb80"
+        },
+        "places": {
+          "features": 10,
+          "sha256": "42f36747ceac250d6202117ab587f3bd2b09477eaedae4194d35d1e160b02769"
+        }
+      },
+      "attribution": "© OpenStreetMap contributors; distributed through Humanitarian OpenStreetMap Team / HDX",
+      "sourceUrls": [
+        "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/roads/hotosm_cmr_roads_osm_shp.zip",
+        "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/populated_places/hotosm_cmr_populated_places_osm_geojson.zip",
+        "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/health_facilities/hotosm_cmr_health_facilities_osm_geojson.zip"
+      ],
+      "limits": "Source-backed reference geography within a ±5 km viewing window, not a surveyed boundary. Whole overlapping features are retained. Coverage may be incomplete. Facility capacity/operation, road passability, field incidents and delivery logistics remain unverified. This exploration does not expand the committee workflow’s verified corridor.",
+      "license": "ODbL-1.0",
+      "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/"
+    },
+    {
+      "key": "436814ca92dc13e1b99754b654b47cb4a30e35bf46411207732d6b97c81fb789",
+      "place": {
+        "id": "places-node:331130780",
+        "name": "Limbé",
+        "kind": "city",
+        "lng": 9.207058,
+        "lat": 4.010289
+      },
+      "bounds": [
+        9.162032195907816,
+        3.9653734412504495,
+        9.252083804092184,
+        4.055204558749551
+      ],
+      "halfWidthKm": 5,
+      "createdAt": "2026-10-27T11:04:06.644Z",
+      "sourceAcquiredAt": "2026-10-25T06:21:10.459Z",
+      "counts": {
+        "roads": 1095,
+        "facilities": 42,
+        "places": 9
+      },
+      "files": {
+        "roads": {
+          "features": 1095,
+          "sha256": "8e29c2dcb903abf3f791a04b72bd701915342f0cd1a3def79cbf793adc24a35d"
+        },
+        "facilities": {
+          "features": 42,
+          "sha256": "17d142a51f25308b9721688028854ae14a9ff0f87d7d9892bc7bc812d40a6394"
+        },
+        "places": {
+          "features": 9,
+          "sha256": "74421f9390d6670761ebef4cbc59a5ba6b16579a638cb2caa731ed0c33e7021a"
+        }
+      },
+      "attribution": "© OpenStreetMap contributors; distributed through Humanitarian OpenStreetMap Team / HDX",
+      "sourceUrls": [
+        "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/roads/hotosm_cmr_roads_osm_shp.zip",
+        "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/populated_places/hotosm_cmr_populated_places_osm_geojson.zip",
+        "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/health_facilities/hotosm_cmr_health_facilities_osm_geojson.zip"
+      ],
+      "limits": "Source-backed reference geography within a ±5 km viewing window, not a surveyed boundary. Whole overlapping features are retained. Coverage may be incomplete. Facility capacity/operation, road passability, field incidents and delivery logistics remain unverified. This exploration does not expand the committee workflow’s verified corridor.",
+      "license": "ODbL-1.0",
+      "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/"
+    }
+  ],
+  "nativeQgis": {
+    "image": "qgis/qgis@sha256:bacafbaf899bb2af5d99dd8a138e0438733aac252ddd5f29d089ad34641bb059",
+    "networkEnabled": false,
+    "layers": [
+      {
+        "name": "roads",
+        "features": 779,
+        "valid": true,
+        "crs": "EPSG:4326"
+      },
+      {
+        "name": "facilities",
+        "features": 32,
+        "valid": true,
+        "crs": "EPSG:4326"
+      },
+      {
+        "name": "places",
+        "features": 10,
+        "valid": true,
+        "crs": "EPSG:4326"
+      }
+    ]
+  },
+  "cleanCacheCheck": {
+    "retainedBueaLoaded": true,
+    "ambiguousKomChoices": 2,
+    "unretainedAreaHeldOffline": true,
+    "networkUsed": false
+  },
+  "screenshot": {
+    "path": "docs/assets/readme/area-map.png",
+    "sha256": "7cd35f80bfe1033deb52bc1ea5ac90768524a8cf9ad20277b1e506e901d5a77f"
+  },
+  "privacy": "Public OSM references and a controlled test request only. No Kobo report rows, private narratives, reporter GPS, session identifiers or credentials published.",
+  "boundary": "Source reference maps; no verified needs, current access, hospital capacity or operational approval. Full committee integration remains corridor-scoped."
+}

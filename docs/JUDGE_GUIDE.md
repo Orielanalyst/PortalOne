@@ -14,6 +14,7 @@ Start with the [README](../README.md) for impact, architecture, sponsor roles, s
 | Does Zetaris perform real cross-source work? | [Core data receipt](evidence/relief-data-2026-10-24.json), [federated live change](evidence/federated-live-change-2026-10-25.json) | Real queries over registered structured sources; logistics are rehearsal data and community records are labelled demonstrations. |
 | Does the Zetaris work meet the supplied USL evaluation criteria? | [Scoring guide and reflection](ZETARIS_SCORING.md), [DDL](../data/zetaris-usl-v1/model.sql), [actual USL/DQ receipt](evidence/zetaris-usl-2026-10-27.json) | Three logical registered sources, six exploratory queries, four active semantic tables, three verification queries and two executed custom rules. Public reference/synthetic data only; two schemas share one physical PostgreSQL instance. |
 | Can I start a separate planning conversation? | **New mission** and **Mission history** above the conversation; [isolation tests](../src/lib/server/mission-sessions.test.ts) | Separate model history, inputs, runs and streamed documents; earlier work remains accessible. One local operator and one active investigation at a time. |
+| Can the agent map a different location? | [Area mapping guide](AREA_MAPPING.md), [retained source extracts](../data/area-geography-v1/README.md) | Real Buea/Limbé reference extracts, Cameroon gazetteer, explicit ambiguity and native QGIS load checks. This extends reference geography; full committee integration remains corridor-scoped. |
 | Are drafts and evaluations real model work? | [Committee receipt](evidence/committee-workflow-2026-10-25.json) | Actual provider deltas, v1 publication before evaluation, critique, v2 and text diff. Source commit, model and artifact identities are retained. |
 | Does new evidence change the plan's status? | [Changed-evidence receipt](evidence/mission-update-2026-10-25.json) | A newly submitted Kobo demonstration supersedes a proposal and triggers a replacement; old PDF bytes remain unchanged. |
 | Can the product hand off something usable? | [Published PDF](evidence/private-inference-demo-2026-10-26/report.pdf), [GIS ZIP](evidence/private-inference-demo-2026-10-26/committee-pack.zip), [validation](evidence/private-inference-2026-10-26.json) | Actual 16-page historical report and seven-layer native GIS pack, separately authorized for publication. Eight demo reports, six extracted claims, zero verified incidents. |
@@ -38,7 +39,7 @@ The prepared HackOS materials include a 2:46 product recording and a ten-slide p
 
 The [README quickstart](../README.md#run-reliefintel) separates credential-free offline replay from actual live services. Live setup requires the sponsor runtimes, an owned Kobo project, configured credentials and the report runtime. There is no silent replay fallback.
 
-Recorded implementation gate at [`2d63387`](https://github.com/Orielanalyst/PortalOne/commit/2d63387): **180 tests in 23 files, typecheck, production build, 8/8 World Model checks, 154 retained archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** A separate clean-source check excludes the parallel uncommitted UI redesign. The last inspected GitHub Actions runs could not start because of the account billing lock; local results do not claim hosted CI success.
+Recorded implementation gate at [`d4f66f4`](https://github.com/Orielanalyst/PortalOne/commit/d4f66f4): **187 tests in 25 files, typecheck, production build, 8/8 World Model checks, 154 retained archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The dark UI refinement and area-mapping workflow are included. The last inspected GitHub Actions runs could not start because of the account billing lock; local results do not claim hosted CI success.
 
 ```powershell
 bun run typecheck
@@ -55,7 +56,7 @@ The core CLI's first overweight proposal is an explicit stress-test fixture. Sub
 
 ## Read the operational boundary
 
-The current acquired coverage is one corridor. Rehearsal reports and logistics are synthetic, field origins are unverified, facility capacity/operation and current road passability require local confirmation, and empty surveyed-zone layers remain empty. Public humanitarian records provide context, not corroboration of a current local incident. Source failure remains visible.
+The full committee workflow covers one corridor; separate reference-geography exploration supports source-matched Cameroon locations. Rehearsal reports and logistics are synthetic, field origins are unverified, facility capacity/operation and current road passability require local confirmation, and empty surveyed-zone layers remain empty. Public humanitarian records provide context, not corroboration of a current local incident. Source failure remains visible.
 
 The committee approves an exact proposal; field and endpoint holds remain, and no travel is authorized. The watch is bounded and owned by one local process; it is not a durable month-long collection service. Restart preserves history and requires fresh review. NGO deployment outcomes and time savings await a supervised pilot.
 

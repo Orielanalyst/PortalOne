@@ -32,7 +32,7 @@ ReliefIntel gives those teams an investigative capability: ask a mission questio
 
 The user works with a **Mission Coordinator**, which clarifies the brief and delegates to specialists. Users do not select agents manually.
 
-**Try another case:** click **New mission** above the conversation. Each mission keeps separate messages, requirements, investigation runs and documents. **Mission history** reopens earlier work, and the selected mission has a reloadable URL. Creating a mission preserves previous work and stops its old watch; an active investigation must finish first. A new case can start with a greeting and clarification. Geography beyond the acquired corridor remains an explicit coverage gap.
+**Try another case:** click **New mission** above the conversation. Each mission keeps separate messages, requirements, investigation runs and documents. **Mission history** reopens earlier work, and the selected mission has a reloadable URL. Creating a mission preserves previous work and stops its old watch; an active investigation must finish first. A new case can start with a greeting and clarification. Reference maps can now be built for source-matched Cameroon settlements; full committee planning beyond the verified corridor still requires additional operational sources.
 
 ```mermaid
 flowchart TD
@@ -73,6 +73,10 @@ The acquired corridor contains **5,100 road line features, seven mapped health f
 *Actual map from the published 26 October demonstration pack. This historical seven-layer export predates the current route-focused eleven-layer atlas. [Image provenance](docs/assets/readme/source.json) · [Current cartography](docs/MAP_CARTOGRAPHY.md).*
 
 The current browser map has a white-cased route, A/B references, distinct facility and report symbols, layer controls, mission/coverage framing, north indicator, scale and attribution. The A3 export adds coordinate ticks, a regional locator, keyed health inventory and a saved QGIS print layout.
+
+**Explore another Cameroon location:** ask the coordinator to map a town, or search in the Map view. The Mapping Agent resolves the place against a 12,730-reference source gazetteer and builds roads, health features and settlement layers for the selected window. Ambiguous names require a choice. Buea and Limbé extracts are retained for reproducible, credential-free reference mapping; wider live extraction reuses the pinned national archives. The dark workspace now has rounded floating panels, clearer loading states and an expand-workspace control. [Area mapping and its evidence boundary](docs/AREA_MAPPING.md).
+
+<p align="center"><a href="docs/AREA_MAPPING.md"><img src="docs/assets/readme/area-map.png" width="900" alt="Actual ReliefIntel dark map workspace showing source-backed Buea roads and health features, location search, attribution, source date, legend, north arrow and scale"></a></p>
 
 | Committee output | What the team receives |
 |---|---|
@@ -129,7 +133,7 @@ The repository contains **real sponsor-call receipts and generated artifacts**, 
 | A downloadable, native GIS/report handoff | [Published PDF](docs/evidence/private-inference-demo-2026-10-26/report.pdf), [GIS ZIP](docs/evidence/private-inference-demo-2026-10-26/committee-pack.zip) and [validation receipt](docs/evidence/private-inference-2026-10-26.json). |
 | The later integrated mission-input, route, review and restart path | [Local acceptance record](docs/GOAL_1_TO_4.md), [mission requirements](src/lib/server/mission-requirements.ts) and [feasibility checks](src/lib/server/mission-feasibility.ts). |
 
-**Recorded code gate at [`2d63387`](https://github.com/Orielanalyst/PortalOne/commit/2d63387): 180 tests in 23 files, typecheck, production build, eight World Model checks, 154 vendored archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The committed source was also checked independently of the parallel UI redesign. The last inspected hosted Actions runs were blocked before execution by an account billing lock; no hosted green result is claimed.
+**Recorded code gate at [`d4f66f4`](https://github.com/Orielanalyst/PortalOne/commit/d4f66f4): 187 tests in 25 files, typecheck, production build, eight World Model checks, 154 vendored archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The dark workspace refinement and area-mapping workflow are included. The last inspected hosted Actions runs were blocked before execution by an account billing lock; no hosted green result is claimed.
 
 Receipts identify their source commits and dates. The public downloadable snapshots are historical rehearsals and do not silently become the latest run. The prepared HackOS materials include a **2:46 recorded product walkthrough** and **10-slide pitch deck**.
 
@@ -210,9 +214,9 @@ Use `bun run demo:relief-agent --live` only with configured services; it makes a
 
 ## Operational scope and next proof
 
-The implemented demonstration is one acquired corridor. Report/logistics rehearsals are labelled synthetic; mapped health features do not establish capacity or current operation, and route geometry does not establish passability. Unlocated reports remain unlocated; unsurveyed intervention zones remain empty. Committee approval applies to an exact proposal and retains field/endpoint holds—it does not authorize travel.
+The full evidence-to-committee-report demonstration covers one acquired corridor. Reference-geography exploration additionally supports source-matched Cameroon locations. Report/logistics rehearsals are labelled synthetic; mapped health features do not establish capacity or current operation, and route geometry does not establish passability. Unlocated reports remain unlocated; unsurveyed intervention zones remain empty. Committee approval applies to an exact proposal and retains field/endpoint holds—it does not authorize travel.
 
-The watch is a bounded local-process feature. Restart preserves history and requires fresh review; it is not a durable month-long field collection service. Publisher failures and source gaps remain visible. WhatsApp/SMS/Telegram intake, broad regional coverage and satellite analysis are future extensions, not connected features claimed here.
+The watch is a bounded local-process feature. Restart preserves history and requires fresh review; it is not a durable month-long field collection service. Publisher failures and source gaps remain visible. WhatsApp/SMS/Telegram intake, sourced regional intervention boundaries, wider committee-data integration and satellite analysis remain future extensions.
 
 **The next proof is a supervised NGO pilot:** measure preparation time, evidence coverage, map corrections and committee usability against the existing workflow, while validating local reporting and operational handoffs.
 
