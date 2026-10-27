@@ -1,0 +1,45 @@
+{
+  "key": "d340069b41e982703b08f07a955649a6969ebe58144af7ac6fde4db64cd5b05e",
+  "place": {
+    "id": "places-node:331130782",
+    "name": "Buea",
+    "kind": "city",
+    "lng": 9.2315915,
+    "lat": 4.1567895
+  },
+  "bounds": [
+    9.18655747597725,
+    4.111873941250449,
+    9.276625524022752,
+    4.2017050587495515
+  ],
+  "halfWidthKm": 5,
+  "createdAt": "2026-10-27T10:53:24.235Z",
+  "sourceAcquiredAt": "2026-10-25T06:21:10.459Z",
+  "counts": {
+    "roads": 779,
+    "facilities": 32,
+    "places": 10
+  },
+  "files": {
+    "roads": {
+      "features": 779,
+      "sha256": "ac0f3cce05524f72134e0768b0e26459a5c11b2636e8757191e731c74b3b353d"
+    },
+    "facilities": {
+      "features": 32,
+      "sha256": "b3c0f9eaca5c75b26e678ded0a8c8c73481235f3508f55b9295904edd92dfb80"
+    },
+    "places": {
+      "features": 10,
+      "sha256": "42f36747ceac250d6202117ab587f3bd2b09477eaedae4194d35d1e160b02769"
+    }
+  },
+  "attribution": "© OpenStreetMap contributors; distributed through Humanitarian OpenStreetMap Team / HDX",
+  "sourceUrls": [
+    "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/roads/hotosm_cmr_roads_osm_shp.zip",
+    "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/populated_places/hotosm_cmr_populated_places_osm_geojson.zip",
+    "https://production-raw-data-api.s3.amazonaws.com/ISO3/CMR/health_facilities/hotosm_cmr_health_facilities_osm_geojson.zip"
+  ],
+  "limits": "Source-backed reference geography within a ±5 km viewing window, not a surveyed boundary. Whole overlapping features are retained. Coverage may be incomplete. Facility capacity/operation, road passability, field incidents and delivery logistics remain unverified. This exploration does not expand the committee workflow’s verified corridor."
+}

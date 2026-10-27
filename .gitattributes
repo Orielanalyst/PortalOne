@@ -10,6 +10,7 @@
 /data/community-boundaries-v1/** text eol=lf
 /data/kobo/** text eol=lf
 /data/zetaris-usl-v1/** text eol=lf
+/data/area-geography-v1/** text eol=lf
 /vendor/npm-registry/*.json text eol=lf
 /vendor/npm-registry/*.md text eol=lf
 /vendor/npm-registry/*.LICENSE text eol=lf
