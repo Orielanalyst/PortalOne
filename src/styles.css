@@ -37,7 +37,7 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.5rem;
 
   --background: oklch(0.16 0.012 250);
   --foreground: oklch(0.93 0.01 90);
@@ -46,7 +46,7 @@
   --primary: oklch(0.78 0.16 65);
   --primary-foreground: oklch(0.16 0.012 250);
   --muted: oklch(0.24 0.014 250);
-  --muted-foreground: oklch(0.65 0.02 250);
+  --muted-foreground: oklch(0.7 0.02 250);
   --accent: oklch(0.75 0.13 185);
   --accent-foreground: oklch(0.16 0.012 250);
   --destructive: oklch(0.64 0.22 25);
@@ -72,7 +72,13 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: oklch(0.78 0.16 65 / 0.3);
+    color: var(--color-foreground);
   }
 }
 
