@@ -1,0 +1,531 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-27T10:04:39.757Z",
+  "finishedAt": "2026-10-27T10:04:47.627Z",
+  "scope": "Public OSM community references and explicitly synthetic logistics/access rehearsal sources. No report rows or narratives are queried. These are three logical Zetaris sources; the two PostgreSQL schemas share one physical rehearsal database.",
+  "model": "lightning.metastore.portalone.mission_intelligence_v1",
+  "ddlSha256": "7b32ed6a29abc578767b1e0679d87d7226d1a70a8f3c0f1c443c0f099214b3bb",
+  "privacy": "Only public OSM reference rows and checked-in synthetic logistics/access fixtures. No community reports, identities, narratives, credentials or private batch metadata.",
+  "applicationBoundary": "The live application still uses its fixed source-level SELECT templates. This activated USL is a separately verified semantic contract; no claim that the live adapter has been migrated.",
+  "receipts": [
+    {
+      "id": "community-inventory",
+      "sql": "SELECT COUNT(*) AS communities, COUNT(DISTINCT map_revision) AS map_revisions FROM PORTALONE_COMMUNITY_V1.sites",
+      "result": {
+        "headers": [
+          "communities",
+          "map_revisions"
+        ],
+        "data": [
+          [
+            "16",
+            "1"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 175
+      }
+    },
+    {
+      "id": "community-logistics-scope",
+      "sql": "SELECT s.place_id, s.name, l.depot_id, l.simulated FROM PORTALONE_COMMUNITY_V1.sites s JOIN PORTALONE_COMMUNITY_V1.logistics_scope l ON s.place_id=l.place_id",
+      "result": {
+        "headers": [
+          "place_id",
+          "name",
+          "depot_id",
+          "simulated"
+        ],
+        "data": [
+          [
+            "places-node:1744470346",
+            "Bambili",
+            "sim-bamenda-hub",
+            "true"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 386
+      }
+    },
+    {
+      "id": "logistics-stock",
+      "sql": "SELECT depot_id, SUM(available_units) AS stock_units, MIN(expires_at) AS stock_expires_at FROM PORTALONE_LOGISTICS_V1.inventory GROUP BY depot_id",
+      "result": {
+        "headers": [
+          "depot_id",
+          "stock_units",
+          "stock_expires_at"
+        ],
+        "data": [
+          [
+            "sim-bamenda-hub",
+            "120",
+            "2026-10-24T11:00:00Z"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 152
+      }
+    },
+    {
+      "id": "logistics-fleet",
+      "sql": "SELECT depot_id, COUNT(*) AS vehicles, SUM(CASE WHEN available THEN 1 ELSE 0 END) AS available_vehicles FROM PORTALONE_LOGISTICS_V1.vehicles GROUP BY depot_id",
+      "result": {
+        "headers": [
+          "depot_id",
+          "vehicles",
+          "available_vehicles"
+        ],
+        "data": [
+          [
+            "sim-bamenda-hub",
+            "2",
+            "2"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 294
+      }
+    },
+    {
+      "id": "scenario-route-options",
+      "sql": "SELECT route_id, COUNT(*) AS segments, SUM(distance_km) AS distance_km, MIN(max_gross_kg) AS max_gross_kg FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY route_id ORDER BY route_id",
+      "result": {
+        "headers": [
+          "route_id",
+          "segments",
+          "distance_km",
+          "max_gross_kg"
+        ],
+        "data": [
+          [
+            "sim-detour",
+            "2",
+            "30",
+            "6500"
+          ],
+          [
+            "sim-direct",
+            "2",
+            "20",
+            "3500"
+          ]
+        ],
+        "total": 2,
+        "timeUsed": 288
+      }
+    },
+    {
+      "id": "scenario-validity",
+      "sql": "SELECT simulated, MIN(expires_at) AS earliest_expiry, COUNT(*) AS segments FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY simulated",
+      "result": {
+        "headers": [
+          "simulated",
+          "earliest_expiry",
+          "segments"
+        ],
+        "data": [
+          [
+            "true",
+            "2026-10-24T11:00:00Z",
+            "4"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 246
+      }
+    },
+    {
+      "id": "metastore-parent",
+      "sql": "CREATE NAMESPACE IF NOT EXISTS lightning.metastore",
+      "result": {
+        "headers": [
+          "Result"
+        ],
+        "data": [],
+        "total": 0,
+        "timeUsed": 40
+      }
+    },
+    {
+      "id": "namespace",
+      "sql": "CREATE NAMESPACE IF NOT EXISTS lightning.metastore.portalone",
+      "result": {
+        "headers": [
+          "Result"
+        ],
+        "data": [],
+        "total": 0,
+        "timeUsed": 41
+      }
+    },
+    {
+      "id": "namespace-catalog",
+      "sql": "SHOW NAMESPACES OR TABLES IN lightning.metastore.portalone",
+      "result": {
+        "headers": [
+          "name",
+          "type",
+          "usl_id",
+          "count",
+          "activated"
+        ],
+        "data": [
+          [
+            "mission_intelligence_v1",
+            "usl",
+            "948",
+            "4",
+            null
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 54
+      }
+    },
+    {
+      "id": "activate-communities",
+      "sql": "ACTIVATE USL TABLE lightning.metastore.portalone.mission_intelligence_v1.communities AS SELECT COALESCE(place_id,'') AS place_id, name, map_revision FROM PORTALONE_COMMUNITY_V1.sites",
+      "result": {
+        "headers": [
+          "registered"
+        ],
+        "data": [
+          [
+            "{\"name\":\"communities\",\"query\":\"SELECT COALESCE(place_id,'') AS place_id, name, map_revision FROM PORTALONE_COMMUNITY_V1.sites\"}"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 111
+      }
+    },
+    {
+      "id": "activate-depots",
+      "sql": "ACTIVATE USL TABLE lightning.metastore.portalone.mission_intelligence_v1.depots AS SELECT COALESCE(i.depot_id,'') AS depot_id, SUM(CAST(i.available_units AS BIGINT)) AS stock_units, MAX(v.available_vehicles) AS available_vehicles, MIN(i.expires_at) AS stock_expires_at, MIN(CAST(i.simulated AS INT))=1 AS simulated FROM PORTALONE_LOGISTICS_V1.inventory i LEFT JOIN (SELECT depot_id, SUM(CASE WHEN available THEN CAST(1 AS BIGINT) ELSE CAST(0 AS BIGINT) END) AS available_vehicles FROM PORTALONE_LOGISTICS_V1.vehicles GROUP BY depot_id) v ON i.depot_id=v.depot_id GROUP BY i.depot_id",
+      "result": {
+        "headers": [
+          "registered"
+        ],
+        "data": [
+          [
+            "{\"name\":\"depots\",\"query\":\"SELECT COALESCE(i.depot_id,'') AS depot_id, SUM(CAST(i.available_units AS BIGINT)) AS stock_units, MAX(v.available_vehicles) AS available_vehicles, MIN(i.expires_at) AS stock_expires_at, MIN(CAST(i.simulated AS INT))=1 AS simulated FROM PORTALONE_LOGISTICS_V1.inventory i LEFT JOIN (SELECT depot_id, SUM(CASE WHEN available THEN CAST(1 AS BIGINT) ELSE CAST(0 AS BIGINT) END) AS available_vehicles FROM PORTALONE_LOGISTICS_V1.vehicles GROUP BY depot_id) v ON i.depot_id=v.depot_id GROUP BY i.depot_id\"}"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 225
+      }
+    },
+    {
+      "id": "activate-community_logistics",
+      "sql": "ACTIVATE USL TABLE lightning.metastore.portalone.mission_intelligence_v1.community_logistics AS SELECT COALESCE(place_id,'') AS place_id, depot_id, simulated FROM PORTALONE_COMMUNITY_V1.logistics_scope",
+      "result": {
+        "headers": [
+          "registered"
+        ],
+        "data": [
+          [
+            "{\"name\":\"community_logistics\",\"query\":\"SELECT COALESCE(place_id,'') AS place_id, depot_id, simulated FROM PORTALONE_COMMUNITY_V1.logistics_scope\"}"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 95
+      }
+    },
+    {
+      "id": "activate-route_options",
+      "sql": "ACTIVATE USL TABLE lightning.metastore.portalone.mission_intelligence_v1.route_options AS SELECT COALESCE(route_id,'') AS route_id, MAX(CASE WHEN sequence=1 THEN from_node END) AS depot_id, CAST(SUM(distance_km) AS DOUBLE) AS distance_km, SUM(CAST(travel_minutes AS BIGINT)) AS travel_minutes, CAST(MIN(max_gross_kg) AS DOUBLE) AS max_gross_kg, MIN(expires_at) AS expires_at, MIN(CAST(simulated AS INT))=1 AS simulated FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY route_id",
+      "result": {
+        "headers": [
+          "registered"
+        ],
+        "data": [
+          [
+            "{\"name\":\"route_options\",\"query\":\"SELECT COALESCE(route_id,'') AS route_id, MAX(CASE WHEN sequence=1 THEN from_node END) AS depot_id, CAST(SUM(distance_km) AS DOUBLE) AS distance_km, SUM(CAST(travel_minutes AS BIGINT)) AS travel_minutes, CAST(MIN(max_gross_kg) AS DOUBLE) AS max_gross_kg, MIN(expires_at) AS expires_at, MIN(CAST(simulated AS INT))=1 AS simulated FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY route_id\"}"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 106
+      }
+    },
+    {
+      "id": "active-tables",
+      "sql": "SHOW NAMESPACES OR TABLES IN lightning.metastore.portalone.mission_intelligence_v1",
+      "result": {
+        "headers": [
+          "name",
+          "type",
+          "usl_id",
+          "count",
+          "activated"
+        ],
+        "data": [
+          [
+            "communities",
+            "table",
+            null,
+            "0",
+            "true"
+          ],
+          [
+            "community_logistics",
+            "table",
+            null,
+            "0",
+            "true"
+          ],
+          [
+            "depots",
+            "table",
+            null,
+            "0",
+            "true"
+          ],
+          [
+            "route_options",
+            "table",
+            null,
+            "0",
+            "true"
+          ]
+        ],
+        "total": 4,
+        "timeUsed": 49
+      }
+    },
+    {
+      "id": "model-definition",
+      "sql": "LOAD USL mission_intelligence_v1 NAMESPACE lightning.metastore.portalone",
+      "result": {
+        "headers": [
+          "json"
+        ],
+        "data": [
+          [
+            "{\"namespace\":[\"metastore\",\"portalone\"],\"name\":\"mission_intelligence_v1\",\"tables\":[{\"name\":\"communities\",\"columnSpecs\":[{\"name\":\"place_id\",\"dataType\":\"\\\"varchar(200)\\\"\",\"primaryKey\":{\"columns\":[]},\"notNull\":{\"columns\":[]},\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"name\",\"dataType\":\"\\\"varchar(200)\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"map_revision\",\"dataType\":\"\\\"varchar(200)\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]}],\"unique\":[],\"foreignKeys\":[],\"checks\":[],\"ifNotExit\":false,\"namespace\":[\"lightning\",\"metastore\",\"portalone\",\"mission_intelligence_v1\"],\"dqAnnotations\":[],\"acAnnotations\":[],\"activateQuery\":\"SELECT COALESCE(place_id,'') AS place_id, name, map_revision FROM PORTALONE_COMMUNITY_V1.sites\"},{\"name\":\"depots\",\"columnSpecs\":[{\"name\":\"depot_id\",\"dataType\":\"\\\"varchar(200)\\\"\",\"primaryKey\":{\"columns\":[]},\"notNull\":{\"columns\":[]},\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"stock_units\",\"dataType\":\"\\\"long\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"available_vehicles\",\"dataType\":\"\\\"long\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"stock_expires_at\",\"dataType\":\"\\\"varchar(200)\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"simulated\",\"dataType\":\"\\\"boolean\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]}],\"unique\":[],\"foreignKeys\":[],\"checks\":[],\"ifNotExit\":false,\"namespace\":[\"lightning\",\"metastore\",\"portalone\",\"mission_intelligence_v1\"],\"dqAnnotations\":[{\"name\":\"nonnegative_rehearsal_capacity\",\"expression\":\"stock_units >= 0 AND available_vehicles >= 0 AND simulated = true\",\"cte\":{}}],\"acAnnotations\":[],\"activateQuery\":\"SELECT COALESCE(i.depot_id,'') AS depot_id, SUM(CAST(i.available_units AS BIGINT)) AS stock_units, MAX(v.available_vehicles) AS available_vehicles, MIN(i.expires_at) AS stock_expires_at, MIN(CAST(i.simulated AS INT))=1 AS simulated FROM PORTALONE_LOGISTICS_V1.inventory i LEFT JOIN (SELECT depot_id, SUM(CASE WHEN available THEN CAST(1 AS BIGINT) ELSE CAST(0 AS BIGINT) END) AS available_vehicles FROM PORTALONE_LOGISTICS_V1.vehicles GROUP BY depot_id) v ON i.depot_id=v.depot_id GROUP BY i.depot_id\"},{\"name\":\"community_logistics\",\"columnSpecs\":[{\"name\":\"place_id\",\"dataType\":\"\\\"varchar(200)\\\"\",\"primaryKey\":{\"columns\":[]},\"notNull\":{\"columns\":[]},\"foreignKey\":{\"columns\":[],\"refTable\":[\"lightning.metastore.portalone.mission_intelligence_v1.communities\"],\"refColumns\":[\"place_id\"]},\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"depot_id\",\"dataType\":\"\\\"varchar(200)\\\"\",\"foreignKey\":{\"columns\":[],\"refTable\":[\"lightning.metastore.portalone.mission_intelligence_v1.depots\"],\"refColumns\":[\"depot_id\"]},\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"simulated\",\"dataType\":\"\\\"boolean\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]}],\"unique\":[],\"foreignKeys\":[],\"checks\":[],\"ifNotExit\":false,\"namespace\":[\"lightning\",\"metastore\",\"portalone\",\"mission_intelligence_v1\"],\"dqAnnotations\":[],\"acAnnotations\":[],\"activateQuery\":\"SELECT COALESCE(place_id,'') AS place_id, depot_id, simulated FROM PORTALONE_COMMUNITY_V1.logistics_scope\"},{\"name\":\"route_options\",\"columnSpecs\":[{\"name\":\"route_id\",\"dataType\":\"\\\"varchar(200)\\\"\",\"primaryKey\":{\"columns\":[]},\"notNull\":{\"columns\":[]},\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"depot_id\",\"dataType\":\"\\\"varchar(200)\\\"\",\"foreignKey\":{\"columns\":[],\"refTable\":[\"lightning.metastore.portalone.mission_intelligence_v1.depots\"],\"refColumns\":[\"depot_id\"]},\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"distance_km\",\"dataType\":\"\\\"double\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"travel_minutes\",\"dataType\":\"\\\"long\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"max_gross_kg\",\"dataType\":\"\\\"double\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"expires_at\",\"dataType\":\"\\\"varchar(200)\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]},{\"name\":\"simulated\",\"dataType\":\"\\\"boolean\\\"\",\"dqAnnotations\":[],\"acAnnotations\":[]}],\"unique\":[],\"foreignKeys\":[],\"checks\":[],\"ifNotExit\":false,\"namespace\":[\"lightning\",\"metastore\",\"portalone\",\"mission_intelligence_v1\"],\"dqAnnotations\":[{\"name\":\"current_access_evidence\",\"expression\":\"TO_TIMESTAMP(expires_at) >= CURRENT_TIMESTAMP()\",\"cte\":{}}],\"acAnnotations\":[],\"activateQuery\":\"SELECT COALESCE(route_id,'') AS route_id, MAX(CASE WHEN sequence=1 THEN from_node END) AS depot_id, CAST(SUM(distance_km) AS DOUBLE) AS distance_km, SUM(CAST(travel_minutes AS BIGINT)) AS travel_minutes, CAST(MIN(max_gross_kg) AS DOUBLE) AS max_gross_kg, MIN(expires_at) AS expires_at, MIN(CAST(simulated AS INT))=1 AS simulated FROM PORTALONE_SCENARIO_V1.route_segments GROUP BY route_id\"}]}"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 49
+      }
+    },
+    {
+      "id": "active-community-count",
+      "sql": "SELECT COUNT(*) AS communities FROM lightning.metastore.portalone.mission_intelligence_v1.communities",
+      "result": {
+        "headers": [
+          "communities"
+        ],
+        "data": [
+          [
+            "16"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 262
+      }
+    },
+    {
+      "id": "three-source-mission-context",
+      "sql": "SELECT c.place_id, c.name, d.depot_id, d.stock_units, d.available_vehicles, r.route_id, r.distance_km, r.travel_minutes, r.max_gross_kg, d.stock_expires_at, r.expires_at, l.simulated AND d.simulated AND r.simulated AS simulated FROM lightning.metastore.portalone.mission_intelligence_v1.communities c JOIN lightning.metastore.portalone.mission_intelligence_v1.community_logistics l ON c.place_id=l.place_id JOIN lightning.metastore.portalone.mission_intelligence_v1.depots d ON l.depot_id=d.depot_id JOIN lightning.metastore.portalone.mission_intelligence_v1.route_options r ON d.depot_id=r.depot_id ORDER BY r.route_id",
+      "result": {
+        "headers": [
+          "place_id",
+          "name",
+          "depot_id",
+          "stock_units",
+          "available_vehicles",
+          "route_id",
+          "distance_km",
+          "travel_minutes",
+          "max_gross_kg",
+          "stock_expires_at",
+          "expires_at",
+          "simulated"
+        ],
+        "data": [
+          [
+            "places-node:1744470346",
+            "Bambili",
+            "sim-bamenda-hub",
+            "120",
+            "2",
+            "sim-detour",
+            "30.0",
+            "60",
+            "6500.0",
+            "2026-10-24T11:00:00Z",
+            "2026-10-24T11:00:00Z",
+            "true"
+          ],
+          [
+            "places-node:1744470346",
+            "Bambili",
+            "sim-bamenda-hub",
+            "120",
+            "2",
+            "sim-direct",
+            "20.0",
+            "40",
+            "3500.0",
+            "2026-10-24T11:00:00Z",
+            "2026-10-24T11:00:00Z",
+            "true"
+          ]
+        ],
+        "total": 2,
+        "timeUsed": 1880
+      }
+    },
+    {
+      "id": "expired-options-remain-visible",
+      "sql": "SELECT route_id, expires_at, simulated, TO_TIMESTAMP(expires_at) >= CURRENT_TIMESTAMP() AS current FROM lightning.metastore.portalone.mission_intelligence_v1.route_options ORDER BY route_id",
+      "result": {
+        "headers": [
+          "route_id",
+          "expires_at",
+          "simulated",
+          "current"
+        ],
+        "data": [
+          [
+            "sim-detour",
+            "2026-10-24T11:00:00Z",
+            "true",
+            "false"
+          ],
+          [
+            "sim-direct",
+            "2026-10-24T11:00:00Z",
+            "true",
+            "false"
+          ]
+        ],
+        "total": 2,
+        "timeUsed": 444
+      }
+    },
+    {
+      "id": "quality-catalog",
+      "sql": "LIST DQ USL lightning.metastore.portalone.mission_intelligence_v1",
+      "result": {
+        "headers": [
+          "name",
+          "table",
+          "type",
+          "expression"
+        ],
+        "data": [
+          [
+            "place_id",
+            "communities",
+            "Primary key constraints",
+            ""
+          ],
+          [
+            "depot_id",
+            "depots",
+            "Primary key constraints",
+            ""
+          ],
+          [
+            "nonnegative_rehearsal_capacity",
+            "depots",
+            "Custom Data Quality",
+            "stock_units >= 0 AND available_vehicles >= 0 AND simulated = true"
+          ],
+          [
+            "place_id",
+            "community_logistics",
+            "Primary key constraints",
+            ""
+          ],
+          [
+            "place_id",
+            "community_logistics",
+            "Foreign key constraints",
+            ""
+          ],
+          [
+            "depot_id",
+            "community_logistics",
+            "Foreign key constraints",
+            ""
+          ],
+          [
+            "route_id",
+            "route_options",
+            "Primary key constraints",
+            ""
+          ],
+          [
+            "depot_id",
+            "route_options",
+            "Foreign key constraints",
+            ""
+          ],
+          [
+            "current_access_evidence",
+            "route_options",
+            "Custom Data Quality",
+            "TO_TIMESTAMP(expires_at) >= CURRENT_TIMESTAMP()"
+          ]
+        ],
+        "total": 9,
+        "timeUsed": 59
+      }
+    },
+    {
+      "id": "run-nonnegative_rehearsal_capacity",
+      "sql": "RUN DQ nonnegative_rehearsal_capacity TABLE lightning.metastore.portalone.mission_intelligence_v1.depots",
+      "result": {
+        "headers": [
+          "name",
+          "table",
+          "type",
+          "total_record",
+          "valid_record",
+          "invalid_record"
+        ],
+        "data": [
+          [
+            "nonnegative_rehearsal_capacity",
+            "depots",
+            "Custom Data Quality",
+            "1",
+            "1",
+            "0"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 1266
+      }
+    },
+    {
+      "id": "run-current_access_evidence",
+      "sql": "RUN DQ current_access_evidence TABLE lightning.metastore.portalone.mission_intelligence_v1.route_options",
+      "result": {
+        "headers": [
+          "name",
+          "table",
+          "type",
+          "total_record",
+          "valid_record",
+          "invalid_record"
+        ],
+        "data": [
+          [
+            "current_access_evidence",
+            "route_options",
+            "Custom Data Quality",
+            "2",
+            "0",
+            "2"
+          ]
+        ],
+        "total": 1,
+        "timeUsed": 700
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-27T10:04:50.045Z",
+  "scope": "The same public reference plus synthetic stock/fleet/route question. No report data queried.",
+  "equivalence": true,
+  "sourceRowsFetched": 8,
+  "semanticRowsReturned": 2,
+  "manualSourceRequests": 4,
+  "semanticRequests": 1,
+  "manualElapsedMs": 942,
+  "semanticElapsedMs": 1401,
+  "timingCaveat": "One sequential local observation; cache, source pushdown and connection warm-up differ. This is not a speed benchmark or measured NGO staff-time saving.",
+  "observations": "The USL owns cross-source joins and aggregate definitions. The manual baseline owns grouping, matching, type normalization and provenance-related fields in application code.",
+  "sources": [
+    "SELECT s.place_id, s.name, l.depot_id, l.simulated FROM PORTALONE_COMMUNITY_V1.sites s JOIN PORTALONE_COMMUNITY_V1.logistics_scope l ON s.place_id=l.place_id",
+    "SELECT depot_id, available_units, expires_at, simulated FROM PORTALONE_LOGISTICS_V1.inventory",
+    "SELECT depot_id, available FROM PORTALONE_LOGISTICS_V1.vehicles",
+    "SELECT route_id, sequence, from_node, distance_km, travel_minutes, max_gross_kg, expires_at, simulated FROM PORTALONE_SCENARIO_V1.route_segments"
+  ],
+  "semanticSql": "SELECT c.place_id, c.name, d.depot_id, d.stock_units, d.available_vehicles, r.route_id, r.distance_km, r.travel_minutes, r.max_gross_kg, d.stock_expires_at, r.expires_at, l.simulated AND d.simulated AND r.simulated AS simulated FROM lightning.metastore.portalone.mission_intelligence_v1.communities c JOIN lightning.metastore.portalone.mission_intelligence_v1.community_logistics l ON c.place_id=l.place_id JOIN lightning.metastore.portalone.mission_intelligence_v1.depots d ON l.depot_id=d.depot_id JOIN lightning.metastore.portalone.mission_intelligence_v1.route_options r ON d.depot_id=r.depot_id ORDER BY r.route_id"
+}

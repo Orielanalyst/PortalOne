@@ -32,6 +32,8 @@ ReliefIntel gives those teams an investigative capability: ask a mission questio
 
 The user works with a **Mission Coordinator**, which clarifies the brief and delegates to specialists. Users do not select agents manually.
 
+**Try another case:** click **New mission** above the conversation. Each mission keeps separate messages, requirements, investigation runs and documents. **Mission history** reopens earlier work, and the selected mission has a reloadable URL. Creating a mission preserves previous work and stops its old watch; an active investigation must finish first. A new case can start with a greeting and clarification. Geography beyond the acquired corridor remains an explicit coverage gap.
+
 ```mermaid
 flowchart TD
     U[Relief team and mission brief] --> C[Mission Coordinator]
@@ -88,9 +90,13 @@ The exporter writes and reopens layers, checks feature counts, CRS and geometry,
 
 Zetaris is the data layer. It joins report projections, community references and registered logistics, applying filters and aggregation before passing a bounded answer set to the agents. This is the project's **Token Firewall pattern**: resolve the structured data question in the engine before spending model context on it.
 
+**This data-querying layer is foundational to ReliefIntel's promise.** The product must reconcile fragmented evidence before it can produce a defensible intervention proposal. In live mode, removing Zetaris makes the federated assessment unavailable; the application exposes that gap. It cannot replace the missing answer with model guesses.
+
 Kobo metadata is projected into a dedicated queryable schema. Narrative interpretation follows a separate, operator-authorized processing contract. Separate planner/checker queries and source revisions make the basis inspectable. Public humanitarian context is retrieved separately and retains its own provenance.
 
 [Data adapter](src/lib/server/zetaris.ts) · [Community evidence](src/lib/server/community-evidence.ts) · [Federation design and live proof](docs/FEDERATED_PLANNING.md).
+
+**Zetaris evaluation proof:** a deployed USL with **four active tables over three logical registered sources**, checked-in DDL, **six exploratory queries**, **three USL verification queries** and **two executed custom data-quality rules**. The freshness rule rejects expired access options. [Scoring evidence, reflection and PM proposal](docs/ZETARIS_SCORING.md) · [DDL](data/zetaris-usl-v1/model.sql) · [Actual engine receipt](docs/evidence/zetaris-usl-2026-10-27.json). This public proof uses public community references and synthetic logistics/access data; the application's private-report adapter retains its existing bounded source-level SQL.
 
 ### Meterless: inference routing and evidence-dependent memory
 
@@ -104,6 +110,8 @@ Kobo metadata is projected into a dedicated queryable schema. Narrative interpre
 
 Nemotron generates coordinator responses, sourced findings, plans, critiques and the final narrative through Nightshift. Model identities and usage are recorded per call. Structured tools perform SQL, geometry, constraint calculations, citation resolution and export; a model cannot turn unsupported text into a verified fact or authorize dispatch.
 
+The technologies carry distinct, necessary responsibilities in this implementation: **Zetaris resolves the evidence, Nightshift routes the model calls, Nemotron performs the investigative and narrative work, and World Model tracks whether a proposal's assumptions still hold.** Without the configured inference path, live agent writing cannot complete. Without evidence-dependent invalidation, an earlier proposal could outlive the facts on which it depended.
+
 [Committee graph](src/lib/server/committee-mission.ts) · [Mission feasibility](src/lib/server/mission-feasibility.ts) · [Model and streaming contracts](docs/COMMITTEE_WORKFLOW.md).
 
 ## Inspect the proof
@@ -113,6 +121,7 @@ The repository contains **real sponsor-call receipts and generated artifacts**, 
 | What to verify | Evidence to open |
 |---|---|
 | Real Zetaris joins over distinct registered sources | [Federation receipt](docs/evidence/relief-data-2026-10-24.json) and [community-change receipt](docs/evidence/federated-live-change-2026-10-25.json). |
+| Active Zetaris semantic tables, DDL, exploration and executed quality rules | [Evaluation guide](docs/ZETARIS_SCORING.md), [USL receipt](docs/evidence/zetaris-usl-2026-10-27.json) and [manual comparison](docs/evidence/zetaris-usl-comparison-2026-10-27.json). |
 | A conversational coordinator that clarifies before delegation | [Conversation proof](docs/evidence/coordinator-conversation-2026-10-25.json). |
 | Plan v1 before evaluation, critique, v2 and an actual diff | [Live committee receipt](docs/evidence/committee-workflow-2026-10-25.json). |
 | New Kobo evidence superseding an earlier plan and triggering a replacement | [Live update receipt](docs/evidence/mission-update-2026-10-25.json) and [replacement PDF](docs/evidence/mission-update-demo-2026-10-25/report.pdf). |
@@ -120,7 +129,7 @@ The repository contains **real sponsor-call receipts and generated artifacts**, 
 | A downloadable, native GIS/report handoff | [Published PDF](docs/evidence/private-inference-demo-2026-10-26/report.pdf), [GIS ZIP](docs/evidence/private-inference-demo-2026-10-26/committee-pack.zip) and [validation receipt](docs/evidence/private-inference-2026-10-26.json). |
 | The later integrated mission-input, route, review and restart path | [Local acceptance record](docs/GOAL_1_TO_4.md), [mission requirements](src/lib/server/mission-requirements.ts) and [feasibility checks](src/lib/server/mission-feasibility.ts). |
 
-**Recorded code gate at [`fd988f0`](https://github.com/Orielanalyst/PortalOne/commit/fd988f0): 173 tests in 22 files, typecheck, production build, eight World Model checks, 154 vendored archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The last inspected hosted Actions runs were blocked before execution by an account billing lock; no hosted green result is claimed.
+**Recorded code gate at [`2d63387`](https://github.com/Orielanalyst/PortalOne/commit/2d63387): 180 tests in 23 files, typecheck, production build, eight World Model checks, 154 vendored archive checks, four report-wheel checks and both HTTP-disabled replays passed locally.** The committed source was also checked independently of the parallel UI redesign. The last inspected hosted Actions runs were blocked before execution by an account billing lock; no hosted green result is claimed.
 
 Receipts identify their source commits and dates. The public downloadable snapshots are historical rehearsals and do not silently become the latest run. The prepared HackOS materials include a **2:46 recorded product walkthrough** and **10-slide pitch deck**.
 

@@ -108,3 +108,7 @@ until their verification evidence exists.
 ## 27 October — README and review navigation
 
 Codex drafted the judge-facing README and refreshed the evidence guide under the founder's direction. The content leads with the humanitarian purpose and intended impact, then links product/technology claims to existing source code, dated receipts and public artifacts. The embedded map is an unchanged image from the already-authorized public 26 October pack; new private runs remain local. Documentation editing does not claim a new inference, live integration test or field outcome, and does not include the parallel UI changes.
+
+## 27 October — mission conversations and semantic-layer verification
+
+Under the founder's instruction, Codex implemented independent conversation contexts, journal migration, UI controls, scoped streaming and regression tests. Codex also read the supplied Zetaris scoring sheet, consulted the official command reference, wrote project-owned DDL/activation queries and executed them against the local Zetaris engine. A hand-coded comparison and the USL returned identical normalized results over public references and synthetic fixtures. Published receipts exclude report records and narratives. The new live greeting check used the configured Nemotron service; it did not start a mission investigation or establish any field facts. Forecast NGO time savings and the proposed Zetaris qualification envelope are explicitly unvalidated/proposed. The founder's parallel UI redesign is excluded from these commits.
