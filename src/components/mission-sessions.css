@@ -1,0 +1,11 @@
+.mission-sessions{padding:12px 22px;border-bottom:1px solid #a5b5ad24;background:#ffffff03;flex-shrink:0}
+.mission-session-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mission-session-controls button,.mission-session-controls select{font:inherit;font-size:12px;line-height:1.4;color:inherit;border:1px solid #a5b5ad45;border-radius:7px;background:#1c2726;padding:7px 9px;min-height:34px}
+.mission-session-controls button{display:inline-flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap}
+.mission-session-controls label{display:flex;align-items:center;gap:7px;flex:1;min-width:130px;color:inherit}
+.mission-session-controls select{width:100%;min-width:0;max-width:400px;cursor:pointer;text-overflow:ellipsis}
+.mission-session-controls button:focus-visible,.mission-session-controls select:focus-visible{outline:2px solid #b9d4bf;outline-offset:3px}
+.mission-session-controls :disabled{opacity:.5;cursor:wait}
+.mission-session-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.mission-sessions p{font-size:11px;line-height:1.5;color:#a5b5ad;margin:7px 0 0}
+@media(max-width:600px){.mission-sessions{padding:10px 14px}.mission-session-controls{gap:8px}}

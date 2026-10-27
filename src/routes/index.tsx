@@ -6,6 +6,7 @@ import { CommunityMapView } from '../components/community-map';
 import { MissionMarkdown } from '../components/mission-markdown';
 import { DocumentView, PlanArtifacts, CommitteeReport, SourceRegister, ActiveWork, actorName } from '../components/mission-artifacts';
 import '../mission.css';
+import {MissionSessions} from '../components/mission-sessions';
 
 export const Route = createFileRoute('/')({ component: Home });
 type Tab = 'Activity' | 'Map' | 'Evidence' | 'Plan' | 'Report';
@@ -20,38 +21,57 @@ function Home() {
   const conversationScroll=useRef<HTMLDivElement>(null),workspaceScroll=useRef<HTMLDivElement>(null);
   const followConversation=useRef(true),followWorkspace=useRef(true);
   const [liveFeed,setLiveFeed]=useState(false);
+  const [sessionId,setSessionId]=useState<string|null>(()=>typeof window==='undefined'?null:new URL(window.location.href).searchParams.get('session'));
+  const [startingMission,setStartingMission]=useState(false);
   useEffect(() => {
-    const feed=new EventSource(`/api/mission/stream${selected?`?run=${encodeURIComponent(selected)}`:''}`);
+    const query=new URLSearchParams();if(selected)query.set('run',selected);if(sessionId)query.set('session',sessionId);
+    const feed=new EventSource(`/api/mission/stream${query.size?'?'+query.toString():''}`);
     feed.onopen=()=>setLiveFeed(true); feed.onerror=()=>setLiveFeed(false);
-    feed.addEventListener('state',event=>{setView(JSON.parse((event as MessageEvent).data));setError('');});
+    feed.addEventListener('state',event=>{const next=JSON.parse((event as MessageEvent).data) as MissionView;setView(next);if(!sessionId&&next.session)setSessionId(next.session.id);setError('');});
     feed.addEventListener('delta',event=>{ const delta=JSON.parse((event as MessageEvent).data) as {documentId:string;offset:number;delta:string;updatedAt:string};
       setView(current=>current?{...current,documents:current.documents.map(document=>document.id===delta.documentId && document.markdown.length===delta.offset
         ? {...document,markdown:document.markdown+delta.delta,updatedAt:delta.updatedAt}:document)}:current);
     });
     return()=>feed.close();
-  }, [selected]);
+  }, [selected,sessionId]);
   const streamedLength=view?.documents?.reduce((sum,document)=>sum+document.markdown.length,0) ?? 0;
   useLayoutEffect(()=>{if(followConversation.current && conversationScroll.current) conversationScroll.current.scrollTop=conversationScroll.current.scrollHeight;},[streamedLength,view?.conversation.length,view?.activeRunId]);
   useLayoutEffect(()=>{if(tab==='Activity' && followWorkspace.current && workspaceScroll.current) workspaceScroll.current.scrollTop=workspaceScroll.current.scrollHeight;},[streamedLength,view?.events.length,tab]);
   useLayoutEffect(()=>{if(tab!=='Activity' && workspaceScroll.current)workspaceScroll.current.scrollTop=0;},[tab,selected]);
   async function send(text = message, directReplay = false) {
-    if (sending || view?.chatBusy || !text.trim()) return;
+    if (sending || view?.chatBusy || view?.reviewBusy || startingMission || (view?.activeSessionId&&view.activeSessionId!==view.session?.id) || !text.trim()) return;
     setSending(true); setError('');
     try {
       const response = await fetch('/api/mission', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: directReplay ? 'investigate' : 'chat', message: text, watchMinutes: watch && view?.mode !== 'offline-replay' ? 30 : 0 }) });
+        body: JSON.stringify({ action: directReplay ? 'investigate' : 'chat', message: text, watchMinutes: watch && view?.mode !== 'offline-replay' ? 30 : 0, sessionId:sessionId??view?.session?.id }) });
       if (!response.ok) throw new Error(); const receipt = await response.json();
       setMessage('');
       if (receipt.runId) { setSelected(null); setTab('Activity'); }
     } catch { setError('Unable to send your message. Check the connection and wait for any pending reply, then retry.'); }
     finally { setSending(false); }
   }
+  function chooseMission(id:string) {
+    setSessionId(id);setSelected(null);setView(null);setMessage('');setWatch(false);setError('');setTab('Activity');
+    followConversation.current=true;followWorkspace.current=true;
+    const url=new URL(window.location.href);url.searchParams.set('session',id);url.searchParams.delete('run');window.history.replaceState(window.history.state,'',url);
+  }
+  async function newMission() {
+    if(startingMission)return;setStartingMission(true);setError('');
+    try {
+      const response=await fetch('/api/mission',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'new_session'})});
+      if(!response.ok)throw new Error('Wait for active work to finish before starting a new mission.');
+      const result=await response.json() as {session:{id:string}};
+      const fresh=await fetch(`/api/mission?session=${encodeURIComponent(result.session.id)}`);
+      chooseMission(result.session.id);if(fresh.ok)setView(await fresh.json());
+    }catch(error){setError(error instanceof Error?error.message:'Unable to start a new mission. Please retry.');}
+    finally{setStartingMission(false);}
+  }
   async function stopMonitoring() {
     const response = await fetch('/api/mission', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"action":"stop_monitor"}' });
-    if (response.ok) { const current = await fetch('/api/mission'); if (current.ok) setView(await current.json()); }
+    if (response.ok) { const query=new URLSearchParams();if(sessionId)query.set('session',sessionId);if(selected)query.set('run',selected);const current = await fetch('/api/mission?'+query.toString()); if (current.ok) setView(await current.json()); }
   }
   const busy = !!view?.activeRunId || sending, current = view?.selected;
-  const chatBusy = sending || !!view?.chatBusy;
+  const chatBusy = sending || startingMission || !!view?.chatBusy || !!view?.reviewBusy || !!(view?.activeSessionId&&view.activeSessionId!==view.session?.id);
   function openTab(name:Tab) {
     if((name==='Plan' || name==='Report') && !selected && view?.selected)setSelected(view.selected.id);
     setTab(name);
@@ -69,6 +89,7 @@ function Home() {
     </header>
     <main className="mission-layout">
       <section className="conversation" aria-label="Mission conversation">
+        <MissionSessions view={view} busy={busy||!!view?.chatBusy||!!view?.reviewBusy} starting={startingMission} onNew={()=>void newMission()} onSelect={chooseMission}/>
         <div className="conversation-title"><span><span className="status-dot online" /> Mission Coordinator</span><small>One conversation. A shared picture.</small></div>
         <div ref={conversationScroll} onScroll={event=>{const element=event.currentTarget;followConversation.current=element.scrollHeight-element.scrollTop-element.clientHeight<70;}} className="conversation-scroll"><div className="coordinator-intro"><span className="eyebrow">LOCAL KNOWLEDGE, CONNECTED</span><h1>Understand the ground.<br />Then make the call.</h1><p>Tell me where you’re working. I’ll gather community signals, ground the places on a map, and show what we know — and what needs checking.</p></div>
           {!view?.runs.length && (!view?.conversation?.length || view?.mode === 'offline-replay') && <button className="starter" onClick={() => void send(example, view?.mode === 'offline-replay')} disabled={busy}><MapIcon size={17} /><span>Investigate the Bambili area</span><ArrowUpRight size={16} /></button>}
