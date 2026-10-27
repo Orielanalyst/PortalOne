@@ -104,3 +104,7 @@ contributions are not represented as exclusively human-authored. A commit made
 with the user's configured Git identity does not by itself establish authorship
 of every line. Planned model integrations in the table remain unimplemented
 until their verification evidence exists.
+
+## 27 October — README and review navigation
+
+Codex drafted the judge-facing README and refreshed the evidence guide under the founder's direction. The content leads with the humanitarian purpose and intended impact, then links product/technology claims to existing source code, dated receipts and public artifacts. The embedded map is an unchanged image from the already-authorized public 26 October pack; new private runs remain local. Documentation editing does not claim a new inference, live integration test or field outcome, and does not include the parallel UI changes.

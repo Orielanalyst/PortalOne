@@ -1,0 +1,7 @@
+{
+  "artifact": "community-map.png",
+  "source": "docs/evidence/private-inference-demo-2026-10-26/committee-pack.zip",
+  "member": "map.png",
+  "sha256": "25562d0ec0c8e9389b50c338fa2b15b7b5882f0736d3fd8d8d2a2b4fa21955d2",
+  "description": "Unchanged map image extracted from the already-published authorized synthetic demonstration pack. Historical 26 October seven-layer export; current atlas has eleven layers."
+}
