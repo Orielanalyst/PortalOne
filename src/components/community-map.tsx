@@ -31,7 +31,8 @@ export function CommunityMapView({ view }: { view: MissionView }) {
         }));
         if(cancelled||!element.current)return;
         const instance=L.map(element.current,{zoomControl:false,preferCanvas:true,minZoom:9});map.current=instance;
-        for(const [name,z] of [['geography',230],['boundary',250],['candidates',390],['mission',420],['facilities',460],['reports',480],['endpoints',530]] as const)instance.createPane(name).style.zIndex=String(z);
+        // Canvas panes span the map; keep report paths below interactive facility markers.
+        for(const [name,z] of [['geography',230],['boundary',250],['candidates',390],['mission',420],['reports',450],['facilities',460],['endpoints',530]] as const)instance.createPane(name).style.zIndex=String(z);
         L.control.zoom({position:'topright'}).addTo(instance);
         L.control.scale({position:'bottomleft',imperial:false,maxWidth:110}).addTo(instance);
         const [west,south,east,north]=view.map.bounds as [number,number,number,number];
@@ -56,9 +57,10 @@ export function CommunityMapView({ view }: { view: MissionView }) {
           const detail=document.createElement('p');detail.textContent='Capacity and operation unverified. This is a source geometry reference, not a confirmed entrance.';popup.append(detail);
           const source=String(f.properties?.['evidenceId']??f.id??'').replace('facilities-','').replace(':','/');
           if(/^(node|way|relation)\/\d+$/.test(source)){const link=document.createElement('a');link.href='https://www.openstreetmap.org/'+source;link.target='_blank';link.rel='noreferrer';link.textContent='Open mapped source';popup.append(link);}
+          const compact=(element.current?.clientWidth??0)<=600;
           L.marker([xy[1]!,xy[0]!],{pane:'facilities',icon:L.divIcon({className:'health-map-marker',html:'<span>✚</span>',iconSize:[25,25],iconAnchor:[12,12]})})
             .bindTooltip(textNode('H'+(index+1)+' · '+String(f.properties?.['name']??'Health facility')),{direction:'top'})
-            .bindPopup(popup).addTo(facilities.current!);
+            .bindPopup(popup,{autoPanPaddingTopLeft:[compact?20:360,compact?20:170],autoPanPaddingBottomRight:[20,compact?20:155]}).addTo(facilities.current!);
         });
         reportPoints.current=L.layerGroup().addTo(instance);roadCandidates.current=L.layerGroup().addTo(instance);overlays.current=L.layerGroup().addTo(instance);
         instance.attributionControl.addAttribution('© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · HOT / HDX · ODbL | <a href="https://www.geoboundaries.org">geoBoundaries</a> / Open Africa · CC BY 4.0');
